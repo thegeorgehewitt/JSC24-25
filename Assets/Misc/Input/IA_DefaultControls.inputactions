@@ -1,0 +1,104 @@
+{
+    "name": "IA_DefaultControls",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "3bf66f64-0e9f-4b4e-b4da-309144cbd5b8",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "327c6620-eec6-4e53-948d-cab182eb2187",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "3ed68701-84b4-4381-96ec-e62439f6ffa0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "WASD",
+                    "id": "00ccc7e7-1feb-4ff3-b3b7-c527be1fc4be",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "2ea61739-e22f-4def-b5d8-bfdadbbbf2c5",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "e5b45f5a-8ada-4e50-a008-1ca2ebdbdac3",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "de9b97bb-dbcf-467d-b3d3-39f7bd43aec2",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "2424fd47-220d-4cba-beb4-2aecc8d20543",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c7c9ea11-776a-44e1-a1fa-14dfa72e08e4",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "PlayerInput",
+            "bindingGroup": "PlayerInput",
+            "devices": []
+        }
+    ]
+}
