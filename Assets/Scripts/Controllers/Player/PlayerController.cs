@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+using Custom.Interactable;
+
 namespace Custom.Controller
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Instance;
+
         [Header("REFERENCE")]
         [SerializeField] private new Rigidbody2D rigidbody;
         [SerializeField] private SpriteRenderer spriteRenderer;
@@ -18,16 +22,9 @@ namespace Custom.Controller
         [SerializeField] private float jumpHeight;
         [SerializeField] private float movementSpeed;
 
-        private ActionRecordList actionList = new ActionRecordList();
-
 
 
         private void Reset()
-        {
-            
-        }
-
-        private void Start()
         {
             if (!rigidbody) rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.excludeLayers |= gameObject.layer;
@@ -35,11 +32,24 @@ namespace Custom.Controller
             if (!spriteRenderer) spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        private void Awake()
+        {
+            #region Singleton
+            if (!Instance)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+            #endregion
+        }
+
         private void Update()
         {
             HandleInput();
-            HandleMovement();
-            HandleRecord();
+            HandleInteraction();
         }
 
         private void LateUpdate()
@@ -53,83 +63,34 @@ namespace Custom.Controller
 
         private void HandleInput()
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                recording = !recording;
-                changeRecordAttemp = true;
-            }
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Jump();
             }
 
-            inputDirection = Input.GetAxisRaw("Horizontal");
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                scanningInteractable = true;
+                scanningInteractableAttempt = true;
+            }
+            else if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                scanningInteractable = false;
+                scanningInteractableAttempt = true;
+            }
+
+            direction = Input.GetAxisRaw("Horizontal");
         }
 
         #endregion
 
         #region Movement
 
-        private float inputDirection;
-        private int direction;
+        private float direction;
 
         private void Jump()
         {
-            if (recording)
-            {
-                actionList.actions.Add(new RecordAction("Jump", Time.time - startTime));
-            }
-
             rigidbody.velocity += Vector2.up * jumpHeight;
-        }
-
-        private void HandleMovement()
-        {
-            if (replaying) return;
-
-            if (inputDirection == 0)
-            {
-                Stop();
-            }
-            else if (inputDirection > 0)
-            {
-                MoveRight();
-            }
-            else
-            {
-                MoveLeft();
-            }
-        }
-
-        private void MoveRight()
-        {
-            if (recording)
-            {
-                actionList.actions.Add(new RecordAction("MoveRight", Time.time - startTime));
-            }
-
-            direction = 1;
-        }
-
-        private void MoveLeft()
-        {
-            if (recording)
-            {
-                actionList.actions.Add(new RecordAction("MoveLeft", Time.time - startTime));
-            }
-
-            direction = -1;
-        }
-
-        private void Stop()
-        {
-            if (recording)
-            {
-                actionList.actions.Add(new RecordAction("Stop", Time.time - startTime));
-            }
-
-            direction = 0;
         }
 
         private void ExecuteMovement()
@@ -139,96 +100,35 @@ namespace Custom.Controller
 
         #endregion
 
-        #region Recording
+        #region Interaction
 
-        private bool recording = false;
-        private bool replaying = false;
-        private bool changeRecordAttemp;
+        private bool scanningInteractableAttempt;
+        private bool scanningInteractable;
 
-        private float startTime;
-        private Vector3 recordPosition;
+        private float originalCameraZoom;
 
-        private void HandleRecord()
+
+
+        private void HandleInteraction()
         {
-            if (!changeRecordAttemp) return;
+            if (!scanningInteractableAttempt) return;
 
-            if (recording)
+            if (scanningInteractable)
             {
-                Record();
+                originalCameraZoom = CameraController.Size;
+
+                CameraController.StartZoom(CameraController.Size + 3.0f, 0.5f);
+                InteractablesManager.ToggleSpriteEffects(true);
             }
             else
             {
-                EndRecording();
+                CameraController.StartZoom(originalCameraZoom, 0.5f);
+                InteractablesManager.ToggleSpriteEffects(false);
             }
 
-            changeRecordAttemp = false;
-        }
-
-        private void Record()
-        {
-            Debug.Log("Recording.");
-
-            startTime = Time.time;
-            recordPosition = transform.position;
-
-            actionList.actions.Clear();
-        }
-
-        private void EndRecording()
-        {
-            Debug.Log("End Recording.");
-
-            actionList.totalLength = Time.time - startTime;
-
-            CreateClone();
-        }
-
-        private void StartRepeatAction(ActionRecordList _actionList)
-        {
-            foreach (var action in _actionList.actions)
-            {
-                Invoke(action.functionName, action.timeStamp);
-            }
-
-            Destroy(gameObject, _actionList.totalLength);
+            scanningInteractableAttempt = false;
         }
 
         #endregion
-
-        #region Cloning
-
-        private void CreateClone()
-        {
-            var clone = Instantiate(gameObject).GetComponent<PlayerController>();
-
-            clone.transform.position = recordPosition;
-            clone.StartRepeatAction(actionList);
-            clone.spriteRenderer.color = Color.white / 2;
-            clone.replaying = true;
-        }
-
-        #endregion
-    }
-
-
-
-    public class ActionRecordList
-    {
-        public float totalLength = 0;
-        public List<RecordAction> actions = new();
-    }
-
-    public struct RecordAction
-    {
-        public string functionName;
-        public float timeStamp;
-
-        public RecordAction(
-            string _functionName, 
-            float _timeStamp)
-        {
-            functionName = _functionName;
-            timeStamp = _timeStamp;
-        }
     }
 }
