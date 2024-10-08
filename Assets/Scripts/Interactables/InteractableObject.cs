@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 
 using Custom.Effect;
+using Custom.Attribute;
 
 namespace Custom.Interactable
 {
@@ -13,21 +16,22 @@ namespace Custom.Interactable
         [Header("SCANNING")]
         [SerializeField] private float easeDuration = 0.5f;
 
+        [Header("INTERACTION")]
+        [ReadOnly]
+        [SerializeField] private List<InteractOptionBase> interactOptions;
 
 
-        private void OnEnable()
-        {
-            InteractablesManager.Register(this);
-        }
-
-        private void OnDisable()
-        {
-            InteractablesManager.Unregister(this);
-        }
 
         private void Start()
         {
             if (!spriteEffect) spriteEffect = GetComponent<SpriteEffectBase>();
+
+            InteractablesManager.Register(this);
+        }
+
+        private void OnDestroy()
+        {
+            InteractablesManager.Unregister(this);
         }
 
 

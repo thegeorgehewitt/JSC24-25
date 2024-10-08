@@ -12,14 +12,18 @@ namespace Custom.Controller
 
         [Header("REFERENCES")]
         [SerializeField] private Camera mainCamera;
-        [SerializeField] private Transform trackingTransform;
 
-        [Header("MOVEMENT")]
+        [Header("TRACKING")]
+        [SerializeField] private Transform trackingTransform;
+        [SerializeField] public Vector2 offset;
+        [SerializeField] private float zDepth;
+
+        [Header("ZOOM")]
         [SerializeField] private AnimationCurve defaultZoomEaseCurve;
 
         private PixelPerfectCamera pixelPerfectCamera;
 
-        private bool PixelatedCamera { get { return pixelPerfectCamera && pixelPerfectCamera.isActiveAndEnabled; } }
+        public bool PixelatedCamera { get { return pixelPerfectCamera && pixelPerfectCamera.isActiveAndEnabled; } }
 
         public static float Size { get { return Instance.mainCamera.orthographicSize; } }
 
@@ -48,13 +52,22 @@ namespace Custom.Controller
 
         private void Update()
         {
-            Vector3 trackingPosition = trackingTransform.position;
-            trackingPosition.z = -10;
+            UpdatePosition();
+        }
+
+
+
+        #region Tracking
+
+        private void UpdatePosition()
+        {
+            Vector3 trackingPosition = trackingTransform.position + (Vector3)offset;
+            trackingPosition.z = -zDepth;
 
             transform.position = trackingPosition;
         }
 
-
+        #endregion
 
         #region Zoom
 

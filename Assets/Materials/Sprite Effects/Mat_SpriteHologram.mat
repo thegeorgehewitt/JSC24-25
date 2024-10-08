@@ -24,7 +24,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 12ffcb1814980bc49a2eb6da48faa6cf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _FLICKER_BLEND_MODE_MULTIPLY
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -66,12 +67,15 @@ Material:
     - _Disable_Hologram: 0
     - _Effect_Intensity: 1
     - _Enable_Hologram: 1
+    - _FLICKER_BLEND_MODE: 0
+    - _Flicker_Max_Value: 1
+    - _Flicker_Min_Value: 0.6
     - _Macro_Scroll_Speed: 0.03
     - _Micro_Scroll_Speed: 0.03
     - _Noise_Scale: 200
     - _Noise_Weight: 0.35
     m_Colors:
-    - _Macro_Texture_Scale: {r: 10, g: 10, b: 0, a: 0}
-    - _Micro_Texture_Scale: {r: 12, g: 12, b: 0, a: 0}
+    - _Macro_Texture_Scale: {r: 8, g: 8, b: 0, a: 0}
+    - _Micro_Texture_Scale: {r: 14, g: 14, b: 0, a: 0}
     - _TintColor: {r: 0, g: 0.87080336, b: 1, a: 1}
   m_BuildTextureStacks: []
