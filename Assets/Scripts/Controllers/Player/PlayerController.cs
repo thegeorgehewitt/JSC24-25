@@ -3,9 +3,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-using UnityEditor;
-using System.Collections.Generic;
-
 namespace Custom.Controller
 {
     [DisallowMultipleComponent]
@@ -13,16 +10,12 @@ namespace Custom.Controller
     {
         [Header("REFERENCE")]
         [SerializeField] private InputActionAsset inputAction;
-        [SerializeField] private CharacterMotor controlledMotor;
-
-        [Space(10)]
-        [SerializeField] public CharacterMotor testMotorA;
-        [SerializeField] public CharacterMotor testMotorB;
+        [SerializeField] private CharacterMotor2D controlledMotor;
 
         public InputActionAsset InputAsset { get { return inputAction; } }
-        public CharacterMotor ControlledMotor { get { return controlledMotor; } }
+        public CharacterMotor2D ControlledMotor { get { return controlledMotor; } }
 
-        public static Action<CharacterMotor> OnControlledMotorChanged;
+        public static Action<CharacterMotor2D> OnControlledMotorChanged;
 
 
 
@@ -47,6 +40,10 @@ namespace Custom.Controller
 
 
 
+        /// <summary>
+        /// Enable an <see cref="InputActionMap"/> in the referenced <see cref="inputAction"/>.
+        /// </summary>
+        /// <param name="_map"> The <see cref="InputActionMap"/> to enable. </param>
         public void EnableActionMap(InputActionMap _map)
         {
             if (_map == null) return;
@@ -54,6 +51,10 @@ namespace Custom.Controller
             inputAction.FindActionMap(_map.id).Enable();
         }
 
+        /// <summary>
+        /// Disable an <see cref="InputActionMap"/> in the referenced <see cref="inputAction"/>.
+        /// </summary>
+        /// <param name="_map"> The <see cref="InputActionMap"/> to disable. </param>
         public void DisableActionMap(InputActionMap _map)
         {
             if (_map == null) return;
@@ -61,42 +62,17 @@ namespace Custom.Controller
             inputAction.FindActionMap(_map.id).Disable();
         }
 
-        public void Possess(CharacterMotor _motor)
+        /// <summary>
+        /// Set the controlling motor to a new <see cref="CharacterMotor2D"/>.
+        /// </summary>
+        /// <param name="_motor"> The <see cref="CharacterMotor2D"/> to possess. </param>
+        public void Possess(CharacterMotor2D _motor)
         {
             controlledMotor.OnUnpossessed(this);
             controlledMotor = _motor;
             controlledMotor.OnPossessed(this);
 
             OnControlledMotorChanged?.Invoke(controlledMotor);
-        }
-    }
-
-    
-
-    [CustomEditor(typeof(PlayerController))]
-    public class PlayerControllerEditor : Editor
-    {
-        private bool motorA;
-
-        public override void OnInspectorGUI()
-        {
-            var target = (PlayerController)this.target;
-
-            base.OnInspectorGUI();
-
-            if (GUILayout.Button("Switch Motor"))
-            {
-                motorA = !motorA;
-
-                if (motorA)
-                {
-                    target.Possess(target.testMotorA);
-                }
-                else
-                {
-                    target.Possess(target.testMotorB);
-                }
-            }
         }
     }
 }

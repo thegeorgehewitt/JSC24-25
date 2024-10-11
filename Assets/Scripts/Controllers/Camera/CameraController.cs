@@ -54,7 +54,7 @@ namespace Custom.Controller
             transform.position = trackPos;
         }
 
-        private void OnControlledMotorChanged(CharacterMotor _motor)
+        private void OnControlledMotorChanged(CharacterMotor2D _motor)
         {
             trackingTransform = _motor.transform;
         }
