@@ -32,6 +32,9 @@ namespace Custom.Controller
 
             var direction = InputAction.ReadValue<Vector2>();
             float maxSpeed = attachedMotor.IsGrounded ? groundMaxSpeed : airMaxSpeed;
+            float targetSpeed = ((attachedMotor.velocity.x * direction.x > 0)               // If the character is moving in the same direction as input direction
+                                ? Mathf.Max(maxSpeed, Mathf.Abs(attachedMotor.velocity.x))  // Target speed is the larger between max speed and current speed.
+                                : maxSpeed) * direction.x;
 
             // Decelerate character horizontal speed.
             if (direction.x == 0)
@@ -43,7 +46,7 @@ namespace Custom.Controller
             else
             {
                 float acceleration = attachedMotor.IsGrounded ? groundAcceleration : airAcceleration;
-                attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, direction.x * maxSpeed, acceleration * Time.fixedDeltaTime);
+                attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, targetSpeed, acceleration * Time.fixedDeltaTime);
             }
         }
 

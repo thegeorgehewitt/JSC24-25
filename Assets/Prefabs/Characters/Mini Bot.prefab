@@ -190,7 +190,7 @@ MonoBehaviour:
   - {x: -0.16873717, y: -0.47433528, z: 0}
   m_ShapePathHash: -591705743
   m_Mesh: {fileID: 0}
-  m_InstanceId: 55506
+  m_InstanceId: 60948
   m_LocalBounds:
     m_Center: {x: 0.00034475327, y: 0.0008430183, z: 0}
     m_Extent: {x: 0.50175357, y: 0.4998639, z: 0}
@@ -334,7 +334,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 7420070016978793285}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: c78b6323ec111b141a8c201223c44fa2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
