@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -32,6 +33,8 @@ namespace Custom.Interactable
 
         private void OnValidate()
         {
+            if (!doorCollider) return;
+
             Open(open);
         }
 #endif
@@ -43,6 +46,9 @@ namespace Custom.Interactable
             spriteRenderer.color = _open ? openedColor : closedColor;
             doorCollider.enabled = !_open;
             if (shadowCaster) shadowCaster.enabled = !_open;
+
+            // TEMPORARY
+            states = new List<string>{ _open ? "Unlocked" : "Locked" };
         }
 
         private void Open(bool _open)

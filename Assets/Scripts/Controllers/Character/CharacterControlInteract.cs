@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 using Custom.Interactable;
 using Custom.Decorative;
+using Custom.UI;
 
 namespace Custom.Controller
 {
@@ -26,6 +27,7 @@ namespace Custom.Controller
         private bool outOfRange;
 
         public static Action OnInteractObjectOutOfRange;
+        public static Action<InteractableObject> OnHoverNewInteractableObject;
 
 
 
@@ -41,31 +43,7 @@ namespace Custom.Controller
 
         private void FixedUpdate()
         {
-            var mousePosWorld = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
-            var overlapCols = Physics2D.OverlapCircleAll(mousePosWorld, interactSnapRadius, interactableLayers);
-
-            if (overlapCols.Length <= 0)
-            {
-                interactCursor.SetPosition(mousePosWorld);
-                interactCursor.SetSize(Vector2.one * defaultCursorSize);
-                hoverObject = null;
-            }
-            else
-            {
-                foreach (var collider in overlapCols)
-                {
-                    if (!collider.transform.TryGetComponent(out InteractableObject asInteractable)) continue;
-                    
-                    hoverObject = asInteractable;
-                    interactCursor.SetPosition(asInteractable.transform.position);
-                    interactCursor.SetSize(asInteractable.SpriteRenderer.bounds.size);
-                    break;
-                }
-            }
-
-            outOfRange = Vector2.Distance(interactRayOrigin.position, interactCursor.transform.position) > interactRange;
-
-            interactCursor.SetColor(outOfRange ? outOfRangeColor : inRangeColor);
+            UpdateHoverInteractableObject();
         }
 
 
@@ -84,22 +62,61 @@ namespace Custom.Controller
             }
         }
 
+        private void UpdateHoverInteractableObject()
+        {
+            var mousePosWorld = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+            var overlapCols = Physics2D.OverlapCircleAll(mousePosWorld, interactSnapRadius, interactableLayers);
+
+            if (overlapCols.Length <= 0)
+            {
+                hoverObject = null;
+            }
+            else if (!hoverObject)
+            {
+                foreach (var collider in overlapCols)
+                {
+                    if (!collider.transform.TryGetComponent(out InteractableObject asInteractable)) continue;
+                    
+                    hoverObject = asInteractable;
+
+                    OnHoverNewInteractableObject?.Invoke(hoverObject);
+
+                    break;
+                }
+            }
+
+            outOfRange = Vector2.Distance(interactRayOrigin.position, interactCursor.transform.position) > interactRange;
+
+            #region Interact Cursor & Interactable Object Display Popup
+            if (hoverObject)
+            {
+                interactCursor.SetPosition(hoverObject.transform.position);
+                interactCursor.SetSize(hoverObject.SpriteRenderer.bounds.size);
+                InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
+            }
+            else
+            {
+                interactCursor.SetPosition(mousePosWorld);
+                interactCursor.SetSize(Vector2.one * defaultCursorSize);
+                InteractableObjectDisplayPopup.ShowPopup(false);
+            }
+
+            interactCursor.SetColor(outOfRange ? outOfRangeColor : inRangeColor);
+            #endregion
+        }
+
 
 
         protected override void OnActivate()
         {
             interactCursor.gameObject.SetActive(true);
             enabled = true;
-
-            Cursor.visible = false;
         }
 
         protected override void OnDeactivate()
         {
             interactCursor.gameObject.SetActive(false);
             enabled = false;
-
-            Cursor.visible = true;
         }
     }
 }

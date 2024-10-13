@@ -166,16 +166,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4631841617709058082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0710b046ae283b47bb9fda27755af0f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a4ccf2efab238d448f6944b55c89771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 2916424553002418655}
   interactAreaCollider: {fileID: 2606397983663435397}
+  objectData: {fileID: 11400000, guid: 8a13ccfe83aaa2447ae4b76deafd28a8, type: 2}
+  interactionData: {fileID: 11400000, guid: 8bec72f0f23eac84bb2dc13136d23f6c, type: 2}
+  states:
+  - Locked
   doorCollider: {fileID: 8235915075550387393}
   shadowCaster: {fileID: 829887462916182115}
   open: 0
-  closedColor: {r: 0.31132078, g: 0.2392058, b: 0.19530974, a: 1}
-  openedColor: {r: 0.254717, g: 0.23188858, b: 0.23188858, a: 0.19607843}
+  closedColor: {r: 0.26666668, g: 0.22745098, b: 0.19215687, a: 1}
+  openedColor: {r: 0.26415092, g: 0.22383696, b: 0.19063722, a: 0.11764706}
   easeDuration: 0.1
   easeCurve:
     serializedVersion: 2
@@ -183,20 +187,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: -0
-      outSlope: -0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-      weightedMode: 3
+      weightedMode: 0
       inWeight: 0
-      outWeight: 0.6011236
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 9.609017
-      outSlope: 9.609017
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-      weightedMode: 3
-      inWeight: 0.050561786
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -276,7 +280,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.31132078, g: 0.2392058, b: 0.19530974, a: 1}
+  m_Color: {r: 0.26666668, g: 0.22745098, b: 0.19215687, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -312,7 +316,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 55144
+  m_InstanceId: 123654
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}

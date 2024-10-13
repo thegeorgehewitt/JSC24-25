@@ -1,4 +1,9 @@
+using System.Collections.Generic;
+
 using UnityEngine;
+
+using Custom.Scriptable;
+using Unity.VisualScripting;
 
 namespace Custom.Interactable
 {
@@ -9,7 +14,15 @@ namespace Custom.Interactable
         [SerializeField] protected SpriteRenderer spriteRenderer;
         [SerializeField] protected Collider2D interactAreaCollider;
 
+        [Header("DATA")]
+        [SerializeField] protected InteractableObjectData objectData;
+        [SerializeField] protected ObjectInteractionData interactionData;
+        [SerializeField] protected List<string> states = new();
+
         public SpriteRenderer SpriteRenderer { get { return spriteRenderer; } }
+        public InteractableObjectData ObjectData { get { return objectData; } }
+        public ObjectInteractionData InteractionData { get { return interactionData; } }
+        public string[] States { get { return states.ToArray(); } }
 
 
 
