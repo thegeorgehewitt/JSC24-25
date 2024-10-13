@@ -47,6 +47,7 @@ namespace Custom.Controller
         public void EnableActionMap(InputActionMap _map)
         {
             if (_map == null) return;
+            if (_map.enabled) return;
 
             inputAction.FindActionMap(_map.id).Enable();
         }
@@ -58,6 +59,7 @@ namespace Custom.Controller
         public void DisableActionMap(InputActionMap _map)
         {
             if (_map == null) return;
+            if (!_map.enabled) return;
 
             inputAction.FindActionMap(_map.id).Disable();
         }

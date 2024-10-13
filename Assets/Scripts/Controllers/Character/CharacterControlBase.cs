@@ -35,9 +35,22 @@ namespace Custom.Controller
 
 
 
+        protected virtual void OnActivate() { }
+        protected virtual void OnDeactivate() { }
+
+
+
         public void AttachToMotor(CharacterMotor2D _motor)
         {
             attachedMotor = _motor;
+        }
+
+        public void SetEnable(bool _state)
+        {
+            if (_state)
+                OnActivate();
+            else
+                OnDeactivate();
         }
     }
 }

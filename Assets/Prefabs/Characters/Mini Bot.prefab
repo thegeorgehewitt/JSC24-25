@@ -169,7 +169,7 @@ MonoBehaviour:
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
-  m_SelfShadows: 0
+  m_SelfShadows: 1
   m_ApplyToSortingLayers: 000000002f8cb58cc34532dc05ceda8af52a46749157df6d
   m_ShapePath:
   - {x: -0.31713557, y: -0.39523387, z: 0}
@@ -190,7 +190,7 @@ MonoBehaviour:
   - {x: -0.16873717, y: -0.47433528, z: 0}
   m_ShapePathHash: -591705743
   m_Mesh: {fileID: 0}
-  m_InstanceId: 60948
+  m_InstanceId: 32514
   m_LocalBounds:
     m_Center: {x: 0.00034475327, y: 0.0008430183, z: 0}
     m_Extent: {x: 0.50175357, y: 0.4998639, z: 0}
@@ -220,7 +220,7 @@ Transform:
   m_GameObject: {fileID: 6550644051901288630}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.099999994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -255,12 +255,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
 --- !u!1 &7420070016978793285
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,8 +294,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 74946785210995693}
-  - {fileID: 8476361089312835016}
   - {fileID: 3896052912788972230}
+  - {fileID: 8476361089312835016}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &3322526478662052109

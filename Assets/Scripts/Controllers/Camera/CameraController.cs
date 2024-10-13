@@ -4,6 +4,8 @@ namespace Custom.Controller
 {
     public class CameraController : MonoBehaviour
     {
+        public static CameraController Instance;
+
         [Header("REFERENCES")]
         [SerializeField] private Camera mainCamera;
 
@@ -11,14 +13,7 @@ namespace Custom.Controller
         [SerializeField] private Transform trackingTransform;
         [SerializeField] private Vector2 offset;
 
-        public Transform TrackingTransform
-        {
-            get { return trackingTransform; }
-            set
-            {
-
-            }
-        }
+        public static Camera MainCamera { get { return Instance.mainCamera; } }
 
 
 
@@ -34,6 +29,17 @@ namespace Custom.Controller
 
         private void Awake()
         {
+            #region Singleton
+            if (!Instance)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+            #endregion
+
             if (!mainCamera) mainCamera = Camera.main;
         }
 

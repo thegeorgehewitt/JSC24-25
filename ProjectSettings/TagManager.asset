@@ -14,7 +14,7 @@ TagManager:
   - Ground
   - Player
   - Character
-  - 
+  - Object
   - 
   - 
   - 
@@ -55,4 +55,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 1843353489
+    locked: 0
+  - name: Overlay
+    uniqueID: 3100450553
     locked: 0

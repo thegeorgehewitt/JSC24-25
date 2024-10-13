@@ -18,7 +18,6 @@ namespace Custom.Controller
 
         [Header("GRAVITY")]
         [SerializeField] private bool useGravity = true;
-        [SerializeField] private float groundingForce = 20f;
         [SerializeField] private float fallAcceleration = 18f;
         [SerializeField] private float maxFallSpeed = 9f;
         [SerializeField] private float jumpEndEarlyGravityModifier = 5f;
@@ -27,9 +26,6 @@ namespace Custom.Controller
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
         [HideInInspector] public Vector2 velocity = new();
-
-        private List<InputActionMap> inputMaps = new();
-        private List<InputAction> inputActions = new();
 
         private ContactFilter2D contactFilter;
         private List<Collider2D> contacts = new();
@@ -52,9 +48,6 @@ namespace Custom.Controller
             foreach (var movement in controlScripts)
             {
                 movement.AttachToMotor(this);
-
-                inputActions.Add(movement.InputAction);
-                inputMaps.Add(movement.InputActionMap);
             }
             #endregion
 
@@ -90,20 +83,24 @@ namespace Custom.Controller
 
         public void OnPossessed(PlayerController _controller) 
         {
-            foreach (var inputMap in inputMaps)
-            {
-                _controller?.EnableActionMap(inputMap);
-            }
             controller = _controller;
+
+            foreach (var control in controlScripts)
+            {
+                control.SetEnable(true);
+                _controller?.EnableActionMap(control.InputActionMap);
+            }
         }
 
         public void OnUnpossessed(PlayerController _controller)
         {
-            foreach (var inputMap in inputMaps)
-            {
-                _controller?.DisableActionMap(inputMap);
-            }
             controller = null;
+
+            foreach (var control in controlScripts)
+            {
+                control.SetEnable(false);
+                _controller?.DisableActionMap(control.InputActionMap);
+            }
         }
 
         #endregion
