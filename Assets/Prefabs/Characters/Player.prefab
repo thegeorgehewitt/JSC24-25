@@ -105,7 +105,10 @@ MonoBehaviour:
   interactSnapRadius: 0.4
   interactableLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
+  blockableLayers:
+    serializedVersion: 2
+    m_Bits: 1088
   interactCursor: {fileID: 2594773620045173641}
   defaultCursorSize: 0.5
   outOfRangeColor: {r: 0.8679245, g: 0.41349235, b: 0.41349235, a: 1}
@@ -330,7 +333,7 @@ MonoBehaviour:
   - {x: -0.24771959, y: -0.93883574, z: 0}
   m_ShapePathHash: 567464037
   m_Mesh: {fileID: 0}
-  m_InstanceId: 93932
+  m_InstanceId: 43374
   m_LocalBounds:
     m_Center: {x: 0.0022534132, y: 0.0016709566, z: 0}
     m_Extent: {x: 0.5035875, y: 1.0057218, z: 0}

@@ -1,10 +1,8 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-
-using Custom.Attribute;
-using System.Linq;
 
 namespace Custom.Decorative
 {
@@ -12,35 +10,41 @@ namespace Custom.Decorative
     public class InteractCursor : MonoBehaviour
     {
         [Header("REFERENCES")]
-        [ReadOnly]
-        [SerializeField] private new SpriteRenderer renderer;
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private LineRenderer lineRenderer;
 
-        [Header("ZOOM")]
-        [SerializeField] private float cursorMargin = 0.2f;
-        [SerializeField] private float zoomDuration = 0.5f;
+        [Header("TARGET CURSOR")]
+        [SerializeField] private float cursorMargin = 0.3f;
+        [SerializeField] private float zoomDuration = 0.1f;
         [SerializeField] private AnimationCurve zoomCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         private Coroutine zoomCoroutine;
+
         private Vector2 sliceToBoundsRatio;
         private Vector2 currentTargetSize;
 
-        private List<SpriteRenderer> renderers = new();
+        private Material lineRendererMat;
+
+        private List<SpriteRenderer> childRenderers = new();
 
 
 
 #if UNITY_EDITOR
         private void Reset()
         {
-            renderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            lineRenderer = GetComponentInChildren<LineRenderer>();
         }
 #endif
 
         private void Awake()
         {
-            renderers = GetComponentsInChildren<SpriteRenderer>().ToList();
+            childRenderers = GetComponentsInChildren<SpriteRenderer>().ToList();
 
-            sliceToBoundsRatio = renderer.bounds.size / renderer.size;
-            renderer.drawMode = SpriteDrawMode.Sliced;
+            sliceToBoundsRatio = spriteRenderer.bounds.size / spriteRenderer.size;
+            spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+
+            lineRendererMat = lineRenderer.material;
         }
 
 
@@ -48,16 +52,16 @@ namespace Custom.Decorative
         private IEnumerator ZoomCoroutine(Vector2 _targetSize)
         {
             float elapsedTime = 0;
-            Vector2 orgSize = renderer.size;
+            Vector2 orgSize = spriteRenderer.size;
 
             while (elapsedTime < zoomDuration)
             {
                 elapsedTime += Time.deltaTime;
-                renderer.size = Vector2.Lerp(orgSize, _targetSize, zoomCurve.Evaluate(elapsedTime / zoomDuration));
+                spriteRenderer.size = Vector2.Lerp(orgSize, _targetSize, zoomCurve.Evaluate(elapsedTime / zoomDuration));
                 yield return null;
             }
 
-            renderer.size = _targetSize;
+            spriteRenderer.size = _targetSize;
         }
 
 
@@ -74,17 +78,36 @@ namespace Custom.Decorative
             zoomCoroutine = StartCoroutine(ZoomCoroutine(targetSize));
         }
 
-        public void SetPosition(Vector2 _position)
+        public void SetPosition(Vector2 _target)
         {
-            transform.position = _position;
+            transform.position = _target;
+        }
+
+        public void SetLinePosition(Vector2 _origin, Vector2 _target)
+        {
+            lineRenderer.SetPosition(0, _origin);
+            lineRenderer.SetPosition(1, _target);
         }
 
         public void SetColor(Color _color)
         {
-            foreach (var renderer in renderers)
+            foreach (var renderer in childRenderers)
             {
                 renderer.color = _color;
             }
+
+            lineRenderer.startColor = _color;
+            lineRenderer.endColor = _color;
+        }
+
+        public void SetLineFadeAmount(float _amount)
+        {
+            lineRendererMat.SetFloat("_Fade_Amount", _amount);
+        }
+
+        public void SetLineActive(bool _active)
+        {
+            lineRenderer.enabled = _active;
         }
     }
 }

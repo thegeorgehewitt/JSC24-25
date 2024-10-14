@@ -24,11 +24,13 @@ namespace Custom.UI
         private void OnEnable()
         {
             CharacterControlInteract.OnInteractObjectOutOfRange += OnInteractObjectOutOfRange;
+            CharacterControlInteract.OnVisionBlocked += OnVisionBlocked;
         }
 
         private void OnDisable()
         {
             CharacterControlInteract.OnInteractObjectOutOfRange -= OnInteractObjectOutOfRange;
+            CharacterControlInteract.OnVisionBlocked -= OnVisionBlocked;
         }
 
         private void Awake()
@@ -42,6 +44,14 @@ namespace Custom.UI
         {
             UpdateText(
                 "< OBJECT OUT OF RANGE >",
+                defaultWarningColor
+            );
+        }
+
+        private void OnVisionBlocked()
+        {
+            UpdateText(
+                "< VIEW IS OBSTRUCTED >",
                 defaultWarningColor
             );
         }
