@@ -8,27 +8,41 @@ namespace Custom.Controller
     [Serializable]
     public abstract class CharacterControlBase : MonoBehaviour
     {
-        [Space(10)]
-        public InputActionReference inputAction;
+        [Header("CONTROLS")]
+        [SerializeField] protected bool passiveControl;
+        [SerializeField] public InputActionReference inputAction;
 
         protected CharacterMotor2D attachedMotor;
 
         public InputAction InputAction { get { return inputAction.action; } }
         public InputActionMap InputActionMap { get { return inputAction.action.actionMap; } }
+        public bool IsPassiveControl { get { return passiveControl; } }
 
 
 
-        protected virtual void Start()
+        private void Start()
         {
-            if (!IsValid()) enabled = false;
+            if (!IsValid())
+            {
+                // Should we disable this if invalid?
+            }
         }
 
 
 
         private bool IsValid()
         {
-            if (!inputAction) return false;
-            if (!attachedMotor) return false;
+            if (!attachedMotor)
+            {
+                Debug.LogWarning($"Invalid {GetType().Name} ({transform.name}): No attached {typeof(CharacterMotor2D).Name}.");
+                return false;
+            }
+
+            if (!inputAction && !passiveControl)
+            {
+                Debug.LogWarning($"Invalid {GetType().Name} ({transform.name}): No {typeof(InputActionReference).Name} attached to active control.");
+                return false;
+            }
 
             return true;
         }
@@ -45,7 +59,7 @@ namespace Custom.Controller
             attachedMotor = _motor;
         }
 
-        public void SetEnable(bool _state)
+        public void SetActive(bool _state)
         {
             if (_state)
                 OnActivate();

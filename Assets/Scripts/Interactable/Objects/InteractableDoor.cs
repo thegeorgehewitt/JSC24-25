@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+using Custom.Manager;
+
 namespace Custom.Interactable
 {
     public class InteractableDoor : InteractableObject
@@ -39,6 +41,16 @@ namespace Custom.Interactable
         }
 #endif
 
+        private void OnEnable()
+        {
+            
+        }
+
+        private void OnDisable()
+        {
+            
+        }
+
 
 
         private void SetState(bool _open)
@@ -58,7 +70,7 @@ namespace Custom.Interactable
             {
                 SetState(_open);
             }
-            else
+            else if (isActiveAndEnabled)
 #endif
             {
                 if (openCoroutine != null) StopCoroutine(openCoroutine);
@@ -75,7 +87,7 @@ namespace Custom.Interactable
 
             while (elapsedTime < easeDuration)
             {
-                elapsedTime += Time.deltaTime;
+                elapsedTime += TimeManager.DeltaTime;
                 spriteRenderer.color = Color.Lerp(orgColor, targetColor, easeCurve.Evaluate(elapsedTime / easeDuration));
 
                 yield return null;

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+using Custom.Manager;
+
 namespace Custom.Controller
 {
     public class CharacterControlDash : CharacterControlBase
@@ -64,7 +66,7 @@ namespace Custom.Controller
 
             while (cooldownLeft > 0)
             {
-                cooldownLeft -= Time.deltaTime;
+                cooldownLeft -= TimeManager.DeltaTime;
 
                 if (cooldownLeft < cooldown - dashSpeed && locked)
                 {

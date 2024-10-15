@@ -215,7 +215,7 @@ MonoBehaviour:
   objectStateListHolder: {fileID: 151359705388848631}
   interactionListHolder: {fileID: 4390336954509209750}
   objectName: {fileID: 5497466033261468512}
-  maskRenderer: {fileID: 425855581644590208}
+  maskImage: {fileID: 425855581644590208}
   easeDuration: 0.1
   easeCurve:
     serializedVersion: 2

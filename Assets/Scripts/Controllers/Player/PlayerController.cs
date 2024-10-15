@@ -1,5 +1,5 @@
 using System;
-
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,14 +8,16 @@ namespace Custom.Controller
     [DisallowMultipleComponent]
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Instance;
+
+        public static Action<CharacterMotor2D> OnControlledMotorChanged;
+
         [Header("REFERENCE")]
         [SerializeField] private InputActionAsset inputAction;
         [SerializeField] private CharacterMotor2D controlledMotor;
 
         public InputActionAsset InputAsset { get { return inputAction; } }
         public CharacterMotor2D ControlledMotor { get { return controlledMotor; } }
-
-        public static Action<CharacterMotor2D> OnControlledMotorChanged;
 
 
 
@@ -28,6 +30,20 @@ namespace Custom.Controller
             if (inputAssets.Length > 0) inputAction = inputAssets[0];
         }
 #endif
+
+        private void Awake()
+        {
+            #region Singleton
+            if (!Instance)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+            #endregion
+        }
 
         private void Start()
         {
@@ -75,6 +91,19 @@ namespace Custom.Controller
             controlledMotor.OnPossessed(this);
 
             OnControlledMotorChanged?.Invoke(controlledMotor);
+        }
+
+
+
+        /// <summary>
+        /// Pause any input registered to PlayerController.
+        /// </summary>
+        public static void PauseMotor()
+        {
+            if (!Instance.controlledMotor) return;
+
+            Instance.controlledMotor.paused = true;
+            Instance.controlledMotor.OnUnpossessed(Instance);
         }
     }
 }

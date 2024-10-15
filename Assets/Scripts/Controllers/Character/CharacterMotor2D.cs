@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.InputSystem;
+
+using Custom.Manager;
 
 namespace Custom.Controller
 {
@@ -9,6 +11,9 @@ namespace Custom.Controller
     [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterMotor2D : MonoBehaviour
     {
+        public static Action<CharacterMotor2D> OnCharacterMotorEnabled;
+        public static Action<CharacterMotor2D> OnCharacterMotorDisabled;
+
         [Header("REFERENCES")]
         [SerializeField] private new Rigidbody2D rigidbody;
 
@@ -33,6 +38,8 @@ namespace Custom.Controller
         private bool grounded;
         public bool IsGrounded { get { return grounded; } }
 
+        public bool paused;
+
 
 
 #if UNITY_EDITOR
@@ -42,9 +49,19 @@ namespace Custom.Controller
         }
 #endif
 
+        private void OnEnable()
+        {
+            OnCharacterMotorEnabled?.Invoke(this);
+        }
+
+        private void OnDisable()
+        {
+            OnCharacterMotorDisabled?.Invoke(this);
+        }
+
         private void Awake()
         {
-            #region Setup Movement Scripts
+            #region Setup Control Scripts
             foreach (var movement in controlScripts)
             {
                 movement.AttachToMotor(this);
@@ -70,7 +87,7 @@ namespace Custom.Controller
         {
             HandleGravity();
 
-            rigidbody.velocity = velocity;
+            rigidbody.velocity = paused ? Vector2.zero : velocity;
         }
 
 
@@ -87,8 +104,10 @@ namespace Custom.Controller
 
             foreach (var control in controlScripts)
             {
-                control.SetEnable(true);
-                _controller?.EnableActionMap(control.InputActionMap);
+                control.SetActive(true);
+
+                if (!control.IsPassiveControl)
+                    _controller?.EnableActionMap(control.InputActionMap);
             }
         }
 
@@ -98,8 +117,10 @@ namespace Custom.Controller
 
             foreach (var control in controlScripts)
             {
-                control.SetEnable(false);
-                _controller?.DisableActionMap(control.InputActionMap);
+                control.SetActive(false);
+
+                if (!control.IsPassiveControl)
+                    _controller?.DisableActionMap(control.InputActionMap);
             }
         }
 
@@ -151,7 +172,7 @@ namespace Custom.Controller
                 {
                     inAirGravity *= jumpEndEarlyGravityModifier;
                 }
-                velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * Time.fixedDeltaTime);
+                velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * TimeManager.FixedDeltaTime);
             }
         }
 

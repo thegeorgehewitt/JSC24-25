@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b16de7f5f45794fbde2dd2be07aa8c, type: 3}
-  m_Name: Terminal Switch Interaction
+  m_Name: Sentry Turret Jam Interaction
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 32e4db7a6429e52409677aa433509725, type: 3}
-  tag: Switch
-  cost: 0
+  icon: {fileID: 21300000, guid: fc87f711cf2a18443b6d38c7d06bc9b9, type: 3}
+  tag: Jam
+  cost: 2

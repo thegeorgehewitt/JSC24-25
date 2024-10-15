@@ -12,6 +12,10 @@ namespace Custom.Controller
 {
     public class CharacterControlInteract : CharacterControlBase
     {
+        public static Action OnInteractObjectOutOfRange;
+        public static Action OnVisionBlocked;
+        public static Action<InteractableObject> OnHoverNewInteractableObject;
+
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
         [SerializeField] private float interactRange = 5f;
@@ -30,11 +34,6 @@ namespace Custom.Controller
         private bool blockedVision;
         private ContactFilter2D contactFilter;
         private List<RaycastHit2D> interactRayHits = new();
-
-        public static Action OnInteractObjectOutOfRange;
-        public static Action OnVisionBlocked;
-        public static Action<InteractableObject> OnHoverNewInteractableObject;
-
 
 
 

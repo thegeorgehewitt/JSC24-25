@@ -54,7 +54,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _Fade_Amount: 0.5
+    - _Fade_Amount: 0
     - _Fade_Width_Scale: 4
     - _Inner_Width: 0.5
     - _Noise_Scale: 100

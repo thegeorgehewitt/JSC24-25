@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3938290388967934858}
   - component: {fileID: 2916642468219596251}
   - component: {fileID: 7236829821057059442}
+  - component: {fileID: 4773218601208523903}
   m_Layer: 0
   m_Name: Controls
   m_TagString: Untagged
@@ -50,8 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c414fc7a4c54b0499e4b393e86d8d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  passiveControl: 0
   inputAction: {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  jumpPower: 8
+  jumpPower: 10
 --- !u!114 &3938290388967934858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1a34d8047c50a4da543c5b7cde00bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  passiveControl: 0
   inputAction: {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   groundMaxSpeed: 6
   groundAcceleration: 30
@@ -83,6 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084277b51f31bfa419fd43fe69fe697e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  passiveControl: 0
   inputAction: {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   dashRange: 4
   dashSpeed: 0.2
@@ -99,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded78014ad453ea4da86f8281de83131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  passiveControl: 0
   inputAction: {fileID: 5313395977092392803, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   interactRayOrigin: {fileID: 2145712773473558439}
   interactRange: 6
@@ -113,6 +118,20 @@ MonoBehaviour:
   defaultCursorSize: 0.5
   outOfRangeColor: {r: 0.8679245, g: 0.41349235, b: 0.41349235, a: 1}
   inRangeColor: {r: 0.44705883, g: 0.8862745, b: 0.85490197, a: 1}
+--- !u!114 &4773218601208523903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989193682148753962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5f85f5127718645a2d7e615a1cc4f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  passiveControl: 1
+  inputAction: {fileID: 0}
 --- !u!1 &3534369279633472950
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,7 +352,7 @@ MonoBehaviour:
   - {x: -0.24771959, y: -0.93883574, z: 0}
   m_ShapePathHash: 567464037
   m_Mesh: {fileID: 0}
-  m_InstanceId: 43374
+  m_InstanceId: 32416
   m_LocalBounds:
     m_Center: {x: 0.0022534132, y: 0.0016709566, z: 0}
     m_Extent: {x: 0.5035875, y: 1.0057218, z: 0}
@@ -488,6 +507,7 @@ MonoBehaviour:
   - {fileID: 3938290388967934858}
   - {fileID: 2916642468219596251}
   - {fileID: 7236829821057059442}
+  - {fileID: 4773218601208523903}
   velocity: {x: 0, y: 0}
 --- !u!1001 &9042455680178233769
 PrefabInstance:

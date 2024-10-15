@@ -13,9 +13,9 @@ namespace Custom.Editor
         {
             var target = (CharacterControlBase)this.target;
 
-            if (!target.inputAction)
+            if (!target.inputAction && !target.IsPassiveControl)
             {
-                EditorGUILayout.HelpBox("Missing InputAction reference.", MessageType.Error);
+                EditorGUILayout.HelpBox("Missing InputAction reference for active control.", MessageType.Error);
             }
 
             base.OnInspectorGUI();

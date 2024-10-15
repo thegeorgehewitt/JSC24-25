@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using Custom.Manager;
+
 namespace Custom.Controller
 {
     public class CharacterControlWalk : CharacterControlBase
@@ -40,13 +42,13 @@ namespace Custom.Controller
             if (direction.x == 0)
             {
                 float deceleration = attachedMotor.IsGrounded ? groundDeceleration : airDeceleration;
-                attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, 0, deceleration * Time.fixedDeltaTime);
+                attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, 0, deceleration * TimeManager.FixedDeltaTime);
             }
             // Accelerate character horizontal speed.
             else
             {
                 float acceleration = attachedMotor.IsGrounded ? groundAcceleration : airAcceleration;
-                attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, targetSpeed, acceleration * Time.fixedDeltaTime);
+                attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, targetSpeed, acceleration * TimeManager.FixedDeltaTime);
             }
         }
 

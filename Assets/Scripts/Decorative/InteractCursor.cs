@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Custom.Manager;
+
 namespace Custom.Decorative
 {
     [RequireComponent(typeof(SpriteRenderer))]
@@ -56,7 +58,7 @@ namespace Custom.Decorative
 
             while (elapsedTime < zoomDuration)
             {
-                elapsedTime += Time.deltaTime;
+                elapsedTime += TimeManager.DeltaTime;
                 spriteRenderer.size = Vector2.Lerp(orgSize, _targetSize, zoomCurve.Evaluate(elapsedTime / zoomDuration));
                 yield return null;
             }

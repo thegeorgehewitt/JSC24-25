@@ -1,3 +1,4 @@
+using Custom.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

@@ -22,12 +22,9 @@ namespace Custom.UI
         [SerializeField] private TextMeshProUGUI objectName;
 
         [Header("POPUP")]
-        [SerializeField] private Image maskRenderer;
+        [SerializeField] private Image maskImage;
         [SerializeField] private float easeDuration = 0.1f;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-
-        private Coroutine popupCoroutine;
-        private bool popupVisible;
 
         private List<InteractableObjectStateDisplay> objectStates = new();
         private List<InteractionInfoDisplay> interactions = new();
@@ -52,8 +49,15 @@ namespace Custom.UI
             interactions.Add(go.GetComponent<InteractionInfoDisplay>());
             /// TESTING ///
 
-            maskRenderer.fillAmount = 0;
+            maskImage.fillAmount = 0;
         }
+
+
+
+        #region Display Popup
+
+        private bool popupVisible;
+        private Coroutine popupCoroutine;
 
 
 
@@ -99,17 +103,17 @@ namespace Custom.UI
         private IEnumerator PopupCoroutine(bool _visible)
         {
             float elapsedTime = 0;
-            float startAmount = maskRenderer.fillAmount;
+            float startAmount = maskImage.fillAmount;
             float targetAmount = _visible ? 1 : 0;
 
             while (elapsedTime < easeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                maskRenderer.fillAmount = Mathf.Lerp(startAmount, targetAmount, easeCurve.Evaluate(elapsedTime / easeDuration));
+                maskImage.fillAmount = Mathf.Lerp(startAmount, targetAmount, easeCurve.Evaluate(elapsedTime / easeDuration));
                 yield return null;
             }
 
-            maskRenderer.fillAmount = targetAmount;
+            maskImage.fillAmount = targetAmount;
         }
 
 
@@ -124,5 +128,7 @@ namespace Custom.UI
         {
             Instance.Core_DisplayInfo(_object);
         }
+
+        #endregion
     }
 }
