@@ -221,6 +221,9 @@ namespace Custom.Interactable
             if (jamCoroutine != null) StopCoroutine(jamCoroutine);
 
             jamCoroutine = StartCoroutine(JamCoroutine());
+
+            // Stop lock on coroutine when turret is disabled
+            if (lockOnCoroutine != null) StopCoroutine(lockOnCoroutine);
         }
 
         private IEnumerator JamCoroutine()
