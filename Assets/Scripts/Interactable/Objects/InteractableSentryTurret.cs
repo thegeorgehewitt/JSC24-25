@@ -44,11 +44,17 @@ namespace Custom.Interactable
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!FOVDisplay) return;
+            if (!Application.isPlaying)
+            {
+                laserDisplay.useWorldSpace = false;
+            }
 
-            FOVDisplay.radius = range;
-            FOVDisplay.angle = angle;
-            FOVDisplay.rotation = flip ? 90 : -90;
+            if (FOVDisplay)
+            {
+                FOVDisplay.radius = range;
+                FOVDisplay.angle = angle;
+                FOVDisplay.rotation = flip ? 90 : -90;
+            }
         }
 #endif
 
@@ -71,6 +77,8 @@ namespace Custom.Interactable
             contactFilter.useTriggers = false;
             contactFilter.useLayerMask = true;
             contactFilter.layerMask = blockableLayers;
+
+            laserDisplay.useWorldSpace = true;
         }
 
         private void Update()
@@ -119,6 +127,9 @@ namespace Custom.Interactable
 
         private bool AcquireTarget()
         {
+            // While disabled, skip.
+            if (!activated) return false;
+
             float minDis = Mathf.Infinity;
             targetMotor = null;
             visionBlocked = false;

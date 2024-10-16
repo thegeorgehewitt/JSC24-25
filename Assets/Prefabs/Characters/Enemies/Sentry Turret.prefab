@@ -184,6 +184,7 @@ MonoBehaviour:
   flip: 1
   range: 20
   angle: 30
+  lockOnDuration: 1
   blockableLayers:
     serializedVersion: 2
     m_Bits: 1088
