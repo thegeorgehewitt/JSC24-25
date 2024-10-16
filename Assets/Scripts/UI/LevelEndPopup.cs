@@ -12,6 +12,7 @@ namespace Custom.UI
     {
         [Header("REFERENCES")]
         [SerializeField] private Image maskImage;
+        [SerializeField] private GameObject mainDisplay;
 
         [Header("POPUP")]
         [SerializeField] private float easeDuration = 0.1f;
@@ -74,6 +75,7 @@ namespace Custom.UI
             }
 
             maskImage.fillAmount = targetAmount;
+            mainDisplay.SetActive(_show);
         }
 
         #endregion
