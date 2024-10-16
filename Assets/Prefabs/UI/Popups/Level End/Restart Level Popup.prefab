@@ -214,7 +214,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2142088099172882833, guid: 03a0b04c7832d1f4cbf68c262877c58b, type: 3}
       propertyPath: m_Name
-      value: Exti Game
+      value: Exit Game
       objectReference: {fileID: 0}
     - target: {fileID: 4161921674453733901, guid: 03a0b04c7832d1f4cbf68c262877c58b, type: 3}
       propertyPath: m_AnchorMax.y
