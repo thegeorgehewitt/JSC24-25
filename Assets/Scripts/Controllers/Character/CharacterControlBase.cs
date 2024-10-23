@@ -5,47 +5,21 @@ using UnityEngine.InputSystem;
 
 namespace Custom.Controller
 {
+    /// <summary>
+    /// Base class for all character control scripts.
+    /// </summary>
     [Serializable]
     public abstract class CharacterControlBase : MonoBehaviour
     {
         [Header("CONTROLS")]
-        [SerializeField] protected bool passiveControl;
-        [SerializeField] public InputActionReference inputAction;
+        [SerializeField][HideInInspector] protected bool passiveControl;
+        [HideInInspector] public InputActionReference inputAction;
 
         protected CharacterMotor2D attachedMotor;
 
         public InputAction InputAction { get { return inputAction.action; } }
         public InputActionMap InputActionMap { get { return inputAction.action.actionMap; } }
         public bool IsPassiveControl { get { return passiveControl; } }
-
-
-
-        private void Start()
-        {
-            if (!IsValid())
-            {
-                // Should we disable this if invalid?
-            }
-        }
-
-
-
-        private bool IsValid()
-        {
-            if (!attachedMotor)
-            {
-                Debug.LogWarning($"Invalid {GetType().Name} ({transform.name}): No attached {typeof(CharacterMotor2D).Name}.");
-                return false;
-            }
-
-            if (!inputAction && !passiveControl)
-            {
-                Debug.LogWarning($"Invalid {GetType().Name} ({transform.name}): No {typeof(InputActionReference).Name} attached to active control.");
-                return false;
-            }
-
-            return true;
-        }
 
 
 

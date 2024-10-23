@@ -121,12 +121,12 @@ namespace Custom.UI
 
         public static void ShowPopup(bool _state)
         {
-            Instance.Core_ShowPopup(_state);
+            Instance?.Core_ShowPopup(_state);
         }
 
         public static void DisplayInfo(InteractableObject _object)
         {
-            Instance.Core_DisplayInfo(_object);
+            Instance?.Core_DisplayInfo(_object);
         }
 
         #endregion

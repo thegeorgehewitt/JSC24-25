@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using Custom.Decorative;
+using Custom.Utility;
 using Custom.Controller;
 using Custom.Manager;
 
@@ -18,7 +18,7 @@ namespace Custom.Interactable
 
         [Header("REFERENCES")]
         [SerializeField] private LineRenderer laserDisplay;
-        [SerializeField] private FieldOfView FOVDisplay;
+        [SerializeField] private FieldOfView fieldOfView;
         [SerializeField] private Transform firePoint;
 
         [Header("TARGET DETECTION")]
@@ -28,6 +28,7 @@ namespace Custom.Interactable
         [Range(0, 360)]
         [SerializeField] private float angle = 20.0f;
         [SerializeField] private float lockOnDuration = 1.0f;
+        [SerializeField] private LayerMask trackableLayers;
         [SerializeField] private LayerMask blockableLayers;
 
         [Header("LASER")]
@@ -49,36 +50,26 @@ namespace Custom.Interactable
                 laserDisplay.useWorldSpace = false;
             }
 
-            if (FOVDisplay)
+            if (fieldOfView)
             {
-                FOVDisplay.radius = range;
-                FOVDisplay.angle = angle;
-                FOVDisplay.rotation = flip ? 90 : -90;
+                fieldOfView.radius = range;
+                fieldOfView.angle = angle;
+                fieldOfView.rotation = flip ? 90 : -90;
             }
         }
 #endif
 
-        private void OnEnable()
-        {
-            CharacterMotor2D.OnCharacterMotorEnabled += AddMotor;
-            CharacterMotor2D.OnCharacterMotorDisabled += RemoveMotor;
-        }
 
-        private void OnDisable()
-        {
-            CharacterMotor2D.OnCharacterMotorEnabled -= AddMotor;
-            CharacterMotor2D.OnCharacterMotorDisabled -= RemoveMotor;
-        }
 
         private void Awake()
         {
-            trackingMotors = FindObjectsByType<CharacterMotor2D>(FindObjectsSortMode.None).ToList();
-
             contactFilter.useTriggers = false;
             contactFilter.useLayerMask = true;
             contactFilter.layerMask = blockableLayers;
 
             laserDisplay.useWorldSpace = true;
+
+            fieldOfView.blockableFilter.layerMask = blockableLayers;
         }
 
         private void Update()
@@ -110,44 +101,28 @@ namespace Custom.Interactable
         private ContactFilter2D contactFilter;
         private List<RaycastHit2D> raycastHits = new();
 
-        private List<CharacterMotor2D> trackingMotors = new();
         private CharacterMotor2D targetMotor;
 
 
-
-        private void AddMotor(CharacterMotor2D _motor)
-        {
-            trackingMotors.Add(_motor);
-        }
-
-        private void RemoveMotor(CharacterMotor2D _motor)
-        {
-            trackingMotors.Remove(_motor);
-        }
 
         private bool AcquireTarget()
         {
             // While disabled, skip.
             if (!activated) return false;
 
-            float minDis = Mathf.Infinity;
             targetMotor = null;
             visionBlocked = false;
 
-            foreach (var motor in trackingMotors)
+            float minDis = Mathf.Infinity;
+            foreach (var motor in fieldOfView.FindAllInView<CharacterMotor2D>(trackableLayers))
             {
-                Vector2 direction = (motor.transform.position - firePoint.position).normalized;
                 float distance = Vector2.Distance(motor.transform.position, firePoint.position);
 
-                if (distance > range) continue;                                 // If not in range.
-                if (!FOVDisplay.InFieldOfView(direction)) continue;             // If not in field of view.
-                if (Physics2D.Raycast(firePoint.position, direction, contactFilter, raycastHits, distance) > 0)
+                if (distance < minDis)
                 {
-                    visionBlocked = true;
-                    if (raycastHits[0].transform != motor.transform) continue;  // If vision is blocked.
+                    minDis = distance;
+                    targetMotor = motor;
                 }
-
-                if (distance < minDis) targetMotor = motor;
             }
 
             if (!targetMotor)
