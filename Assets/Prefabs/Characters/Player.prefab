@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveControl: 0
   inputAction: {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  jumpPower: 10
+  jumpPower: 15
 --- !u!114 &3938290388967934858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +352,7 @@ MonoBehaviour:
   - {x: -0.24771959, y: -0.93883574, z: 0}
   m_ShapePathHash: 567464037
   m_Mesh: {fileID: 0}
-  m_InstanceId: 32416
+  m_InstanceId: 35376
   m_LocalBounds:
     m_Center: {x: 0.0022534132, y: 0.0016709566, z: 0}
     m_Extent: {x: 0.5035875, y: 1.0057218, z: 0}
@@ -499,8 +499,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   useGravity: 1
-  fallAcceleration: 18
-  maxFallSpeed: 9
+  fallAcceleration: 25
+  maxFallSpeed: 15
   jumpEndEarlyGravityModifier: 5
   controlScripts:
   - {fileID: 5890741780418279463}
@@ -509,6 +509,7 @@ MonoBehaviour:
   - {fileID: 7236829821057059442}
   - {fileID: 4773218601208523903}
   velocity: {x: 0, y: 0}
+  paused: 0
 --- !u!1001 &9042455680178233769
 PrefabInstance:
   m_ObjectHideFlags: 0
