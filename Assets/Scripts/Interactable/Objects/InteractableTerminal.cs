@@ -9,6 +9,8 @@ namespace Custom.Interactable
         [Header("TERMINAL")]
         [SerializeField] private List<InteractableObject> linkedObjects;
 
+        public List<InteractableObject> LinkedObjects { get { return linkedObjects; } }
+
 
 
         public override void Interact()
