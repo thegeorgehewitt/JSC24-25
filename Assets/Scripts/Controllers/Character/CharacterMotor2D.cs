@@ -95,6 +95,8 @@ namespace Custom.Controller
             grounded = groundCheck.OverlapCollider(contactFilter, contacts) > 0;
 
             onCeiling = ceilingCheck.OverlapCollider(contactFilter, contacts) > 0;
+            if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true);  }
+            else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
 
             onWall = wallCheck.OverlapCollider(contactFilter, contacts) > 0;
         }
