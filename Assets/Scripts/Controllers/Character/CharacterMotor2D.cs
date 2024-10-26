@@ -99,6 +99,8 @@ namespace Custom.Controller
             else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
 
             onWall = wallCheck.OverlapCollider(contactFilter, contacts) > 0;
+            if (onWall && !GetState("WalkCancelled")) { SetState("WalkCancelled", true); }
+            else if (!onWall && GetState("WalkCancelled")) { SetState("WalkCancelled", false); }
         }
 
         private void FixedUpdate()

@@ -76,7 +76,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7715410574035912978}
-  - component: {fileID: 5480181702835652840}
+  - component: {fileID: 18109036695352397}
   m_Layer: 0
   m_Name: Wall Check
   m_TagString: Untagged
@@ -93,14 +93,14 @@ Transform:
   m_GameObject: {fileID: 1421969682534057839}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4255421762062780418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &5480181702835652840
-CircleCollider2D:
+--- !u!70 &18109036695352397
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -132,8 +132,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.45
+  m_Size: {x: 0.5, y: 1.5}
+  m_Direction: 0
 --- !u!1 &2989193682148753962
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +488,7 @@ MonoBehaviour:
   - {x: -0.24771959, y: -0.93883574, z: 0}
   m_ShapePathHash: 567464037
   m_Mesh: {fileID: 0}
-  m_InstanceId: 35376
+  m_InstanceId: 36534
   m_LocalBounds:
     m_Center: {x: 0.0022534132, y: 0.0016709566, z: 0}
     m_Extent: {x: 0.5035875, y: 1.0057218, z: 0}
@@ -635,7 +635,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   ceilingCheck: {fileID: 7799931965240558983}
-  wallCheck: {fileID: 5480181702835652840}
+  wallCheck: {fileID: 18109036695352397}
   useGravity: 1
   fallAcceleration: 25
   maxFallSpeed: 15
