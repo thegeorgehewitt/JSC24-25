@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
+using UnityEditor.SceneManagement;
 
 using Custom.Utility;
 
@@ -12,15 +13,17 @@ namespace Custom.Editor
     {
         private FieldOfView asTarget;
 
-        private AnimBool meshDisplayGroupVisible;
         private SerializedProperty drawViewMeshProperty;
         private SerializedProperty meshResolutionProperty;
         private SerializedProperty edgeDistanceThresholdProperty;
         private SerializedProperty edgeResolveIterationsProperty;
+        private SerializedProperty blockableFilterProperty;
 
-        private AnimBool previewGroupVisible;
         private SerializedProperty previewProperty;
         private SerializedProperty handlesColorProperty;
+
+        private AnimBool drawMeshGroupVisible;
+        private AnimBool previewGroupVisible;
 
         private void OnEnable()
         {
@@ -30,15 +33,16 @@ namespace Custom.Editor
             meshResolutionProperty = serializedObject.FindProperty("meshResolution");
             edgeDistanceThresholdProperty = serializedObject.FindProperty("edgeDistanceThreshold");
             edgeResolveIterationsProperty = serializedObject.FindProperty("edgeResolveIterations");
+            blockableFilterProperty = serializedObject.FindProperty("blockableFilter");
 
             previewProperty = serializedObject.FindProperty("preview");
             handlesColorProperty = serializedObject.FindProperty("handlesColor");
 
+            drawMeshGroupVisible = new(asTarget.drawViewMesh);
+            drawMeshGroupVisible.valueChanged.AddListener(Repaint);
+
             previewGroupVisible = new(asTarget.preview);
             previewGroupVisible.valueChanged.AddListener(Repaint);
-
-            meshDisplayGroupVisible = new(asTarget.drawViewMesh);
-            meshDisplayGroupVisible.valueChanged.AddListener(Repaint);
         }
 
         private void OnSceneGUI()
@@ -46,12 +50,12 @@ namespace Custom.Editor
             if (!asTarget.preview) return;
 
             Handles.color = asTarget.handlesColor;
-            Vector3 viewAngleFrom = asTarget.DirectionFromAngle(-asTarget.angle / 2, false);
-            Vector3 viewAngleTo = asTarget.DirectionFromAngle(asTarget.angle / 2, false);
+            Vector3 viewAngleFrom = asTarget.DirectionFromAngle(-asTarget.Angle / 2, false);
+            Vector3 viewAngleTo = asTarget.DirectionFromAngle(asTarget.Angle / 2, false);
 
-            Handles.DrawWireArc(asTarget.transform.position, Vector3.back, viewAngleFrom, asTarget.angle, asTarget.radius);
-            Handles.DrawLine(asTarget.transform.position, asTarget.transform.position + viewAngleFrom * asTarget.radius);
-            Handles.DrawLine(asTarget.transform.position, asTarget.transform.position + viewAngleTo * asTarget.radius);
+            Handles.DrawWireArc(asTarget.transform.position, Vector3.back, viewAngleFrom, asTarget.Angle, asTarget.Radius);
+            Handles.DrawLine(asTarget.transform.position, asTarget.transform.position + viewAngleFrom * asTarget.Radius);
+            Handles.DrawLine(asTarget.transform.position, asTarget.transform.position + viewAngleTo * asTarget.Radius);
         }
 
         public override void OnInspectorGUI()
@@ -59,27 +63,22 @@ namespace Custom.Editor
             base.OnInspectorGUI();
 
             #region Mesh Display
-            EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField("MESH DISPLAY", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(drawViewMeshProperty);
+            drawMeshGroupVisible.target = drawViewMeshProperty.boolValue;
 
-            meshDisplayGroupVisible.target = EditorGUILayout.Toggle("Enable Mesh Display", meshDisplayGroupVisible.target);
-            drawViewMeshProperty.boolValue = meshDisplayGroupVisible.value;
-
-            if (EditorGUILayout.BeginFadeGroup(meshDisplayGroupVisible.faded))
+            if (EditorGUILayout.BeginFadeGroup(drawMeshGroupVisible.faded))
             {
                 EditorGUILayout.PropertyField(meshResolutionProperty);
                 EditorGUILayout.PropertyField(edgeDistanceThresholdProperty);
                 EditorGUILayout.PropertyField(edgeResolveIterationsProperty);
+                EditorGUILayout.PropertyField(blockableFilterProperty);
             }
             EditorGUILayout.EndFadeGroup();
             #endregion
 
             #region Preview Options
-            EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField("PREVIEW", EditorStyles.boldLabel);
-
-            previewGroupVisible.target = EditorGUILayout.Toggle("Enable Preview", previewGroupVisible.target);
-            previewProperty.boolValue = previewGroupVisible.value;
+            EditorGUILayout.PropertyField(previewProperty);
+            previewGroupVisible.target = previewProperty.boolValue;
 
             if (EditorGUILayout.BeginFadeGroup(previewGroupVisible.faded))
             {

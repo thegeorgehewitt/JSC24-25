@@ -52,9 +52,10 @@ namespace Custom.Interactable
 
             if (fieldOfView)
             {
-                fieldOfView.radius = range;
-                fieldOfView.angle = angle;
-                fieldOfView.rotation = flip ? 90 : -90;
+                fieldOfView.Radius = range;
+                fieldOfView.Angle = angle;
+                fieldOfView.Rotation = flip ? 90 : -90;
+                fieldOfView.blockableFilter.layerMask = blockableLayers;
             }
         }
 #endif

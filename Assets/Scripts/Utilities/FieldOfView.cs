@@ -45,12 +45,12 @@ namespace Custom.Utility
         public MeshFilter viewMeshFilter;
 
         [Header("FIELD OF VIEW")]
-        public float radius = 5.0f;
+        [SerializeField] private float radius = 5.0f;
         [Range(0, 360)]
-        public float angle = 45.0f;
+        [SerializeField] private float angle = 45.0f;
         [Range(0, 360)]
         [Tooltip("Counter clock-wise rotation offset from transform.up.")]
-        public float rotation = 0.0f;
+        [SerializeField] private float rotation = 0.0f;
 
         [Header("DISPLAY")]
         [HideInInspector] public bool drawViewMesh = true;
@@ -58,10 +58,39 @@ namespace Custom.Utility
         [HideInInspector] public float edgeDistanceThreshold = 0.1f;
         [HideInInspector] public int edgeResolveIterations = 3;
 
+        [Header("PREVIEW")]
         [HideInInspector] public bool preview = true;
         [HideInInspector] public Color handlesColor = Color.cyan;
 
         [HideInInspector] public ContactFilter2D blockableFilter;
+
+        /// <summary>
+        /// Values set to this property will always be clamped to positive value [0...Infinity).
+        /// </summary>
+        public float Radius 
+        { 
+            get { return radius; } 
+            set { radius = Mathf.Max(value, 0); } 
+        }
+
+        /// <summary>
+        /// Values set to this property will always be clamped to [0..360].
+        /// </summary>
+        public float Angle
+        {
+            get { return angle; }
+            set { angle = Mathf.Clamp(value, 0, 360); }
+        }
+
+        /// <summary>
+        /// <para> Values set to this property will always be converted to be in range [0..360]. </para>
+        /// <para> If a negative value is used, It will be recalculated to positive value (e.g. -90 becomes 270). </para>
+        /// </summary>
+        public float Rotation
+        {
+            get { return rotation; }
+            set { rotation = ((360 + value) % 360); }
+        }
 
         private Mesh viewMesh;
 
@@ -84,8 +113,14 @@ namespace Custom.Utility
             blockableFilter.useTriggers = false;
         }
 
-        private void LateUpdate()
+        private void Update()
         {
+            if (!Application.isPlaying)
+            {
+                viewMesh.name = "View Mesh";
+                viewMeshFilter.mesh = viewMesh;
+            }
+
             if (drawViewMesh)
             {
                 DrawFieldOfView();
@@ -117,16 +152,19 @@ namespace Custom.Utility
             for (int i = 0; i < targetsInViewRadius.Length; i++)
             {
                 Transform target = targetsInViewRadius[i].transform;
-                Vector3 directionToTarget = (target.position - transform.position).normalized;
-                if (Vector3.Angle(transform.up, directionToTarget) - rotation < angle / 2)
-                {
-                    float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                Vector2 directionToTarget = (target.position - transform.position).normalized;
 
-                    if (Physics2D.Raycast(transform.position, directionToTarget, blockableFilter, hits, distanceToTarget) > 0) continue;
-                    if (!target.TryGetComponent(out T asTargetComponent)) continue;
+                // If is not in view angle.
+                if (Vector2.Angle(Quaternion.Euler(0, 0, rotation) * transform.up, directionToTarget)  > angle / 2) continue;
+                
+                float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
-                    visibleTargets.Add(asTargetComponent);
-                }
+                // If ray cast blocked.
+                if (Physics2D.Raycast(transform.position, directionToTarget, blockableFilter, hits, distanceToTarget) > 0) continue;
+                // If does not have component.
+                if (!target.TryGetComponent(out T asTargetComponent)) continue;
+
+                visibleTargets.Add(asTargetComponent);
             }
 
             return visibleTargets;
@@ -148,7 +186,7 @@ namespace Custom.Utility
                 && (Vector3.Cross(viewAngleTo, _direction).z * Vector3.Cross(viewAngleTo, viewAngleFrom).z >= 0);
         }
 
-        public Vector3 DirectionFromAngle(float angleInDegrees, bool angleIsGlobal)
+        public Vector2 DirectionFromAngle(float angleInDegrees, bool angleIsGlobal)
         {
             if (!angleIsGlobal)
             {
@@ -157,7 +195,10 @@ namespace Custom.Utility
 
             angleInDegrees -= rotation;
 
-            return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad), 0);
+            return new Vector2(
+                Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 
+                Mathf.Cos(angleInDegrees * Mathf.Deg2Rad)
+            );
         }
 
         #endregion
@@ -174,7 +215,7 @@ namespace Custom.Utility
             List<Vector3> viewPoints = new();
             ViewCastInfo oldViewCast = new();
 
-            // Generate view mesh from ray casts.
+            // Generate vertices from ray casts.
             for (int i = 0; i <= stepCount; i++)
             {
                 float a = -transform.eulerAngles.z - angle / 2 + stepAngleSize * i;
@@ -182,7 +223,7 @@ namespace Custom.Utility
 
                 if (i > 0)
                 {
-                    // Handle edge cases.
+                    // Check for edge cases.
                     bool edgeDstThresholdExceeded = Mathf.Abs(oldViewCast.distance - newViewCast.distance) > edgeDistanceThreshold;
                     if (oldViewCast.hit != newViewCast.hit || (oldViewCast.hit && newViewCast.hit && edgeDstThresholdExceeded))
                     {

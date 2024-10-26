@@ -62,8 +62,6 @@ namespace Custom.Controller
 
         private void OnControlledMotorChanged(CharacterMotor2D _motor)
         {
-            return;
-
             trackingTransform = _motor.transform;
         }
     }

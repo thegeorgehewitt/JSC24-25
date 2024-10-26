@@ -21,7 +21,7 @@ namespace Custom.Controller
             set 
             { 
                 radius = value;
-                fieldOfView.radius = value;
+                fieldOfView.Radius = value;
             } 
         }
 
@@ -31,7 +31,7 @@ namespace Custom.Controller
             set
             {
                 angle = value;
-                fieldOfView.angle = value;
+                fieldOfView.Angle = value;
             }
         }
 
@@ -39,15 +39,15 @@ namespace Custom.Controller
 
         private void Start()
         {
-            fieldOfView.radius = radius;
-            fieldOfView.angle = angle;
+            fieldOfView.Radius = radius;
+            fieldOfView.Angle = angle;
             fieldOfView.blockableFilter.layerMask = blockableLayers;
         }
 
         private void Update()
         {
             Vector3 mouseWorldPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
-            fieldOfView.rotation = Vector2.SignedAngle(fieldOfView.transform.up, mouseWorldPos - fieldOfView.transform.position);
+            fieldOfView.Rotation = Vector2.SignedAngle(fieldOfView.transform.up, mouseWorldPos - fieldOfView.transform.position);
         }
     }
 }
