@@ -53,14 +53,14 @@ namespace Custom.Utility
         [SerializeField] private float rotation = 0.0f;
 
         [Header("DISPLAY")]
-        [HideInInspector] public bool drawViewMesh = true;
-        [HideInInspector] public float meshResolution = 3;
-        [HideInInspector] public float edgeDistanceThreshold = 0.1f;
-        [HideInInspector] public int edgeResolveIterations = 3;
+        [SerializeField] [HideInInspector] private bool drawViewMesh = true;
+        [SerializeField] [HideInInspector] private float meshResolution = 3;
+        [SerializeField] [HideInInspector] private float edgeDistanceThreshold = 0.1f;
+        [SerializeField] [HideInInspector] private int edgeResolveIterations = 3;
 
         [Header("PREVIEW")]
-        [HideInInspector] public bool preview = true;
-        [HideInInspector] public Color handlesColor = Color.cyan;
+        [SerializeField] [HideInInspector] private bool preview = true;
+        [SerializeField] [HideInInspector] private Color handlesColor = Color.cyan;     // Used in custom Editor
 
         [HideInInspector] public ContactFilter2D blockableFilter;
 
@@ -115,12 +115,6 @@ namespace Custom.Utility
 
         private void Update()
         {
-            if (!Application.isPlaying)
-            {
-                viewMesh.name = "View Mesh";
-                viewMeshFilter.mesh = viewMesh;
-            }
-
             if (drawViewMesh)
             {
                 DrawFieldOfView();

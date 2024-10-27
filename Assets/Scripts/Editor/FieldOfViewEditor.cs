@@ -38,18 +38,18 @@ namespace Custom.Editor
             previewProperty = serializedObject.FindProperty("preview");
             handlesColorProperty = serializedObject.FindProperty("handlesColor");
 
-            drawMeshGroupVisible = new(asTarget.drawViewMesh);
+            drawMeshGroupVisible = new(drawViewMeshProperty.boolValue);
             drawMeshGroupVisible.valueChanged.AddListener(Repaint);
 
-            previewGroupVisible = new(asTarget.preview);
+            previewGroupVisible = new(previewProperty.boolValue);
             previewGroupVisible.valueChanged.AddListener(Repaint);
         }
 
         private void OnSceneGUI()
         {
-            if (!asTarget.preview) return;
+            if (!previewProperty.boolValue) return;
 
-            Handles.color = asTarget.handlesColor;
+            Handles.color = handlesColorProperty.colorValue;
             Vector3 viewAngleFrom = asTarget.DirectionFromAngle(-asTarget.Angle / 2, false);
             Vector3 viewAngleTo = asTarget.DirectionFromAngle(asTarget.Angle / 2, false);
 
