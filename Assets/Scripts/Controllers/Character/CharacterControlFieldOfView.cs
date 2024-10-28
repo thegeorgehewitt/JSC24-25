@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 using Custom.Utility;
 
@@ -8,6 +9,7 @@ namespace Custom.Controller
     {
         [Header("REFERENCES")]
         [SerializeField] private FieldOfView fieldOfView;
+        [SerializeField] private Light2D flashlight;
 
         [Header("FIELD OF VIEW")]
         [SerializeField] private float radius;
@@ -40,18 +42,34 @@ namespace Custom.Controller
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!fieldOfView) return;
+            #region FOV
+            if (fieldOfView)
+            {
+                fieldOfView.Radius = radius;
+                fieldOfView.Angle = angle;
+                fieldOfView.blockableFilter.layerMask = blockableLayers;
+            }
+            #endregion
 
-            fieldOfView.Radius = radius;
-            fieldOfView.Angle = angle;
-            fieldOfView.blockableFilter.layerMask = blockableLayers;
+            #region Flashlight
+            if (flashlight)
+            {
+                flashlight.lightType = Light2D.LightType.Point;
+                flashlight.pointLightInnerAngle = fieldOfView.Angle;
+                flashlight.pointLightOuterAngle = fieldOfView.Angle + 5.0f;
+                flashlight.pointLightOuterRadius = fieldOfView.Radius;
+            }
+            #endregion
         }
 #endif
 
-        private void Update()
+        private void FixedUpdate()
         {
             Vector3 mouseWorldPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
-            fieldOfView.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(transform.up, mouseWorldPos - fieldOfView.transform.position));
+            float rotation = Vector2.SignedAngle(transform.up, mouseWorldPos - fieldOfView.transform.position);
+
+            fieldOfView.Rotation = rotation;
+            flashlight.transform.eulerAngles = new Vector3(0, 0, rotation);
         }
     }
 }

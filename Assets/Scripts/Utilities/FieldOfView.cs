@@ -59,8 +59,10 @@ namespace Custom.Utility
         [SerializeField] [HideInInspector] private int edgeResolveIterations = 3;
 
         [Header("PREVIEW")]
-        [SerializeField] [HideInInspector] private bool preview = true;
+#pragma warning disable CS0414
+        [SerializeField] [HideInInspector] private bool preview = true;                 // Used in custom Editor
         [SerializeField] [HideInInspector] private Color handlesColor = Color.cyan;     // Used in custom Editor
+#pragma warning restore CS0414
 
         [HideInInspector] public ContactFilter2D blockableFilter;
 
