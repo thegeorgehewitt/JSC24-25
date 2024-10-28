@@ -37,17 +37,21 @@ namespace Custom.Controller
 
 
 
-        private void Start()
+#if UNITY_EDITOR
+        private void OnValidate()
         {
+            if (!fieldOfView) return;
+
             fieldOfView.Radius = radius;
             fieldOfView.Angle = angle;
             fieldOfView.blockableFilter.layerMask = blockableLayers;
         }
+#endif
 
         private void Update()
         {
             Vector3 mouseWorldPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
-            fieldOfView.Rotation = Vector2.SignedAngle(fieldOfView.transform.up, mouseWorldPos - fieldOfView.transform.position);
+            fieldOfView.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(transform.up, mouseWorldPos - fieldOfView.transform.position));
         }
     }
 }

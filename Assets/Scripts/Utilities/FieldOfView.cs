@@ -70,7 +70,7 @@ namespace Custom.Utility
         public float Radius 
         { 
             get { return radius; } 
-            set { radius = Mathf.Max(value, 0); } 
+            set { radius = Mathf.Max(value, 0.001f); } 
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Custom.Utility
         }
 #endif
 
-        private void Awake()
+        private void Start()
         {
             viewMesh = new();
             viewMesh.name = "View Mesh";
@@ -149,7 +149,7 @@ namespace Custom.Utility
                 Vector2 directionToTarget = (target.position - transform.position).normalized;
 
                 // If is not in view angle.
-                if (Vector2.Angle(Quaternion.Euler(0, 0, rotation) * transform.up, directionToTarget)  > angle / 2) continue;
+                if (Vector2.Angle(Quaternion.Euler(0, 0, rotation) * transform.up, directionToTarget) > angle / 2) continue;
                 
                 float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
@@ -204,6 +204,14 @@ namespace Custom.Utility
         private void DrawFieldOfView()
         {
             int stepCount = Mathf.RoundToInt(angle * meshResolution);
+
+            // Fail-safe when mesh resolution is invalid.
+            if (stepCount == 0)
+            {
+                viewMesh.Clear();
+                return;
+            }
+
             float stepAngleSize = angle / stepCount;
 
             List<Vector3> viewPoints = new();
