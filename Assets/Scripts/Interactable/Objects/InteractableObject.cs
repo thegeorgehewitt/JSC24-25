@@ -39,6 +39,6 @@ namespace Custom.Interactable
 
 
 
-        //public virtual void Interact() { }
+        public virtual void Interact() { }
     }
 }

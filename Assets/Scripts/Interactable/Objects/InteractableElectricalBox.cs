@@ -6,7 +6,7 @@ namespace Custom.Interactable
 {
     using Interfaces;
 
-    public class InteractableEclectircalBox : InteractableObject, IOverloadable
+    public class InteractableElectircalBox : InteractableObject, IOverloadable
     {
         [Header("OVERLOAD")]
         [SerializeField] private bool overloaded = false;
