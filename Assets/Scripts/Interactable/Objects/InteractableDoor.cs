@@ -8,7 +8,10 @@ using Custom.Manager;
 
 namespace Custom.Interactable
 {
-    public class InteractableDoor : InteractableObject
+    using Interfaces;
+    using Unity.VisualScripting;
+
+    public class InteractableDoor : InteractableObject, IToggleable, IOverloadable
     {
         [Header("DOOR REFERENCES")]
         [SerializeField] private Collider2D doorCollider;
@@ -20,6 +23,12 @@ namespace Custom.Interactable
         [SerializeField] private Color openedColor = Color.white / 2;
         [SerializeField] private float easeDuration = 0.1f;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        [Header("DEADLOCK & UNLOCK")]
+        [SerializeField] private bool deadlocked = false;
+
+        [Header("OVERLOAD")]
+        [SerializeField] private bool overloaded = false;
 
         private Coroutine openCoroutine;
 
@@ -96,11 +105,31 @@ namespace Custom.Interactable
             SetState(_open);
         }
 
+        
 
-
-        public override void Interact()
+        public void Toggle()
         {
+            if (deadlocked) return;
+
             open = !open;
+
+            Open(open);
+        }
+
+        public void Overload()
+        {
+            overloaded = true;
+
+            open = true;
+
+            Open(open);
+        }
+
+        public void ToggleDeadlock()
+        {
+            deadlocked = !deadlocked;
+
+            open = !deadlocked;
 
             Open(open);
         }

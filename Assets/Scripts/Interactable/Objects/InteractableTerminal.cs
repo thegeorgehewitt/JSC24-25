@@ -11,12 +11,12 @@ namespace Custom.Interactable
 
 
 
-        public override void Interact()
-        {
-            foreach (var interactable in linkedObjects)
-            {
-                interactable.Interact();
-            }
-        }
+        //public override void Interact()
+        //{
+        //    foreach (var interactable in linkedObjects)
+        //    {
+        //        interactable.Interact();
+        //    }
+        //}
     }
 }
