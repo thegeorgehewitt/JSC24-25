@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.Attribute;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Custom.Utility
 {
@@ -166,34 +167,18 @@ namespace Custom.Utility
             return visibleTargets;
         }
 
-        /// <summary>
-        /// Check if the given direction is contained within the vision cone.
-        /// </summary>
-        /// <param name="_direction">   The direction to check for. </param>
-        /// <returns>
-        /// True if the direction is within the defined cone of this field of view. Otherwise false.
-        /// </returns>
-        public bool InFieldOfView(Vector3 _direction)
+        public Vector2 DirectionFromAngle(float _angleInDegrees, bool _angleIsGlobal)
         {
-            Vector3 viewAngleFrom = DirectionFromAngle(-angle / 2, false);
-            Vector3 viewAngleTo = DirectionFromAngle(angle / 2, false);
-
-            return (Vector3.Cross(viewAngleFrom, _direction).z * Vector3.Cross(viewAngleFrom, viewAngleTo).z >= 0)
-                && (Vector3.Cross(viewAngleTo, _direction).z * Vector3.Cross(viewAngleTo, viewAngleFrom).z >= 0);
-        }
-
-        public Vector2 DirectionFromAngle(float angleInDegrees, bool angleIsGlobal)
-        {
-            if (!angleIsGlobal)
+            if (!_angleIsGlobal)
             {
-                angleInDegrees -= transform.eulerAngles.z;
+                _angleInDegrees -= transform.eulerAngles.z;
             }
 
-            angleInDegrees -= rotation;
+            _angleInDegrees -= rotation;
 
             return new Vector2(
-                Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 
-                Mathf.Cos(angleInDegrees * Mathf.Deg2Rad)
+                Mathf.Sin(_angleInDegrees * Mathf.Deg2Rad), 
+                Mathf.Cos(_angleInDegrees * Mathf.Deg2Rad)
             );
         }
 
@@ -319,6 +304,36 @@ namespace Custom.Utility
             {
                 return new ViewCastInfo(false, transform.position + dir * radius, radius, _globalAngle);
             }
+        }
+
+        #endregion
+
+
+
+        #region Static Functions
+
+        /// <summary>
+        /// Determines whether a specified point is within a defined field of view (FOV) cone.
+        /// </summary>
+        /// <param name="_point">       The point to check in world position. </param>
+        /// <param name="_FOVCenter">   The center (origin) of the FOV in world position. </param>
+        /// <param name="_FOVRadius">   The radius of the FOV. </param>
+        /// <param name="_FOVAngle">    The total angle of the FOV. </param>
+        /// <param name="_FOVRotation"> The global rotation of the FOV in degrees. Positive values indicate counter-clockwise rotation. </param>
+        /// <returns>
+        /// <see langword="true"/> if the point is within the FOV cone; otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool InViewCone(Vector2 _point, Vector2 _FOVCenter, float _FOVRadius, float _FOVAngle, float _FOVRotation)
+        {
+            // If point is out of range.
+            if (Vector2.Distance(_point, _FOVCenter) > _FOVRadius) return false;
+
+            Vector2 directionToTarget = (_point - _FOVCenter).normalized;
+
+            // If is not in view angle.
+            if (Vector2.Angle(Quaternion.Euler(0, 0, _FOVRotation) * Vector2.up, directionToTarget) > _FOVAngle / 2) return false;
+
+            return true;
         }
 
         #endregion

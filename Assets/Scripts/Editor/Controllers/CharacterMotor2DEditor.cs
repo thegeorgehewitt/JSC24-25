@@ -1,8 +1,6 @@
 #if UNITY_EDITOR
-using UnityEditor;
-
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEditor;
 
 using Custom.Controller;
 
@@ -11,10 +9,16 @@ namespace Custom.Editor
     [CustomEditor(typeof(CharacterMotor2D), true)]
     public class CharacterMotor2DEditor : UnityEditor.Editor
     {
+        private CharacterMotor2D asTarget;
+
         private SerializedProperty actions;
+
+
 
         private void OnEnable()
         {
+            asTarget = (CharacterMotor2D)target;
+
             actions = serializedObject.FindProperty("controlScripts");
         }
 
@@ -26,7 +30,7 @@ namespace Custom.Editor
             {
                 actions.ClearArray();
                 int index = 0;
-                foreach (var movementScript in target.GetComponentsInChildren<CharacterControlBase>())
+                foreach (var movementScript in asTarget.GetComponentsInChildren<CharacterControlBase>())
                 {
                     actions.InsertArrayElementAtIndex(index);
                     actions.GetArrayElementAtIndex(index).objectReferenceValue = movementScript;

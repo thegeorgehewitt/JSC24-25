@@ -114,11 +114,15 @@ namespace Custom.Interactable
             targetMotor = null;
             visionBlocked = false;
 
+            // Get all motor in range.
             float minDis = Mathf.Infinity;
             foreach (var motor in fieldOfView.FindAllInView<CharacterMotor2D>(trackableLayers))
             {
+                if (!motor) continue;
+
                 float distance = Vector2.Distance(motor.transform.position, firePoint.position);
 
+                // Get the closest motor.
                 if (distance < minDis)
                 {
                     minDis = distance;

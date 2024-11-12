@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using FunkyCode;
+
 using Custom.Manager;
 
 namespace Custom.Controller
@@ -17,14 +19,11 @@ namespace Custom.Controller
         [Header("REFERENCES")]
         [SerializeField] private new Rigidbody2D rigidbody;
 
-        [Header("GROUND CHECK")]
+        [Header("PROXIMITY CHECK")]
+        [Tooltip("Layer masks considered ground/ceiling/wall.")]
+        [SerializeField] private LayerMask solidLayers;
         [SerializeField] private Collider2D groundCheck;
-        [SerializeField] private LayerMask groundLayers;
-
-        [Header("CEILING CHECK")]
         [SerializeField] private Collider2D ceilingCheck;
-
-        [Header("WALL CHECK")]
         [SerializeField] private Collider2D wallCheck;
 
         [Header("GRAVITY")]
@@ -32,6 +31,10 @@ namespace Custom.Controller
         [SerializeField] private float fallAcceleration = 18f;
         [SerializeField] private float maxFallSpeed = 9f;
         [SerializeField] private float jumpEndEarlyGravityModifier = 5f;
+
+        [Header("VISBILITY")]
+        [SerializeField] private bool useLightingVisibility;
+        [SerializeField] private LightEventListener lightEventListener;
 
         [Space(20)]
         [SerializeField] private List<CharacterControlBase> controlScripts;
@@ -51,6 +54,15 @@ namespace Custom.Controller
         public bool IsOnWall { get { return onWall; } }
 
         public bool paused;
+
+        public float Visibility
+        {
+            get
+            {
+                if (useLightingVisibility) return lightEventListener.visibility;
+                else return 1;
+            }
+        }
 
 
 
@@ -81,7 +93,7 @@ namespace Custom.Controller
             #endregion
 
             #region Setup Contact Filter
-            contactFilter.layerMask = groundLayers;
+            contactFilter.layerMask = solidLayers;
             contactFilter.useLayerMask = true;
             contactFilter.useTriggers = true;
             contactFilter.useDepth = false;
