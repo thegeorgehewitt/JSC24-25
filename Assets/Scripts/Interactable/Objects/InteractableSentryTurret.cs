@@ -245,6 +245,7 @@ namespace Custom.Interactable
             activated = false;
             laserDisplay.enabled = false;
 
+            // anim
             yield return new WaitForSeconds(jamDuration);
 
             activated = true;
@@ -257,20 +258,29 @@ namespace Custom.Interactable
 
         public void Overload()
         {
-            // Overload functionality
+            if (overloaded) return;
 
             overloaded = true;
+
+            // explosion death anim
+
+            // AOE damage if not in interface
         }
 
         #endregion
 
         #region Interaction - Recruit
 
+        private Coroutine recruitCoroutine;
+
         public void Recruit()
         {
-            // Recruit functionality
+            if (recruited) return;
 
             recruited = true;
+
+            // Recruit functionality (coroutine)
+
         }
 
         #endregion

@@ -13,7 +13,13 @@ namespace Custom.Interactable
 
         public void Overload()
         {
+            if (overloaded) return;
+
             overloaded = true;
+
+            // explosion anim
+
+            // AOE damage if not in interface
         }
     }
 }

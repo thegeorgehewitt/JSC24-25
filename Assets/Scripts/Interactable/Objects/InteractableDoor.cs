@@ -26,9 +26,13 @@ namespace Custom.Interactable
 
         [Header("DEADLOCK & UNLOCK")]
         [SerializeField] private bool deadlocked = false;
+        [SerializeField] private Sprite deadlockedSprite;
+        [SerializeField] private Sprite unlockedSprite;
+
 
         [Header("OVERLOAD")]
         [SerializeField] private bool overloaded = false;
+        [SerializeField] private Sprite overloadedSprite;
 
         private Coroutine openCoroutine;
 
@@ -118,20 +122,29 @@ namespace Custom.Interactable
 
         public void Overload()
         {
+            if (overloaded) return;
+
             overloaded = true;
 
             open = true;
 
-            Open(open);
+            spriteRenderer.sprite = overloadedSprite ? overloadedSprite : null;
+            spriteRenderer.color = Color.white;
+            // play destruction anim
+
+            // AOE damage if not in interface
+
+            SetState(open);
         }
 
         public void ToggleDeadlock()
         {
             deadlocked = !deadlocked;
 
-            open = !deadlocked;
+            open = deadlocked? false : open;
 
-            Open(open);
+            spriteRenderer.sprite = deadlocked ? deadlockedSprite : unlockedSprite;
+            spriteRenderer.color = open? openedColor : closedColor;
         }
     }
 }
