@@ -73,7 +73,7 @@ namespace Custom.Interactable
             if (shadowCaster) shadowCaster.enabled = !_open;
 
             // TEMPORARY
-            states = new List<string>{ _open ? "Unlocked" : "Locked" };
+            states = new List<string>{ _open ? "Open" : "Closed" };
         }
 
         private void Open(bool _open)
@@ -109,7 +109,11 @@ namespace Custom.Interactable
             SetState(_open);
         }
 
-        
+
+        public override void Interact()
+        {
+            Toggle();
+        }
 
         public void Toggle()
         {

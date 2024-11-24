@@ -178,7 +178,8 @@ MonoBehaviour:
   spriteRenderer: {fileID: 3459847120950194334}
   interactAreaCollider: {fileID: 5197918338584211243}
   objectData: {fileID: 11400000, guid: a69965603a171d749b81a51c8207f5a9, type: 2}
-  interactionData: {fileID: 11400000, guid: c63e10dcb66f3c94e81c552a016d0e73, type: 2}
+  interactionData:
+  - {fileID: 11400000, guid: c63e10dcb66f3c94e81c552a016d0e73, type: 2}
   states:
   - On
   linkedLights: []

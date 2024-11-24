@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using TMPro;
 
 using Custom.Interactable;
+using System.Linq;
+using Unity.VisualScripting;
 
 namespace Custom.UI
 {
@@ -45,8 +47,10 @@ namespace Custom.UI
             #endregion
 
             /// TESTING ///
-            var go = Instantiate(interactionPrefab, interactionListHolder);
-            interactions.Add(go.GetComponent<InteractionInfoDisplay>());
+            
+            //go = Instantiate(interactionPrefab, interactionListHolder);
+            //interactions.Add(go.GetComponent<InteractionInfoDisplay>());
+
             /// TESTING ///
 
             maskImage.fillAmount = 0;
@@ -63,7 +67,32 @@ namespace Custom.UI
 
         private void Core_DisplayInfo(InteractableObject _object)
         {
-            interactions[0].DisplayInfo(_object.InteractionData);
+
+
+            for (int i =  0; i < _object.InteractionData.Length; i++)
+            {
+
+                if (interactions.Count == i)
+                {
+                    var go = Instantiate(interactionPrefab, interactionListHolder);
+                    interactions.Add(go.GetComponent<InteractionInfoDisplay>());
+                }
+
+                if (interactions.Count >= i && _object.InteractionData[i] != null)
+                {
+                    interactions[i].gameObject.SetActive(true);
+                    interactions[i].DisplayInfo(_object.InteractionData[i]);
+
+                }
+
+                if (i == _object.InteractionData.Length - 1)
+                {
+                    for (int j = interactions.Count - 1; j > i; j--)
+                    {
+                        interactions[j].gameObject.SetActive(false);
+                    }
+                }
+            }
 
             for (int i = 0; i < _object.States.Length; i++)
             {
