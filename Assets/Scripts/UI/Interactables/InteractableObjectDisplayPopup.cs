@@ -22,6 +22,7 @@ namespace Custom.UI
         [SerializeField] private Transform objectStateListHolder;
         [SerializeField] private Transform interactionListHolder;
         [SerializeField] private TextMeshProUGUI objectName;
+        [SerializeField] private int activeOption = 0;
 
         [Header("POPUP")]
         [SerializeField] private Image maskImage;
@@ -65,9 +66,9 @@ namespace Custom.UI
 
 
 
-        private void Core_DisplayInfo(InteractableObject _object)
+        private void Core_DisplayInfo(InteractableObject _object, bool _firstHover)
         {
-
+            if (_firstHover) activeOption = 0;
 
             for (int i =  0; i < _object.InteractionData.Length; i++)
             {
@@ -81,8 +82,7 @@ namespace Custom.UI
                 if (interactions.Count >= i && _object.InteractionData[i] != null)
                 {
                     interactions[i].gameObject.SetActive(true);
-                    interactions[i].DisplayInfo(_object.InteractionData[i]);
-
+                    interactions[i].DisplayInfo(_object.InteractionData[i], i == activeOption);
                 }
 
                 if (i == _object.InteractionData.Length - 1)
@@ -153,9 +153,9 @@ namespace Custom.UI
             Instance.Core_ShowPopup(_state);
         }
 
-        public static void DisplayInfo(InteractableObject _object)
+        public static void DisplayInfo(InteractableObject _object, bool _firstHover)
         {
-            Instance.Core_DisplayInfo(_object);
+            Instance.Core_DisplayInfo(_object, _firstHover);
         }
 
         #endregion

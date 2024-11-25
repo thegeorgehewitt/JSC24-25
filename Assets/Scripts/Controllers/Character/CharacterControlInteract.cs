@@ -23,11 +23,17 @@ namespace Custom.Controller
         [SerializeField] private LayerMask interactableLayers;
         [SerializeField] private LayerMask blockableLayers;
 
+        [Header("REFERENCE")]
+        [SerializeField] private InputActionAsset inputActionScroll;
+
+        public InputActionAsset InputAssetScroll { get { return inputActionScroll; } }
+
         [Header("INTERACT CURSOR")]
         [SerializeField] private InteractCursor interactCursor;
         [SerializeField] private float defaultCursorSize = 0.5f;
         [SerializeField] private Color outOfRangeColor = Color.red;
         [SerializeField] private Color inRangeColor = Color.cyan;
+        [SerializeField] private bool firstHover = true;
 
         private InteractableObject hoverObject;
         private bool outOfRange;
@@ -119,15 +125,18 @@ namespace Custom.Controller
             #region Interact Cursor & Interactable Object Display Popup
             if (hoverObject)
             {
+                //var direction = InputAssetScroll.ReadValue<Vector2>();
                 interactCursor.SetLineActive(true);
                 interactCursor.SetSize(hoverObject.SpriteRenderer.bounds.size);
-                InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
+                InteractableObjectDisplayPopup.DisplayInfo(hoverObject, firstHover);
+                firstHover = false;
             }
             else
             {
                 interactCursor.SetLineActive(outOfRange);
                 interactCursor.SetSize(Vector2.one * defaultCursorSize);
                 InteractableObjectDisplayPopup.ShowPopup(false);
+                firstHover = true;
             }
 
             if (blockedVision)
