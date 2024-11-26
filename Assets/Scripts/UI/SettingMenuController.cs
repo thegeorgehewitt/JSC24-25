@@ -7,11 +7,11 @@ public class SettingMenuController : MonoBehaviour
     [System.Serializable]
     public class SettingPanel
     {
-        public string name; // Name of the panel (e.g., "Sound", "Graphics", "Keybinding")
-        public GameObject panel; // The GameObject representing the UI panel
+        public string name; 
+        public GameObject panel; 
     }
 
-    public SettingPanel[] settingPanels; // List of all setting panels
+    public SettingPanel[] settingPanels;
 
     /// <summary>
     /// Show the specified panel and hide others.
