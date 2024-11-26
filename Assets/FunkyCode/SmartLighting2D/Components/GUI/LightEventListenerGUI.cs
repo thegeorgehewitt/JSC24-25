@@ -43,13 +43,13 @@ namespace FunkyCode
             style.normal.textColor = Color.white;
             style.alignment = TextAnchor.MiddleCenter;
 
-            int pointSize = Screen.height / 80;
+            int pointSize = Screen.height / 100;
 
             GUI.Label(new Rect(middlePoint.x - 50, Screen.height - middlePoint.y - 50, 100, 100), display + "%", style);
 
-            foreach(var pointRelative in lightEventReceiver.VisiblePoints)
+            foreach(var worldPoints in lightEventReceiver.VisiblePoints)
             {
-                Vector2 screenPoint = Camera.main.WorldToScreenPoint(pointRelative);
+                Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPoints);
 
                 GUI.DrawTexture(new Rect(screenPoint.x - pointSize, Screen.height - screenPoint.y - pointSize, pointSize * 2, pointSize * 2), GetPointTexture());
             }

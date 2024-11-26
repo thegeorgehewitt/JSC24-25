@@ -61,8 +61,8 @@ namespace Custom.Utility
 
         [Header("PREVIEW")]
 #pragma warning disable CS0414
-        [SerializeField] [HideInInspector] private bool preview = true;                 // Used in custom Editor
-        [SerializeField] [HideInInspector] private Color handlesColor = Color.cyan;     // Used in custom Editor
+        [SerializeField] [HideInInspector] private bool preview = true;                 // Used in custom editor
+        [SerializeField] [HideInInspector] private Color handlesColor = Color.cyan;     // Used in custom editor
 #pragma warning restore CS0414
 
         [HideInInspector] public ContactFilter2D blockableFilter;
@@ -131,36 +131,39 @@ namespace Custom.Utility
 
 
         #region Field of View Logic
-
         /// <summary>
-        /// Find all components of type T in field of view.
+        /// Find all components of given type in field of view.
         /// </summary>
-        /// <typeparam name="T">            Component type to return. </typeparam>
-        /// <param name="_targetLayers">    <see cref="LayerMask"/> of objects to retrieve component from. </param>
+        /// <typeparam name="T">                Any class inherit from <see cref="Component"/>. </typeparam>
+        /// <param name="_targetLayers">        <see cref="LayerMask"/> of objects to retrieve component from. </param>
+        /// <param name="_complexDetection">    If <see cref="SpriteRenderer"/> is attached, complex detection will use sprite's physics shape to detect visibility. 
+        ///                                     Else, <see cref="Collider2D.bounds"/> is used instead.
+        ///                                     Simple detection will only use <see cref="Transform.position"/>. </param>
         /// <returns>
-        /// List of all targets found.
+        /// List of all components found.
         /// </returns>
-        public List<T> FindAllInView<T>(int _targetLayers)
+        public List<T> FindAllInView<T>(LayerMask _targetLayers, bool _complexDetection = true) where T : Component
         {
             List<T> visibleTargets = new();
-            List<RaycastHit2D> hits = new();
             Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, radius, _targetLayers);
 
-            for (int i = 0; i < targetsInViewRadius.Length; i++)
+            foreach (var collider in targetsInViewRadius)
             {
-                Transform target = targetsInViewRadius[i].transform;
-                Vector2 directionToTarget = (target.position - transform.position).normalized;
+                // Skip any triggers
+                if (collider.isTrigger) continue;
 
-                // If is not in view angle.
-                if (Vector2.Angle(Quaternion.Euler(0, 0, rotation) * transform.up, directionToTarget) > angle / 2) continue;
-                
-                float distanceToTarget = Vector2.Distance(transform.position, target.position);
+                // If no target points is in view angle
+                var inViewAnglesPoints = TargetPointsInViewAngle(collider, _complexDetection);
+                if (inViewAnglesPoints.Length == 0) continue;
 
-                // If ray cast blocked.
-                if (Physics2D.Raycast(transform.position, directionToTarget, blockableFilter, hits, distanceToTarget) > 0) continue;
-                // If does not have component.
-                if (!target.TryGetComponent(out T asTargetComponent)) continue;
+                // If raycast blocked
+                var notBlockedPoints = TargetPointsNotBlocked(inViewAnglesPoints);
+                if (notBlockedPoints.Length == 0) continue;
 
+                // If does not have component
+                if (!collider.gameObject.TryGetComponent(out T asTargetComponent)) continue;
+
+                // Add component to list if valid
                 visibleTargets.Add(asTargetComponent);
             }
 
@@ -182,12 +185,81 @@ namespace Custom.Utility
             );
         }
 
+
+
+        private Vector3[] TargetPointsInViewAngle(Collider2D _collider2D, bool _complex)
+        {
+            List<Vector3> inViewPoints = new();
+            var targetPoints = GetTargetPoints(_collider2D, _complex);
+
+            foreach (var point in targetPoints)
+            {
+                Vector2 directionToTarget = (point - (Vector2)transform.position).normalized;
+
+                if (Vector2.Angle(Quaternion.Euler(0, 0, rotation) * transform.up, directionToTarget) <= angle / 2)
+                {
+                    inViewPoints.Add(point);
+                }
+            }
+
+            return inViewPoints.ToArray();
+        }
+
+        private Vector3[] TargetPointsNotBlocked(Vector3[] _points)
+        {
+            List<Vector3> visiblePoints = new();
+            List<RaycastHit2D> hits = new();
+
+            foreach (var point in _points)
+            {
+                Vector2 directionToTarget = (point - transform.position).normalized;
+                float distanceToTarget = Vector3.Distance(point, transform.position);
+
+                if (Physics2D.Raycast(transform.position, directionToTarget, blockableFilter, hits, distanceToTarget) == 0) 
+                {
+                    visiblePoints.Add(point);
+                }
+            }
+
+            return visiblePoints.ToArray();
+        }
+
+        private Vector2[] GetTargetPoints(Collider2D _collider2D, bool _complex)
+        {
+            // If simple, check only for Transform.position.
+            if (!_complex) return new Vector2[1] { _collider2D.transform.position };
+
+            SpriteRenderer spriteRenderer = _collider2D.gameObject.GetComponentInChildren<SpriteRenderer>();
+
+            // If complex with sprite renderer attached, check for Sprite.PhysicShape vertices.
+            if (spriteRenderer)
+            {
+                List<Vector2> points = new();
+
+                spriteRenderer.sprite.GetPhysicsShape(0, points);
+
+                for (int i = 0; i < points.Count; i++)
+                {
+                    points[i] = spriteRenderer.transform.TransformPoint(points[i]);
+                }
+
+                return points.ToArray();
+            }
+            // If complex and no sprite renderer attached, check for Collider2D bounds extremes.
+            else
+            {
+                return new Vector2[4]
+                {
+                _collider2D.bounds.max,
+                _collider2D.bounds.min,
+                new Vector2(_collider2D.bounds.min.x, _collider2D.bounds.max.y),
+                new Vector2(_collider2D.bounds.min.y, _collider2D.bounds.max.x),
+                };
+            }
+        }
         #endregion
 
-
-
         #region Field of View Mesh
-
         private void DrawFieldOfView()
         {
             int stepCount = Mathf.RoundToInt(angle * meshResolution);
@@ -305,10 +377,7 @@ namespace Custom.Utility
                 return new ViewCastInfo(false, transform.position + dir * radius, radius, _globalAngle);
             }
         }
-
         #endregion
-
-
 
         #region Static Functions
 

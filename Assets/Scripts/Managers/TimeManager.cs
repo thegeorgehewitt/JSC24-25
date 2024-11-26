@@ -21,7 +21,7 @@ namespace Custom.Manager
         /// <summary>
         /// Clamped to [0..1]. Value of 0 will run at normal speed. Value of 1 will completely pause time.
         /// </summary>
-        public static float timeScale;
+        public static float timeScale = 1.0f;
 
         private float originalTimeScale; // Do we really need this?
 

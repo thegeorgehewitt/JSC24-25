@@ -13,8 +13,8 @@ namespace Custom.Controller
     [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterMotor2D : MonoBehaviour
     {
-        public static Action<CharacterMotor2D> OnCharacterMotorEnabled;
-        public static Action<CharacterMotor2D> OnCharacterMotorDisabled;
+        public static event Action<CharacterMotor2D> OnCharacterMotorEnabled;
+        public static event Action<CharacterMotor2D> OnCharacterMotorDisabled;
 
         [Header("REFERENCES")]
         [SerializeField] private new Rigidbody2D rigidbody;
@@ -32,14 +32,19 @@ namespace Custom.Controller
         [SerializeField] private float maxFallSpeed = 9f;
         [SerializeField] private float jumpEndEarlyGravityModifier = 5f;
 
-        [Header("VISBILITY")]
-        [SerializeField] private bool useLightingVisibility;
+        [Header("VISIBILITY")]
+        [Tooltip("If enabled, visibility is calculated using light event system. Otherwise, visibility is set to 1 by default.")]
+        [SerializeField] private bool enableVisibilityCheck;
         [SerializeField] private LightEventListener lightEventListener;
 
-        [Space(20)]
+        [Header("CONTROLS")]
+        [Tooltip("While paused, the controller will not be affected by physics simulation and player controller inputs.")]
+        [HideInInspector] public bool paused;
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
         [HideInInspector] public Vector2 velocity = new();
+
+        [SerializeField] private bool showInfo;
 
         private ContactFilter2D contactFilter;
         private List<Collider2D> contacts = new();
@@ -48,18 +53,16 @@ namespace Custom.Controller
         public bool IsGrounded { get { return grounded; } }
 
         private bool onCeiling;
-        public bool IsOnCeiling {  get { return onCeiling; } }
+        public bool IsOnCeiling { get { return onCeiling; } }
 
         private bool onWall;
         public bool IsOnWall { get { return onWall; } }
-
-        public bool paused;
 
         public float Visibility
         {
             get
             {
-                if (useLightingVisibility) return lightEventListener.visibility;
+                if (enableVisibilityCheck && lightEventListener) return lightEventListener.visibility;
                 else return 1;
             }
         }
@@ -104,13 +107,7 @@ namespace Custom.Controller
 
         private void Update()
         {
-            grounded = groundCheck.OverlapCollider(contactFilter, contacts) > 0;
-
-            onCeiling = ceilingCheck.OverlapCollider(contactFilter, contacts) > 0;
-            if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true);  }
-            else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
-
-            onWall = wallCheck.OverlapCollider(contactFilter, contacts) > 0;
+            UpdateProximityCheck();
         }
 
         private void FixedUpdate()
@@ -123,12 +120,9 @@ namespace Custom.Controller
 
 
         #region Possess
-
         private PlayerController controller;
 
-
-
-        public void OnPossessed(PlayerController _controller) 
+        public void OnPossessed(PlayerController _controller)
         {
             controller = _controller;
 
@@ -153,14 +147,23 @@ namespace Custom.Controller
                     _controller?.DisableActionMap(control.InputActionMap);
             }
         }
+        #endregion
 
+        #region Proximity Check
+        private void UpdateProximityCheck()
+        {
+            grounded = groundCheck.OverlapCollider(contactFilter, contacts) > 0;
+
+            onCeiling = ceilingCheck.OverlapCollider(contactFilter, contacts) > 0;
+            if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
+            else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
+
+            onWall = wallCheck.OverlapCollider(contactFilter, contacts) > 0;
+        }
         #endregion
 
         #region State Control
-
         private Dictionary<string, bool> states = new();
-
-
 
         public bool GetState(string _name)
         {
@@ -180,11 +183,9 @@ namespace Custom.Controller
                 states[_name] = _state;
             }
         }
-
         #endregion
 
         #region Gravity
-
         private void HandleGravity()
         {
             if (!useGravity) return;
@@ -205,7 +206,6 @@ namespace Custom.Controller
                 velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * TimeManager.FixedDeltaTime);
             }
         }
-
         #endregion
     }
 }

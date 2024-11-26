@@ -1,44 +1,34 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 
-using Custom.Utility;
-using Custom.Controller;
 using Custom.Manager;
+using Custom.Controller;
 
-namespace Custom.Interactable
+namespace Custom.Interactable.Enemy
 {
-    public class InteractableSentryTurret : InteractableObject
+    using Interfaces;
+
+    public class InteractableSentryTurret : InteractableEnemyBase, IAttackableEnemy
     {
-        public static Action<CharacterMotor2D> OnShootMotor;
-        public static Action<CharacterMotor2D> OnTargetMotor;
+        public event Action<CharacterMotor2D> OnTargetMotor;
+        public event Action<CharacterMotor2D> OnAttackMotor;
+
+
 
         [Header("REFERENCES")]
-        [SerializeField] private LineRenderer laserDisplay;
-        [SerializeField] private FieldOfView fieldOfView;
         [SerializeField] private Transform firePoint;
+        [SerializeField] private LineRenderer laserDisplay;
 
-        [Header("TARGET DETECTION")]
-        [Tooltip("The default rotation is Vector2.right. Enable this to flip it to Vector2.left")]
-        [SerializeField] private bool flip;
-        [SerializeField] private float range = 10.0f;
-        [Range(0, 360)]
-        [SerializeField] private float angle = 20.0f;
+        [Header("LOCK ON")]
         [SerializeField] private float lockOnDuration = 1.0f;
-        [SerializeField] private LayerMask trackableLayers;
-        [SerializeField] private LayerMask blockableLayers;
-
-        [Header("LASER")]
         [SerializeField] private Color nontargetingColor = Color.gray;
         [SerializeField] private Color targetingColor = Color.red;
 
         [Header("INTERACTION")]
         [SerializeField] private float jamDuration = 2.0f;
-
-        private bool activated = true;
 
 
 
@@ -52,7 +42,7 @@ namespace Custom.Interactable
 
             if (fieldOfView)
             {
-                fieldOfView.Radius = range;
+                fieldOfView.Radius = maxRange;
                 fieldOfView.Angle = angle;
                 fieldOfView.Rotation = flip ? 90 : -90;
                 fieldOfView.blockableFilter.layerMask = blockableLayers;
@@ -77,7 +67,7 @@ namespace Custom.Interactable
         {
             states = new List<string> { activated ? "Active" : "Jammed" };
 
-            if (AcquireTarget())
+            if (AcquireTarget() > 0.5f)
             {
                 SetLineTargetPosition(targetMotor.transform.position);
                 LockOn(true);
@@ -89,58 +79,14 @@ namespace Custom.Interactable
             }
             else
             {
-                SetLineTargetPosition(firePoint.position + transform.right * (flip ? -1 : 1) * range);
+                SetLineTargetPosition(firePoint.position + (flip ? -1 : 1) * maxRange * transform.right);
                 LockOn(false);
             }
         }
 
 
 
-        #region Tracking Motor
-
-        private bool visionBlocked;
-        private ContactFilter2D contactFilter;
-        private List<RaycastHit2D> raycastHits = new();
-
-        private CharacterMotor2D targetMotor;
-
-
-
-        private bool AcquireTarget()
-        {
-            // While disabled, skip.
-            if (!activated) return false;
-
-            targetMotor = null;
-            visionBlocked = false;
-
-            // Get all motor in range.
-            float minDis = Mathf.Infinity;
-            foreach (var motor in fieldOfView.FindAllInView<CharacterMotor2D>(trackableLayers))
-            {
-                if (!motor) continue;
-
-                float distance = Vector2.Distance(motor.transform.position, firePoint.position);
-
-                // Get the closest motor.
-                if (distance < minDis)
-                {
-                    minDis = distance;
-                    targetMotor = motor;
-                }
-            }
-
-            if (!targetMotor)
-            {
-                visionBlocked = Physics2D.Raycast(firePoint.position, transform.right * (flip ? -1 : 1), contactFilter, raycastHits, range) > 0;
-                return false;
-            }
-
-            OnTargetMotor?.Invoke(targetMotor);
-
-            return true;
-        }
-
+        #region Targeting 
         private void SetLineTargetPosition(Vector3 _targetPos)
         {
             laserDisplay.SetPosition(0, firePoint.position);
@@ -152,25 +98,14 @@ namespace Custom.Interactable
             laserDisplay.startColor = _color;
             laserDisplay.endColor = _color;
         }
-
         #endregion
 
-        #region Target & Shoot
+        #region Lock On
+        protected bool lockingOn = false;
+        protected float lockOnElapsedTime = 0;
+        protected Coroutine lockOnCoroutine;
 
-        private bool lockingOn = false;
-        private float lockOnElapsedTime = 0;
-        private Coroutine lockOnCoroutine;
-
-
-
-        private void Shoot()
-        {
-            // Bullet instantiation here
-
-            OnShootMotor?.Invoke(targetMotor);
-        }
-
-        private void LockOn(bool _lockOn)
+        protected void LockOn(bool _lockOn)
         {
             if (lockingOn == _lockOn) return;
             lockingOn = _lockOn;
@@ -195,17 +130,22 @@ namespace Custom.Interactable
 
             if (_lockOn)
             {
-                Shoot();
+                Attack();
             }
         }
+        #endregion
 
+        #region Attack
+        public void Attack()
+        {
+            OnAttackMotor?.Invoke(targetMotor);
+
+            Debug.Log("Shot");
+        }
         #endregion
 
         #region Interaction - Jam Turret
-
         private Coroutine jamCoroutine;
-
-
 
         private void JamTurret()
         {
@@ -234,7 +174,6 @@ namespace Custom.Interactable
         {
             JamTurret();
         }
-
         #endregion
     }
 }

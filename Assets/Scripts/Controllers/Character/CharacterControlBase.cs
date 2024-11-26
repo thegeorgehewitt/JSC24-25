@@ -11,10 +11,9 @@ namespace Custom.Controller
     [Serializable]
     public abstract class CharacterControlBase : MonoBehaviour
     {
-        [SerializeField] [HideInInspector] protected bool passiveControl;
-        [SerializeField] [HideInInspector] private InputActionReference inputAction;
-
-        [SerializeField] [HideInInspector] private bool controlGroupFoldout;
+        [Header("CONTROLS")]
+        [SerializeField] protected bool passiveControl;
+        [SerializeField] private InputActionReference inputAction;
 
         protected CharacterMotor2D attachedMotor;
 

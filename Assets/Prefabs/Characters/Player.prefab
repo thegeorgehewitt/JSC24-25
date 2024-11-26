@@ -310,7 +310,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveControl: 0
   inputAction: {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  controlGroupFoldout: 0
   jumpPower: 15
 --- !u!114 &3938290388967934858
 MonoBehaviour:
@@ -326,7 +325,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveControl: 0
   inputAction: {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  controlGroupFoldout: 0
   groundMaxSpeed: 6
   groundAcceleration: 30
   groundDeceleration: 20
@@ -347,7 +345,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveControl: 0
   inputAction: {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  controlGroupFoldout: 0
   dashRange: 4
   dashSpeed: 0.2
   cooldown: 1.5
@@ -365,7 +362,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveControl: 0
   inputAction: {fileID: 5313395977092392803, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  controlGroupFoldout: 0
   interactRayOrigin: {fileID: 2145712773473558439}
   interactRange: 6
   interactSnapRadius: 0.4
@@ -393,7 +389,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveControl: 1
   inputAction: {fileID: 0}
-  controlGroupFoldout: 1
 --- !u!114 &8378139273199744294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,9 +401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9d2c787bca4be4889d5ff7438e8040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passiveControl: 0
+  passiveControl: 1
   inputAction: {fileID: 0}
-  controlGroupFoldout: 0
   fieldOfView: {fileID: 4784766710140276786}
   flashlight: {fileID: 352448085623106667}
   radius: 20
@@ -784,7 +778,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  visibility: 0.40449685
+  visibility: 0.6749985
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,7 +804,7 @@ GameObject:
   - component: {fileID: 3051175788289900178}
   - component: {fileID: 7933555611519160503}
   - component: {fileID: 573359081064459370}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,20 +924,22 @@ MonoBehaviour:
   groundCheck: {fileID: 2565377557887695862}
   ceilingCheck: {fileID: 7799931965240558983}
   wallCheck: {fileID: 18109036695352397}
-  useGravity: 1
+  useGravity: 0
   fallAcceleration: 25
   maxFallSpeed: 15
   jumpEndEarlyGravityModifier: 5
-  useLightingVisibility: 1
+  enableVisibilityCheck: 1
   lightEventListener: {fileID: 7520197564098527792}
-  controlScripts:
-  - {fileID: 5890741780418279463}
-  - {fileID: 3938290388967934858}
-  - {fileID: 2916642468219596251}
-  - {fileID: 7236829821057059442}
-  - {fileID: 4773218601208523903}
-  velocity: {x: 0, y: 0}
   paused: 0
+  controlScripts:
+  - {fileID: 8378139273199744294}
+  - {fileID: 4773218601208523903}
+  - {fileID: 7236829821057059442}
+  - {fileID: 2916642468219596251}
+  - {fileID: 3938290388967934858}
+  - {fileID: 5890741780418279463}
+  velocity: {x: 0, y: 0}
+  showInfo: 0
 --- !u!1 &9117657421144769001
 GameObject:
   m_ObjectHideFlags: 0
