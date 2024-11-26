@@ -15,14 +15,14 @@ namespace Custom.Interactable
 
         [Header("DATA")]
         [SerializeField] protected InteractableObjectData objectData;
-        [SerializeField] protected ObjectInteractionData interactionData;
+        [SerializeField] protected ObjectInteractionData[] interactionData;
         [SerializeField] protected List<string> states = new();
 
         public Vector3 InteractPosition { get { return spriteRenderer.bounds.center; } }
         public SpriteRenderer SpriteRenderer { get { return spriteRenderer; } }
 
         public InteractableObjectData ObjectData { get { return objectData; } }
-        public ObjectInteractionData InteractionData { get { return interactionData; } }
+        public ObjectInteractionData[] InteractionData { get { return interactionData; } }
         public string[] States { get { return states.ToArray(); } }
 
 
@@ -39,6 +39,6 @@ namespace Custom.Interactable
 
 
 
-        public abstract void Interact();
+        public virtual void Interact() { }
     }
 }

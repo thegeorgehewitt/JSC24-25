@@ -23,6 +23,11 @@ namespace Custom.Controller
         [SerializeField] private LayerMask interactableLayers;
         [SerializeField] private LayerMask blockableLayers;
 
+        [Header("REFERENCE")]
+        [SerializeField] private InputActionAsset inputActionScroll;
+
+        public InputActionAsset InputAssetScroll { get { return inputActionScroll; } }
+
         [Header("INTERACT CURSOR")]
         [SerializeField] private InteractCursor interactCursor;
         [SerializeField] private float defaultCursorSize = 0.5f;
@@ -119,6 +124,7 @@ namespace Custom.Controller
             #region Interact Cursor & Interactable Object Display Popup
             if (hoverObject)
             {
+                //var direction = InputAssetScroll.ReadValue<Vector2>();
                 interactCursor.SetLineActive(true);
                 interactCursor.SetSize(hoverObject.SpriteRenderer.bounds.size);
                 InteractableObjectDisplayPopup.DisplayInfo(hoverObject);

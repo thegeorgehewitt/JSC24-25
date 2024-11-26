@@ -21,6 +21,12 @@ namespace Custom.Controller
         [SerializeField] private Collider2D groundCheck;
         [SerializeField] private LayerMask groundLayers;
 
+        [Header("CEILING CHECK")]
+        [SerializeField] private Collider2D ceilingCheck;
+
+        [Header("WALL CHECK")]
+        [SerializeField] private Collider2D wallCheck;
+
         [Header("GRAVITY")]
         [SerializeField] private bool useGravity = true;
         [SerializeField] private float fallAcceleration = 18f;
@@ -37,6 +43,12 @@ namespace Custom.Controller
 
         private bool grounded;
         public bool IsGrounded { get { return grounded; } }
+
+        private bool onCeiling;
+        public bool IsOnCeiling {  get { return onCeiling; } }
+
+        private bool onWall;
+        public bool IsOnWall { get { return onWall; } }
 
         public bool paused;
 
@@ -81,6 +93,12 @@ namespace Custom.Controller
         private void Update()
         {
             grounded = groundCheck.OverlapCollider(contactFilter, contacts) > 0;
+
+            onCeiling = ceilingCheck.OverlapCollider(contactFilter, contacts) > 0;
+            if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true);  }
+            else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
+
+            onWall = wallCheck.OverlapCollider(contactFilter, contacts) > 0;
         }
 
         private void FixedUpdate()

@@ -8,7 +8,10 @@ using Custom.Manager;
 
 namespace Custom.Interactable
 {
-    public class InteractableDoor : InteractableObject
+    using Interfaces;
+    using Unity.VisualScripting;
+
+    public class InteractableDoor : InteractableObject, IToggleable, IOverloadable
     {
         [Header("DOOR REFERENCES")]
         [SerializeField] private Collider2D doorCollider;
@@ -20,6 +23,16 @@ namespace Custom.Interactable
         [SerializeField] private Color openedColor = Color.white / 2;
         [SerializeField] private float easeDuration = 0.1f;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        [Header("DEADLOCK & UNLOCK")]
+        [SerializeField] private bool deadlocked = false;
+        [SerializeField] private Sprite deadlockedSprite;
+        [SerializeField] private Sprite unlockedSprite;
+
+
+        [Header("OVERLOAD")]
+        [SerializeField] private bool overloaded = false;
+        [SerializeField] private Sprite overloadedSprite;
 
         private Coroutine openCoroutine;
 
@@ -60,7 +73,7 @@ namespace Custom.Interactable
             if (shadowCaster) shadowCaster.enabled = !_open;
 
             // TEMPORARY
-            states = new List<string>{ _open ? "Unlocked" : "Locked" };
+            states = new List<string>{ _open ? "Open" : "Closed" };
         }
 
         private void Open(bool _open)
@@ -97,12 +110,45 @@ namespace Custom.Interactable
         }
 
 
-
         public override void Interact()
         {
+            Toggle();
+        }
+
+        public void Toggle()
+        {
+            if (deadlocked) return;
+
             open = !open;
 
             Open(open);
+        }
+
+        public void Overload()
+        {
+            if (overloaded) return;
+
+            overloaded = true;
+
+            open = true;
+
+            spriteRenderer.sprite = overloadedSprite ? overloadedSprite : null;
+            spriteRenderer.color = Color.white;
+            // play destruction anim
+
+            // AOE damage if not in interface
+
+            SetState(open);
+        }
+
+        public void ToggleDeadlock()
+        {
+            deadlocked = !deadlocked;
+
+            open = deadlocked? false : open;
+
+            spriteRenderer.sprite = deadlocked ? deadlockedSprite : unlockedSprite;
+            spriteRenderer.color = open? openedColor : closedColor;
         }
     }
 }

@@ -712,8 +712,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionIcon: {fileID: 6393287579450845119}
+  borderImage: {fileID: 6793667262758845637}
   interactionName: {fileID: 7046866530946573934}
   interactionCost: {fileID: 1544627016248303954}
+  inactiveColor: {r: 1, g: 1, b: 1, a: 1}
+  activeColor: {r: 0.9622642, g: 0.5299452, b: 0.45843717, a: 1}
 --- !u!114 &6974134046393789367
 MonoBehaviour:
   m_ObjectHideFlags: 0

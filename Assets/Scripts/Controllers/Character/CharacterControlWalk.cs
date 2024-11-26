@@ -38,6 +38,8 @@ namespace Custom.Controller
                                 ? Mathf.Max(maxSpeed, Mathf.Abs(attachedMotor.velocity.x))  // Target speed is the larger between max speed and current speed.
                                 : maxSpeed) * direction.x;
 
+            if (attachedMotor.IsOnWall) attachedMotor.velocity.x = 0;
+
             // Decelerate character horizontal speed.
             if (direction.x == 0)
             {

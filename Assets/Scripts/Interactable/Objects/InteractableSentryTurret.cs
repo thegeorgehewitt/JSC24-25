@@ -8,10 +8,11 @@ using UnityEngine;
 using Custom.Decorative;
 using Custom.Controller;
 using Custom.Manager;
+using Custom.Interactable.Interfaces;
 
 namespace Custom.Interactable
 {
-    public class InteractableSentryTurret : InteractableObject
+    public class InteractableSentryTurret : InteractableObject, IOverloadable
     {
         public static Action<CharacterMotor2D> OnShootMotor;
         public static Action<CharacterMotor2D> OnTargetMotor;
@@ -36,6 +37,8 @@ namespace Custom.Interactable
 
         [Header("INTERACTION")]
         [SerializeField] private float jamDuration = 2.0f;
+        [SerializeField] private bool overloaded = false;
+        [SerializeField] private bool recruited = false;
 
         private bool activated = true;
 
@@ -242,17 +245,42 @@ namespace Custom.Interactable
             activated = false;
             laserDisplay.enabled = false;
 
+            // anim
             yield return new WaitForSeconds(jamDuration);
 
             activated = true;
             laserDisplay.enabled = true;
         }
 
+        #endregion
 
+        #region Interaction - Overload
 
-        public override void Interact()
+        public void Overload()
         {
-            JamTurret();
+            if (overloaded) return;
+
+            overloaded = true;
+
+            // explosion death anim
+
+            // AOE damage if not in interface
+        }
+
+        #endregion
+
+        #region Interaction - Recruit
+
+        private Coroutine recruitCoroutine;
+
+        public void Recruit()
+        {
+            if (recruited) return;
+
+            recruited = true;
+
+            // Recruit functionality (coroutine)
+
         }
 
         #endregion

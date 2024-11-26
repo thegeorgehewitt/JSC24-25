@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Custom.Interactable
+{
+    using Interfaces;
+
+    public class InteractableElectircalBox : InteractableObject, IOverloadable
+    {
+        [Header("OVERLOAD")]
+        [SerializeField] private bool overloaded = false;
+
+        public void Overload()
+        {
+            if (overloaded) return;
+
+            overloaded = true;
+
+            // explosion anim
+
+            // AOE damage if not in interface
+        }
+    }
+}
