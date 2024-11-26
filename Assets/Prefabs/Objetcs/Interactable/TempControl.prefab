@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -5177388603050735206, guid: 71ebafeef3c03457483266a33ab2b270, type: 3}
-  m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  m_Color: {r: 0.9339623, g: 0.3550205, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -175,12 +175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bff216cc0d3a854b89e160c25856d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 3459847120950194334}
-  interactAreaCollider: {fileID: 5197918338584211243}
   objectData: {fileID: 11400000, guid: b0fa40619e7b77441a9bc04fe615b0b0, type: 2}
   interactionData:
   - {fileID: 11400000, guid: 7577c1ed7c03ecf4cbdf348282ce90e3, type: 2}
   states:
   - On
+  spriteRenderer: {fileID: 3459847120950194334}
   linkedLights: []
   on: 1
