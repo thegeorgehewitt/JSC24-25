@@ -1,6 +1,4 @@
-#if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.AnimatedValues;
 
 using Custom.Controller;
 
@@ -12,12 +10,8 @@ namespace Custom.Editor
     {
         private CharacterControlBase asTarget;
 
-        private SerializedProperty passiveControlProperty;
-        private SerializedProperty inputActionProperty;
-        private SerializedProperty controlGroupFoldoutProperty;
-
-        private AnimBool inputActionVisible;
-        private AnimBool foldout;
+        private SerializedProperty passiveControl;
+        private SerializedProperty inputAction;
 
 
 
@@ -25,51 +19,34 @@ namespace Custom.Editor
         {
             asTarget = (CharacterControlBase)target;
 
-            passiveControlProperty = serializedObject.FindProperty("passiveControl");
-            inputActionProperty = serializedObject.FindProperty("inputAction");
-            controlGroupFoldoutProperty = serializedObject.FindProperty("controlGroupFoldout");
-
-            inputActionVisible = new(!passiveControlProperty.boolValue);
-            inputActionVisible.valueChanged.AddListener(Repaint);
-
-            foldout = new(controlGroupFoldoutProperty.boolValue);
-            foldout.valueChanged.AddListener(Repaint);
+            passiveControl = serializedObject.FindProperty("passiveControl");
+            inputAction = serializedObject.FindProperty("inputAction");
         }
 
         public override void OnInspectorGUI()
         {
             #region Controls
-            foldout.value = EditorGUILayout.BeginFoldoutHeaderGroup(foldout.value, "CONTROLS");
-            controlGroupFoldoutProperty.boolValue = foldout.value;
-
-            if (EditorGUILayout.BeginFadeGroup(foldout.faded))
+            EditorGUILayout.PropertyField(passiveControl);
+            if (!passiveControl.boolValue)
             {
-                if (!inputActionProperty.objectReferenceValue && !passiveControlProperty.boolValue)
-                {
-                    EditorGUILayout.HelpBox(
-                        "Missing InputAction reference for Active Control.\n" +
-                        "Please add a reference to an InputAction or enable Passive Control.", 
-                        MessageType.Error);
-                }
-
-                EditorGUILayout.PropertyField(passiveControlProperty);
-                inputActionVisible.value = !passiveControlProperty.boolValue;
-
-                if (EditorGUILayout.BeginFadeGroup(inputActionVisible.faded))
-                {
-                    EditorGUILayout.PropertyField(inputActionProperty);
-                }
-                EditorGUILayout.EndFadeGroup();
+                EditorGUILayout.PropertyField(inputAction);
             }
-            EditorGUILayout.EndFadeGroup();
 
-            EditorGUILayout.EndFoldoutHeaderGroup();
+            if (!inputAction.objectReferenceValue && !passiveControl.boolValue)
+            {
+                EditorGUILayout.HelpBox(
+                    "Missing InputAction reference for Active Control.\n" +
+                    "Please add a reference to an InputAction or enable Passive Control.",
+                    MessageType.Error);
+            }
             #endregion
 
-            DrawPropertiesExcluding(serializedObject, "m_Script");
+            DrawPropertiesExcluding(serializedObject, 
+                "m_Script",
+                "passiveControl",
+                "inputAction");
 
             serializedObject.ApplyModifiedProperties();
         }
     }
 }
-#endif

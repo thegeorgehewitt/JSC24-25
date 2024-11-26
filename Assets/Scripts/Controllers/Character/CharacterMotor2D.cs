@@ -6,6 +6,7 @@ using UnityEngine;
 using FunkyCode;
 
 using Custom.Manager;
+using Custom.Attribute;
 
 namespace Custom.Controller
 {
@@ -16,35 +17,44 @@ namespace Custom.Controller
         public static event Action<CharacterMotor2D> OnCharacterMotorEnabled;
         public static event Action<CharacterMotor2D> OnCharacterMotorDisabled;
 
-        [Header("REFERENCES")]
+        /*
+         * REFERENCE
+         */
+        [ReadOnly]
         [SerializeField] private new Rigidbody2D rigidbody;
 
-        [Header("PROXIMITY CHECK")]
+        /*
+         * PROXIMITY CHECK
+         */
         [Tooltip("Layer masks considered ground/ceiling/wall.")]
         [SerializeField] private LayerMask solidLayers;
         [SerializeField] private Collider2D groundCheck;
         [SerializeField] private Collider2D ceilingCheck;
         [SerializeField] private Collider2D wallCheck;
 
-        [Header("GRAVITY")]
+        /*
+         * GRAVITY
+         */
         [SerializeField] private bool useGravity = true;
         [SerializeField] private float fallAcceleration = 18f;
         [SerializeField] private float maxFallSpeed = 9f;
         [SerializeField] private float jumpEndEarlyGravityModifier = 5f;
 
-        [Header("VISIBILITY")]
+        /*
+         * VISIBILITY
+         */
         [Tooltip("If enabled, visibility is calculated using light event system. Otherwise, visibility is set to 1 by default.")]
         [SerializeField] private bool enableVisibilityCheck;
         [SerializeField] private LightEventListener lightEventListener;
 
-        [Header("CONTROLS")]
+        /*
+         * CONTROLS
+         */
         [Tooltip("While paused, the controller will not be affected by physics simulation and player controller inputs.")]
         [HideInInspector] public bool paused;
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
         [HideInInspector] public Vector2 velocity = new();
-
-        [SerializeField] private bool showInfo;
 
         private ContactFilter2D contactFilter;
         private List<Collider2D> contacts = new();
