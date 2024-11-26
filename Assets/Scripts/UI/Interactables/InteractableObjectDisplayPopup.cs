@@ -32,6 +32,8 @@ namespace Custom.UI
         private List<InteractableObjectStateDisplay> objectStates = new();
         private List<InteractionInfoDisplay> interactions = new();
 
+        private InteractableObject currentObject;
+
 
 
         private void Awake()
@@ -66,9 +68,13 @@ namespace Custom.UI
 
 
 
-        private void Core_DisplayInfo(InteractableObject _object, bool _firstHover)
+        private void Core_DisplayInfo(InteractableObject _object)
         {
-            if (_firstHover) activeOption = 0;
+            if (currentObject != _object)
+            {
+                activeOption = 0;
+                currentObject = _object;
+            }
 
             for (int i =  0; i < _object.InteractionData.Length; i++)
             {
@@ -153,9 +159,9 @@ namespace Custom.UI
             Instance.Core_ShowPopup(_state);
         }
 
-        public static void DisplayInfo(InteractableObject _object, bool _firstHover)
+        public static void DisplayInfo(InteractableObject _object)
         {
-            Instance.Core_DisplayInfo(_object, _firstHover);
+            Instance.Core_DisplayInfo(_object);
         }
 
         #endregion

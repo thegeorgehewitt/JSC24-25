@@ -33,7 +33,6 @@ namespace Custom.Controller
         [SerializeField] private float defaultCursorSize = 0.5f;
         [SerializeField] private Color outOfRangeColor = Color.red;
         [SerializeField] private Color inRangeColor = Color.cyan;
-        [SerializeField] private bool firstHover = true;
 
         private InteractableObject hoverObject;
         private bool outOfRange;
@@ -128,15 +127,13 @@ namespace Custom.Controller
                 //var direction = InputAssetScroll.ReadValue<Vector2>();
                 interactCursor.SetLineActive(true);
                 interactCursor.SetSize(hoverObject.SpriteRenderer.bounds.size);
-                InteractableObjectDisplayPopup.DisplayInfo(hoverObject, firstHover);
-                firstHover = false;
+                InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
             }
             else
             {
                 interactCursor.SetLineActive(outOfRange);
                 interactCursor.SetSize(Vector2.one * defaultCursorSize);
                 InteractableObjectDisplayPopup.ShowPopup(false);
-                firstHover = true;
             }
 
             if (blockedVision)
