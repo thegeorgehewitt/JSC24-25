@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: c57d018e51aef9c4399c64ab0254729a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - foldoutBackgroundOff: {fileID: 2800000, guid: 6cbca558856385640896efc8a1928f91, type: 3}
+  - foldoutBackgroundOn: {fileID: 2800000, guid: 602ef0c7103678446b4bc4b3cbeb899e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

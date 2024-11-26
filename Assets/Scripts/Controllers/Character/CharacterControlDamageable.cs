@@ -1,14 +1,12 @@
 using System;
 
-using UnityEngine;
-
-using Custom.Interactable;
+using Custom.Interactable.Enemy;
 
 namespace Custom.Controller
 {
     public class CharacterControlDamageable : CharacterControlBase
     {
-        public static Action OnMotorDamaged;
+        public static event Action OnMotorDamaged;
 
 
 
@@ -31,12 +29,12 @@ namespace Custom.Controller
 
         protected override void OnActivate()
         {
-            InteractableSentryTurret.OnShootMotor += OnMotorShot;
+
         }
 
         protected override void OnDeactivate() 
         {
-            InteractableSentryTurret.OnShootMotor -= OnMotorShot;
+
         }
     }
 }

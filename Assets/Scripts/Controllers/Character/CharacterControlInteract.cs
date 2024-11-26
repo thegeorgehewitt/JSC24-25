@@ -12,9 +12,9 @@ namespace Custom.Controller
 {
     public class CharacterControlInteract : CharacterControlBase
     {
-        public static Action OnInteractObjectOutOfRange;
-        public static Action OnVisionBlocked;
-        public static Action<InteractableObject> OnHoverNewInteractableObject;
+        public static event Action OnInteractObjectOutOfRange;
+        public static event Action OnVisionBlocked;
+        public static event Action<InteractableObject> OnHoverNewInteractableObject;
 
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
@@ -126,7 +126,7 @@ namespace Custom.Controller
             {
                 //var direction = InputAssetScroll.ReadValue<Vector2>();
                 interactCursor.SetLineActive(true);
-                interactCursor.SetSize(hoverObject.SpriteRenderer.bounds.size);
+                interactCursor.SetSize(hoverObject.ObjectBoundsSize);
                 InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
             }
             else

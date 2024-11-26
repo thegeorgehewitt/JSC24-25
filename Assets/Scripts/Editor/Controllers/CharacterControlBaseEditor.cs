@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using UnityEditor;
 
 using Custom.Controller;
@@ -9,17 +8,45 @@ namespace Custom.Editor
     [CustomEditor(typeof(CharacterControlBase), true)]
     public class CharacterControlBaseEditor : UnityEditor.Editor
     {
+        private CharacterControlBase asTarget;
+
+        private SerializedProperty passiveControl;
+        private SerializedProperty inputAction;
+
+
+
+        private void OnEnable()
+        {
+            asTarget = (CharacterControlBase)target;
+
+            passiveControl = serializedObject.FindProperty("passiveControl");
+            inputAction = serializedObject.FindProperty("inputAction");
+        }
+
         public override void OnInspectorGUI()
         {
-            var target = (CharacterControlBase)this.target;
-
-            if (!target.inputAction && !target.IsPassiveControl)
+            #region Controls
+            EditorGUILayout.PropertyField(passiveControl);
+            if (!passiveControl.boolValue)
             {
-                EditorGUILayout.HelpBox("Missing InputAction reference for active control.", MessageType.Error);
+                EditorGUILayout.PropertyField(inputAction);
             }
 
-            base.OnInspectorGUI();
+            if (!inputAction.objectReferenceValue && !passiveControl.boolValue)
+            {
+                EditorGUILayout.HelpBox(
+                    "Missing InputAction reference for Active Control.\n" +
+                    "Please add a reference to an InputAction or enable Passive Control.",
+                    MessageType.Error);
+            }
+            #endregion
+
+            DrawPropertiesExcluding(serializedObject, 
+                "m_Script",
+                "passiveControl",
+                "inputAction");
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
-#endif

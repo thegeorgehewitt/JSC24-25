@@ -9,7 +9,6 @@ namespace Custom.Utility
     [RequireComponent(typeof(CompositeCollider2D))]
     public class ShadowCaster2DTileMap : MonoBehaviour
     {
-        [Space(10)]
         [SerializeField] private bool selfShadows = true;
 
         private CompositeCollider2D tilemapCollider;

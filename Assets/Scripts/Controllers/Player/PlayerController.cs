@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +10,7 @@ namespace Custom.Controller
     {
         public static PlayerController Instance;
 
-        public static Action<CharacterMotor2D> OnControlledMotorChanged;
+        public static event Action<CharacterMotor2D> OnControlledMotorChanged;
 
         [Header("REFERENCE")]
         [SerializeField] private InputActionAsset inputAction;

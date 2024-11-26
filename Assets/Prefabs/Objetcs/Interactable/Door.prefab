@@ -137,14 +137,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4ccf2efab238d448f6944b55c89771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 2916424553002418655}
-  interactAreaCollider: {fileID: 2606397983663435397}
   objectData: {fileID: 11400000, guid: 8a13ccfe83aaa2447ae4b76deafd28a8, type: 2}
   interactionData:
   - {fileID: 11400000, guid: 8bec72f0f23eac84bb2dc13136d23f6c, type: 2}
   - {fileID: 11400000, guid: a51484ff4af8d7e46a7e3bf7bb6829a8, type: 2}
   states:
   - Closed
+  spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 5458236464512437613}
   shadowCaster: {fileID: 829887462916182115}
   open: 0

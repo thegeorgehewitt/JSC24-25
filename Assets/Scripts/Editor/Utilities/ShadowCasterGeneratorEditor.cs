@@ -32,6 +32,8 @@ namespace Custom.Editor
                 asTarget.DestroyAllChildren();
             }
             EditorGUILayout.EndHorizontal();
+
+            serializedObject.ApplyModifiedProperties();
         }
 
     }
