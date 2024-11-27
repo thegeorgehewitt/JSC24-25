@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2608321510888662958}
   - component: {fileID: 1669243585473573076}
-  - component: {fileID: 6597371158717242277}
+  - component: {fileID: 1635200403577809530}
   m_Layer: 9
   m_Name: Terminal
   m_TagString: Untagged
@@ -163,7 +163,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6597371158717242277
+--- !u!114 &1635200403577809530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,10 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d035a1e25489444db08ed4993f57b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 8651064824262431475}
-  interactAreaCollider: {fileID: 1669243585473573076}
-  objectData: {fileID: 11400000, guid: 6c266e0ac40f7784aa872c8cf2005e39, type: 2}
-  interactionData:
-  - {fileID: 0}
+  objectData: {fileID: 0}
+  interactionData: []
   states: []
+  spriteRenderer: {fileID: 8651064824262431475}
   linkedObjects: []

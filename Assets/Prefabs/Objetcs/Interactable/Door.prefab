@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1431536996982075592}
-  - component: {fileID: 2606397983663435397}
   - component: {fileID: 5458236464512437613}
+  - component: {fileID: 1730410341943266298}
   - component: {fileID: 4486568507856741927}
   m_Layer: 10
   m_Name: Door
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 9055732100578954654}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2606397983663435397
+--- !u!61 &5458236464512437613
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,17 +70,17 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!61 &5458236464512437613
+--- !u!61 &1730410341943266298
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,8 +144,8 @@ MonoBehaviour:
   states:
   - Closed
   spriteRenderer: {fileID: 2916424553002418655}
-  doorCollider: {fileID: 5458236464512437613}
-  shadowCaster: {fileID: 829887462916182115}
+  doorCollider: {fileID: 1730410341943266298}
+  shadowCaster: {fileID: 0}
   open: 0
   closedColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   openedColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0.19607843}
@@ -189,7 +189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9055732100578954654}
   - component: {fileID: 2916424553002418655}
-  - component: {fileID: 829887462916182115}
+  - component: {fileID: 4109672476251525396}
   m_Layer: 10
   m_Name: Display
   m_TagString: Untagged
@@ -264,7 +264,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &829887462916182115
+--- !u!114 &4109672476251525396
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -273,24 +273,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 6097196538804143724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_ComponentVersion: 1
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: 000000002f8cb58cc34532dc05ceda8af52a46749157df6d
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 54216
-  m_LocalBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.5, y: 0.5, z: 0}
+  shadowType: 1
+  shadowLayer: 0
+  shadowDistance: 0
+  shadowDistanceMin: 0.5
+  shadowDistanceMax: 1
+  shadowTranslucency: 0
+  maskType: 0
+  maskLit: 0
+  maskPivot: 0
+  maskLayer: 0
+  maskLitCustom: 1
+  bumpMapMode:
+    type: 0
+    textureType: 0
+    texture: {fileID: 0}
+    sprite: {fileID: 0}
+    invertX: 0
+    invertY: 0
+    depth: 1
+    spriteRenderer: {fileID: 2916424553002418655}
+  mainShape:
+    shadowType: 1
+    maskType: 0
+    maskPivot: 0
+    transform: {fileID: 9055732100578954654}

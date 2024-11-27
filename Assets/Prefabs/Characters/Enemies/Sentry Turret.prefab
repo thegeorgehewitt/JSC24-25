@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewMeshFilter: {fileID: 8068654732558304390}
-  radius: 20
+  radius: 10
   angle: 30
   rotation: 90
   drawViewMesh: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1088
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
@@ -244,27 +244,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc10361cd2641504ab29e38521713a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 8657652559121912493}
-  interactAreaCollider: {fileID: 1742618746627999907}
   objectData: {fileID: 11400000, guid: 40356929d4c89374282b6472cb6fe4fc, type: 2}
-  interactionData: {fileID: 11400000, guid: 079949fae7afb2e4dac8ce8373e53a34, type: 2}
+  interactionData:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   states: []
-  laserDisplay: {fileID: 5448660369053472027}
+  spriteRenderer: {fileID: 8657652559121912493}
   fieldOfView: {fileID: 6341179826867327378}
-  firePoint: {fileID: 850919273345873474}
   flip: 1
-  range: 20
+  maxRange: 10
   angle: 30
-  lockOnDuration: 1
   trackableLayers:
     serializedVersion: 2
     m_Bits: 384
   blockableLayers:
     serializedVersion: 2
     m_Bits: 1088
+  firePoint: {fileID: 850919273345873474}
+  laserDisplay: {fileID: 5448660369053472027}
+  lockOnDuration: 1
   nontargetingColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   targetingColor: {r: 0.8490566, g: 0.19624422, b: 0.19624422, a: 1}
   jamDuration: 2
+  overloaded: 0
+  recruited: 0
 --- !u!1 &7252178846879592827
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +279,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4670510247242065388}
   - component: {fileID: 8657652559121912493}
-  - component: {fileID: 7810359800791242996}
   - component: {fileID: 5448660369053472027}
   m_Layer: 9
   m_Name: Display
@@ -351,36 +354,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7810359800791242996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7252178846879592827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_ComponentVersion: 1
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 1
-  m_ApplyToSortingLayers: 000000002f8cb58cc34532dc05ceda8af52a46749157df6df91ecdb8
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 61142
-  m_LocalBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.5, y: 0.5, z: 0}
 --- !u!120 &5448660369053472027
 LineRenderer:
   serializedVersion: 2

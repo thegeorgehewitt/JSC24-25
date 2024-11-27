@@ -158,7 +158,7 @@ namespace FunkyCode
                     value = 1;
                 }
 
-                collisionPointsValue[pointInfo.vertexIndex] = Mathf.Max(collisionPointsValue[pointInfo.vertexIndex], value);
+                collisionPointsValue[pointInfo.vertexIndex] = Mathf.Clamp01(collisionPointsValue[pointInfo.vertexIndex] + value);
 
                 // Add to visible point list if not yet added.
                 if (!visiblePoints.Contains(pointInfo.polygonRelative))
