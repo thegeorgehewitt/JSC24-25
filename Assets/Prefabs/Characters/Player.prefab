@@ -371,6 +371,7 @@ MonoBehaviour:
   blockableLayers:
     serializedVersion: 2
     m_Bits: 1088
+  inputActionScroll: {fileID: 0}
   interactCursor: {fileID: 2594773620045173641}
   defaultCursorSize: 0.5
   outOfRangeColor: {r: 0.8679245, g: 0.41349235, b: 0.41349235, a: 1}
@@ -685,7 +686,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -778,7 +779,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  visibility: 0.6749985
+  visibility: 0
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,7 +925,7 @@ MonoBehaviour:
   groundCheck: {fileID: 2565377557887695862}
   ceilingCheck: {fileID: 7799931965240558983}
   wallCheck: {fileID: 18109036695352397}
-  useGravity: 0
+  useGravity: 1
   fallAcceleration: 25
   maxFallSpeed: 15
   jumpEndEarlyGravityModifier: 5
@@ -939,7 +940,6 @@ MonoBehaviour:
   - {fileID: 3938290388967934858}
   - {fileID: 5890741780418279463}
   velocity: {x: 0, y: 0}
-  showInfo: 0
 --- !u!1 &9117657421144769001
 GameObject:
   m_ObjectHideFlags: 0

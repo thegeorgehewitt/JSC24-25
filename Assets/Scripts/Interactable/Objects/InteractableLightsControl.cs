@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-using Custom.Manager;
-
 namespace Custom.Interactable
 {
     using Interfaces;

@@ -56,8 +56,8 @@ namespace Custom.Controller
 
         [HideInInspector] public Vector2 velocity = new();
 
-        private ContactFilter2D contactFilter;
-        private List<Collider2D> contacts = new();
+        private ContactFilter2D proximityCheckContactFilter;
+        private List<Collider2D> proximityCheckContacts = new();
 
         private bool grounded;
         public bool IsGrounded { get { return grounded; } }
@@ -106,10 +106,10 @@ namespace Custom.Controller
             #endregion
 
             #region Setup Contact Filter
-            contactFilter.layerMask = solidLayers;
-            contactFilter.useLayerMask = true;
-            contactFilter.useTriggers = true;
-            contactFilter.useDepth = false;
+            proximityCheckContactFilter.layerMask = solidLayers;
+            proximityCheckContactFilter.useLayerMask = true;
+            proximityCheckContactFilter.useTriggers = false;
+            proximityCheckContactFilter.useDepth = false;
             #endregion
 
             rigidbody.gravityScale = 0;
@@ -162,13 +162,13 @@ namespace Custom.Controller
         #region Proximity Check
         private void UpdateProximityCheck()
         {
-            grounded = groundCheck.OverlapCollider(contactFilter, contacts) > 0;
+            grounded = groundCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
 
-            onCeiling = ceilingCheck.OverlapCollider(contactFilter, contacts) > 0;
+            onCeiling = ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
             if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
             else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
 
-            onWall = wallCheck.OverlapCollider(contactFilter, contacts) > 0;
+            onWall = wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
         }
         #endregion
 

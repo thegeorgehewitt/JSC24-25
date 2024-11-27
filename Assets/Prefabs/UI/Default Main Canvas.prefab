@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8637608982665173452}
   - component: {fileID: 8722231542190147354}
   m_Layer: 5
-  m_Name: Character Controller Test Canvas
+  m_Name: Default Main Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
