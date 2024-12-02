@@ -29,7 +29,7 @@ namespace Custom.Interactable.Enemy
 
         [Header("INTERACTION")]
         [SerializeField] private float jamDuration = 2.0f;
-        [SerializeField] private bool overloaded = false;
+        [SerializeField] private bool overridden = false;
         [SerializeField] private bool recruited = false;
 
 
@@ -173,34 +173,17 @@ namespace Custom.Interactable.Enemy
 
         #endregion
 
-        #region Interaction - Overload
+        #region Interaction - Override
 
-        public void Overload()
+        public void Override()
         {
-            if (overloaded) return;
+            if (overridden) return;
 
-            overloaded = true;
+            overridden = true;
 
-            // explosion death anim
-
-            // AOE damage if not in interface
+            // shoot in random direction
         }
 
-        #endregion
-
-        #region Interaction - Recruit
-
-        private Coroutine recruitCoroutine;
-
-        public void Recruit()
-        {
-            if (recruited) return;
-
-            recruited = true;
-
-            // Recruit functionality (coroutine)
-
-        }
         #endregion
     }
 }

@@ -11,7 +11,7 @@ namespace Custom.Interactable
     using Interfaces;
     using Unity.VisualScripting;
 
-    public class InteractableDoor : InteractableObject, IToggleable, IOverloadable
+    public class InteractableDoor : InteractableObject, IToggleable
     {
         [Header("DOOR REFERENCES")]
         [SerializeField] private Collider2D doorCollider;
@@ -124,23 +124,6 @@ namespace Custom.Interactable
             Open(open);
         }
 
-        public void Overload()
-        {
-            if (overloaded) return;
-
-            overloaded = true;
-
-            open = true;
-
-            spriteRenderer.sprite = overloadedSprite ? overloadedSprite : null;
-            spriteRenderer.color = Color.white;
-            // play destruction anim
-
-            // AOE damage if not in interface
-
-            SetState(open);
-        }
-
         public void ToggleDeadlock()
         {
             deadlocked = !deadlocked;
@@ -150,5 +133,26 @@ namespace Custom.Interactable
             spriteRenderer.sprite = deadlocked ? deadlockedSprite : unlockedSprite;
             spriteRenderer.color = open? openedColor : closedColor;
         }
+
+
+
+
+        // overload funtionality not currently in use
+        //public void Overload()
+        //{
+        //    if (overloaded) return;
+
+        //    overloaded = true;
+
+        //    open = true;
+
+        //    spriteRenderer.sprite = overloadedSprite ? overloadedSprite : null;
+        //    spriteRenderer.color = Color.white;
+        //    // play destruction anim
+
+        //    // AOE damage if not in interface
+
+        //    SetState(open);
+        //}
     }
 }

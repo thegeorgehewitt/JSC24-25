@@ -6,7 +6,7 @@ namespace Custom.Interactable
 {
     using Interfaces;
 
-    public class InteractableElectircalBox : InteractableObject, IOverloadable
+    public class InteractableElectircalBox : InteractableObject
     {
         [Header("OVERLOAD")]
         [SerializeField] private bool overloaded = false;
@@ -17,9 +17,14 @@ namespace Custom.Interactable
 
             overloaded = true;
 
-            // explosion anim
+            // electrical surge anim
 
-            // AOE damage if not in interface
+            // AOE disabling of enemies
+        }
+
+        public override void Interact()
+        {
+            Overload();
         }
     }
 }

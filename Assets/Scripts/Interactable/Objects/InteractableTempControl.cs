@@ -12,7 +12,7 @@ namespace Custom.Interactable
 
     public class InteractableTempControl : InteractableObject, IToggleable
     {
-        [Header("LIGHT REFERENCES")]
+        [Header("INTERACTABLE OBJECT REFERENCES")]
         [SerializeField] private GameObject[] linkedObjects;
 
         [Header("TOGGLE OVERHEAT")]

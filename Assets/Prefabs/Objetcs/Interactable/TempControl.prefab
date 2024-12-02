@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8146379599539097068}
   - component: {fileID: 5197918338584211243}
-  - component: {fileID: 1632060452983216504}
+  - component: {fileID: 8199089174578390448}
   m_Layer: 9
   m_Name: TempControl
   m_TagString: Untagged
@@ -163,7 +163,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1632060452983216504
+--- !u!114 &8199089174578390448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,14 +172,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 9165484879827527391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bff216cc0d3a854b89e160c25856d2c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9318e0b780ce3ec4caa45040947b1ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectData: {fileID: 11400000, guid: b0fa40619e7b77441a9bc04fe615b0b0, type: 2}
   interactionData:
   - {fileID: 11400000, guid: 7577c1ed7c03ecf4cbdf348282ce90e3, type: 2}
-  states:
-  - On
+  states: []
   spriteRenderer: {fileID: 3459847120950194334}
-  linkedLights: []
-  on: 1
+  linkedObjects: []
+  isOverheated: 0
