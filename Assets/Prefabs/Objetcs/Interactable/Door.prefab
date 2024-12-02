@@ -177,8 +177,6 @@ MonoBehaviour:
   deadlocked: 0
   deadlockedSprite: {fileID: 0}
   unlockedSprite: {fileID: 0}
-  overloaded: 0
-  overloadedSprite: {fileID: 0}
 --- !u!1 &6097196538804143724
 GameObject:
   m_ObjectHideFlags: 0

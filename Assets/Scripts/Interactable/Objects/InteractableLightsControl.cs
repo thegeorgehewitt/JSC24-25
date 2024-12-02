@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+
+using FunkyCode;
 
 namespace Custom.Interactable
 {

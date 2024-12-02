@@ -29,10 +29,10 @@ namespace Custom.Interactable
         [SerializeField] private Sprite deadlockedSprite;
         [SerializeField] private Sprite unlockedSprite;
 
-
-        [Header("OVERLOAD")]
-        [SerializeField] private bool overloaded = false;
-        [SerializeField] private Sprite overloadedSprite;
+        // overload function not in use
+        //[Header("OVERLOAD")]
+        //[SerializeField] private bool overloaded = false;
+        //[SerializeField] private Sprite overloadedSprite;
 
         private Coroutine openCoroutine;
 
