@@ -246,9 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectData: {fileID: 11400000, guid: 40356929d4c89374282b6472cb6fe4fc, type: 2}
   interactionData:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 079949fae7afb2e4dac8ce8373e53a34, type: 2}
   states: []
   spriteRenderer: {fileID: 8657652559121912493}
   fieldOfView: {fileID: 6341179826867327378}
@@ -267,7 +265,7 @@ MonoBehaviour:
   nontargetingColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   targetingColor: {r: 0.8490566, g: 0.19624422, b: 0.19624422, a: 1}
   jamDuration: 2
-  overloaded: 0
+  overridden: 0
   recruited: 0
 --- !u!1 &7252178846879592827
 GameObject:
