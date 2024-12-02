@@ -28,15 +28,15 @@ public class SceneTransition : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }*/
 
-    public void ShowExitConfirmation()
+    public void ShowCanvas(GameObject canvas)
     {
-        exitConfirmationPanel.SetActive(true);
+        canvas.SetActive(true);
     }
 
     
-    public void HideExitConfirmation()
+    public void HideCanvas(GameObject canvas)
     {
-        exitConfirmationPanel.SetActive(false);
+        canvas.SetActive(false);
     }
 
     
