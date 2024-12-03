@@ -1,29 +1,39 @@
 using System.Collections;
+
 using UnityEngine;
 
 using Custom.Manager;
 
 namespace Custom.Controller
 {
-    public class CharacterControlDash : CharacterControlBase
+    public class CharacterControlRoll : CharacterControlBase
     {
-        [Header("DASH")]
-        [SerializeField] private float dashRange = 4.0f;
-        [SerializeField] private float dashSpeed = 0.5f;
+        public override string[] InputActionKeysName
+        {
+            get => new string[] {
+                "Roll",
+            };
+        }
+
+
+
+        [Header("ROLL")]
+        [SerializeField] private float rollRange = 4.0f;
+        [SerializeField] private float rollSpeed = 0.5f;
         [SerializeField] private float cooldown = 2.0f;
 
-        private bool dashAttempt;
+        private bool rollAttempt;
 
 
 
         private void OnEnable()
         {
-            InputAction.performed += _ => { dashAttempt = true; };
+            GetInputActionWithName("Roll").performed += _ => { rollAttempt = true; };
         }
 
         public void OnDisable()
         {
-            InputAction.performed -= _ => { dashAttempt = true; };
+            GetInputActionWithName("Roll").performed -= _ => { rollAttempt = true; };
         }
 
         private void FixedUpdate()
@@ -34,7 +44,6 @@ namespace Custom.Controller
 
 
         #region Movement
-
         private int direction;
         private float cooldownLeft;
         private Coroutine cooldownCoroutine;
@@ -48,8 +57,8 @@ namespace Custom.Controller
                 direction = attachedMotor.velocity.x > 0 ? 1 : -1;
             }
 
-            if (!dashAttempt) return;
-            dashAttempt = false;
+            if (!rollAttempt) return;
+            rollAttempt = false;
 
             if (cooldownLeft > 0) return;
 
@@ -62,13 +71,13 @@ namespace Custom.Controller
             cooldownLeft = cooldown;
 
             attachedMotor.SetState("Dashing", true);
-            attachedMotor.velocity = Vector2.right * direction * dashRange / dashSpeed;
+            attachedMotor.velocity = Vector2.right * direction * rollRange / rollSpeed;
 
             while (cooldownLeft > 0)
             {
                 cooldownLeft -= TimeManager.DeltaTime;
 
-                if (cooldownLeft < cooldown - dashSpeed && locked)
+                if (cooldownLeft < cooldown - rollSpeed && locked)
                 {
                     locked = false;
                     attachedMotor.velocity.x = 0;
@@ -81,7 +90,6 @@ namespace Custom.Controller
             attachedMotor.SetState("Dashing", false);
             cooldownLeft = 0;
         }
-
         #endregion
     }
 }

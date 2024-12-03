@@ -6,6 +6,8 @@ namespace Custom.Controller
 {
     public class CharacterControlDamageable : CharacterControlBase
     {
+        public override string[] InputActionKeysName { get => new string[] { }; }
+
         public static event Action OnMotorDamaged;
 
 

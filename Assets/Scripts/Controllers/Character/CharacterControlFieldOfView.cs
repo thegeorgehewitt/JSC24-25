@@ -7,6 +7,10 @@ namespace Custom.Controller
 {
     public class CharacterControlFieldOfView : CharacterControlBase
     {
+        public override string[] InputActionKeysName { get => new string[] { }; }
+
+
+
         [Header("REFERENCES")]
         [SerializeField] private FieldOfView fieldOfView;
         [SerializeField] private Light2D flashlight;

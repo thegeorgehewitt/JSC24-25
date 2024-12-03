@@ -68,14 +68,7 @@ namespace Custom.Controller
         private bool onWall;
         public bool IsOnWall { get { return onWall; } }
 
-        public float Visibility
-        {
-            get
-            {
-                if (enableVisibilityCheck && lightEventListener) return lightEventListener.visibility;
-                else return 1;
-            }
-        }
+        public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.visibility : 1.0f; } }
 
 
 
@@ -140,8 +133,12 @@ namespace Custom.Controller
             {
                 control.SetActive(true);
 
-                if (!control.IsPassiveControl)
-                    _controller?.EnableActionMap(control.InputActionMap);
+                if (control.IsPassiveControl) continue;
+
+                foreach (var actionMap in control.InputActionMaps)
+                {
+                    _controller?.EnableActionMap(actionMap);
+                }
             }
         }
 
@@ -153,8 +150,12 @@ namespace Custom.Controller
             {
                 control.SetActive(false);
 
-                if (!control.IsPassiveControl)
-                    _controller?.DisableActionMap(control.InputActionMap);
+                if (control.IsPassiveControl) continue;
+
+                foreach (var actionMap in control.InputActionMaps)
+                {
+                    _controller?.DisableActionMap(actionMap);
+                }
             }
         }
         #endregion

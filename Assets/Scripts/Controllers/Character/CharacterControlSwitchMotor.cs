@@ -4,6 +4,15 @@ namespace Custom.Controller
 {
     public class CharacterControlSwitchMotor : CharacterControlBase
     {
+        public override string[] InputActionKeysName
+        {
+            get => new string[] {
+                "Switch"
+            };
+        }
+
+
+
         [Header("REFERENCES")]
         [SerializeField] private PlayerController controller;
         [SerializeField] private CharacterMotor2D motor;
@@ -12,12 +21,12 @@ namespace Custom.Controller
 
         private void OnEnable()
         {
-            InputAction.performed += _ => Possess();
+            GetInputActionWithName("Switch").performed += _ => Possess();
         }
 
         private void OnDisable()
         {
-            InputAction.performed -= _ => Possess();
+            GetInputActionWithName("Switch").performed -= _ => Possess();
         }
 
 

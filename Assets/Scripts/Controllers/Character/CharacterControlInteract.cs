@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,12 +7,21 @@ using UnityEngine.InputSystem;
 using Custom.Interactable;
 using Custom.Decorative;
 using Custom.UI;
-using System.Collections.Generic;
 
 namespace Custom.Controller
 {
     public class CharacterControlInteract : CharacterControlBase
     {
+        public override string[] InputActionKeysName
+        {
+            get => new string[] {
+                "Interact",
+                "Scroll"
+            };
+        }
+
+
+
         public static event Action OnInteractObjectOutOfRange;
         public static event Action OnVisionBlocked;
         public static event Action<InteractableObject> OnHoverNewInteractableObject;
@@ -25,8 +35,6 @@ namespace Custom.Controller
 
         [Header("REFERENCE")]
         [SerializeField] private InputActionAsset inputActionScroll;
-
-        public InputActionAsset InputAssetScroll { get { return inputActionScroll; } }
 
         [Header("INTERACT CURSOR")]
         [SerializeField] private InteractCursor interactCursor;
@@ -44,12 +52,12 @@ namespace Custom.Controller
 
         private void OnEnable()
         {
-            InputAction.performed += _ => Interact();
+            GetInputActionWithName("Interact").performed += _ => Interact();
         }
 
         private void OnDisable()
         {
-            InputAction.performed -= _ => Interact();
+            GetInputActionWithName("Interact").performed -= _ => Interact();
         }
 
         private void Awake()

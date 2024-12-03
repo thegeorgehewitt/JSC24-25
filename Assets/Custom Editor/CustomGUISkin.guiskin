@@ -1390,15 +1390,15 @@ MonoBehaviour:
     m_Border:
       m_Left: 24
       m_Right: 0
-      m_Top: 1
-      m_Bottom: 1
+      m_Top: 0
+      m_Bottom: 0
     m_Margin:
       m_Left: 0
       m_Right: 0
       m_Top: 0
       m_Bottom: 0
     m_Padding:
-      m_Left: 15
+      m_Left: 0
       m_Right: 0
       m_Top: 0
       m_Bottom: 0
@@ -1415,9 +1415,9 @@ MonoBehaviour:
     m_RichText: 1
     m_TextClipping: 1
     m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
+    m_ContentOffset: {x: 26, y: 0}
     m_FixedWidth: 0
-    m_FixedHeight: 24
+    m_FixedHeight: 18
     m_StretchWidth: 1
     m_StretchHeight: 0
   m_Settings:

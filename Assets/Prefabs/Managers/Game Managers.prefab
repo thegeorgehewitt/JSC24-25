@@ -93,7 +93,7 @@ MonoBehaviour:
     - id: 0
       lightmaps:
       - rendering: 0
-        sceneView: 1
+        sceneView: 0
         overlay: 0
         overlayLayerType: 0
         overlayMaterial: 0

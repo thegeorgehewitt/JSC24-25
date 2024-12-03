@@ -5,6 +5,10 @@ namespace Custom.Controller
 {
     public class CharacterControlWallClimb : CharacterControlBase
     {
+        public override string[] InputActionKeysName { get => new string[] { }; }
+
+
+
         [Header("WALL CHECK")]
         [SerializeField] private Collider2D wallCheck;
         [SerializeField] private LayerMask climbableWallLayers;

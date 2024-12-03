@@ -1,11 +1,18 @@
-using Custom.Manager;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Custom.Controller
 {
     public class CharacterControlJump : CharacterControlBase
     {
+        public override string[] InputActionKeysName
+        {
+            get => new string[] {
+                "Jump",
+            };
+        }
+
+
+
         [Header("JUMP")]
         [SerializeField] private float jumpPower = 8f;
 
@@ -15,12 +22,12 @@ namespace Custom.Controller
 
         private void OnEnable()
         {
-            InputAction.performed += _ => { jumpAttempt = true; };
+            GetInputActionWithName("Jump").performed += _ => { jumpAttempt = true; };
         }
 
         private void OnDisable()
         {
-            InputAction.performed -= _ => { jumpAttempt = true; };
+            GetInputActionWithName("Jump").performed -= _ => { jumpAttempt = true; };
         }
 
         private void FixedUpdate()

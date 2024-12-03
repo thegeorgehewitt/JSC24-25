@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+
+using FunkyCode;
 
 namespace Custom.Interactable
 {
@@ -38,7 +39,6 @@ namespace Custom.Interactable
 
         public override void Interact()
         {
-            Debug.Log("Interacted");
             Toggle();
         }
     }

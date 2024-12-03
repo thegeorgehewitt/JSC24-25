@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 7236829821057059442}
   - component: {fileID: 4773218601208523903}
   - component: {fileID: 8378139273199744294}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Controls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,8 +309,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveControl: 0
-  inputAction: {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  jumpPower: 15
+  inputActions:
+    keys:
+    - Jump
+    - Double Jump
+    values:
+    - {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+    - {fileID: 0}
+  jumpPower: 8
 --- !u!114 &3938290388967934858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,7 +330,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveControl: 0
-  inputAction: {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  inputActions:
+    keys:
+    - Horizontal
+    values:
+    - {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   groundMaxSpeed: 6
   groundAcceleration: 30
   groundDeceleration: 20
@@ -344,9 +354,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveControl: 0
-  inputAction: {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  dashRange: 4
-  dashSpeed: 0.2
+  inputActions:
+    keys:
+    - Roll
+    values:
+    - {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  rollRange: 4
+  rollSpeed: 0.5
   cooldown: 1.5
 --- !u!114 &7236829821057059442
 MonoBehaviour:
@@ -361,7 +375,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveControl: 0
-  inputAction: {fileID: 5313395977092392803, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  inputActions:
+    keys:
+    - Interact
+    - Scroll
+    values:
+    - {fileID: 5313395977092392803, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+    - {fileID: -2048426231008245408, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   interactRayOrigin: {fileID: 2145712773473558439}
   interactRange: 6
   interactSnapRadius: 0.4
@@ -389,7 +409,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveControl: 1
-  inputAction: {fileID: 0}
+  inputActions:
+    keys: []
+    values: []
 --- !u!114 &8378139273199744294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +425,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveControl: 1
-  inputAction: {fileID: 0}
+  inputActions:
+    keys: []
+    values: []
   fieldOfView: {fileID: 4784766710140276786}
   flashlight: {fileID: 352448085623106667}
   radius: 20
@@ -421,7 +445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2805948411185687964}
   - component: {fileID: 2565377557887695862}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6150135434310804845
 Transform:
   m_ObjectHideFlags: 0
@@ -503,7 +527,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6402547206240082972}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.017452458, w: -0.9998477}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -525,12 +549,12 @@ MonoBehaviour:
   lightType: 1
   lightPresetId: 0
   eventPresetId: 0
-  lightLayer: -1
+  lightLayer: 0
   occlusionLayer: 0
   translucentLayer: 0
   translucentPresetId: 0
-  color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  size: 5
+  color: {r: 0.09362746, g: 0.09362746, b: 0.09362746, a: 1}
+  size: 1.4145694
   spotAngleInner: 360
   spotAngleOuter: 360
   coreSize: 0.5
@@ -556,7 +580,7 @@ MonoBehaviour:
   bumpMap:
     intensity: 1
     depth: 1
-  whenInsideCollider: 0
+  whenInsideCollider: 2
   lightSprite: 0
   sprite: {fileID: 21300000, guid: 6592d6be03fd808449716a11558d506f, type: 3}
   spriteFlipX: 0
@@ -580,7 +604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2145712773473558439}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Interact Point
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -618,7 +642,7 @@ GameObject:
   - component: {fileID: 1034671343576945524}
   - component: {fileID: 7520197564098527792}
   - component: {fileID: 3725793931521571199}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,7 +803,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  visibility: 0
+  visibility: 0.7176168
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
