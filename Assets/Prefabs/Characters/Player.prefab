@@ -315,7 +315,7 @@ MonoBehaviour:
   activated: 0
   radius: 15
   angle: 60
-  offAlpha: 0.1
+  offAlpha: 0.02
   onAlpha: 1
 --- !u!1 &3534369279633472950
 GameObject:
@@ -435,10 +435,34 @@ MonoBehaviour:
   occlusionLayer: 0
   translucentLayer: 0
   translucentPresetId: 0
-  color: {r: 1.4980394, g: 1.4980394, b: 1.4980394, a: 0.1}
+  color: {r: 1.4980394, g: 1.4980394, b: 1.4980394, a: 0.02}
   size: 1.4145694
   spotAngleInner: 360
   spotAngleOuter: 360
+  eventImpactCurveMap:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   coreSize: 0.5
   falloff: 0
   lightStrength: 0
@@ -661,31 +685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  distanceWeight:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.2
-      value: 1
-      inSlope: -0.90105975
-      outSlope: -0.90105975
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.08235294
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.03465616
-      outSlope: -0.03465616
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.30588233
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  visibility: 0.6864445
+  visibility: 0.684129
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7009367374004171967}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc8c96ce3176ac34db35ee18522539d7, type: 3}
   m_Name: 
@@ -900,6 +900,30 @@ MonoBehaviour:
   size: 15
   spotAngleInner: 60
   spotAngleOuter: 60
+  eventImpactCurveMap:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   coreSize: 0.5
   falloff: 0
   lightStrength: 0

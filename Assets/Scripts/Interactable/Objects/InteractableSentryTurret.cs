@@ -69,7 +69,7 @@ namespace Custom.Interactable.Enemy
         {
             states = new List<string> { activated ? "Active" : "Jammed" };
 
-            if (AcquireTarget() > 0.5f)
+            if (AcquireTarget() > minimumDetectionLevel)
             {
                 SetLineTargetPosition(targetMotor.transform.position);
                 LockOn(true);

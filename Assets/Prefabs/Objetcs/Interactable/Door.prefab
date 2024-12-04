@@ -145,7 +145,7 @@ MonoBehaviour:
   - Closed
   spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 1730410341943266298}
-  shadowCaster: {fileID: 0}
+  lightCollider: {fileID: 4109672476251525396}
   open: 0
   closedColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   openedColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0.19607843}

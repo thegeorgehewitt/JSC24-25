@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 
 using UnityEngine;
 
 using FunkyCode.Utilities;
-using Unity.VisualScripting;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
-using static UnityEngine.Rendering.DebugUI;
-using System.Linq;
-using System.Collections;
+
+using Custom.Attribute;
 
 namespace FunkyCode
 {
@@ -21,6 +19,7 @@ namespace FunkyCode
         [SerializeField] private bool useDistance = false;
 
         [Space(10)]
+        [ReadOnly]
         [SerializeField] private float visibility = 0;
 
         private LightCollider2D lightCollider;

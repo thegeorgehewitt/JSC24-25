@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -16,13 +18,13 @@ namespace Custom.Editor
         [SerializeField] private Texture2D foldoutBackgroundOn;
 
         private SerializedProperty objectData;
-        private SerializedProperty interactionDatas;
+        private SerializedProperty interactionData;
 
         private SerializedProperty spriteRenderer;
 
-        private AnimBool expandObjectProperties;
 
-        protected System.Type editorType;
+        private List<string> excludedProperties = new List<string> { "m_Script" };
+        private AnimBool expandObjectProperties;
 
         private bool IsExpanded
         {
@@ -30,14 +32,16 @@ namespace Custom.Editor
             set { SessionState.SetBool($"EXPANDED ({typeof(InteractableObjectEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
+        protected System.Type editorType;
+
 
 
         protected virtual void OnEnable()
         {
-            editorType = typeof(InteractableObjectEditor);
+            editorType = GetType();
 
             objectData = serializedObject.FindProperty("objectData");
-            interactionDatas = serializedObject.FindProperty("interactionData");
+            interactionData = serializedObject.FindProperty("interactionData");
 
             spriteRenderer = serializedObject.FindProperty("spriteRenderer");
 
@@ -47,14 +51,7 @@ namespace Custom.Editor
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox(
-                $"This inspector is controlled by a custom editor.\n" +
-                $"Edit this in {editorType} script.",
-                MessageType.None);
-
-            EditorGUILayout.Space(10);
-
-            DrawPropertiesExcluding(serializedObject, "m_Script");
+            DrawPropertiesExcluding(serializedObject, excludedProperties.ToArray());
 
             #region Foldout
             EditorGUILayout.Space(10);
@@ -77,7 +74,7 @@ namespace Custom.Editor
                         MessageType.Warning);
                 }
 
-                EditorGUILayout.PropertyField(interactionDatas);
+                EditorGUILayout.PropertyField(interactionData);
                 #endregion
 
                 #region Interaction Area
@@ -99,6 +96,16 @@ namespace Custom.Editor
             #endregion
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+
+
+        protected void AddExcludedProperties(params SerializedProperty[] _properties)
+        {
+            foreach (var property in _properties)
+            {
+                excludedProperties.Add(property.name);
+            }
         }
     }
 }

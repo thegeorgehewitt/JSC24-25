@@ -1,9 +1,9 @@
+using System.Linq;
 using System.Collections.Generic;
 
 using UnityEngine;
 
 using Custom.Attribute;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Custom.Utility
 {
@@ -134,15 +134,13 @@ namespace Custom.Utility
         /// <summary>
         /// Find all components of given type in field of view.
         /// </summary>
-        /// <typeparam name="T">                Any class inherit from <see cref="Component"/>. </typeparam>
-        /// <param name="_targetLayers">        <see cref="LayerMask"/> of objects to retrieve component from. </param>
-        /// <param name="_complexDetection">    If <see cref="SpriteRenderer"/> is attached, complex detection will use sprite's physics shape to detect visibility. 
-        ///                                     Else, <see cref="Collider2D.bounds"/> is used instead.
-        ///                                     Simple detection will only use <see cref="Transform.position"/>. </param>
+        /// <typeparam name="T">            Any class inherit from <see cref="Component"/>. </typeparam>
+        /// <param name="_targetLayers">    <see cref="LayerMask"/> of objects to retrieve component from. </param>
+        /// <param name="_type">            See <see cref="DetectionType"/> for more information. </param>
         /// <returns>
         /// List of all components found.
         /// </returns>
-        public List<T> FindAllInView<T>(LayerMask _targetLayers, bool _complexDetection = true) where T : Component
+        public List<T> FindAllInView<T>(LayerMask _targetLayers, DetectionType _type = DetectionType.Dynamic) where T : Component
         {
             List<T> visibleTargets = new();
             Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, radius, _targetLayers);
@@ -153,7 +151,7 @@ namespace Custom.Utility
                 if (collider.isTrigger) continue;
 
                 // If no target points is in view angle
-                var inViewAnglesPoints = TargetPointsInViewAngle(collider, _complexDetection);
+                var inViewAnglesPoints = TargetPointsInViewAngle(collider, _type);
                 if (inViewAnglesPoints.Length == 0) continue;
 
                 // If raycast blocked
@@ -187,10 +185,10 @@ namespace Custom.Utility
 
 
 
-        private Vector3[] TargetPointsInViewAngle(Collider2D _collider2D, bool _complex)
+        private Vector3[] TargetPointsInViewAngle(Collider2D _collider2D, DetectionType _type)
         {
             List<Vector3> inViewPoints = new();
-            var targetPoints = GetTargetPoints(_collider2D, _complex);
+            var targetPoints = GetTargetPoints(_collider2D, _type);
 
             foreach (var point in targetPoints)
             {
@@ -222,40 +220,6 @@ namespace Custom.Utility
             }
 
             return visiblePoints.ToArray();
-        }
-
-        private Vector2[] GetTargetPoints(Collider2D _collider2D, bool _complex)
-        {
-            // If simple, check only for Transform.position.
-            if (!_complex) return new Vector2[1] { _collider2D.transform.position };
-
-            SpriteRenderer spriteRenderer = _collider2D.gameObject.GetComponentInChildren<SpriteRenderer>();
-
-            // If complex with sprite renderer attached, check for Sprite.PhysicShape vertices.
-            if (spriteRenderer)
-            {
-                List<Vector2> points = new();
-
-                spriteRenderer.sprite.GetPhysicsShape(0, points);
-
-                for (int i = 0; i < points.Count; i++)
-                {
-                    points[i] = spriteRenderer.transform.TransformPoint(points[i]);
-                }
-
-                return points.ToArray();
-            }
-            // If complex and no sprite renderer attached, check for Collider2D bounds extremes.
-            else
-            {
-                return new Vector2[4]
-                {
-                _collider2D.bounds.max,
-                _collider2D.bounds.min,
-                new Vector2(_collider2D.bounds.min.x, _collider2D.bounds.max.y),
-                new Vector2(_collider2D.bounds.min.y, _collider2D.bounds.max.x),
-                };
-            }
         }
         #endregion
 
@@ -380,7 +344,6 @@ namespace Custom.Utility
         #endregion
 
         #region Static Functions
-
         /// <summary>
         /// Determines whether a specified point is within a defined field of view (FOV) cone.
         /// </summary>
@@ -406,20 +369,81 @@ namespace Custom.Utility
         }
 
         /// <summary>
-        /// Get 
+        /// Get all target points if 
         /// </summary>
-        /// <param name="_angleInDegrees"> Angle from <see cref="Vector2.up"/> in degrees, counter-clockwise. </param>
+        /// <param name="_collider2D">  The collider to retrieve points from. </param>
+        /// <param name="_detectionType">      </param>
         /// <returns>
         /// 
         /// </returns>
-        public static Vector2 DirectionFromAngle(float _angleInDegrees)
+        public static Vector2[] GetTargetPoints(Collider2D _collider2D, DetectionType _detectionType)
         {
-            return new Vector2(
-                Mathf.Sin(_angleInDegrees * Mathf.Deg2Rad),
-                Mathf.Cos(_angleInDegrees * Mathf.Deg2Rad)
-            );
-        }
+            switch (_detectionType)
+            {
+                case DetectionType.TransformCenter:
+                    return new Vector2[1] { _collider2D.transform.position };
 
+
+                case DetectionType.ColliderBounds:
+                    return new Vector2[4] {
+                        _collider2D.bounds.max,
+                        _collider2D.bounds.min,
+                        new Vector2(_collider2D.bounds.min.x, _collider2D.bounds.max.y),
+                        new Vector2(_collider2D.bounds.min.y, _collider2D.bounds.max.x),
+                    };
+
+
+                case DetectionType.SpritePhysicsShape:
+                    SpriteRenderer spriteRenderer = _collider2D.gameObject.GetComponentInChildren<SpriteRenderer>();
+
+                    if (!spriteRenderer) return null;
+
+                    List<Vector2> totalPoints = new();
+                    for (int i = 0; i < spriteRenderer.sprite.GetPhysicsShapeCount(); i++)
+                    {
+                        List<Vector2> shapePoints = new();
+                        spriteRenderer.sprite.GetPhysicsShape(0, shapePoints);
+
+                        totalPoints.AddRange(shapePoints);
+                    }
+
+                    return totalPoints.Select(e => (Vector2)spriteRenderer.transform.TransformPoint(e)).ToArray();
+
+
+                case DetectionType.Dynamic:
+                    return 
+                        GetTargetPoints(_collider2D, DetectionType.SpritePhysicsShape) ??
+                        GetTargetPoints(_collider2D, DetectionType.ColliderBounds) ??
+                        GetTargetPoints(_collider2D, DetectionType.TransformCenter);
+
+                default: return null;
+            }
+        }
         #endregion
+    }
+
+
+
+    public enum DetectionType
+    {
+        /// <summary>
+        /// Detect based on target's <see cref="Transform.position"/>.
+        /// </summary>
+        TransformCenter,
+
+        /// <summary>
+        /// Detect based on target's <see cref="Collider2D.bounds"/>. If no Collider2D is found, returns null.
+        /// </summary>
+        ColliderBounds,
+
+        /// <summary>
+        /// Detect based on target's <see cref="SpriteRenderer"/>.<see cref="Sprite.GetPhysicsShape(int, List{Vector2})"/>. If no SpriteRenderer is found, returns null.
+        /// </summary>
+        SpritePhysicsShape,
+
+        /// <summary>
+        /// Prioritize <see cref="DetectionType.SpritePhysicsShape"/>, then <see cref="DetectionType.ColliderBounds"/>, then <see cref="DetectionType.TransformCenter"/>.
+        /// </summary>
+        Dynamic,
     }
 }

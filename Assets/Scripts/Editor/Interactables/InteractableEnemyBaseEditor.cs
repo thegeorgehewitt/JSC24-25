@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 
@@ -5,6 +6,7 @@ using Custom.Interactable.Enemy;
 
 namespace Custom.Editor
 {
+    using Custom.Utility;
     using Styles;
 
     [CanEditMultipleObjects]
@@ -13,12 +15,17 @@ namespace Custom.Editor
     {
         private InteractableEnemyBase asTarget;
 
+        private SerializedProperty minimumDetectionLevel;
+        private SerializedProperty proximityDetectRange;
+        private SerializedProperty detectionType;
+
         private SerializedProperty fieldOfView;
         private SerializedProperty flip;
         private SerializedProperty maxRange;
         private SerializedProperty angle;
         private SerializedProperty trackableLayers;
         private SerializedProperty blockableLayers;
+
 
         private AnimBool expandEnemyProperties;
         private AnimBool showTargetDetectionProperties;
@@ -37,20 +44,25 @@ namespace Custom.Editor
 
             asTarget = (InteractableEnemyBase)target;
 
-            editorType = typeof(InteractableEnemyBaseEditor);
+            editorType = GetType();
 
-            fieldOfView = serializedObject.FindProperty("fieldOfView");
-            flip = serializedObject.FindProperty("flip");
-            maxRange = serializedObject.FindProperty("maxRange");
-            angle = serializedObject.FindProperty("angle");
-            trackableLayers = serializedObject.FindProperty("trackableLayers");
-            blockableLayers = serializedObject.FindProperty("blockableLayers");
+            InitProperties();
+            InitAnimValues();
 
-            expandEnemyProperties = new(IsExpanded);
-            expandEnemyProperties.valueChanged.AddListener(Repaint);
+            ExcludeProperties();
+        }
 
-            showTargetDetectionProperties = new(fieldOfView.objectReferenceValue);
-            showTargetDetectionProperties.valueChanged.AddListener(Repaint);
+        private void OnSceneGUI()
+        {
+            Vector3 position = asTarget.transform.position;
+
+            Handles.color = Color.yellow;
+            Handles.DrawWireArc(position, Vector3.back, Vector3.up, 360, proximityDetectRange.floatValue);
+
+            GUIStyle label = new GUIStyle();
+            label.alignment = TextAnchor.MiddleCenter;
+            label.normal.textColor = Color.yellow;
+            Handles.Label(position + Vector3.up * (proximityDetectRange.floatValue + HandleUtility.GetHandleSize(position) * 0.2f), "Proximity Check Range", label);
         }
 
         public override void OnInspectorGUI()
@@ -64,9 +76,18 @@ namespace Custom.Editor
 
             if (EditorGUILayout.BeginFadeGroup(expandEnemyProperties.faded))
             {
+                EditorGUILayout.Space();
                 EditorGUI.indentLevel++;
 
                 #region Target Detection
+
+                EditorGUILayout.PropertyField(minimumDetectionLevel);
+                EditorGUILayout.PropertyField(proximityDetectRange);
+                proximityDetectRange.floatValue = Mathf.Max(proximityDetectRange.floatValue, 0);
+                EditorGUILayout.PropertyField(detectionType);
+
+                EditorGUILayout.Space();
+
                 EditorGUILayout.PropertyField(fieldOfView);
                 if (!fieldOfView.objectReferenceValue)
                 {
@@ -95,12 +116,51 @@ namespace Custom.Editor
                 #endregion
 
                 EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
+                EditorGUILayout.Space();
             }
             EditorGUILayout.EndFadeGroup();
             #endregion
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+
+
+        private void InitProperties()
+        {
+            minimumDetectionLevel = serializedObject.FindProperty("minimumDetectionLevel");
+            proximityDetectRange = serializedObject.FindProperty("proximityDetectRange");
+            detectionType = serializedObject.FindProperty("detectionType");
+
+            fieldOfView = serializedObject.FindProperty("fieldOfView");
+            flip = serializedObject.FindProperty("flip");
+            maxRange = serializedObject.FindProperty("maxRange");
+            angle = serializedObject.FindProperty("angle");
+            trackableLayers = serializedObject.FindProperty("trackableLayers");
+            blockableLayers = serializedObject.FindProperty("blockableLayers");
+        }
+
+        private void InitAnimValues()
+        {
+            expandEnemyProperties = new(IsExpanded);
+            expandEnemyProperties.valueChanged.AddListener(Repaint);
+
+            showTargetDetectionProperties = new(fieldOfView.objectReferenceValue);
+            showTargetDetectionProperties.valueChanged.AddListener(Repaint);
+        }
+
+        private void ExcludeProperties()
+        {
+            AddExcludedProperties(
+                minimumDetectionLevel,
+                proximityDetectRange,
+                detectionType,
+                fieldOfView,
+                flip,
+                maxRange,
+                angle,
+                trackableLayers,
+                blockableLayers);
         }
     }
 }
