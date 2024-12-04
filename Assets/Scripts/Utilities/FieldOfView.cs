@@ -405,6 +405,21 @@ namespace Custom.Utility
             return true;
         }
 
+        /// <summary>
+        /// Get 
+        /// </summary>
+        /// <param name="_angleInDegrees"> Angle from <see cref="Vector2.up"/> in degrees, counter-clockwise. </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public static Vector2 DirectionFromAngle(float _angleInDegrees)
+        {
+            return new Vector2(
+                Mathf.Sin(_angleInDegrees * Mathf.Deg2Rad),
+                Mathf.Cos(_angleInDegrees * Mathf.Deg2Rad)
+            );
+        }
+
         #endregion
     }
 }

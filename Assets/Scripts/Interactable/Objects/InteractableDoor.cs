@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+using FunkyCode;
+
 using Custom.Manager;
 
 namespace Custom.Interactable
 {
     using Interfaces;
-    using Unity.VisualScripting;
 
     public class InteractableDoor : InteractableObject, IToggleable, IOverloadable
     {
         [Header("DOOR REFERENCES")]
         [SerializeField] private Collider2D doorCollider;
-        [SerializeField] private ShadowCaster2D shadowCaster;
+        [SerializeField] private LightCollider2D lightCollider;
 
         [Header("OPEN & CLOSE")]
         [SerializeField] private bool open = false;
@@ -42,8 +43,6 @@ namespace Custom.Interactable
         protected override void Reset()
         {
             base.Reset();
-
-            shadowCaster = GetComponentInChildren<ShadowCaster2D>();
         }
 
         private void OnValidate()
@@ -54,23 +53,13 @@ namespace Custom.Interactable
         }
 #endif
 
-        private void OnEnable()
-        {
-            
-        }
-
-        private void OnDisable()
-        {
-            
-        }
-
 
 
         private void SetState(bool _open)
         {
             spriteRenderer.color = _open ? openedColor : closedColor;
             doorCollider.enabled = !_open;
-            if (shadowCaster) shadowCaster.enabled = !_open;
+            if (lightCollider) lightCollider.enabled = !_open;
 
             // TEMPORARY
             states = new List<string>{ _open ? "Open" : "Closed" };

@@ -7,6 +7,7 @@ using FunkyCode;
 
 using Custom.Manager;
 using Custom.Attribute;
+using JetBrains.Annotations;
 
 namespace Custom.Controller
 {
@@ -68,7 +69,7 @@ namespace Custom.Controller
         private bool onWall;
         public bool IsOnWall { get { return onWall; } }
 
-        public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.visibility : 1.0f; } }
+        public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.Visibility : 1.0f; } }
 
 
 
@@ -94,6 +95,8 @@ namespace Custom.Controller
             #region Setup Control Scripts
             foreach (var movement in controlScripts)
             {
+                if (!movement) continue;
+
                 movement.AttachToMotor(this);
             }
             #endregion
@@ -116,6 +119,7 @@ namespace Custom.Controller
         private void FixedUpdate()
         {
             HandleGravity();
+            HandleFlip();
 
             rigidbody.velocity = paused ? Vector2.zero : velocity;
         }
@@ -216,6 +220,25 @@ namespace Custom.Controller
                 }
                 velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * TimeManager.FixedDeltaTime);
             }
+        }
+        #endregion
+
+        #region FLip
+        private float lastDirection = 1; // Default to positive X value of velocity -> Player is turning to the right.
+
+        private void HandleFlip()
+        {
+            if (velocity.x == 0) return;
+
+            Vector3 localScale = transform.localScale;
+
+            if (lastDirection * velocity.x < 0)
+            {
+                localScale.x *= -1;
+            }
+
+            transform.localScale = localScale;
+            lastDirection = velocity.x;
         }
         #endregion
     }

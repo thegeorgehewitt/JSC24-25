@@ -27,7 +27,7 @@ namespace Custom.Editor
 
         private bool IsExpanded
         {
-            get { return SessionState.GetBool($"EXPANDED ({this.GetType()}) : {serializedObject.targetObject.GetInstanceID()}", true); }
+            get { return SessionState.GetBool($"EXPANDED ({this.GetType()}) : {serializedObject.targetObject.GetInstanceID()}", false); }
             set { SessionState.SetBool($"EXPANDED ({this.GetType()}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
@@ -50,8 +50,8 @@ namespace Custom.Editor
         {
             DrawPropertiesExcluding(serializedObject,
                 "m_Script",
-                "passiveControl",
-                "inputActions");
+                passiveControl.name,
+                inputActionsDictionary.name);
 
             EditorGUILayout.Space(10);
 
@@ -121,6 +121,17 @@ namespace Custom.Editor
 
         private void DrawInputActionList()
         {
+            // If not input actions found, notify user and cancel drawing input action list.
+            if (asTarget.InputActionKeysName.Length == 0)
+            {
+                EditorGUILayout.HelpBox(
+                    "This control script does not contains any input actions.\n" +
+                    "To add input actions, override InputActionKeysName within script.",
+                    MessageType.Info);
+
+                return;
+            }
+
             // Styles
             float elementHeight = 18.0f;
             float actionsWidth = 120.0f;
