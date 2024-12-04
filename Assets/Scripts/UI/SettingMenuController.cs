@@ -45,6 +45,6 @@ public class SettingMenuController : MonoBehaviour
     private void Start()
     {
         // Optional: Initialize with all panels hidden
-        HideAllPanels();
+        //HideAllPanels();
     }
 }
