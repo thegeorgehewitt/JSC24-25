@@ -33,9 +33,7 @@ namespace FunkyCode
             
             Vector2 middlePoint = Camera.main.WorldToScreenPoint(transform.position);
 
-            GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-            
-            string display = ((int)(lightEventReceiver.visibility * 100)).ToString();
+            string display = ((int)(lightEventReceiver.Visibility * 100)).ToString();
 
             GUIStyle style = new GUIStyle();
             int size = Screen.height / 20;

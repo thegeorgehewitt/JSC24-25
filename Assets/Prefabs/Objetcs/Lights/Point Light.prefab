@@ -52,9 +52,33 @@ MonoBehaviour:
   translucentLayer: 0
   translucentPresetId: 0
   color: {r: 0.8962264, g: 0.7615094, b: 0.46079564, a: 1}
-  size: 9.1
-  spotAngleInner: 132.63158
-  spotAngleOuter: 132.63158
+  size: 15.790996
+  spotAngleInner: 132
+  spotAngleOuter: 132
+  eventImpactCurveMap:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.6067227
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.021024736
+      outSlope: -0.021024736
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08403361
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   coreSize: 0.5
   falloff: 0
   lightStrength: 0.5
