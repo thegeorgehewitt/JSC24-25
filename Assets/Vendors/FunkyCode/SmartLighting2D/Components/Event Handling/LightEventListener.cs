@@ -19,11 +19,9 @@ namespace FunkyCode
         [SerializeField] private bool enableMultiLightCapture = true;
         [Tooltip("Whether visibility should be affected by distance from light sources.")]
         [SerializeField] private bool useDistance = false;
-        [Tooltip("Weight of visible collision points evaluated by normalized distance from the closest light source.")]
-        [SerializeField] private AnimationCurve distanceWeight = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
         [Space(10)]
-        [SerializeField] public float visibility = 0;
+        [SerializeField] private float visibility = 0;
 
         private LightCollider2D lightCollider;
         private Polygon2 polygon;
@@ -35,6 +33,7 @@ namespace FunkyCode
         private LightCollision2D? singleCollisionInfo = null;
 
         public Vector2[] VisiblePoints { get { return visiblePoints.ToArray(); } }
+        public float Visibility { get => visibility; }
 
 
 
@@ -151,7 +150,7 @@ namespace FunkyCode
                 if (useDistance)
                 {
                     float distance = Vector2.Distance(Vector2.zero, pointInfo.lightRelative);
-                    value = Mathf.Clamp01(distanceWeight.Evaluate(distance / _info.light.size));
+                    value = Mathf.Clamp01(_info.light.eventImpactCurveMap.Evaluate(distance / _info.light.size));
                 }
                 else
                 {
