@@ -19,7 +19,7 @@ namespace Custom.Controller
 
         [Header("ROLL")]
         [SerializeField] private float rollRange = 4.0f;
-        [SerializeField] private float rollSpeed = 0.5f;
+        [SerializeField] private float rollDuration = 0.1f;
         [SerializeField] private float cooldown = 2.0f;
 
         private bool rollAttempt;
@@ -48,8 +48,6 @@ namespace Custom.Controller
         private float cooldownLeft;
         private Coroutine cooldownCoroutine;
 
-
-
         private void ExecuteMovement()
         {
             if (attachedMotor.velocity.x != 0)
@@ -62,6 +60,7 @@ namespace Custom.Controller
 
             if (cooldownLeft > 0) return;
 
+            if (cooldownCoroutine != null) StopCoroutine(cooldownCoroutine);
             cooldownCoroutine = StartCoroutine(DashCoroutine());
         }
 
@@ -70,24 +69,28 @@ namespace Custom.Controller
             bool locked = true;
             cooldownLeft = cooldown;
 
-            attachedMotor.SetState("Dashing", true);
-            attachedMotor.velocity = Vector2.right * direction * rollRange / rollSpeed;
+            attachedMotor.SetState("Rolling", true);
+            attachedMotor.velocity = Vector2.right * direction * rollRange / rollDuration;
+
+            attachedMotor.SetHeightMult(0.5f, 0.0f);
 
             while (cooldownLeft > 0)
             {
                 cooldownLeft -= TimeManager.DeltaTime;
 
-                if (cooldownLeft < cooldown - rollSpeed && locked)
+                if (cooldownLeft < cooldown - rollDuration && locked)
                 {
                     locked = false;
                     attachedMotor.velocity.x = 0;
-                    attachedMotor.SetState("Dashing", false);
+                    attachedMotor.SetState("Rolling", false);
                 }
 
                 yield return null;
             }
 
-            attachedMotor.SetState("Dashing", false);
+            attachedMotor.SetHeightMult(1.0f);
+
+            attachedMotor.SetState("Rolling", false);
             cooldownLeft = 0;
         }
         #endregion

@@ -26,11 +26,11 @@ Transform:
   m_GameObject: {fileID: 1086171137153397297}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 4255421762062780418}
+  m_Father: {fileID: 2991430369121404563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &7799931965240558983
 CircleCollider2D:
@@ -93,11 +93,11 @@ Transform:
   m_GameObject: {fileID: 1421969682534057839}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: 0}
+  m_LocalPosition: {x: 0.29999995, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 4255421762062780418}
+  m_Father: {fileID: 7312330092598508216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &18109036695352397
 CapsuleCollider2D:
@@ -134,6 +134,70 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1.5}
   m_Direction: 0
+--- !u!1 &1665093912036985121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2991430369121404563}
+  m_Layer: 7
+  m_Name: Head Socket
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2991430369121404563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665093912036985121}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3209507196876545385}
+  m_Father: {fileID: 2483943291930770671}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1876667995567644529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7312330092598508216}
+  m_Layer: 7
+  m_Name: Front Socket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7312330092598508216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876667995567644529}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7715410574035912978}
+  m_Father: {fileID: 2483943291930770671}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2989193682148753962
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,9 +233,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2805948411185687964}
-  - {fileID: 3209507196876545385}
-  - {fileID: 7715410574035912978}
   - {fileID: 2145712773473558439}
   - {fileID: 6001745190965625449}
   m_Father: {fileID: 2483943291930770671}
@@ -239,8 +300,8 @@ MonoBehaviour:
     - Roll
     values:
     - {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  rollRange: 3
-  rollDuration: 0.2
+  rollRange: 4
+  rollDuration: 0.3
   cooldown: 0.5
 --- !u!114 &7236829821057059442
 MonoBehaviour:
@@ -343,11 +404,11 @@ Transform:
   m_GameObject: {fileID: 3534369279633472950}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0.39999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 4255421762062780418}
+  m_Father: {fileID: 8410461722909187275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &2565377557887695862
 CircleCollider2D:
@@ -384,6 +445,38 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.45
+--- !u!1 &4051407379366568096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8410461722909187275}
+  m_Layer: 7
+  m_Name: Foot Socket
+  m_TagString: Untagged
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8410461722909187275
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4051407379366568096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2805948411185687964}
+  m_Father: {fileID: 2483943291930770671}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6402547206240082972
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,6 +825,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7344963017264290360}
+  - {fileID: 8410461722909187275}
+  - {fileID: 2991430369121404563}
+  - {fileID: 7312330092598508216}
   - {fileID: 4255421762062780418}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -824,12 +920,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 38866415588869136}
+  capsuleCollider: {fileID: 3051175788289900178}
   solidLayers:
     serializedVersion: 2
     m_Bits: 1088
   groundCheck: {fileID: 2565377557887695862}
   ceilingCheck: {fileID: 7799931965240558983}
   wallCheck: {fileID: 18109036695352397}
+  footSocket: {fileID: 8410461722909187275}
+  headSocket: {fileID: 2991430369121404563}
+  frontSocket: {fileID: 7312330092598508216}
   useGravity: 1
   fallAcceleration: 25
   maxFallSpeed: 15

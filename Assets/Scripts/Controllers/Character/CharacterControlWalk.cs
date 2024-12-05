@@ -37,7 +37,7 @@ namespace Custom.Controller
         #region Movement
         private void ExecuteMovement()
         {
-            if (attachedMotor.GetState("Dashing")) return;
+            if (attachedMotor.GetState("Rolling")) return;
 
             var direction = GetInputActionWithName("Horizontal").ReadValue<Vector2>();
             float maxSpeed = attachedMotor.IsGrounded ? groundMaxSpeed : airMaxSpeed;
