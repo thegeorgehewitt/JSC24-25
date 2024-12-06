@@ -6,7 +6,7 @@ using Custom.Utility;
 namespace Custom.Editor
 {
     [CustomEditor(typeof(ShadowCaster2DTileMap))]
-    public class ShadowCastersGeneratorEditor : UnityEditor.Editor
+    public class ShadowCastersGeneratorEditor : CustomBaseEditor
     {
         private ShadowCaster2DTileMap asTarget;
 

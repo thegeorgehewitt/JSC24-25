@@ -12,38 +12,29 @@ namespace Custom.Editor
 
     [CanEditMultipleObjects]
     [CustomEditor(typeof(InteractableObject), true)]
-    public class InteractableObjectEditor : UnityEditor.Editor
+    public class InteractableObjectEditor : CustomBaseEditor
     {
-        [SerializeField] private Texture2D foldoutBackgroundOff;
-        [SerializeField] private Texture2D foldoutBackgroundOn;
-
         private SerializedProperty objectData;
         private SerializedProperty interactionData;
 
         private SerializedProperty spriteRenderer;
 
-
-        private List<string> excludedProperties = new List<string> { "m_Script" };
         private AnimBool expandObjectProperties;
 
         private bool IsExpanded
         {
-            get { return SessionState.GetBool($"EXPANDED ({typeof(InteractableObjectEditor)}) : {serializedObject.targetObject.GetInstanceID()}", true); }
-            set { SessionState.SetBool($"EXPANDED ({typeof(InteractableObjectEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
+            get => SessionState.GetBool($"Expanded {typeof(InteractableObjectEditor)} : {serializedObject.targetObject.GetInstanceID()}", false);
+            set => SessionState.SetBool($"Expanded {typeof(InteractableObjectEditor)} : {serializedObject.targetObject.GetInstanceID()}", value);
         }
-
-        protected System.Type editorType;
 
 
 
         protected virtual void OnEnable()
         {
-            editorType = GetType();
+            objectData = AssignToProperty("objectData");
+            interactionData = AssignToProperty("interactionData");
 
-            objectData = serializedObject.FindProperty("objectData");
-            interactionData = serializedObject.FindProperty("interactionData");
-
-            spriteRenderer = serializedObject.FindProperty("spriteRenderer");
+            spriteRenderer = AssignToProperty("spriteRenderer");
 
             expandObjectProperties = new(IsExpanded);
             expandObjectProperties.valueChanged.AddListener(Repaint);
@@ -51,17 +42,19 @@ namespace Custom.Editor
 
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(serializedObject, excludedProperties.ToArray());
+            base.OnInspectorGUI();
 
             #region Foldout
             EditorGUILayout.Space(10);
 
             IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Object Properties", CustomEditorStyles.foldoutHeader);
-            expandObjectProperties.target = IsExpanded;
             EditorGUILayout.EndFoldoutHeaderGroup();
+
+            expandObjectProperties.target = IsExpanded;
 
             if (EditorGUILayout.BeginFadeGroup(expandObjectProperties.faded))
             {
+                EditorGUILayout.Space();
                 EditorGUI.indentLevel++;
 
                 #region Data
@@ -78,8 +71,6 @@ namespace Custom.Editor
                 #endregion
 
                 #region Interaction Area
-                EditorGUILayout.PropertyField(spriteRenderer);
-
                 if (!spriteRenderer.objectReferenceValue)
                 {
                     EditorGUILayout.HelpBox(
@@ -90,22 +81,12 @@ namespace Custom.Editor
                 #endregion
 
                 EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
+                EditorGUILayout.Space();
             }
             EditorGUILayout.EndFadeGroup();
             #endregion
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-
-
-        protected void AddExcludedProperties(params SerializedProperty[] _properties)
-        {
-            foreach (var property in _properties)
-            {
-                excludedProperties.Add(property.name);
-            }
         }
     }
 }

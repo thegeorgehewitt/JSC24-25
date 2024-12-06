@@ -10,16 +10,20 @@ namespace Custom.Editor
 
     [CustomEditor(typeof(CharacterMotor2D), true)]
     [CanEditMultipleObjects]
-    public class CharacterMotor2DEditor : UnityEditor.Editor
+    public class CharacterMotor2DEditor : CustomBaseEditor
     {
         private CharacterMotor2D asTarget;
 
         private SerializedProperty rigidbody;
+        private SerializedProperty capsuleCollider;
 
         private SerializedProperty solidLayers;
         private SerializedProperty groundCheck;
         private SerializedProperty ceilingCheck;
         private SerializedProperty wallCheck;
+        private SerializedProperty footSocket;
+        private SerializedProperty headSocket;
+        private SerializedProperty frontSocket;
 
         private SerializedProperty useGravity;
         private SerializedProperty fallAcceleration;
@@ -42,32 +46,32 @@ namespace Custom.Editor
 
         private bool IsProximityCheckPropertiesExpanded
         {
-            get { return SessionState.GetBool($"Proximity Check Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", true); }
-            set { SessionState.SetBool($"Proximity Check Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
+            get { return SessionState.GetBool($"Proximity Check Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", false); }
+            set { SessionState.SetBool($"Proximity Check Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
         private bool IsGravityPropertiesExpanded
         {
-            get { return SessionState.GetBool($"Gravity Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", true); }
-            set { SessionState.SetBool($"Gravity Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
+            get { return SessionState.GetBool($"Gravity Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", false); }
+            set { SessionState.SetBool($"Gravity Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
         private bool IsVisibilityPropertiesExpanded
         {
-            get { return SessionState.GetBool($"Visibility Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", true); }
-            set { SessionState.SetBool($"Visibility Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
+            get { return SessionState.GetBool($"Visibility Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", false); }
+            set { SessionState.SetBool($"Visibility Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
         private bool IsControlsPropertiesExpanded
         {
-            get { return SessionState.GetBool($"Controls Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", true); }
-            set { SessionState.SetBool($"Controls Properties Expanded ({typeof(CharacterMotor2DEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
+            get { return SessionState.GetBool($"Controls Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", false); }
+            set { SessionState.SetBool($"Controls Properties Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
         private bool IsInfoExpanded
         {
-            get { return SessionState.GetBool($"Info Expanded ({typeof(InteractableEnemyBaseEditor)}) : {serializedObject.targetObject.GetInstanceID()}", true); }
-            set { SessionState.SetBool($"Info Expanded ({typeof(InteractableEnemyBaseEditor)}) : {serializedObject.targetObject.GetInstanceID()}", value); }
+            get { return SessionState.GetBool($"Info Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", false); }
+            set { SessionState.SetBool($"Info Expanded ({GetType()}) : {serializedObject.targetObject.GetInstanceID()}", value); }
         }
 
 
@@ -83,21 +87,31 @@ namespace Custom.Editor
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             EditorGUILayout.HelpBox(
                 $"This inspector is controlled by a custom editor.\n" +
-                $"Edit this in {typeof(CharacterMotor2DEditor)} script.",
+                $"Edit this in {GetType()} script.",
                 MessageType.None);
 
-            EditorGUILayout.Space(10);
+            EditorGUILayout.Space();
 
             #region References
             EditorGUILayout.PropertyField(rigidbody);
-
             if (!rigidbody.objectReferenceValue)
             {
                 EditorGUILayout.HelpBox(
-                    "Missing Rigidbody2D reference.\n" +
-                    "Motor will be disabled.",
+                    $"Missing {rigidbody.type} reference.\n" +
+                    $"Motor will be disabled.",
+                    MessageType.Error);
+            }
+
+            EditorGUILayout.PropertyField(capsuleCollider);
+            if (!capsuleCollider.objectReferenceValue)
+            {
+                EditorGUILayout.HelpBox(
+                    $"Missing {capsuleCollider.type} reference.\n" +
+                    $"Motor will be disabled.",
                     MessageType.Error);
             }
 
@@ -119,13 +133,19 @@ namespace Custom.Editor
                         "Solid Layers is not set. Proximity checks will be ignored.",
                         MessageType.Warning);
                 }
-                EditorGUILayout.Space(5);
+                EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(groundCheck);
                 EditorGUILayout.PropertyField(ceilingCheck);
                 EditorGUILayout.PropertyField(wallCheck);
 
-                EditorGUILayout.Space(10);
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(footSocket);
+                EditorGUILayout.PropertyField(headSocket);
+                EditorGUILayout.PropertyField(frontSocket);
+
+                EditorGUILayout.Space();
             }
             EditorGUILayout.EndFadeGroup();
             #endregion
@@ -244,25 +264,29 @@ namespace Custom.Editor
 
         private void SetupSerializedProperties()
         {
-            rigidbody = serializedObject.FindProperty("rigidbody");
+            rigidbody = AssignToProperty("rigidbody");
+            capsuleCollider = AssignToProperty("capsuleCollider");
 
-            solidLayers = serializedObject.FindProperty("solidLayers");
-            groundCheck = serializedObject.FindProperty("groundCheck");
-            ceilingCheck = serializedObject.FindProperty("ceilingCheck");
-            wallCheck = serializedObject.FindProperty("wallCheck");
+            solidLayers = AssignToProperty("solidLayers");
+            groundCheck = AssignToProperty("groundCheck");
+            ceilingCheck = AssignToProperty("ceilingCheck");
+            wallCheck = AssignToProperty("wallCheck");
+            footSocket = AssignToProperty("footSocket");
+            headSocket = AssignToProperty("headSocket");
+            frontSocket = AssignToProperty("frontSocket");
 
-            useGravity = serializedObject.FindProperty("useGravity");
-            fallAcceleration = serializedObject.FindProperty("fallAcceleration");
-            maxFallSpeed = serializedObject.FindProperty("maxFallSpeed");
-            jumpEndEarlyGravityModifier = serializedObject.FindProperty("jumpEndEarlyGravityModifier");
+            useGravity = AssignToProperty("useGravity");
+            fallAcceleration = AssignToProperty("fallAcceleration");
+            maxFallSpeed = AssignToProperty("maxFallSpeed");
+            jumpEndEarlyGravityModifier = AssignToProperty("jumpEndEarlyGravityModifier");
 
-            enableVisibilityCheck = serializedObject.FindProperty("enableVisibilityCheck");
-            lightEventListener = serializedObject.FindProperty("lightEventListener");
+            enableVisibilityCheck = AssignToProperty("enableVisibilityCheck");
+            lightEventListener = AssignToProperty("lightEventListener");
 
-            paused = serializedObject.FindProperty("paused");
-            controlScripts = serializedObject.FindProperty("controlScripts");
+            paused = AssignToProperty("paused");
+            controlScripts = AssignToProperty("controlScripts");
 
-            velocity = serializedObject.FindProperty("velocity");
+            velocity = AssignToProperty("velocity");
         }
 
         private void SetupAnimBools()

@@ -1,28 +1,26 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 
 using Custom.Manager;
-using Custom.Controller;
+using Custom.Manager.EventHandling;
 
-namespace Custom.Interactable.Enemy
+namespace Custom.Interactable.Character.Enemy
 {
+    using Custom.Controller;
+    using Custom.Utility;
     using Interfaces;
 
     public class InteractableSentryTurret : InteractableEnemyBase, IAttackableEnemy
     {
-        public event Action<CharacterMotor2D> OnTargetMotor;
-        public event Action<CharacterMotor2D> OnAttackMotor;
-
-
-
         [Header("REFERENCES")]
         [SerializeField] private Transform firePoint;
         [SerializeField] private LineRenderer laserDisplay;
 
-        [Header("LOCK ON")]
+        [Header("TARGETING")]
+        [Tooltip("The default rotation is Vector2.right. Enable this to flip it to Vector2.left")]
+        [SerializeField] private bool flip;
         [SerializeField] private float lockOnDuration = 1.0f;
         [SerializeField] private Color nontargetingColor = Color.gray;
         [SerializeField] private Color targetingColor = Color.red;
@@ -35,19 +33,13 @@ namespace Custom.Interactable.Enemy
 
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             if (!Application.isPlaying)
             {
                 laserDisplay.useWorldSpace = false;
-            }
-
-            if (fieldOfView)
-            {
-                fieldOfView.Radius = maxRange;
-                fieldOfView.Angle = angle;
-                fieldOfView.Rotation = flip ? 90 : -90;
-                fieldOfView.blockableFilter.layerMask = blockableLayers;
             }
         }
 #endif
@@ -56,39 +48,47 @@ namespace Custom.Interactable.Enemy
 
         private void Awake()
         {
-            contactFilter.useTriggers = false;
-            contactFilter.useLayerMask = true;
-            contactFilter.layerMask = blockableLayers;
-
             laserDisplay.useWorldSpace = true;
-
-            fieldOfView.blockableFilter.layerMask = blockableLayers;
         }
 
         private void Update()
         {
             states = new List<string> { activated ? "Active" : "Jammed" };
 
-            if (AcquireTarget() > minimumDetectionLevel)
-            {
-                SetLineTargetPosition(targetMotor.transform.position);
-                LockOn(true);
-            }
-            else if (visionBlocked)
-            {
-                SetLineTargetPosition(raycastHits[0].point);
-                LockOn(false);
-            }
-            else
-            {
-                SetLineTargetPosition(firePoint.position + (flip ? -1 : 1) * maxRange * transform.right);
-                LockOn(false);
-            }
-        }
+            UpdateCurrentTarget();
+        } 
 
 
 
         #region Targeting 
+        private void UpdateCurrentTarget()
+        {
+            scanResult = AcquireTarget(DefaultComparer);
+
+            if (scanResult.target)
+            {
+                if (scanResult.target.Visibility > minDetectLevel || scanResult.proximityChecked)
+                {
+                    SetLineTargetPosition(scanResult.target.transform.position);
+                    LockOn(true);
+                }
+            }
+            else
+            {
+                SetLineTargetPosition(GetLaserEndPos());
+                LockOn(false);
+            }
+        }
+
+        public override ViewCone GetViewCone()
+        {
+            var viewCone = base.GetViewCone();
+            viewCone.Origin = firePoint.position;
+            viewCone.Rotation += (flip ? -1 : 1) * 90.0f;
+
+            return viewCone;
+        }
+
         private void SetLineTargetPosition(Vector3 _targetPos)
         {
             laserDisplay.SetPosition(0, firePoint.position);
@@ -99,6 +99,15 @@ namespace Custom.Interactable.Enemy
         {
             laserDisplay.startColor = _color;
             laserDisplay.endColor = _color;
+        }
+
+        private Vector3 GetLaserEndPos()
+        {
+            Vector3 direction = (flip ? 1 : -1) * transform.right;
+            var hit = Physics2D.Raycast(firePoint.position, direction, radius, visionBlockFilter.layerMask);
+
+            if (hit) return hit.point;
+            else return firePoint.position + direction * radius;
         }
         #endregion
 
@@ -112,7 +121,7 @@ namespace Custom.Interactable.Enemy
             if (lockingOn == _lockOn) return;
             lockingOn = _lockOn;
 
-            if (lockingOn) OnTargetMotor?.Invoke(targetMotor);
+            // if (lockingOn) Lock on event.
 
             if (lockOnCoroutine != null) StopCoroutine(lockOnCoroutine);
 
@@ -132,17 +141,17 @@ namespace Custom.Interactable.Enemy
 
             if (_lockOn)
             {
-                Attack();
+                Attack(scanResult.target);
             }
         }
         #endregion
 
         #region Attack
-        public void Attack()
+        public void Attack(CharacterMotor2D _target)
         {
-            OnAttackMotor?.Invoke(targetMotor);
+            Debug.Log($"({this.name}) Shot ({_target.name})");
 
-            Debug.Log("Shot");
+            EventAggregator.Publish(new IAttackableEnemy.AttackEvent(_target));
         }
         #endregion
 
@@ -170,11 +179,9 @@ namespace Custom.Interactable.Enemy
             activated = true;
             laserDisplay.enabled = true;
         }
-
         #endregion
 
         #region Interaction - Overload
-
         public void Overload()
         {
             if (overloaded) return;
@@ -185,11 +192,9 @@ namespace Custom.Interactable.Enemy
 
             // AOE damage if not in interface
         }
-
         #endregion
 
         #region Interaction - Recruit
-
         private Coroutine recruitCoroutine;
 
         public void Recruit()
@@ -199,7 +204,6 @@ namespace Custom.Interactable.Enemy
             recruited = true;
 
             // Recruit functionality (coroutine)
-
         }
         #endregion
     }

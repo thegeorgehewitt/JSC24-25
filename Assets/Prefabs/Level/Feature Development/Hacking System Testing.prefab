@@ -6185,9 +6185,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5588398239026249323, guid: a0bd4f9bfb427e14a9ac35f5e9f399cb, type: 3}
+      propertyPath: viewCone.Center.x
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 5588398239026249323, guid: a0bd4f9bfb427e14a9ac35f5e9f399cb, type: 3}
+      propertyPath: viewCone.Center.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6081016233684000788, guid: a0bd4f9bfb427e14a9ac35f5e9f399cb, type: 3}
       propertyPath: m_Name
       value: Sentry Turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016470304585896007, guid: a0bd4f9bfb427e14a9ac35f5e9f399cb, type: 3}
+      propertyPath: viewCone.origin.x
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016470304585896007, guid: a0bd4f9bfb427e14a9ac35f5e9f399cb, type: 3}
+      propertyPath: viewCone.origin.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

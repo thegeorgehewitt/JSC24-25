@@ -141,8 +141,6 @@ MonoBehaviour:
   interactionData:
   - {fileID: 11400000, guid: 8bec72f0f23eac84bb2dc13136d23f6c, type: 2}
   - {fileID: 11400000, guid: a51484ff4af8d7e46a7e3bf7bb6829a8, type: 2}
-  states:
-  - Closed
   spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 1730410341943266298}
   lightCollider: {fileID: 4109672476251525396}

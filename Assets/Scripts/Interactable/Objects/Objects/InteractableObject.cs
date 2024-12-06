@@ -8,13 +8,12 @@ namespace Custom.Interactable
 {
     public abstract class InteractableObject : MonoBehaviour
     {
-        [Header("DATA")]
-        [SerializeField][HideInInspector] protected InteractableObjectData objectData;
-        [SerializeField][HideInInspector] protected ObjectInteractionData[] interactionData;
-        [SerializeField][HideInInspector] protected List<string> states = new();
+        [SerializeField] protected InteractableObjectData objectData;
+        [SerializeField] protected ObjectInteractionData[] interactionData;
 
-        [Header("INTERACTION DISPLAY")]
-        [SerializeField][HideInInspector] protected SpriteRenderer spriteRenderer;
+        [SerializeField] protected SpriteRenderer spriteRenderer;
+
+        protected List<string> states = new();
 
         public Vector3 InteractPosition { get { return spriteRenderer ? spriteRenderer.bounds.center : transform.position; } }
         public Vector3 ObjectBoundsSize { get { return spriteRenderer ? spriteRenderer.bounds.size : Vector3.zero; } }

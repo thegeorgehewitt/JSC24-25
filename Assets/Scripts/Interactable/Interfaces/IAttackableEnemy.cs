@@ -1,14 +1,19 @@
-using System;
-
 using Custom.Controller;
 
 namespace Custom.Interactable.Interfaces
 {
     public interface IAttackableEnemy
     {
-        public event Action<CharacterMotor2D> OnTargetMotor;
-        public event Action<CharacterMotor2D> OnAttackMotor;
+        public class AttackEvent
+        {
+            public CharacterMotor2D Target { get; }
 
-        public abstract void Attack();
+            public AttackEvent(CharacterMotor2D _target)
+            {
+                Target = _target;
+            }
+        }
+
+        public abstract void Attack(CharacterMotor2D _target);
     }
 }

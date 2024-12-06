@@ -57,7 +57,7 @@ namespace Custom.Controller
          * CONTROLS
          */
         [Tooltip("While paused, the controller will not be affected by physics simulation and player controller inputs.")]
-        [HideInInspector] public bool paused;
+        [SerializeField] public bool paused;
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
         public Vector2 velocity = new();

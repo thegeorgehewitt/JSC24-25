@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-
 using UnityEditor;
-using UnityEngine.InputSystem;
 using UnityEditor.AnimatedValues;
 
 using Custom.Controller;
@@ -13,7 +10,7 @@ namespace Custom.Editor
 
     [CanEditMultipleObjects]
     [CustomEditor(typeof(CharacterControlBase), true)]
-    public class CharacterControlBaseEditor : UnityEditor.Editor
+    public class CharacterControlBaseEditor : CustomBaseEditor
     {
         private CharacterControlBase asTarget;
 
@@ -37,8 +34,8 @@ namespace Custom.Editor
         {
             asTarget = (CharacterControlBase)target;
 
-            passiveControl = serializedObject.FindProperty("passiveControl");
-            inputActionsDictionary = serializedObject.FindProperty("inputActions");
+            passiveControl = AssignToProperty("passiveControl");
+            inputActionsDictionary = AssignToProperty("inputActions");
             inputActionsDictKeys = inputActionsDictionary.FindPropertyRelative("keys");
             inputActionsDictValues = inputActionsDictionary.FindPropertyRelative("values");
 
@@ -48,10 +45,7 @@ namespace Custom.Editor
 
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(serializedObject,
-                "m_Script",
-                passiveControl.name,
-                inputActionsDictionary.name);
+            base.OnInspectorGUI();
 
             EditorGUILayout.Space(10);
 
