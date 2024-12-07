@@ -107,6 +107,8 @@ namespace Custom.Interactable.Character
                 foreach (var asComponent in FieldOfView.FindAllInViewCone<T>(proximityViewCone, trackableLayers, proximityFilter, detectionType))
                 {
                     target = HigherPriorityTarget(target, asComponent, _comparer);
+
+                    proximityChecked = true;
                 }
             }
 
@@ -121,7 +123,7 @@ namespace Custom.Interactable.Character
             }
 
             result.target = target;
-            result.proximityChecked = target;
+            result.proximityChecked = proximityChecked;
 
             return result;
         }
