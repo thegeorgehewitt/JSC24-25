@@ -133,11 +133,9 @@ namespace Custom.Interactable
         {
             deadlocked = !deadlocked;
 
-            open = deadlocked? false : open;
-
             spriteRenderer.sprite = deadlocked ? deadlockedSprite : unlockedSprite;
-            spriteRenderer.color = open? openedColor : closedColor;
 
+            SetOpen(open);
             UpdateStates();
         }
     }

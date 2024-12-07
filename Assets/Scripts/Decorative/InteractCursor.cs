@@ -36,6 +36,8 @@ namespace Custom.Decorative
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             lineRenderer = GetComponentInChildren<LineRenderer>();
+
+            lineRenderer.useWorldSpace = false;
         }
 #endif
 
@@ -47,6 +49,7 @@ namespace Custom.Decorative
             spriteRenderer.drawMode = SpriteDrawMode.Sliced;
 
             lineRendererMat = lineRenderer.material;
+            lineRenderer.useWorldSpace = true;
         }
 
 

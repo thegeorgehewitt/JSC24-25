@@ -75,13 +75,10 @@ namespace Custom.Interactable.Character.Enemy
         {
             scanResult = AcquireTarget(DefaultComparer);
 
-            if (scanResult.target)
+            if (scanResult.target && (scanResult.target.Visibility > minDetectLevel || scanResult.proximityChecked))
             {
-                if (scanResult.target.Visibility > minDetectLevel || scanResult.proximityChecked)
-                {
-                    SetLineTargetPosition(scanResult.target.transform.position);
-                    LockOn(true);
-                }
+                SetLineTargetPosition(scanResult.target.transform.position);
+                LockOn(true);
             }
             else
             {

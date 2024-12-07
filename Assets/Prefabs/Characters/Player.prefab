@@ -257,7 +257,7 @@ MonoBehaviour:
     values:
     - {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
     - {fileID: 0}
-  jumpPower: 12
+  jumpPower: 14
 --- !u!114 &3938290388967934858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,8 +332,6 @@ MonoBehaviour:
   blockableLayers:
     serializedVersion: 2
     m_Bits: 1088
-  scrollSpeedMult: 0.1
-  valuePerScroll: 40
   interactCursor: {fileID: 2594773620045173641}
   defaultCursorSize: 0.5
   outOfRangeColor: {r: 0.8679245, g: 0.41349235, b: 0.41349235, a: 1}
@@ -779,7 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0.684129
+  visibility: 0.5392498
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,7 +785,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7009367374004171967}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc8c96ce3176ac34db35ee18522539d7, type: 3}
   m_Name: 
