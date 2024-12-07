@@ -175,12 +175,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bff216cc0d3a854b89e160c25856d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 3459847120950194334}
-  interactAreaCollider: {fileID: 5197918338584211243}
   objectData: {fileID: 11400000, guid: a69965603a171d749b81a51c8207f5a9, type: 2}
   interactionData:
-  - {fileID: 11400000, guid: c63e10dcb66f3c94e81c552a016d0e73, type: 2}
-  states:
-  - On
-  linkedLights: []
+  - data: {fileID: 11400000, guid: c63e10dcb66f3c94e81c552a016d0e73, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1632060452983216504}
+          m_TargetAssemblyTypeName: Custom.Interactable.InteractableLightsControl,
+            Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  spriteRenderer: {fileID: 3459847120950194334}
   on: 1
+  linkedLights: []

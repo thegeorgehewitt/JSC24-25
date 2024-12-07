@@ -139,13 +139,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectData: {fileID: 11400000, guid: 8a13ccfe83aaa2447ae4b76deafd28a8, type: 2}
   interactionData:
-  - {fileID: 11400000, guid: 8bec72f0f23eac84bb2dc13136d23f6c, type: 2}
-  - {fileID: 11400000, guid: a51484ff4af8d7e46a7e3bf7bb6829a8, type: 2}
-  states:
-  - Closed
+  - data: {fileID: 11400000, guid: 8bec72f0f23eac84bb2dc13136d23f6c, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4486568507856741927}
+          m_TargetAssemblyTypeName: Custom.Interactable.InteractableDoor, Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - data: {fileID: 11400000, guid: a51484ff4af8d7e46a7e3bf7bb6829a8, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4486568507856741927}
+          m_TargetAssemblyTypeName: Custom.Interactable.InteractableDoor, Assembly-CSharp
+          m_MethodName: ToggleDeadlock
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 1730410341943266298}
-  shadowCaster: {fileID: 0}
+  lightCollider: {fileID: 4109672476251525396}
   open: 0
   closedColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   openedColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0.19607843}
@@ -175,8 +203,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   deadlocked: 0
-  deadlockedSprite: {fileID: 0}
-  unlockedSprite: {fileID: 0}
+  deadlockedSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  unlockedSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  overloaded: 0
+  overloadedSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
 --- !u!1 &6097196538804143724
 GameObject:
   m_ObjectHideFlags: 0

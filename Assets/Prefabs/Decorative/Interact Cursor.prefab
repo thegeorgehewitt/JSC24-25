@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 957098352195303686}
   - component: {fileID: 6665017694665348492}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Line Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 9175523065094345596}
   - component: {fileID: 8321612161904560593}
   - component: {fileID: 6448940623165944352}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Interact Cursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7277875579117585975}
   - component: {fileID: 1532923216846634971}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Interact Cursor Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,23 +14,44 @@ namespace Custom.Controller
     [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterMotor2D : MonoBehaviour
     {
+        private enum InputGroupMode
+        {
+            /// <summary>
+            /// Update individual input actions.
+            /// </summary>
+            IndividualAction,
+
+            /// <summary>
+            /// Update the entire input maps of registered controls.
+            /// </summary>
+            InputMap
+        }
+
+
+
         public static event Action<CharacterMotor2D> OnCharacterMotorEnabled;
         public static event Action<CharacterMotor2D> OnCharacterMotorDisabled;
 
         /*
-         * REFERENCE
+         * REFERENCES
          */
         [ReadOnly]
         [SerializeField] private new Rigidbody2D rigidbody;
+        [SerializeField] private CapsuleCollider2D capsuleCollider;
 
         /*
          * PROXIMITY CHECK
          */
         [Tooltip("Layer masks considered ground/ceiling/wall.")]
         [SerializeField] private LayerMask solidLayers;
+
         [SerializeField] private Collider2D groundCheck;
         [SerializeField] private Collider2D ceilingCheck;
         [SerializeField] private Collider2D wallCheck;
+
+        [SerializeField] private Transform footSocket;
+        [SerializeField] private Transform headSocket;
+        [SerializeField] private Transform frontSocket;
 
         /*
          * GRAVITY
@@ -51,10 +72,12 @@ namespace Custom.Controller
          * CONTROLS
          */
         [Tooltip("While paused, the controller will not be affected by physics simulation and player controller inputs.")]
-        [HideInInspector] public bool paused;
+        [SerializeField] public bool paused;
+        [SerializeField] private InputGroupMode inputGroupMode;
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
-        [HideInInspector] public Vector2 velocity = new();
+        public Vector2 velocity = new();
+
 
         private ContactFilter2D proximityCheckContactFilter;
         private List<Collider2D> proximityCheckContacts = new();
@@ -68,14 +91,7 @@ namespace Custom.Controller
         private bool onWall;
         public bool IsOnWall { get { return onWall; } }
 
-        public float Visibility
-        {
-            get
-            {
-                if (enableVisibilityCheck && lightEventListener) return lightEventListener.visibility;
-                else return 1;
-            }
-        }
+        public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.Visibility : 1.0f; } }
 
 
 
@@ -98,9 +114,23 @@ namespace Custom.Controller
 
         private void Awake()
         {
+            if (!rigidbody)
+            {
+                enabled = false;
+                return;
+            }
+
+            if (!capsuleCollider)
+            {
+                enabled = false;
+                return;
+            }
+
             #region Setup Control Scripts
             foreach (var movement in controlScripts)
             {
+                if (!movement) continue;
+
                 movement.AttachToMotor(this);
             }
             #endregion
@@ -113,6 +143,7 @@ namespace Custom.Controller
             #endregion
 
             rigidbody.gravityScale = 0;
+            orgColSize = capsuleCollider.size;
         }
 
         private void Update()
@@ -123,6 +154,7 @@ namespace Custom.Controller
         private void FixedUpdate()
         {
             HandleGravity();
+            HandleFlip();
 
             rigidbody.velocity = paused ? Vector2.zero : velocity;
         }
@@ -140,8 +172,24 @@ namespace Custom.Controller
             {
                 control.SetActive(true);
 
-                if (!control.IsPassiveControl)
-                    _controller?.EnableActionMap(control.InputActionMap);
+                if (control.IsPassiveControl) continue;
+
+                switch (inputGroupMode)
+                {
+                    case InputGroupMode.IndividualAction:
+                        foreach (var actionMap in control.InputActions)
+                        {
+                            _controller?.EnableAction(actionMap);
+                        }
+                        break;
+
+                    case InputGroupMode.InputMap:
+                        foreach (var actionMap in control.InputActionMaps)
+                        {
+                            _controller?.EnableActionMap(actionMap);
+                        }
+                        break;
+                }
             }
         }
 
@@ -153,8 +201,24 @@ namespace Custom.Controller
             {
                 control.SetActive(false);
 
-                if (!control.IsPassiveControl)
-                    _controller?.DisableActionMap(control.InputActionMap);
+                if (control.IsPassiveControl) continue;
+
+                switch (inputGroupMode)
+                {
+                    case InputGroupMode.IndividualAction:
+                        foreach (var actionMap in control.InputActions)
+                        {
+                            _controller?.DisableAction(actionMap);
+                        }
+                        break;
+
+                    case InputGroupMode.InputMap:
+                        foreach (var actionMap in control.InputActionMaps)
+                        {
+                            _controller?.DisableActionMap(actionMap);
+                        }
+                        break;
+                }
             }
         }
         #endregion
@@ -215,6 +279,56 @@ namespace Custom.Controller
                 }
                 velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * TimeManager.FixedDeltaTime);
             }
+        }
+        #endregion
+
+        #region Flip
+        private float lastDirection = 1; // Default to positive X value of velocity -> Player is turning to the right.
+
+        private void HandleFlip()
+        {
+            if (velocity.x == 0) return;
+
+            Vector3 localScale = transform.localScale;
+
+            if (lastDirection * velocity.x < 0)
+            {
+                localScale.x *= -1;
+            }
+
+            transform.localScale = localScale;
+            lastDirection = velocity.x;
+        }
+        #endregion
+
+        #region Size Controls
+        private Vector2 orgColSize;
+
+        /// <summary>
+        /// Set the height multiplier of the motor.
+        /// <para> <b>NOTE:</b> This will only affect main collider and proximity checks. Renderers will not be affected. </para>
+        /// </summary>
+        /// <param name="_heightMult">  Value clamped to [0.5..1] </param>
+        /// <param name="_pivot">       Normalized height at which the height is adjusted from. Value clamped to [0..1] </param>
+        public void SetHeightMult(float _heightMult, float _pivot = 0.0f)
+        {
+            _heightMult = Mathf.Clamp(_heightMult, 0.5f, 1.0f);
+            _pivot = Mathf.Clamp01(_pivot);
+
+            float newSizeY = orgColSize.y * _heightMult;
+            float footOffset = (orgColSize.y - newSizeY) * _pivot;
+            float headOffset = (orgColSize.y - newSizeY) * (1 - _pivot);
+            float offsetY = (footOffset - headOffset) / 2;
+
+            // Set collider to calculated size and offset.
+            capsuleCollider.size = new Vector2(capsuleCollider.size.x, newSizeY);
+            capsuleCollider.offset = new Vector2(0, offsetY);
+
+            // Adjust head and foot transform position to match new collider properties.
+            footSocket.localPosition = new Vector2(0, -orgColSize.y / 2 + footOffset);
+            headSocket.localPosition = new Vector2(0, orgColSize.y / 2 - headOffset);
+            frontSocket.localPosition = new Vector2(frontSocket.localPosition.x, offsetY);
+            frontSocket.localScale = new Vector2(1.0f, _heightMult);
         }
         #endregion
     }

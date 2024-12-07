@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 using Custom.Controller;
 using Custom.Manager;
+using Custom.Manager.EventHandling;
+
+using static Custom.Controller.CharacterControlDamageable;
 
 namespace Custom.UI
 {
@@ -22,12 +25,12 @@ namespace Custom.UI
 
         private void OnEnable()
         {
-            CharacterControlDamageable.OnMotorDamaged += OnMotorDamaged;
+            EventAggregator.Subscribe<DeathEvent>(OnMotorDamaged);
         }
 
         private void OnDisable()
         {
-            CharacterControlDamageable.OnMotorDamaged -= OnMotorDamaged;
+            EventAggregator.Unsubscribe<DeathEvent>(OnMotorDamaged);
         }
 
         private void Awake()
@@ -87,7 +90,7 @@ namespace Custom.UI
 
 
 
-        private void OnMotorDamaged()
+        private void OnMotorDamaged(DeathEvent _event)
         {
             ShowPopup(true);
         }
