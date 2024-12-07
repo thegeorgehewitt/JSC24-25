@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 using FunkyCode;
 
@@ -30,7 +28,6 @@ namespace Custom.Interactable
         [SerializeField] private Sprite deadlockedSprite;
         [SerializeField] private Sprite unlockedSprite;
 
-
         [Header("OVERLOAD")]
         [SerializeField] private bool overloaded = false;
         [SerializeField] private Sprite overloadedSprite;
@@ -40,11 +37,6 @@ namespace Custom.Interactable
 
 
 #if UNITY_EDITOR
-        protected override void Reset()
-        {
-            base.Reset();
-        }
-
         private void OnValidate()
         {
             if (!doorCollider) return;
@@ -53,16 +45,27 @@ namespace Custom.Interactable
         }
 #endif
 
+        private void Start()
+        {
+            UpdateStates();
+        }
 
 
-        private void SetState(bool _open)
+
+        private void SetOpen(bool _open)
         {
             spriteRenderer.color = _open ? openedColor : closedColor;
             doorCollider.enabled = !_open;
             if (lightCollider) lightCollider.enabled = !_open;
 
-            // TEMPORARY
-            states = new List<string>{ _open ? "Open" : "Closed" };
+            UpdateStates();
+        }
+
+        private void UpdateStates()
+        {
+            states.Clear();
+            states.Add(open ? "Open" : "Closed");
+            if (deadlocked) states.Add("Deadlocked");
         }
 
         private void Open(bool _open)
@@ -70,7 +73,7 @@ namespace Custom.Interactable
 #if UNITY_EDITOR 
             if (!Application.isPlaying)
             {
-                SetState(_open);
+                SetOpen(_open);
             }
             else if (isActiveAndEnabled)
 #endif
@@ -95,14 +98,10 @@ namespace Custom.Interactable
                 yield return null;
             }
 
-            SetState(_open);
+            SetOpen(_open);
         }
 
 
-        public override void Interact()
-        {
-            Toggle();
-        }
 
         public void Toggle()
         {
@@ -127,7 +126,7 @@ namespace Custom.Interactable
 
             // AOE damage if not in interface
 
-            SetState(open);
+            UpdateStates();
         }
 
         public void ToggleDeadlock()
@@ -138,6 +137,8 @@ namespace Custom.Interactable
 
             spriteRenderer.sprite = deadlocked ? deadlockedSprite : unlockedSprite;
             spriteRenderer.color = open? openedColor : closedColor;
+
+            UpdateStates();
         }
     }
 }

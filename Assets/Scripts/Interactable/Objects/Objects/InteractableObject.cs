@@ -1,6 +1,8 @@
+using System.Linq;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.Events;
 
 using Custom.Scriptable;
 
@@ -8,8 +10,21 @@ namespace Custom.Interactable
 {
     public abstract class InteractableObject : MonoBehaviour
     {
+        [System.Serializable]
+        protected struct InteractionEvent
+        {
+            public ObjectInteractionData data;
+
+            /// <summary>
+            /// A function attached to this interaction.
+            /// </summary>
+            public UnityEvent interactEvent;
+        }
+
+
+
         [SerializeField] protected InteractableObjectData objectData;
-        [SerializeField] protected ObjectInteractionData[] interactionData;
+        [SerializeField] protected InteractionEvent[] interactionData;
 
         [SerializeField] protected SpriteRenderer spriteRenderer;
 
@@ -19,7 +34,7 @@ namespace Custom.Interactable
         public Vector3 ObjectBoundsSize { get { return spriteRenderer ? spriteRenderer.bounds.size : Vector3.zero; } }
 
         public InteractableObjectData ObjectData { get { return objectData; } }
-        public ObjectInteractionData[] InteractionData { get { return interactionData; } }
+        public ObjectInteractionData[] InteractionData { get { return interactionData.Select(e => e.data).ToArray(); } }
         public string[] States { get { return states.ToArray(); } }
 
 
@@ -33,6 +48,9 @@ namespace Custom.Interactable
 
 
 
-        public virtual void Interact() { }
+        public virtual void Interact(int _option)
+        {
+            interactionData[_option].interactEvent?.Invoke();
+        }
     }
 }

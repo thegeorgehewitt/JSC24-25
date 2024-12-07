@@ -7,8 +7,6 @@ using UnityEngine.UI;
 using TMPro;
 
 using Custom.Interactable;
-using System.Linq;
-using Unity.VisualScripting;
 
 namespace Custom.UI
 {
@@ -22,17 +20,28 @@ namespace Custom.UI
         [SerializeField] private Transform objectStateListHolder;
         [SerializeField] private Transform interactionListHolder;
         [SerializeField] private TextMeshProUGUI objectName;
-        [SerializeField] private int activeOption = 0;
 
         [Header("POPUP")]
         [SerializeField] private Image maskImage;
         [SerializeField] private float easeDuration = 0.1f;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-        private List<InteractableObjectStateDisplay> objectStates = new();
-        private List<InteractionInfoDisplay> interactions = new();
+        private int displayedOptions;
+        private int activeOption = 0;
 
-        private InteractableObject currentObject;
+        private List<InteractableObjectStateDisplay> objectStateDisplays = new();
+        private List<InteractionInfoDisplay> interactionDisplays = new();
+
+        public static int ActiveOption
+        {
+            get => Instance.activeOption;
+            set => Instance.activeOption = Mathf.Clamp(value, 0, Instance.displayedOptions - 1); 
+        }
+
+        public static int DisplayedOptions
+        {
+            get => Instance.displayedOptions;
+        }
 
 
 
@@ -49,81 +58,89 @@ namespace Custom.UI
             }
             #endregion
 
-            /// TESTING ///
-            
-            //go = Instantiate(interactionPrefab, interactionListHolder);
-            //interactions.Add(go.GetComponent<InteractionInfoDisplay>());
-
-            /// TESTING ///
-
             maskImage.fillAmount = 0;
         }
 
 
 
         #region Display Popup
-
-        private bool popupVisible;
-        private Coroutine popupCoroutine;
-
-
+        private InteractableObject currentObject;
 
         private void Core_DisplayInfo(InteractableObject _object)
         {
             if (currentObject != _object)
             {
-                activeOption = 0;
                 currentObject = _object;
-            }
-
-            for (int i =  0; i < _object.InteractionData.Length; i++)
-            {
-
-                if (interactions.Count == i)
-                {
-                    var go = Instantiate(interactionPrefab, interactionListHolder);
-                    interactions.Add(go.GetComponent<InteractionInfoDisplay>());
-                }
-
-                if (interactions.Count >= i && _object.InteractionData[i] != null)
-                {
-                    interactions[i].gameObject.SetActive(true);
-                    interactions[i].DisplayInfo(_object.InteractionData[i], i == activeOption);
-                }
-
-                if (i == _object.InteractionData.Length - 1)
-                {
-                    for (int j = interactions.Count - 1; j > i; j--)
-                    {
-                        interactions[j].gameObject.SetActive(false);
-                    }
-                }
-            }
-
-            for (int i = 0; i < _object.States.Length; i++)
-            {
-                if (i >= objectStates.Count)
-                {
-                    var go = Instantiate(objectStatePrefab, objectStateListHolder);
-                    objectStates.Add(go.GetComponent<InteractableObjectStateDisplay>());
-                }
-                else
-                {
-                    objectStates[i].SetActive(true);
-                }
-
-                objectStates[i].DisplayInfo(_object.States[i]);
-            }
-
-            for (int i = _object.States.Length; i < objectStates.Count; i++)
-            {
-                objectStates[i].SetActive(false);
+                displayedOptions = _object.InteractionData.Length;
             }
 
             objectName.text = _object.ObjectData.objectName.ToUpper();
 
+            UpdateInteractionDisplays(_object);
+            UpdateObjectStateDisplays(_object);
+
             Core_ShowPopup(true);
         }
+
+        private void UpdateInteractionDisplays(InteractableObject _object)
+        {
+            for (int i = 0; i < _object.InteractionData.Length; i++)
+            {
+
+                if (i >= interactionDisplays.Count)
+                {
+                    var go = Instantiate(interactionPrefab, interactionListHolder);
+                    interactionDisplays.Add(go.GetComponent<InteractionInfoDisplay>());
+                }
+                else
+                {
+                    interactionDisplays[i].gameObject.SetActive(true);
+                }
+
+                InteractionState state = (activeOption == i) ? InteractionState.Selected : InteractionState.Normal;
+                interactionDisplays[i].DisplayInfo(_object.InteractionData[i], state);
+            }
+
+            for (int i = _object.InteractionData.Length; i < interactionDisplays.Count; i++)
+            {
+                interactionDisplays[i].gameObject.SetActive(false);
+            }
+        }
+
+        private void UpdateObjectStateDisplays(InteractableObject _object)
+        {
+            for (int i = 0; i < _object.States.Length; i++)
+            {
+                if (i >= objectStateDisplays.Count)
+                {
+                    var go = Instantiate(objectStatePrefab, objectStateListHolder);
+                    objectStateDisplays.Add(go.GetComponent<InteractableObjectStateDisplay>());
+                }
+                else
+                {
+                    objectStateDisplays[i].SetActive(true);
+                }
+
+                objectStateDisplays[i].DisplayInfo(_object.States[i]);
+            }
+
+            for (int i = _object.States.Length; i < objectStateDisplays.Count; i++)
+            {
+                objectStateDisplays[i].SetActive(false);
+            }
+        }
+
+
+
+        public static void DisplayInfo(InteractableObject _object)
+        {
+            Instance?.Core_DisplayInfo(_object);
+        }
+        #endregion
+
+        #region Animation
+        private bool popupVisible;
+        private Coroutine popupCoroutine;
 
         private void Core_ShowPopup(bool _visible)
         {
@@ -151,19 +168,10 @@ namespace Custom.UI
             maskImage.fillAmount = targetAmount;
         }
 
-
-        
-
         public static void ShowPopup(bool _state)
         {
             Instance?.Core_ShowPopup(_state);
         }
-
-        public static void DisplayInfo(InteractableObject _object)
-        {
-            Instance?.Core_DisplayInfo(_object);
-        }
-
         #endregion
     }
 }

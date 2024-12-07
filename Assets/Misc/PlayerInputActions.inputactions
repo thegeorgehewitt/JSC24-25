@@ -236,22 +236,22 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "positive",
                     "id": "8d220e21-d8ad-48be-90e8-5fa357cade23",
                     "path": "<Mouse>/scroll/down",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=0.005)",
                     "groups": "",
                     "action": "Interact Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "negative",
                     "id": "b210ef6a-5c6e-489f-98e4-c9c611944fa7",
                     "path": "<Mouse>/scroll/up",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=0.005)",
                     "groups": "",
                     "action": "Interact Scroll",
                     "isComposite": false,

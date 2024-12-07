@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -11,19 +10,22 @@ namespace Custom.Interactable
 
     public class InteractableLightsControl : InteractableObject, IToggleable
     {
-        [Header("LIGHT REFERENCES")]
+        [SerializeField] private bool on = true;
         [SerializeField] private Light2D[] linkedLights;
 
-        [Header("ON & OFF")]
-        [SerializeField] private bool on = true;
 
 
-        private void SetState(bool _on)
+        private void Start()
         {
-            // TEMPORARY
-            states = new List<string> { _on ? "On" : "Off" };
+            UpdateState();
         }
 
+
+
+        private void UpdateState()
+        {
+            states = new List<string> { on ? "On" : "Off" };
+        }
 
         public void Toggle()
         {
@@ -34,12 +36,7 @@ namespace Custom.Interactable
                 light.enabled = on;
             }
 
-            SetState(on);           
-        }
-
-        public override void Interact()
-        {
-            Toggle();
+            UpdateState();           
         }
     }
 }

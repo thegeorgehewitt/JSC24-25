@@ -14,6 +14,21 @@ namespace Custom.Controller
     [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterMotor2D : MonoBehaviour
     {
+        private enum InputGroupMode
+        {
+            /// <summary>
+            /// Update individual input actions.
+            /// </summary>
+            IndividualAction,
+
+            /// <summary>
+            /// Update the entire input maps of registered controls.
+            /// </summary>
+            InputMap
+        }
+
+
+
         public static event Action<CharacterMotor2D> OnCharacterMotorEnabled;
         public static event Action<CharacterMotor2D> OnCharacterMotorDisabled;
 
@@ -58,6 +73,7 @@ namespace Custom.Controller
          */
         [Tooltip("While paused, the controller will not be affected by physics simulation and player controller inputs.")]
         [SerializeField] public bool paused;
+        [SerializeField] private InputGroupMode inputGroupMode;
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
         public Vector2 velocity = new();
@@ -158,9 +174,21 @@ namespace Custom.Controller
 
                 if (control.IsPassiveControl) continue;
 
-                foreach (var actionMap in control.InputActionMaps)
+                switch (inputGroupMode)
                 {
-                    _controller?.EnableActionMap(actionMap);
+                    case InputGroupMode.IndividualAction:
+                        foreach (var actionMap in control.InputActions)
+                        {
+                            _controller?.EnableAction(actionMap);
+                        }
+                        break;
+
+                    case InputGroupMode.InputMap:
+                        foreach (var actionMap in control.InputActionMaps)
+                        {
+                            _controller?.EnableActionMap(actionMap);
+                        }
+                        break;
                 }
             }
         }
@@ -175,9 +203,21 @@ namespace Custom.Controller
 
                 if (control.IsPassiveControl) continue;
 
-                foreach (var actionMap in control.InputActionMaps)
+                switch (inputGroupMode)
                 {
-                    _controller?.DisableActionMap(actionMap);
+                    case InputGroupMode.IndividualAction:
+                        foreach (var actionMap in control.InputActions)
+                        {
+                            _controller?.DisableAction(actionMap);
+                        }
+                        break;
+
+                    case InputGroupMode.InputMap:
+                        foreach (var actionMap in control.InputActionMaps)
+                        {
+                            _controller?.DisableActionMap(actionMap);
+                        }
+                        break;
                 }
             }
         }

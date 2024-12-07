@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b16de7f5f45794fbde2dd2be07aa8c, type: 3}
-  m_Name: Door Deadlock Interaction
+  m_Name: Sentry Turret Overload Interaction
   m_EditorClassIdentifier: 
-  icon: {fileID: 515268380, guid: 46c6ab91937d2534ab51e4aa0994f1a9, type: 3}
-  tag: Deadlock
-  cost: 1
+  icon: {fileID: 1630043686, guid: 82796586fa3c8474999a5b9637e1ea22, type: 3}
+  tag: Overload
+  cost: 2

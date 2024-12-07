@@ -332,7 +332,8 @@ MonoBehaviour:
   blockableLayers:
     serializedVersion: 2
     m_Bits: 1088
-  inputActionScroll: {fileID: 0}
+  scrollSpeedMult: 0.1
+  valuePerScroll: 40
   interactCursor: {fileID: 2594773620045173641}
   defaultCursorSize: 0.5
   outOfRangeColor: {r: 0.8679245, g: 0.41349235, b: 0.41349235, a: 1}
@@ -905,7 +906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d145e7323bdf64183783b07d36c52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputAction: {fileID: -944628639613478452, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  inputActionAsset: {fileID: -944628639613478452, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   controlledMotor: {fileID: 573359081064459370}
 --- !u!114 &573359081064459370
 MonoBehaviour:
@@ -937,6 +938,7 @@ MonoBehaviour:
   enableVisibilityCheck: 1
   lightEventListener: {fileID: 7520197564098527792}
   paused: 0
+  inputGroupMode: 0
   controlScripts:
   - {fileID: 198324785649722540}
   - {fileID: 4773218601208523903}

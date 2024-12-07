@@ -14,17 +14,54 @@ namespace Custom.UI
         [SerializeField] private Image borderImage;
         [SerializeField] private TextMeshProUGUI interactionName;
         [SerializeField] private TextMeshProUGUI interactionCost;
+        [SerializeField] private GameObject costObject;
 
         [Header("ACTIVE OPTION")]
-        [SerializeField] private Color inactiveColor = Color.white;
-        [SerializeField] private Color activeColor = Color.red;
+        [SerializeField] private Color normalColor = Color.white;
+        [SerializeField] private Color selectedColor = Color.cyan;
+        [SerializeField] private Color disabledColor = Color.grey;
 
-        public void DisplayInfo(ObjectInteractionData _data, bool active)
+
+
+        private Color GetColorFromState(InteractionState _state)
         {
+            switch(_state)
+            {
+                case InteractionState.Normal:
+                    return normalColor;
+
+                case InteractionState.Selected:
+                    return selectedColor;
+
+                case InteractionState.Disabled:
+                    return disabledColor;
+
+                default: return normalColor;
+            }
+        }
+
+
+
+        public void DisplayInfo(ObjectInteractionData _data, InteractionState _state)
+        {
+            borderImage.color = GetColorFromState(_state);
+
+            if (!_data) return;
+
             interactionIcon.sprite = _data.icon;
             interactionName.text = _data.tag;
+
+            costObject.SetActive(_data.cost != 0);
             interactionCost.text = _data.cost.ToString();
-            borderImage.color = active? activeColor : inactiveColor;
         }
+    }
+
+
+
+    public enum InteractionState
+    {
+        Normal,
+        Selected,
+        Disabled
     }
 }

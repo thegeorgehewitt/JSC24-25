@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Custom.Interactable
 {
     using Interfaces;
 
-    public class InteractableElectircalBox : InteractableObject, IOverloadable
+    public class InteractableElectricalBox : InteractableObject, IOverloadable
     {
         [Header("OVERLOAD")]
         [SerializeField] private bool overloaded = false;

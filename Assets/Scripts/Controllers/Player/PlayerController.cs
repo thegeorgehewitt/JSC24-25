@@ -13,10 +13,10 @@ namespace Custom.Controller
         public static event Action<CharacterMotor2D> OnControlledMotorChanged;
 
         [Header("REFERENCE")]
-        [SerializeField] private InputActionAsset inputAction;
+        [SerializeField] private InputActionAsset inputActionAsset;
         [SerializeField] private CharacterMotor2D controlledMotor;
 
-        public InputActionAsset InputAsset { get { return inputAction; } }
+        public InputActionAsset InputAsset { get { return inputActionAsset; } }
         public CharacterMotor2D ControlledMotor { get { return controlledMotor; } }
 
 
@@ -27,7 +27,7 @@ namespace Custom.Controller
             // Get default InputActionAsset.
             // Remove this incase of performance lost when adding PlayerController component.
             var inputAssets = Resources.FindObjectsOfTypeAll<InputActionAsset>();
-            if (inputAssets.Length > 0) inputAction = inputAssets[0];
+            if (inputAssets.Length > 0) inputActionAsset = inputAssets[0];
         }
 #endif
 
@@ -48,7 +48,7 @@ namespace Custom.Controller
         private void Start()
         {
             // Disable all inputs.
-            inputAction.Disable();
+            inputActionAsset.Disable();
 
             // Possess default motor.
             if (controlledMotor) Possess(controlledMotor);
@@ -57,7 +57,7 @@ namespace Custom.Controller
 
 
         /// <summary>
-        /// Enable an <see cref="InputActionMap"/> in the referenced <see cref="inputAction"/>.
+        /// Enable an <see cref="InputActionMap"/> in the referenced <see cref="inputActionAsset">inputAction</see>.
         /// </summary>
         /// <param name="_map"> The <see cref="InputActionMap"/> to enable. </param>
         public void EnableActionMap(InputActionMap _map)
@@ -65,11 +65,11 @@ namespace Custom.Controller
             if (_map == null) return;
             if (_map.enabled) return;
 
-            inputAction.FindActionMap(_map.id).Enable();
+            inputActionAsset.FindActionMap(_map.id).Enable();
         }
 
         /// <summary>
-        /// Disable an <see cref="InputActionMap"/> in the referenced <see cref="inputAction"/>.
+        /// Disable an <see cref="InputActionMap"/> in the referenced <see cref="inputActionAsset">inputAction</see>.
         /// </summary>
         /// <param name="_map"> The <see cref="InputActionMap"/> to disable. </param>
         public void DisableActionMap(InputActionMap _map)
@@ -77,7 +77,31 @@ namespace Custom.Controller
             if (_map == null) return;
             if (!_map.enabled) return;
 
-            inputAction.FindActionMap(_map.id).Disable();
+            inputActionAsset.FindActionMap(_map.id).Disable();
+        }
+
+        /// <summary>
+        /// Enable an <see cref="InputActionMap"/> in the referenced <see cref="inputActionAsset">inputAction</see>.
+        /// </summary>
+        /// <param name="_action"> The <see cref="InputAction"/> to enable. </param>
+        public void EnableAction(InputAction _action)
+        {
+            if (_action == null) return;
+            if (_action.enabled) return;
+
+            inputActionAsset.FindAction(_action.id).Enable();
+        }
+
+        /// <summary>
+        /// Disable an <see cref="InputAction"/> in the referenced <see cref="inputActionAsset">inputAction</see>.
+        /// </summary>
+        /// <param name="_action"> The <see cref="InputAction"/> to disable. </param>
+        public void DisableAction(InputAction _action)
+        {
+            if (_action == null) return;
+            if (!_action.enabled) return;
+
+            inputActionAsset.FindAction(_action.id).Disable();
         }
 
         /// <summary>

@@ -53,12 +53,22 @@ namespace Custom.Interactable.Character.Enemy
 
         private void Update()
         {
-            states = new List<string> { activated ? "Active" : "Jammed" };
-
             UpdateCurrentTarget();
+
+            UpdateState();
         } 
 
 
+
+        private void UpdateState()
+        {
+            states.Clear();
+
+            if (overloaded) states.Add("Overloaded");
+            if (recruited) states.Add("Recruited");
+
+            states.Add(activated ? "Active" : "Jammed");
+        }
 
         #region Targeting 
         private void UpdateCurrentTarget()
@@ -158,7 +168,7 @@ namespace Custom.Interactable.Character.Enemy
         #region Interaction - Jam Turret
         private Coroutine jamCoroutine;
 
-        private void JamTurret()
+        public void JamTurret()
         {
             if (jamCoroutine != null) StopCoroutine(jamCoroutine);
 
@@ -204,6 +214,7 @@ namespace Custom.Interactable.Character.Enemy
             recruited = true;
 
             // Recruit functionality (coroutine)
+            Debug.Log($"Turret ({name}): Recruited.");
         }
         #endregion
     }

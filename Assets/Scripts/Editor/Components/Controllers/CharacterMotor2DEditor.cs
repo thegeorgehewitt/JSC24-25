@@ -34,6 +34,7 @@ namespace Custom.Editor
         private SerializedProperty lightEventListener;
 
         private SerializedProperty paused;
+        private SerializedProperty inputGroupMode;
         private SerializedProperty controlScripts;
 
         private SerializedProperty velocity;
@@ -216,6 +217,7 @@ namespace Custom.Editor
                         MessageType.Info);
                 }
 
+                EditorGUILayout.PropertyField(inputGroupMode);
                 EditorGUILayout.PropertyField(controlScripts);
 
                 EditorGUILayout.BeginHorizontal();
@@ -284,6 +286,7 @@ namespace Custom.Editor
             lightEventListener = AssignToProperty("lightEventListener");
 
             paused = AssignToProperty("paused");
+            inputGroupMode = AssignToProperty("inputGroupMode");
             controlScripts = AssignToProperty("controlScripts");
 
             velocity = AssignToProperty("velocity");

@@ -1,49 +1,54 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-
-using Custom.Manager;
 
 namespace Custom.Interactable
 {
     using Interfaces;
 
+    [RequireComponent(typeof(Collider2D))]
     public class InteractableTempControl : InteractableObject, IToggleable
     {
-        [Header("LIGHT REFERENCES")]
-        [SerializeField] private GameObject[] linkedObjects;
-
-        [Header("TOGGLE OVERHEAT")]
         [SerializeField] private bool isOverheated = false;
+        [SerializeField] private Collider2D impactArea;
+        [SerializeField] private ContactFilter2D contactFilter;
 
-        private void SetState(bool _overheat)
+        private IOverheatable[] OverheatableInArea
         {
-            // TEMPORARY
-            states = new List<string> { _overheat ? "Overheat" : "Normal" };
+            get
+            {
+                List<Collider2D> resultColliders = new();
+                impactArea.OverlapCollider(contactFilter, resultColliders);
+
+                return resultColliders.Where(e => e.GetComponent<IOverheatable>() != null).Select(e => e.GetComponent<IOverheatable>()).ToArray();
+            }
+        }
+
+
+
+        private void Start()
+        {
+            UpdateState();
+        }
+
+
+
+        private void UpdateState()
+        {
+            states = new List<string> { isOverheated ? "Overheat" : "Normal" };
         }
 
         public void Toggle()
         {
             isOverheated = !isOverheated;
 
-            SetState(isOverheated);
+            UpdateState();
 
-            foreach (GameObject linkedObject in linkedObjects)
+            foreach (var affectedObject in OverheatableInArea)
             {
-                IOverheatable overheatable = linkedObject.GetComponent<IOverheatable>();
-                if (overheatable != null)
-                {
-                    overheatable.Overheat(isOverheated);
-                }
+                affectedObject.Overheat(isOverheated);
             }
-        }
-
-        public override void Interact()
-        {
-            Debug.Log("Interacted");
-            Toggle();
         }
     }
 }

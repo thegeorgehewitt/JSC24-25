@@ -5,5 +5,3 @@ namespace Custom.Interactable.Interfaces
         public abstract void Overheat(bool isOverheated);
     }
 }
-
-
