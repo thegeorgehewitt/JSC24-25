@@ -285,24 +285,7 @@ MonoBehaviour:
         - m_Target: {fileID: 5323195394782304771}
           m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractableSentryTurret,
             Assembly-CSharp
-          m_MethodName: Overload
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - data: {fileID: 11400000, guid: 2cfce8064cc37d445badf460f7034ef4, type: 2}
-    interactEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5323195394782304771}
-          m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractableSentryTurret,
-            Assembly-CSharp
-          m_MethodName: Recruit
+          m_MethodName: Override
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -347,7 +330,7 @@ MonoBehaviour:
   nontargetingColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   targetingColor: {r: 0.8490566, g: 0.19624422, b: 0.19624422, a: 1}
   jamDuration: 2
-  overloaded: 0
+  overridden: 0
   recruited: 0
 --- !u!1 &7252178846879592827
 GameObject:

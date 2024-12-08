@@ -8,7 +8,7 @@ namespace Custom.Interactable
 {
     using Interfaces;
 
-    public class InteractableLightsControl : InteractableObject, IToggleable
+    public class InteractableLightsControl : InteractableObject, IToggleable, IOverheatable
     {
         [SerializeField] private bool on = true;
         [SerializeField] private Light2D[] linkedLights;
@@ -37,6 +37,17 @@ namespace Custom.Interactable
             }
 
             UpdateState();           
+        }
+
+        public void Overheat(bool isOverheated)
+        {
+            if (on)
+            {
+                foreach (Light2D light in linkedLights)
+                {
+                    light.enabled = !isOverheated;
+                }
+            }
         }
     }
 }

@@ -3,21 +3,46 @@ using UnityEngine;
 namespace Custom.Interactable
 {
     using Interfaces;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    public class InteractableElectricalBox : InteractableObject, IOverloadable
+    [RequireComponent(typeof(Collider2D))]
+    public class InteractableElectricalBox : InteractableObject
     {
         [Header("OVERLOAD")]
-        [SerializeField] private bool overloaded = false;
+        [SerializeField] private bool overloaded;
+        [SerializeField] private Collider2D impactArea;
+        [SerializeField] private ContactFilter2D contactFilter;
+        
+        private IOverloadable[] OverloadableInArea
+        {
+            get
+            {
+                List<Collider2D> resultColliders = new();
+                impactArea.OverlapCollider(contactFilter, resultColliders);
+
+                return resultColliders.Where(e => e.GetComponent<IOverloadable>() != null).Select(e => e.GetComponent<IOverloadable>()).ToArray();
+            }
+        }
+
+        public void Trigger()
+        {
+            Overload();
+        }
 
         public void Overload()
         {
-            if (overloaded) return;
-
             overloaded = true;
+            foreach (var affectedObject in OverloadableInArea)
+            {
+                affectedObject.Overload();
+            }
+            UpdateState();
+        }
 
-            // explosion anim
-
-            // AOE damage if not in interface
+        private void UpdateState()
+        {
+            states = new List<string> { overloaded ? "Overload" : "Normal" };
         }
     }
 }

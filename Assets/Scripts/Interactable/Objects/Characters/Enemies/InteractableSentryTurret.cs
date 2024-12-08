@@ -11,8 +11,9 @@ namespace Custom.Interactable.Character.Enemy
     using Custom.Controller;
     using Custom.Utility;
     using Interfaces;
+    using System.Linq;
 
-    public class InteractableSentryTurret : InteractableEnemyBase, IAttackableEnemy
+    public class InteractableSentryTurret : InteractableEnemyBase, IAttackableEnemy, IOverheatable, IOverloadable
     {
         [Header("REFERENCES")]
         [SerializeField] private Transform firePoint;
@@ -27,7 +28,7 @@ namespace Custom.Interactable.Character.Enemy
 
         [Header("INTERACTION")]
         [SerializeField] private float jamDuration = 2.0f;
-        [SerializeField] private bool overloaded = false;
+        [SerializeField] private bool overridden = false;
         [SerializeField] private bool recruited = false;
 
 
@@ -64,7 +65,7 @@ namespace Custom.Interactable.Character.Enemy
         {
             states.Clear();
 
-            if (overloaded) states.Add("Overloaded");
+            if (overridden) states.Add("Overloaded");
             if (recruited) states.Add("Recruited");
 
             states.Add(activated ? "Active" : "Jammed");
@@ -188,31 +189,39 @@ namespace Custom.Interactable.Character.Enemy
         }
         #endregion
 
-        #region Interaction - Overload
-        public void Overload()
+        #region Interaction - Override
+        public void Override()
         {
-            if (overloaded) return;
+            if (overridden) return;
 
-            overloaded = true;
-
-            // explosion death anim
-
-            // AOE damage if not in interface
+            overridden = true;
+            
+            Debug.Log($"Turret ({name}): Overridden.");
+            // random firing
         }
         #endregion
 
-        #region Interaction - Recruit
-        private Coroutine recruitCoroutine;
+        #region Interaction - Overheat
 
-        public void Recruit()
+        public void Overheat(bool overheat)
         {
-            if (recruited) return;
-
-            recruited = true;
-
-            // Recruit functionality (coroutine)
-            Debug.Log($"Turret ({name}): Recruited.");
+            if (overheat)
+            {
+                JamTurret();
+            }
         }
+
+        
+        #endregion
+
+
+        #region Interaction - Overload
+
+        public void Overload()
+        {
+            JamTurret();
+        }
+
         #endregion
     }
 }

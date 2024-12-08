@@ -6,13 +6,16 @@ using UnityEngine;
 namespace Custom.Interactable
 {
     using Interfaces;
+    using System.Collections;
+    using System;
 
     [RequireComponent(typeof(Collider2D))]
-    public class InteractableTempControl : InteractableObject, IToggleable
+    public class InteractableTempControl : InteractableObject
     {
         [SerializeField] private bool isOverheated = false;
         [SerializeField] private Collider2D impactArea;
         [SerializeField] private ContactFilter2D contactFilter;
+        [SerializeField] private float overheatDuration = 5.0f;
 
         private IOverheatable[] OverheatableInArea
         {
@@ -26,6 +29,33 @@ namespace Custom.Interactable
         }
 
 
+        public void Trigger()
+        {
+            if (!isOverheated) StartCoroutine(OverheatCoroutine());
+        }
+
+        private IEnumerator OverheatCoroutine()
+        {
+            isOverheated = true;
+
+            UpdateState();
+
+            foreach (var affectedObject in OverheatableInArea)
+            {
+                affectedObject.Overheat(isOverheated);
+            }
+
+            yield return new WaitForSeconds(overheatDuration);
+
+            isOverheated = false;
+
+            foreach (var affectedObject in OverheatableInArea)
+            {
+                affectedObject.Overheat(isOverheated);
+            }
+
+            UpdateState();
+        }
 
         private void Start()
         {
@@ -39,17 +69,17 @@ namespace Custom.Interactable
             states = new List<string> { isOverheated ? "Overheat" : "Normal" };
         }
 
-        public void Toggle()
-        {
-            isOverheated = !isOverheated;
+        //public void Toggle()
+        //{
+        //    isOverheated = !isOverheated;
 
-            UpdateState();
+        //    UpdateState();
 
-            foreach (var affectedObject in OverheatableInArea)
-            {
-                affectedObject.Overheat(isOverheated);
-            }
-        }
+        //    foreach (var affectedObject in OverheatableInArea)
+        //    {
+        //        affectedObject.Overheat(isOverheated);
+        //    }
+        //}
     }
 }
 
