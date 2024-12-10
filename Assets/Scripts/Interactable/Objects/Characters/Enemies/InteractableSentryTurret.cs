@@ -1,17 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 
 using Custom.Manager;
 using Custom.Manager.EventHandling;
+using Custom.Controller;
+using Custom.Utility;
 
 namespace Custom.Interactable.Character.Enemy
 {
-    using Custom.Controller;
-    using Custom.Utility;
     using Interfaces;
-    using System.Linq;
 
     public class InteractableSentryTurret : InteractableEnemyBase, IAttackableEnemy, IOverheatable, IOverloadable
     {
@@ -30,6 +28,8 @@ namespace Custom.Interactable.Character.Enemy
         [SerializeField] private float jamDuration = 2.0f;
         [SerializeField] private bool overridden = false;
         [SerializeField] private bool recruited = false;
+
+        private bool overheated;
 
 
 
@@ -168,6 +168,9 @@ namespace Custom.Interactable.Character.Enemy
 
         public void JamTurret()
         {
+            // TEMP
+            if (overheated) return;
+
             if (jamCoroutine != null) StopCoroutine(jamCoroutine);
 
             jamCoroutine = StartCoroutine(JamCoroutine());
@@ -189,37 +192,22 @@ namespace Custom.Interactable.Character.Enemy
         }
         #endregion
 
-        #region Interaction - Override
-        public void Override()
-        {
-            if (overridden) return;
-
-            overridden = true;
-            
-            Debug.Log($"Turret ({name}): Overridden.");
-            // random firing
-        }
-        #endregion
-
         #region Interaction - Overheat
 
         public void Overheat(bool overheat)
         {
-            if (overheat)
-            {
-                JamTurret();
-            }
-        }
+            overheated = overheat;
 
-        
+            activated = !overheat;
+            laserDisplay.enabled = !overheat;
+        }     
         #endregion
-
 
         #region Interaction - Overload
 
         public void Overload()
         {
-            JamTurret();
+            // Firing randomly - Next Sem
         }
 
         #endregion
