@@ -173,7 +173,7 @@ MonoBehaviour:
           m_CallState: 2
   spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 1730410341943266298}
-  lightCollider: {fileID: 4109672476251525396}
+  lightCollider: {fileID: 3136771063956746758}
   open: 0
   closedColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   openedColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0.19607843}
@@ -217,7 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9055732100578954654}
   - component: {fileID: 2916424553002418655}
-  - component: {fileID: 4109672476251525396}
+  - component: {fileID: 3136771063956746758}
   m_Layer: 10
   m_Name: Display
   m_TagString: Untagged
@@ -292,7 +292,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4109672476251525396
+--- !u!114 &3136771063956746758
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,7 +310,7 @@ MonoBehaviour:
   shadowDistanceMin: 0.5
   shadowDistanceMax: 1
   shadowTranslucency: 0
-  maskType: 0
+  maskType: 3
   maskLit: 0
   maskPivot: 0
   maskLayer: 0
@@ -326,6 +326,6 @@ MonoBehaviour:
     spriteRenderer: {fileID: 2916424553002418655}
   mainShape:
     shadowType: 1
-    maskType: 0
+    maskType: 3
     maskPivot: 0
     transform: {fileID: 9055732100578954654}

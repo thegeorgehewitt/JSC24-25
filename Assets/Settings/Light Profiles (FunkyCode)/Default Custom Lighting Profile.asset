@@ -38,7 +38,7 @@ MonoBehaviour:
         - layerID: 0
           type: 0
           sorting: 0
-          sortingIgnore: 0
+          sortingIgnore: 1
           shadowEffect: 0
           shadowEffectLayer: 0
           maskLit: 0

@@ -777,7 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0.5392498
+  visibility: 0.58408475
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,7 +785,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7009367374004171967}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc8c96ce3176ac34db35ee18522539d7, type: 3}
   m_Name: 

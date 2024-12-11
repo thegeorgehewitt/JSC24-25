@@ -10,13 +10,19 @@ namespace Custom.Interactable
 
     public class InteractableLightsControl : InteractableObject, IToggleable, IOverheatable
     {
-        [SerializeField] private bool on = true;
         [SerializeField] private Light2D[] linkedLights;
+
+        private readonly Dictionary<Light2D, bool> previousState =  new();
 
 
 
         private void Start()
         {
+            foreach (var light in linkedLights)
+            {
+                previousState.Add(light, light.enabled);
+            }
+
             UpdateState();
         }
 
@@ -24,28 +30,31 @@ namespace Custom.Interactable
 
         private void UpdateState()
         {
-            states = new List<string> { on ? "On" : "Off" };
+            // TODO
         }
 
         public void Toggle()
         {
-            on = !on;
-
             foreach (Light2D light in linkedLights)
             {
-                light.enabled = on;
+                light.enabled = !light.enabled;
             }
 
-            UpdateState();           
+            UpdateState();
         }
 
         public void Overheat(bool isOverheated)
         {
-            if (on)
+            foreach (Light2D light in linkedLights)
             {
-                foreach (Light2D light in linkedLights)
+                if (isOverheated)
                 {
-                    light.enabled = !isOverheated;
+                    previousState[light] = light.enabled;
+                    light.enabled = false;
+                }
+                else
+                {
+                    light.enabled = previousState[light];
                 }
             }
         }

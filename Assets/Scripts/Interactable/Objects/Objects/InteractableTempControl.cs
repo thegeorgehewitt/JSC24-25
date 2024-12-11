@@ -1,17 +1,19 @@
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
+
+using FunkyCode;
 
 using UnityEngine;
 
 namespace Custom.Interactable
 {
     using Interfaces;
-    using System.Collections;
-    using System;
 
     [RequireComponent(typeof(Collider2D))]
     public class InteractableTempControl : InteractableObject
     {
+        [SerializeField] private Light2D proximityLight;
         [SerializeField] private bool isOverheated = false;
         [SerializeField] private Collider2D impactArea;
         [SerializeField] private ContactFilter2D contactFilter;
@@ -37,6 +39,7 @@ namespace Custom.Interactable
         private IEnumerator OverheatCoroutine()
         {
             isOverheated = true;
+            proximityLight.enabled = true;
 
             UpdateState();
 
@@ -48,13 +51,14 @@ namespace Custom.Interactable
             yield return new WaitForSeconds(overheatDuration);
 
             isOverheated = false;
+            proximityLight.enabled = false;
+
+            UpdateState();
 
             foreach (var affectedObject in OverheatableInArea)
             {
                 affectedObject.Overheat(isOverheated);
             }
-
-            UpdateState();
         }
 
         private void Start()
