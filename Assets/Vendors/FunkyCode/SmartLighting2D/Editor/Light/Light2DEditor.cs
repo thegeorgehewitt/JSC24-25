@@ -232,11 +232,11 @@ namespace FunkyCode
 
 				Vector3 nextPoint = points[(i + 1) % points.Count];
 
-				point.x += light2D.transform2D.position.x;
-				point.y += light2D.transform2D.position.y;
+				point.x += light2D.transform.position.x;
+				point.y += light2D.transform.position.y;
 
-				nextPoint.x += light2D.transform2D.position.x;
-				nextPoint.y += light2D.transform2D.position.y;
+				nextPoint.x += light2D.transform.position.x;
+				nextPoint.y += light2D.transform.position.y;
 
 				Handles.DrawLine(point, nextPoint);
 			}
@@ -290,11 +290,11 @@ namespace FunkyCode
 
 				nextPoint.z = light2D.transform.position.z;
 
-				point.x += light2D.transform2D.position.x;
-				point.y += light2D.transform2D.position.y;
+				point.x += light2D.transform.position.x;
+				point.y += light2D.transform.position.y;
 
-				nextPoint.x += light2D.transform2D.position.x;
-				nextPoint.y += light2D.transform2D.position.y;
+				nextPoint.x += light2D.transform.position.x;
+				nextPoint.y += light2D.transform.position.y;
 
 				Handles.DrawLine(point, nextPoint);
 
@@ -302,8 +302,8 @@ namespace FunkyCode
 
 				if (point != result)
 				{
-					result.x -= light2D.transform2D.position.x;
-					result.y -= light2D.transform2D.position.y;
+					result.x -= light2D.transform.position.x;
+					result.y -= light2D.transform.position.y;
 
 					List<Vector2> cPoints = new List<Vector2>(points);
 

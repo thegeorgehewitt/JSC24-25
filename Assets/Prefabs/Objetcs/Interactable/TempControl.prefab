@@ -392,7 +392,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   spriteRenderer: {fileID: 3459847120950194334}
-  proximityLight: {fileID: 0}
+  proximityLight: {fileID: 4374468802943644286}
   isOverheated: 0
   impactArea: {fileID: 8270244730662549922}
   contactFilter:
