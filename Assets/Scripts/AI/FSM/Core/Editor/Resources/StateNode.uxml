@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/AI/FSM/Core/Editor/Resources/StateNode.uss?fileID=7433441132597879392&amp;guid=8f000cb3eed8c3f43983bbbe878ca89d&amp;type=3#StateNode" />
+    <ui:VisualElement focusable="true" name="main-container" tabindex="-1" style="background-color: rgb(55, 55, 55); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; flex-grow: 1;">
+        <ui:VisualElement name="node-status" style="align-items: center; flex-direction: row; justify-content: flex-start; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: rgb(34, 34, 34); height: 10px;" />
+        <ui:VisualElement name="title" style="align-items: center; flex-direction: row; padding-top: 7px; padding-bottom: 7px; justify-content: space-between; padding-right: 10px; padding-left: 10px; background-color: rgb(55, 55, 55);">
+            <ui:Label name="title-label" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" style="height: auto; -unity-font-style: bold; color: rgb(219, 219, 219); -unity-text-align: middle-center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 16px;" />
+            <ui:VisualElement name="collapse-button" class="expanded" />
+        </ui:VisualElement>
+        <ui:VisualElement name="behaviours-container" style="flex-grow: 1; background-color: rgb(67, 67, 67); padding-right: 10px; padding-left: 10px; padding-bottom: 2px; padding-top: 2px;">
+            <ui:HelpBox text="No Behaviour Attached" parse-escape-sequences="true" display-tooltip-when-elided="true" name="empty-state-content" message-type="None" style="-unity-text-align: middle-center; color: rgb(195, 195, 195); background-color: rgb(53, 53, 53); font-size: 14px; border-left-color: rgb(43, 43, 43); border-right-color: rgb(43, 43, 43); border-top-color: rgb(43, 43, 43); border-bottom-color: rgb(43, 43, 43); justify-content: center; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; margin-right: 0; margin-left: 0; margin-bottom: 3px; margin-top: 3px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="footer" style="flex-grow: 1; background-color: rgb(55, 55, 55); height: 10px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;" />
+    </ui:VisualElement>
+</ui:UXML>

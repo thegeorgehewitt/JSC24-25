@@ -5,8 +5,6 @@ using Custom.Interactable.Character.Enemy;
 
 namespace Custom.Editor
 {
-    using Styles;
-
     [CustomEditor(typeof(InteractableEnemyBase), true)]
     public class InteractableEnemyBaseEditor : InteractableCharacterBaseEditor
     {
@@ -37,7 +35,7 @@ namespace Custom.Editor
             base.OnInspectorGUI();
 
             #region Foldout
-            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Enemy Properties", CustomEditorStyles.foldoutHeader);
+            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Enemy Properties", CustomGUIStyles.foldoutHeader);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             expandProperties.target = IsExpanded;

@@ -6,8 +6,6 @@ using Custom.Controller;
 
 namespace Custom.Editor
 {
-    using Styles;
-
     [CustomEditor(typeof(CharacterMotor2D), true)]
     [CanEditMultipleObjects]
     public class CharacterMotor2DEditor : CustomBaseEditor
@@ -120,7 +118,7 @@ namespace Custom.Editor
             #endregion
 
             #region Proximity Check
-            IsProximityCheckPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsProximityCheckPropertiesExpanded, "Proximity Checks", CustomEditorStyles.foldoutHeader);
+            IsProximityCheckPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsProximityCheckPropertiesExpanded, "Proximity Checks", CustomGUIStyles.foldoutHeader);
             expandProximityCheckProperties.target = IsProximityCheckPropertiesExpanded;
             EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -152,7 +150,7 @@ namespace Custom.Editor
             #endregion
 
             #region Gravity
-            IsGravityPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsGravityPropertiesExpanded, "Gravity", CustomEditorStyles.foldoutHeader);
+            IsGravityPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsGravityPropertiesExpanded, "Gravity", CustomGUIStyles.foldoutHeader);
             expandGravityProperties.target = IsGravityPropertiesExpanded;
 
             if (EditorGUILayout.BeginFadeGroup(expandGravityProperties.faded))
@@ -175,7 +173,7 @@ namespace Custom.Editor
             #endregion
 
             #region Visibility
-            IsVisibilityPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsVisibilityPropertiesExpanded, "Visibility", CustomEditorStyles.foldoutHeader);
+            IsVisibilityPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsVisibilityPropertiesExpanded, "Visibility", CustomGUIStyles.foldoutHeader);
             expandVisibilityProperties.target = IsVisibilityPropertiesExpanded;
             EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -202,7 +200,7 @@ namespace Custom.Editor
             #endregion
 
             #region Controls
-            IsControlsPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsControlsPropertiesExpanded, "Controls", CustomEditorStyles.foldoutHeader);
+            IsControlsPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsControlsPropertiesExpanded, "Controls", CustomGUIStyles.foldoutHeader);
             expandControlsProperties.target = IsControlsPropertiesExpanded;
             EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -240,7 +238,7 @@ namespace Custom.Editor
             #endregion
 
             #region Info
-            IsInfoExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsInfoExpanded, "Info", CustomEditorStyles.foldoutHeader);
+            IsInfoExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsInfoExpanded, "Info", CustomGUIStyles.foldoutHeader);
             expandInfo.target = IsInfoExpanded;
             EditorGUILayout.EndFoldoutHeaderGroup();
 

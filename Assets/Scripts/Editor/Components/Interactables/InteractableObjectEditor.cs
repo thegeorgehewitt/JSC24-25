@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 
@@ -8,8 +5,6 @@ using Custom.Interactable;
 
 namespace Custom.Editor
 {
-    using Styles;
-
     [CanEditMultipleObjects]
     [CustomEditor(typeof(InteractableObject), true)]
     public class InteractableObjectEditor : CustomBaseEditor
@@ -47,7 +42,7 @@ namespace Custom.Editor
             #region Foldout
             EditorGUILayout.Space(10);
 
-            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Object Properties", CustomEditorStyles.foldoutHeader);
+            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Object Properties", CustomGUIStyles.foldoutHeader);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             expandObjectProperties.target = IsExpanded;

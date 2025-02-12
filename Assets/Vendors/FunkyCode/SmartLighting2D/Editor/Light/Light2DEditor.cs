@@ -9,7 +9,7 @@ using FunkyCode.LightingSettings;
 using FunkyCode.LightSettings;
 using FunkyCode.Utilities;
 
-using Custom.Editor.Styles;
+using Custom.Editor;
 
 namespace FunkyCode
 {
@@ -513,7 +513,7 @@ namespace FunkyCode
             #endregion
 
             #region Light Properties
-            IsLightPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsLightPropertiesExpanded, "Light", CustomEditorStyles.foldoutHeader);
+            IsLightPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsLightPropertiesExpanded, "Light", CustomGUIStyles.foldoutHeader);
 			EditorGUILayout.EndFoldoutHeaderGroup();
 			expandLightProperties.target = IsLightPropertiesExpanded;
 
@@ -608,7 +608,7 @@ namespace FunkyCode
             #endregion
 
             #region Event Properties
-            IsEventPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsEventPropertiesExpanded, "Event Handling", CustomEditorStyles.foldoutHeader);
+            IsEventPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsEventPropertiesExpanded, "Event Handling", CustomGUIStyles.foldoutHeader);
             EditorGUILayout.EndFoldoutHeaderGroup();
             expandEventProperties.target = IsEventPropertiesExpanded;
 
@@ -625,7 +625,7 @@ namespace FunkyCode
             #endregion
 
             #region Shadow Properties
-            IsShadowPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsShadowPropertiesExpanded, "Shadow", CustomEditorStyles.foldoutHeader);
+            IsShadowPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsShadowPropertiesExpanded, "Shadow", CustomGUIStyles.foldoutHeader);
 			EditorGUILayout.EndFoldoutHeaderGroup();
 			expandShadowProperties.target = IsShadowPropertiesExpanded;
 
@@ -706,7 +706,7 @@ namespace FunkyCode
             #region Bump Map Properties
             if (UsesMasks())
             {
-                IsBumpMapPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsBumpMapPropertiesExpanded, "Bump Map", CustomEditorStyles.foldoutHeader);
+                IsBumpMapPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsBumpMapPropertiesExpanded, "Bump Map", CustomGUIStyles.foldoutHeader);
 				EditorGUILayout.EndFoldoutHeaderGroup();
 				expandBumpMapProperties.target = IsBumpMapPropertiesExpanded;
 
@@ -877,7 +877,7 @@ namespace FunkyCode
 
         private void DrawMeshMode(MeshMode meshMode)
         {
-            IsOverlayPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsOverlayPropertiesExpanded, "Overlay", CustomEditorStyles.foldoutHeader);
+            IsOverlayPropertiesExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsOverlayPropertiesExpanded, "Overlay", CustomGUIStyles.foldoutHeader);
 			EditorGUILayout.EndFoldoutHeaderGroup();
 			expandOverlayProperties.target = IsOverlayPropertiesExpanded;
 

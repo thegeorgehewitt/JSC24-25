@@ -7,8 +7,6 @@ using Custom.Utility;
 
 namespace Custom.Editor
 {
-    using Styles;
-    using UnityEngine.UIElements;
 
     [CanEditMultipleObjects]
     [CustomEditor(typeof(InteractableCharacterBase), true)]
@@ -127,7 +125,7 @@ namespace Custom.Editor
             base.OnInspectorGUI();
 
             #region Foldout
-            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Character Properties", CustomEditorStyles.foldoutHeader);
+            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Interactable Character Properties", CustomGUIStyles.foldoutHeader);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             expandEnemyProperties.target = IsExpanded;
