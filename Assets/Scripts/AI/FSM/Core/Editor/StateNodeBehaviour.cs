@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-using static FunkyCode.Rendering.Lightmap.LightSprite;
 
 namespace Custom.FSM.Editor
 {
@@ -33,8 +32,6 @@ namespace Custom.FSM.Editor
 
             if (_behaviourData)
             {
-                
-
                 icon.image = EditorGUIUtility.GetIconForObject(_behaviourData) ?? EditorGUIUtility.IconContent("cs Script Icon").image;
                 label.text = Regex.Replace(_behaviourData.Label,
                     @"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ");

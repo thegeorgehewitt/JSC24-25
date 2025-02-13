@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 
-using Custom.Editor;
-
 namespace Custom.FSM.Editor
 {
     public class StateMachineGraphView : GraphView
@@ -33,8 +31,8 @@ namespace Custom.FSM.Editor
 
             UpdateStateMachineVisual(_stateMachine);
 
-            RegisterCallback<MouseUpEvent>(ConfirmTransition);
-            RegisterCallback<MouseMoveEvent>(UpdateCurrentTransition);
+            RegisterCallback<MouseUpEvent>(OnMouseUp);
+            RegisterCallback<MouseMoveEvent>(OnMouseMove);
         }
 
 
@@ -141,20 +139,7 @@ namespace Custom.FSM.Editor
 
         private void MakeTransition(DropdownMenuAction _action)
         {
-            curTransitionArrow = new()
-            {
-                StartNode = (StateNode)curEventHandler,
-
-                DrawStartArrow = true,
-                DrawEndArrow = true,
-
-                EndFollowsCursor = true,
-            };
-
-            AddElement(curTransitionArrow);
-
-            curTransitionArrow.StartPoint = _action.eventInfo.mousePosition;
-            curTransitionArrow.EndPoint = _action.eventInfo.mousePosition;
+            CreateTransition(_action.eventInfo.mousePosition);
         }
 
         private DropdownMenuAction.Status MakeTransitionStatus(DropdownMenuAction _action)
@@ -163,6 +148,20 @@ namespace Custom.FSM.Editor
                 return DropdownMenuAction.Status.Disabled;
             else
                 return DropdownMenuAction.Status.Normal;
+        }
+        #endregion
+
+        #region UI Callbacks 
+        private void OnMouseUp(MouseUpEvent _event)
+        {
+            if (curTransitionArrow != null)
+                ConfirmTransition(_event);
+        }
+
+        private void OnMouseMove(MouseMoveEvent _event)
+        {
+            if (curTransitionArrow != null)
+                UpdateCurrentTransition(_event);
         }
         #endregion
 
@@ -216,14 +215,48 @@ namespace Custom.FSM.Editor
         #endregion
 
         #region Transition Controls
+        private void CreateTransition(Vector2 _worldStartPoint)
+        {
+            StateNode selectedNode = (StateNode)curEventHandler;
+
+            curTransitionArrow = new()
+            {
+                StartNode = selectedNode,
+
+                DrawStartArrow = true,
+                DrawEndArrow = true,
+
+                EndFollowsCursor = true,
+            };
+
+            curTransitionArrow.StartPoint = _worldStartPoint;
+            curTransitionArrow.EndPoint = _worldStartPoint;
+
+            AddElement(curTransitionArrow);
+
+            selectedNode.AddTransition(curTransitionArrow, Direction.Output);
+        }
+
         private void ConfirmTransition(MouseUpEvent _event)
         {
-            if (curTransitionArrow == null) return;
             if (_event.button == 2) return;
 
             if (_event.button == 0)
             {
                 curTransitionArrow.EndFollowsCursor = false;
+
+                List<VisualElement> elementsAtCursor = new();
+                panel.PickAll(_event.mousePosition, elementsAtCursor);
+
+                foreach (var element in elementsAtCursor)
+                {
+                    Debug.Log(element.name);
+                    if (element is StateNode node && element != curTransitionArrow.StartNode)
+                    {
+                        curTransitionArrow.EndNode = node;
+                        break;
+                    }
+                }
             }
             else if (_event.button == 1)
             {
@@ -235,7 +268,6 @@ namespace Custom.FSM.Editor
 
         private void UpdateCurrentTransition(MouseMoveEvent _event)
         {
-            if (curTransitionArrow == null) return;
             if (!curTransitionArrow.EndFollowsCursor) return;
 
             curTransitionArrow.EndPoint = _event.mousePosition;

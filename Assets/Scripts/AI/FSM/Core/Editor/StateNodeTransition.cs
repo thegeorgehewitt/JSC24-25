@@ -3,7 +3,8 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using UnityEditor;
 
-using Custom.Editor;
+using Custom.Extensions;
+using System.Runtime.Remoting.Messaging;
 
 namespace Custom.FSM.Editor
 {
@@ -33,12 +34,6 @@ namespace Custom.FSM.Editor
         private Vector2 OrientationVector => orientation == Orientation.Horizontal ? Vector2.right : Vector2.up;
 
         private float FlatLength => orientation == Orientation.Horizontal ? (EndPoint.x - StartPoint.x) : (EndPoint.y - StartPoint.y);
-
-        private float XDiff =>
-            ((EndNode == null) ? localEndPoint.x : EndNode.layout.center.x) - ((StartNode == null) ? localStartPoint.x : StartNode.layout.center.x);
-
-        private float YDiff =>
-            ((EndNode == null) ? localEndPoint.y : EndNode.layout.center.y) - ((StartNode == null) ? localStartPoint.y : StartNode.layout.center.y);
 
 
 
@@ -178,6 +173,23 @@ namespace Custom.FSM.Editor
         }
 
         /// <summary>
+        /// Size of the arrow cap bounds in pixels.
+        /// </summary>
+        public Vector2 ArrowBounds
+        {
+            get
+            {
+                Vector2 size = new(
+                    Mathf.Sqrt(Mathf.Pow(arrowSize, 2) - Mathf.Pow(arrowSize / 2, 2)),
+                    arrowSize);
+
+                if (orientation == Orientation.Vertical) size.Swizzle();
+
+                return size;
+            }
+        }
+
+        /// <summary>
         /// Width of the transition curve.
         /// </summary>
         public float LineWidth
@@ -260,52 +272,8 @@ namespace Custom.FSM.Editor
             style.marginRight = 0;
 
             generateVisualContent += DrawTransitionArrow;
-        }
 
-
-
-        /// <summary>
-        /// Snap the transition to a <see cref="StateNode"/> bounds.
-        /// </summary>
-        /// <param name="_node">        The target <see cref="StateNode"/>. </param>
-        /// <param name="_direction">   Snap start or end of the transition? (input = end, output = start). </param>
-        /// <param name="_side">        Which side of the rect to snap to. </param>
-        /// <param name="_padding">     Offset distance from <paramref name="_node"/> world bounds. </param>
-        public void SnapToNode(StateNode _node, Direction _direction, RectSide _side)
-        {
-            if (_node == null) return;
-
-            Vector2 worldPos = Vector2.zero;
-
-            switch (_side)
-            {
-                case RectSide.Top:
-                    worldPos += new Vector2(_node.worldBound.center.x, _node.worldBound.yMin);
-                    break;
-
-                case RectSide.Bottom:
-                    worldPos += new Vector2(_node.worldBound.center.x, _node.worldBound.yMax);
-                    break;
-
-                case RectSide.Left:
-                    worldPos += new Vector2(_node.worldBound.xMin, _node.worldBound.center.y);
-                    break;
-
-                case RectSide.Right:
-                    worldPos += new Vector2(_node.worldBound.xMax, _node.worldBound.center.y);
-                    break;
-
-                default: break;
-            }
-
-            if (_direction == Direction.Input)
-            {
-                EndPoint = worldPos;
-            }
-            else
-            {
-                StartPoint = worldPos;
-            }
+            RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
         }
 
 
@@ -337,6 +305,21 @@ namespace Custom.FSM.Editor
         public override bool Overlaps(Rect _rectangle)
         {
             return HitTest(_rectangle.center);
+        }
+        #endregion
+
+        #region UI Callbacks
+        private void OnDetachFromPanel(DetachFromPanelEvent _event)
+        {
+            if (StartNode != null)
+            {
+                StartNode.RemoveTransition(this, Direction.Output);
+            }
+
+            if (EndNode != null)
+            {
+                EndNode.RemoveTransition(this, Direction.Input);
+            }
         }
         #endregion
 
@@ -422,42 +405,19 @@ namespace Custom.FSM.Editor
 
         private void RecalculatePosition()
         {
-            float width = Mathf.Abs(XDiff);
-            float height = Mathf.Abs(YDiff);
+            float width = Mathf.Abs(localEndPoint.x - localStartPoint.x);
+            float height = Mathf.Abs(localEndPoint.y - localStartPoint.y);
 
-            //
-            // ================================================================================ TO BE FIXED 
-            //
-            //RectSide outputSide = GetClosestSide(StartNode.worldBound, EndPoint);
-
-            //if (width >= height)
-            //    orientation = Orientation.Horizontal;
-            //else
-            //    orientation = Orientation.Vertical;
-
-            //if (StartNode != null) SnapToNode(StartNode, Direction.Output, outputSide);
-            //if (EndNode != null) SnapToNode(EndNode, Direction.Input, inputSide);
+            if (width >= height)
+                orientation = Orientation.Horizontal;
+            else
+                orientation = Orientation.Vertical;
 
             style.position = Position.Absolute;
             style.left = Mathf.Min(localStartPoint.x, localEndPoint.x);
             style.top = Mathf.Min(localStartPoint.y, localEndPoint.y);
-            style.width = Mathf.Abs(XDiff);
-            style.height = Mathf.Abs(YDiff);
-        }
-
-        private RectSide GetClosestSide(Rect _rect, Vector2 _point)
-        {
-            float leftDist = Mathf.Abs(_point.x - _rect.xMin);
-            float rightDist = Mathf.Abs(_point.x - _rect.xMax);
-            float topDist = Mathf.Abs(_point.y - _rect.yMax);
-            float bottomDist = Mathf.Abs(_point.y - _rect.yMin);
-
-            float minDist = Mathf.Min(leftDist, rightDist, topDist, bottomDist);
-
-            if (minDist == leftDist) return RectSide.Left;
-            if (minDist == rightDist) return RectSide.Right;
-            if (minDist == topDist) return RectSide.Top;
-            return RectSide.Bottom;
+            style.width = Mathf.Abs(width);
+            style.height = Mathf.Abs(height);
         }
         #endregion
     }

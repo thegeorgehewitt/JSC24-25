@@ -3,6 +3,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
+using Custom.Extensions;
 
 namespace Custom.FSM.Editor
 {
@@ -26,8 +27,8 @@ namespace Custom.FSM.Editor
         private readonly List<StateNodeBehaviour> behaviours = new();
         private readonly HelpBox emptyStateHelpBox;
 
-        private readonly HashSet<StateNodeTransition> inputTransitions = new();
-        private readonly HashSet<StateNodeTransition> outputTransitions = new();
+        private readonly List<StateNodeTransition> inputTransitions = new();
+        private readonly List<StateNodeTransition> outputTransitions = new();
 
 
         /// <summary>
@@ -106,6 +107,8 @@ namespace Custom.FSM.Editor
                 Capabilities.Snappable |
                 Capabilities.Groupable;
 
+            usageHints = UsageHints.DynamicTransform;
+
             // Setup Display
             VisualTreeAsset visualTreeAsset = Resources.Load<VisualTreeAsset>("StateNode");
 
@@ -134,7 +137,8 @@ namespace Custom.FSM.Editor
 
             this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
 
-            usageHints = UsageHints.DynamicTransform;
+            this.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+            this.RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanel);
         }
 
 
@@ -175,15 +179,6 @@ namespace Custom.FSM.Editor
 
             return layout;
         }
-
-
-
-        protected override void OnCustomStyleResolved(ICustomStyle style)
-        {
-            base.OnCustomStyleResolved(style);
-
-            UpdateTransitionsPosition();
-        }
         #endregion
 
         #region Contextual Menu (Right Click Menu)
@@ -214,6 +209,26 @@ namespace Custom.FSM.Editor
                 return DropdownMenuAction.Status.Disabled;
             else
                 return DropdownMenuAction.Status.Normal;
+        }
+        #endregion
+
+        #region UI Callbacks
+        private void OnGeometryChanged(GeometryChangedEvent _event)
+        {
+            UpdateTransitionsPosition();
+        }
+
+        private void OnDetachFromPanel(DetachFromPanelEvent _event)
+        {
+            foreach (var transition in inputTransitions)
+            {
+                transition.RemoveFromHierarchy();
+            }
+
+            foreach (var transition in outputTransitions)
+            {
+                transition.RemoveFromHierarchy();
+            }
         }
         #endregion
 
@@ -266,14 +281,26 @@ namespace Custom.FSM.Editor
             {
                 outputTransitions.Add(_transition);
             }
+
+            UpdateTransitionsPosition();
         }
 
-
-
-        private void UpdateTransitionsPosition()
+        public void RemoveTransition(StateNodeTransition _transition, Direction _direction)
         {
-            Debug.Log(0);
+            if (_direction == Direction.Input)
+            {
+                inputTransitions.Remove(_transition);
+            }
+            else
+            {
+                outputTransitions.Remove(_transition);
+            }
 
+            UpdateTransitionsPosition();
+        }
+
+        public void UpdateTransitionsPosition()
+        {
             foreach (var transition in inputTransitions)
             {
                 SnapTransitionToNode(transition, Direction.Input);
@@ -285,9 +312,37 @@ namespace Custom.FSM.Editor
             }
         }
 
+
+
         private void SnapTransitionToNode(StateNodeTransition _transition, Direction _direction)
         {
+            var side = worldBound.ClosestSide((_direction == Direction.Input) ? _transition.StartPoint : _transition.EndPoint);
 
+            if (_direction == Direction.Input) 
+                _transition.EndPoint = GetTransitionPositionAtSide(_direction, side);
+            else 
+                _transition.StartPoint = GetTransitionPositionAtSide(_direction, side);
+        }
+
+        private Vector2 GetTransitionPositionAtSide(Direction _direction, RectSide _side)
+        {
+            switch (_side)
+            {
+                case RectSide.Top:
+                    return new Vector2(worldBound.center.x, worldBound.yMax);
+
+                case RectSide.Bottom:
+                    return new Vector2(worldBound.center.x, worldBound.yMin);
+
+                case RectSide.Left:
+                    return new Vector2(worldBound.xMin, worldBound.center.y);
+
+                case RectSide.Right:
+                    return new Vector2(worldBound.xMax, worldBound.center.y);
+
+                default: 
+                    return Vector2.zero;
+            }
         }
         #endregion
 
