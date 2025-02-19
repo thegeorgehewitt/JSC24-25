@@ -17,7 +17,6 @@ namespace Custom.UI
     {
         [Header("REFERENCES")]
         [SerializeField] private Image[] arrowImages;
-        [SerializeField] private Image accessImage;
         [SerializeField] private GameObject mainDisplay;
         [SerializeField] private InteractableElevator connectedElevator;
 
@@ -42,6 +41,12 @@ namespace Custom.UI
         private void Awake()
         {
             SetPopupActive(false);
+        }
+
+        private void Start()
+        {
+            arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.blue;
+            arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.blue;
         }
 
         #region Display Popup
@@ -74,11 +79,13 @@ namespace Custom.UI
 
             if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
             {
-                accessImage.enabled = true;
+                arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.red;
+                arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.red;
             }
             else
             {
-                accessImage.enabled = false;
+                arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.blue;
+                arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.blue;
             }
 
             while (elapsedTime < easeDuration)
@@ -110,11 +117,13 @@ namespace Custom.UI
             {
                 if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
                 {
-                    accessImage.enabled = true;
+                    arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.red;
+                    arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.red;
                 }
                 else
                 {
-                    accessImage.enabled = false;
+                    arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.blue;
+                    arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.blue;
                 }
             }
         }
