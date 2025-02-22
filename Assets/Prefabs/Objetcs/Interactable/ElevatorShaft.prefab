@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f70ac32b2b4cc041a96dc85e1b034ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevators: []
+  elevatorPrefab: {fileID: 0}
 --- !u!1001 &3098786370885572707
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54,6 +56,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6707833235119425640}
     m_Modifications:
+    - target: {fileID: -4318575570662077515, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
+      propertyPath: owningShaft
+      value: 
+      objectReference: {fileID: 2949371857826150113}
     - target: {fileID: 636193971597129074, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0.5
@@ -120,7 +126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165484879827527391, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
       propertyPath: m_Name
-      value: Elevator
+      value: Elevator 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -141,6 +147,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6707833235119425640}
     m_Modifications:
+    - target: {fileID: -4318575570662077515, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
+      propertyPath: owningShaft
+      value: 
+      objectReference: {fileID: 2949371857826150113}
+    - target: {fileID: -4318575570662077515, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
+      propertyPath: elevatorIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 636193971597129074, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0.5
@@ -207,7 +221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165484879827527391, guid: c4c3b21db02466c4eb1ac3bd84533288, type: 3}
       propertyPath: m_Name
-      value: Elevator (1)
+      value: Elevator 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

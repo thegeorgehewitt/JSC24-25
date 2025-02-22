@@ -234,6 +234,8 @@ namespace Custom.Controller
 
             onWall = wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
         }
+
+        public CapsuleCollider2D GetCollider() { return capsuleCollider; }
         #endregion
 
         #region State Control
@@ -280,6 +282,8 @@ namespace Custom.Controller
                 velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * TimeManager.FixedDeltaTime);
             }
         }
+
+        public void SetGravityActive(bool active) { useGravity = active; }
         #endregion
 
         #region Flip

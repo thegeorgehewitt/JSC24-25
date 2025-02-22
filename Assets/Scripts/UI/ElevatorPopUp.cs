@@ -10,6 +10,8 @@ using Custom.Manager.EventHandling;
 using static Custom.Interactable.InteractableElevator;
 using Custom.Interactable;
 using System;
+using TMPro;
+using System.Drawing;
 
 namespace Custom.UI
 {
@@ -19,35 +21,53 @@ namespace Custom.UI
         [SerializeField] private Image[] arrowImages;
         [SerializeField] private GameObject mainDisplay;
         [SerializeField] private InteractableElevator connectedElevator;
+        [SerializeField] private TextMeshProUGUI[] inputText;
 
         [Header("POPUP")]
         [SerializeField] private float easeDuration = 0.1f;
-        [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        #region SetUp
 
         private void OnEnable()
         {
-            EventAggregator.Subscribe<ElevatorStartOverlapEvent>(OnStartOverlap);
-            EventAggregator.Subscribe<ElevatorEndOverlapEvent>(OnEndOverlap);
             EventAggregator.Subscribe<UpdateElevatorUI>(UpdatePopup);
         }
 
         private void OnDisable()
         {
-            EventAggregator.Unsubscribe<ElevatorStartOverlapEvent>(OnStartOverlap);
-            EventAggregator.Unsubscribe<ElevatorEndOverlapEvent>(OnEndOverlap);
             EventAggregator.Unsubscribe<UpdateElevatorUI>(UpdatePopup);
         }
 
         private void Awake()
         {
+            if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
+            {
+                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.black : UnityEngine.Color.red;
+                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.black : UnityEngine.Color.red;
+            }
+            else
+            {
+                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.black : UnityEngine.Color.blue;
+                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.black : UnityEngine.Color.blue;
+            }
+
+            inputText = new TextMeshProUGUI[arrowImages.Length];
+
+            for (int i = 0; i < arrowImages.Length; i++)
+            {
+                inputText[i] = arrowImages[i].GetComponentInChildren<TextMeshProUGUI>();
+            }
+
             SetPopupActive(false);
         }
 
         private void Start()
         {
-            arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.blue;
-            arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.blue;
+            inputText[0].alpha = connectedElevator.IsTop ? 0 : 1;
+            inputText[1].alpha = connectedElevator.IsBottom ? 0 : 1;
         }
+
+        #endregion
 
         #region Display Popup
 
@@ -68,76 +88,39 @@ namespace Custom.UI
 
         private IEnumerator PopupCoroutine(bool _show)
         {
-            float elapsedTime = 0;
-            float targetAmount = _show ? 1 : 0;
-            float orgAmount = arrowImages[0].fillAmount;
-
-            if (_show)
-            {
-                mainDisplay.SetActive(true);
-            }
-
-            if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
-            {
-                arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.red;
-                arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.red;
-            }
-            else
-            {
-                arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.blue;
-                arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.blue;
-            }
-
-            while (elapsedTime < easeDuration)
-            {
-                elapsedTime += Time.deltaTime;
-                foreach (Image maskImage in arrowImages)
-                {
-                    maskImage.fillAmount = Mathf.Lerp(orgAmount, targetAmount, easeCurve.Evaluate(elapsedTime / easeDuration));
-                }
-                yield return null;
-            }
-
             SetPopupActive(_show);
+
+            if (connectedElevator != null)
+            {
+                inputText[0].alpha = connectedElevator.IsTop ? 0 : 1;
+                inputText[1].alpha = connectedElevator.IsBottom ? 0 : 1;
+            }
+
+            yield return null;
         }
 
         private void SetPopupActive(bool _active)
         {
-            foreach (Image maskImage in arrowImages)
+            foreach (TextMeshProUGUI text in inputText)
             {
-                maskImage.fillAmount = _active ? 1 : 0;
+                text.gameObject.SetActive(_active);
             }
-
-            mainDisplay.SetActive(_active);
         }
 
         private void UpdatePopup(UpdateElevatorUI _event)
         {
-            if (mainDisplay.activeSelf)
+            if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
             {
-                if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
-                {
-                    arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.red;
-                    arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.red;
-                }
-                else
-                {
-                    arrowImages[0].color = connectedElevator.IsTop ? Color.black : Color.blue;
-                    arrowImages[1].color = connectedElevator.IsBottom ? Color.black : Color.blue;
-                }
+                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.clear : UnityEngine.Color.red;
+                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.clear : UnityEngine.Color.red;
+            }
+            else
+            {
+                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.clear : UnityEngine.Color.blue;
+                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.clear : UnityEngine.Color.blue;
             }
         }
 
         #endregion
-
-        private void OnStartOverlap(ElevatorStartOverlapEvent _event)
-        {
-            ShowPopup(true);
-        }
-
-        private void OnEndOverlap(ElevatorEndOverlapEvent _event)
-        {
-            ShowPopup(false);
-        }
     }
 }

@@ -8,29 +8,45 @@ using static Custom.Interactable.InteractableElevator;
 
 public class ElevatorShaft : MonoBehaviour
 {
-    private List<InteractableElevator> elevators;
+    [SerializeField] private List<InteractableElevator> elevators;
+    [SerializeField] private GameObject elevatorPrefab;
+
+    public class UpdateElevatorStateGranted { }
+    public class UpdateElevatorStateDenied { }
+
+    #region SetUp
 
     private void Awake()
     {
-        elevators = GetComponentsInChildren<InteractableElevator>().ToList();
         for (int i = 0; i < elevators.Count; i++)
         {
             elevators[i].Init(i, this);
         }
     }
 
-    // replace with event - can't use param with aggregator?
+    #endregion
+
+    #region Distribute Update
+
     public void UpdateStates(bool access)
     {
-        foreach(InteractableElevator elevator in elevators)
+        if (access)
         {
-            elevator.OverrideState(access);
+            EventAggregator.Publish(new UpdateElevatorStateGranted());
+        }
+        else
+        {
+            EventAggregator.Publish(new UpdateElevatorStateDenied());
         }
     }
 
+    #endregion
+
+    #region Fetch Info
+
     public Transform GetFloorBelow(int currentIndex)
     {
-        if (elevators.Count < currentIndex)
+        if (elevators.Count > currentIndex + 1)
         {
             return elevators[currentIndex + 1].transform;
         }
@@ -61,4 +77,5 @@ public class ElevatorShaft : MonoBehaviour
     {
         return currentIndex == 0;
     }
+    #endregion
 }
