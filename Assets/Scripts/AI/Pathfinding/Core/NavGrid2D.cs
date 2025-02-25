@@ -387,7 +387,7 @@ namespace Custom.AI.Pathfinding
 
 
         /// <summary>
-        /// Check if cell at the given location is walkable or not.
+        /// Check if cell at the given location is occupied or not.
         /// </summary>
         /// <param name="_cellLocation"> Location to check for in cell space. </param>
         /// <returns>
@@ -401,13 +401,35 @@ namespace Custom.AI.Pathfinding
             return grid[_cellLocation];
         }
 
-        /// <inheritdoc cref="Occupied(Vector2Int)"/>
         /// <param name="_worldLocation"> Location to check for in world space. </param>
+        /// <inheritdoc cref="Occupied(Vector2)"/>
         public bool Occupied(Vector2 _worldLocation)
         {
             if (!Contains(_worldLocation)) return false;
 
             return grid[WorldToCell(_worldLocation)];
+        }
+
+
+        /// <summary>
+        /// Check if a bounding box around at the given location is occupied or not.
+        /// </summary>
+        /// <param name="_extents"> The extents in both directions to check for. </param>
+        /// <inheritdoc cref="Occupied(Vector2Int)"/>
+        public bool Occupied(Vector2 _worldLocation, Vector2 _extents)
+        {
+            Vector2Int min = WorldToCell(_worldLocation - _extents);
+            Vector2Int max = WorldToCell(_worldLocation + _extents);
+
+            for (int y = min.y; y <= max.y; y++)
+                for (int x = min.x; x <= max.x; x++)
+                    if (Occupied(new(x, y)))
+                    {
+                        Debug.Log($"{_worldLocation} x {_extents} : ({x}, {y})");
+                        return true;
+                    }
+
+            return false;
         }
 
         /// <inheritdoc cref="Occupied(Vector2Int)"/>

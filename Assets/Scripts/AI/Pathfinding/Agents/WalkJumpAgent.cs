@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.Utility;
+using Unity.VisualScripting;
 
 namespace Custom.AI.Pathfinding
 {
@@ -81,12 +82,7 @@ namespace Custom.AI.Pathfinding
             Vector2 start = navGrid.CellToWorld(pathNodes[0].position).Value;
             Vector2 end = navGrid.CellToWorld(pathNodes[drawNodeIndex].position).Value;
 
-            DrawCurve(
-                start, 
-                ProjMotionUtil.GetQuadraticControlPointFromMotion(
-                    start, ProjMotionUtil.GetInitialVelocity(start, end, agentData.gravityAccel, GetJumpDuration(start, end)), agentData.gravityAccel), 
-                end,
-                20, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
+            DrawJumpCurve(start, end, 0.05f, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
 
             if (drawAllNodes)
             {
@@ -159,12 +155,7 @@ namespace Custom.AI.Pathfinding
                     Vector2 start = navGrid.CellToWorld(_node.position).Value;
                     Vector2 end = navGrid.CellToWorld(linkedNode).Value;
 
-                    DrawCurve(
-                        start, 
-                        ProjMotionUtil.GetQuadraticControlPointFromMotion(
-                            start, ProjMotionUtil.GetInitialVelocity(start, end, agentData.gravityAccel, GetJumpDuration(start, end)), agentData.gravityAccel), 
-                        end, 
-                        20, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
+                    DrawJumpCurve(start, end, 0.05f, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
                 }
                 else
                 {
@@ -174,19 +165,27 @@ namespace Custom.AI.Pathfinding
             }
         }
 
-        private void DrawCurve(Vector2 _p0, Vector2 _p1, Vector2 _p2, int _iterations, Color _color)
+        private void DrawJumpCurve(Vector2 _p0, Vector2 _p1, float _step, Color _color)
         {
             Gizmos.color = _color;
+
+            float tTotal = GetJumpDuration(_p0, _p1) - 0.1f;
+            float tCurrent;
+            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_p0, _p1, agentData.gravityAccel, tTotal);
             Vector2 previousPoint = _p0;
+            Vector2 nextPoint;
 
-            for (int i = 1; i <= _iterations; i++)
+            for (float t = 0.0f; t <= 1.0f; t += _step)
             {
-                float t = i / (float)_iterations;
-                Vector2 pointOnCurve = BezierUtil.QuadraticBezier(_p0, _p1, _p2, t);
+                tCurrent = tTotal * t;
+                nextPoint = _p0 + (initialVelocity * tCurrent) + (0.5f * tCurrent * tCurrent * agentData.gravityAccel);
 
-                Gizmos.DrawLine(previousPoint, pointOnCurve);
-                previousPoint = pointOnCurve;
+                Gizmos.DrawLine(previousPoint, nextPoint);
+
+                previousPoint = nextPoint;
             }
+
+            Gizmos.DrawLine(previousPoint, _p1);
         }
         #endregion
 
@@ -303,17 +302,25 @@ namespace Custom.AI.Pathfinding
 
 
 
-        private bool JumpPossible(Vector2Int _startNode, Vector2Int _endNode)
+        private bool JumpPossible(Vector2Int _startNode, Vector2Int _endNode, float _step = 0.1f)
         {
             Vector2 start = navGrid.CellToWorld(_startNode).Value;
             Vector2 end = navGrid.CellToWorld(_endNode).Value;
+            Vector2 searchLocation;
 
-            return 
-                !navGrid.OccupiedCells(navGrid.QuadraticBezierToCells(
-                start, 
-                ProjMotionUtil.GetQuadraticControlPointFromMotion(
-                    start, ProjMotionUtil.GetInitialVelocity(start, end, agentData.gravityAccel, GetJumpDuration(start, end)), agentData.gravityAccel), 
-                end));
+            float tTotal = GetJumpDuration(start, end);
+            float tCurrent;
+            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(start, end, agentData.gravityAccel, tTotal);
+
+            for (float t = 0.0f; t <= 1.0f; t += _step)
+            {
+                tCurrent = tTotal * t;
+                searchLocation = start + (initialVelocity * tCurrent) + (0.5f * tCurrent * tCurrent * agentData.gravityAccel);
+
+                if (navGrid.Occupied(searchLocation, new(agentData.width, agentData.height))) return false;
+            }
+
+            return true;
         }
         #endregion
 
@@ -460,7 +467,7 @@ namespace Custom.AI.Pathfinding
 
         private float GetJumpDuration(Vector2 _start, Vector2 _end)
         {
-            return ProjMotionUtil.GetTimeAtPointPassPeak(_start, _end, Vector2.Max(_start, _end) + navGrid.CellSize * 0.5f, agentData.gravityAccel);
+            return ProjMotionUtil.GetTimeAtPointPassPeak(_start, _end, Vector2.Max(_start, _end), agentData.gravityAccel);
         }
         #endregion
     }

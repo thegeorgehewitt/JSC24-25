@@ -36,11 +36,14 @@ namespace Custom.Utility
 
 
 
-        public static float GetTimeAtPointPassPeak(Vector2 _s0, Vector2 _s1, Vector2 _sp, Vector2 _g)
+        public static float GetTimeAtPointPassPeak(Vector2 _s0, Vector2 _s1, Vector2 _sp, Vector2 _g, bool _passPeak = true)
         {
             Vector2 v0 = GetInitialVelocity(_s0, _sp, _g);
+            float cDer = Mathf.Sqrt(v0.y * v0.y + 2.0f * _g.y * _s1.y);
+            float t1 = (-v0.y + cDer) / _g.y;
+            float t2 = (-v0.y - cDer) / _g.y;
 
-            return (-v0.y + Mathf.Sqrt(v0.y * v0.y + 2.0f * _g.y * _s1.y)) / _g.y;
+            return _passPeak ? Mathf.Max(t1, t2) : Mathf.Min(t1, t2);
         }
 
 
