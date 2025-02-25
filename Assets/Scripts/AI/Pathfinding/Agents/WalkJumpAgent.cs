@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.Utility;
-using Unity.VisualScripting;
 
 namespace Custom.AI.Pathfinding
 {
@@ -70,7 +69,7 @@ namespace Custom.AI.Pathfinding
 
                 if (resultPath.Count >= 2)
                 {
-                    StartFollowPath();
+                    StartRandomPathfinding();
                 }
             }
         }
@@ -327,10 +326,14 @@ namespace Custom.AI.Pathfinding
         #endregion
 
         #region Movement
+        private Coroutine randomPathFindingCoroutine;
         private Coroutine followPathCoroutine;
         private Coroutine movementCoroutine;
 
+        private Vector2Int currentNode;
+        private bool followingPath = false;
         private bool moving = false;
+        private int movement;
 
 
 
@@ -364,26 +367,44 @@ namespace Custom.AI.Pathfinding
 
         private void StopFollowPath()
         {
-            if (movementCoroutine != null)
-                StopCoroutine(movementCoroutine);
-
             if (followPathCoroutine != null)
                 StopCoroutine(followPathCoroutine);
-
-            moving = false;
         }
 
-        private void StartFollowPath()
+        private void StartRandomPathfinding()
         {
+            if (randomPathFindingCoroutine != null)
+                StopCoroutine(randomPathFindingCoroutine);
+
             StopFollowPath();
 
-            followPathCoroutine = StartCoroutine(FollowPathCoroutine());
+            randomPathFindingCoroutine = StartCoroutine(RandomPathfindingCoroutine());
         }
+
+        private IEnumerator RandomPathfindingCoroutine()
+        {
+            while (true)
+            {
+                if (!followingPath)
+                {
+                    endNode = pathNodes[Random.Range(1, pathNodes.Length - 1)].position;
+                    PathFinding2D.FindPath(this, navGrid, startNode, endNode, resultPath);
+                    startNode = endNode;
+
+                    followPathCoroutine = StartCoroutine(FollowPathCoroutine());
+                }
+
+                yield return null;
+            }
+        }
+
+
 
         private IEnumerator FollowPathCoroutine()
         {
             int prevIndex = 0, nextIndex = 1;
 
+            followingPath = true;
             while (nextIndex < resultPath.Count)
             {
                 if (!moving)
@@ -396,12 +417,16 @@ namespace Custom.AI.Pathfinding
 
                 yield return null;
             }
+
+            followingPath = false;
         }
 
 
 
         private void Walk(Vector2 _start, Vector2 _end)
         {
+            movement = WALK;
+
             movementCoroutine = StartCoroutine(WalkCoroutine(_start, _end));
         }
 
@@ -426,8 +451,34 @@ namespace Custom.AI.Pathfinding
 
         private void Drop(Vector2 _start, Vector2 _end)
         {
+            movement = DROP;
+
             GetJumpDuration(_start, _end, out float t);
             movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, t));
+        }
+
+        private IEnumerator DropCoroutine(Vector2 _start, Vector2 _end, float _t, float _waitTime = 0.05f)
+        {
+            moving = true;
+            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_start, _end, agentData.gravityAccel, _t);
+            Vector3 currentVelocity = initialVelocity;
+            float elapsed = 0;
+
+            transform.position = _start;
+            while (elapsed < _t)
+            {
+                transform.position += currentVelocity * Time.deltaTime;
+
+                elapsed += Time.deltaTime;
+                currentVelocity = agentData.gravityAccel * elapsed + initialVelocity;
+
+                yield return null;
+            }
+
+            transform.position = _end;
+
+            yield return new WaitForSeconds(_waitTime);
+            moving = false;
         }
 
         private float EstimateDropDuration(Vector2 _start, Vector2 _end)
@@ -441,11 +492,13 @@ namespace Custom.AI.Pathfinding
 
         private void Jump(Vector2 _start, Vector2 _end)
         {
+            movement = JUMP;
+
             GetJumpDuration(_start, _end, out float t);
             movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, t));
         }
 
-        private IEnumerator JumpCoroutine(Vector2 _start, Vector2 _end, float _t, float _waitTime = 0.0f)
+        private IEnumerator JumpCoroutine(Vector2 _start, Vector2 _end, float _t, float _waitTime = 0.05f)
         {
             moving = true;
             Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_start, _end, agentData.gravityAccel, _t);
