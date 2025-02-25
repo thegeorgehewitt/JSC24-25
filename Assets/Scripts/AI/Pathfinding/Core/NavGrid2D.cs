@@ -423,11 +423,7 @@ namespace Custom.AI.Pathfinding
 
             for (int y = min.y; y <= max.y; y++)
                 for (int x = min.x; x <= max.x; x++)
-                    if (Occupied(new(x, y)))
-                    {
-                        Debug.Log($"{_worldLocation} x {_extents} : ({x}, {y})");
-                        return true;
-                    }
+                    if (Occupied(new(x, y))) return true;
 
             return false;
         }

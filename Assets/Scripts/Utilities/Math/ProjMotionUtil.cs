@@ -6,7 +6,7 @@ namespace Custom.Utility
     {
         public static Vector2 GetInitialVelocity(Vector2 _s0, Vector2 _s1, Vector2 _g, float _t1)
         {
-            return (_s1 - _s0 - _t1 * _t1 * 0.5f * _g) / _t1;
+            return (_s1 - _s0 - (_t1 * _t1 * 0.5f * _g)) / _t1;
         }
 
         public static Vector2 GetInitialVelocity(Vector2 _s0, Vector2 _sp, Vector2 _g)
@@ -36,14 +36,23 @@ namespace Custom.Utility
 
 
 
-        public static float GetTimeAtPointPassPeak(Vector2 _s0, Vector2 _s1, Vector2 _sp, Vector2 _g, bool _passPeak = true)
+        public static bool GetTimeAtPoint(Vector2 _s0, Vector2 _s1, Vector2 _sp, Vector2 _g, out float _t, bool _passPeak = true)
         {
             Vector2 v0 = GetInitialVelocity(_s0, _sp, _g);
-            float cDer = Mathf.Sqrt(v0.y * v0.y + 2.0f * _g.y * _s1.y);
-            float t1 = (-v0.y + cDer) / _g.y;
-            float t2 = (-v0.y - cDer) / _g.y;
+            float cDer = v0.y * v0.y - 2.0f * _g.y * (_s0.y - _s1.y);
 
-            return _passPeak ? Mathf.Max(t1, t2) : Mathf.Min(t1, t2);
+            if (cDer < 0)
+            {
+                _t = float.NaN;
+                return false;
+            }
+
+            float t1 = (-v0.y + Mathf.Sqrt(cDer)) / _g.y;
+            float t2 = (-v0.y - Mathf.Sqrt(cDer)) / _g.y;
+
+            _t = _passPeak ? Mathf.Max(t1, t2) : Mathf.Min(t1, t2);
+
+            return true;
         }
 
 

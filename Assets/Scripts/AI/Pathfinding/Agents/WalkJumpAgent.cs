@@ -169,7 +169,8 @@ namespace Custom.AI.Pathfinding
         {
             Gizmos.color = _color;
 
-            float tTotal = GetJumpDuration(_p0, _p1) - 0.1f;
+            if (!GetJumpDuration(_p0, _p1, out float tTotal)) return;
+
             float tCurrent;
             Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_p0, _p1, agentData.gravityAccel, tTotal);
             Vector2 previousPoint = _p0;
@@ -308,7 +309,8 @@ namespace Custom.AI.Pathfinding
             Vector2 end = navGrid.CellToWorld(_endNode).Value;
             Vector2 searchLocation;
 
-            float tTotal = GetJumpDuration(start, end);
+            if (!GetJumpDuration(start, end, out float tTotal)) return false;
+
             float tCurrent;
             Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(start, end, agentData.gravityAccel, tTotal);
 
@@ -317,7 +319,7 @@ namespace Custom.AI.Pathfinding
                 tCurrent = tTotal * t;
                 searchLocation = start + (initialVelocity * tCurrent) + (0.5f * tCurrent * tCurrent * agentData.gravityAccel);
 
-                if (navGrid.Occupied(searchLocation, new(agentData.width, agentData.height))) return false;
+                if (navGrid.Occupied(searchLocation, new Vector2(agentData.width, agentData.height) * 0.5f)) return false;
             }
 
             return true;
@@ -424,7 +426,8 @@ namespace Custom.AI.Pathfinding
 
         private void Drop(Vector2 _start, Vector2 _end)
         {
-            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, GetJumpDuration(_start, _end)));
+            GetJumpDuration(_start, _end, out float t);
+            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, t));
         }
 
         private float EstimateDropDuration(Vector2 _start, Vector2 _end)
@@ -438,7 +441,8 @@ namespace Custom.AI.Pathfinding
 
         private void Jump(Vector2 _start, Vector2 _end)
         {
-            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, GetJumpDuration(_start, _end)));
+            GetJumpDuration(_start, _end, out float t);
+            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, t));
         }
 
         private IEnumerator JumpCoroutine(Vector2 _start, Vector2 _end, float _t, float _waitTime = 0.0f)
@@ -465,9 +469,17 @@ namespace Custom.AI.Pathfinding
             moving = false;
         }
 
-        private float GetJumpDuration(Vector2 _start, Vector2 _end)
+        private bool GetJumpDuration(Vector2 _start, Vector2 _end, out float _t)
         {
-            return ProjMotionUtil.GetTimeAtPointPassPeak(_start, _end, Vector2.Max(_start, _end), agentData.gravityAccel);
+            Vector2 peak = Vector2.Max(_start, _end) + new Vector2(agentData.width, agentData.height) / 2.0f;
+
+            bool result = ProjMotionUtil.GetTimeAtPoint(
+                _start, _end, peak, 
+                agentData.gravityAccel, out float t, true);
+
+            _t = t;
+
+            return result;
         }
         #endregion
     }

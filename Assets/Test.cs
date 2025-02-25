@@ -16,6 +16,9 @@ public class Test : MonoBehaviour
 
         Debug.Log(ProjMotionUtil.GetPeak(start, initialVelocity, g));
         Debug.Log(ProjMotionUtil.GetInitialVelocity(start, peak, g));
-        Debug.Log(ProjMotionUtil.GetTimeAtPointPassPeak(start, end, peak, g));
+
+        ProjMotionUtil.GetTimeAtPoint(start, end, peak, g, out float t, false);
+
+        Debug.Log(t);
     }
 }
