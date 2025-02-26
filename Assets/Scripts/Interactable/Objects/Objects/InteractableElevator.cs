@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.InputSystem;
+
+using Custom.Controller;
+using Custom.Manager;
+using Custom.Manager.EventHandling;
+using Custom.UI;
 
 namespace Custom.Interactable
 {
-    using Custom.Controller;
-    using Custom.Manager;
-    using Custom.Manager.EventHandling;
-    using Custom.UI;
     using Interfaces;
-    using System.ComponentModel;
-    using static Custom.Controller.CharacterControlDamageable;
-    using static ElevatorShaft;
-    using static UnityEngine.GraphicsBuffer;
 
     [RequireComponent(typeof(BoxCollider2D))]
-    public class InteractableElevator : InteractableObject, IToggleable
+    public class InteractableElevator : InteractableObject, IToggleable, IProximityInputReceiver
     {
         [Header("ELEVATOR REFERENCES")]
         [SerializeField] BoxCollider2D overlapCollider;
@@ -29,29 +28,38 @@ namespace Custom.Interactable
 
         [Header("FLOOR INFORMATION")]
         [SerializeField] private int elevatorIndex;
-        [SerializeField] public bool IsTop => owningShaft.IsTopFloor(elevatorIndex);
-        [SerializeField] public bool IsBottom => owningShaft.IsBottomFloor(elevatorIndex);
 
-        [Header("PLAYER REFERENCES")]
-        [SerializeField] private CharacterMotor2D playerMotor;
-        [SerializeField] private PlayerController playerController;
-        [SerializeField] private Rigidbody2D playerRB;
-        [SerializeField] private CapsuleCollider2D playerCollider;
-        [SerializeField] private SpriteRenderer playerRenderer;
+        // Player Character References.
+        private CharacterMotor2D playerMotor;
+        private PlayerController playerController;
+        private Rigidbody2D playerRB;
+        private CapsuleCollider2D playerCollider;
+        private SpriteRenderer playerRenderer;
+
+        public bool Accessible => access;
+
+        public bool IsTop => owningShaft.IsTopFloor(elevatorIndex);
+
+        public bool IsBottom => owningShaft.IsBottomFloor(elevatorIndex);
 
         public class UpdateElevatorUI { }
 
-        #region SetUp
 
-        private void Awake()
+
+        private void OnEnable()
         {
-            elevatorUI = GetComponentInChildren<ElevatorPopUp>();
+            if (owningShaft)
+            {
+                owningShaft.OnAccessUpdated += OnAccessUpdated;
+            }
         }
 
-        public void Init(int _index, ElevatorShaft _owningShaft)
+        private void OnDisable()
         {
-            elevatorIndex = _index;
-            owningShaft = _owningShaft;
+            if (owningShaft)
+            {
+                owningShaft.OnAccessUpdated -= OnAccessUpdated;
+            }
         }
 
         private void Start()
@@ -59,22 +67,17 @@ namespace Custom.Interactable
             UpdateState();
         }
 
-        private void OnEnable()
-        {
-            EventAggregator.Subscribe<UpdateElevatorStateGranted>(OverideAccessGranted);
-            EventAggregator.Subscribe<UpdateElevatorStateDenied>(OverideAccessDenid);
-        }
 
-        private void OnDisable()
-        {
-            EventAggregator.Unsubscribe<UpdateElevatorStateGranted>(OverideAccessGranted);
-            EventAggregator.Unsubscribe<UpdateElevatorStateDenied>(OverideAccessDenid);
-        }
 
-        #endregion
+        public void Init(int _index, ElevatorShaft _owningShaft)
+        {
+            elevatorIndex = _index;
+            owningShaft = _owningShaft;
+
+            owningShaft.OnAccessUpdated += OnAccessUpdated;
+        }
 
         #region Update Access
-
         private void UpdateState()
         {
             states = new List<string> { access ? "Access Granted" : "Access Denied" };
@@ -84,27 +87,15 @@ namespace Custom.Interactable
 
         public void Toggle()
         {
-            access = !access;
-
-            UpdateState();
-
-            owningShaft.UpdateStates(access);
+            owningShaft.UpdateStates(!access);
         }
 
-        public void OverideAccessGranted(UpdateElevatorStateGranted _event)
+        public void OnAccessUpdated(bool access)
         {
-            access = true;
+            this.access = access;
 
             UpdateState();
         }
-
-        public void OverideAccessDenid(UpdateElevatorStateDenied _event)
-        {
-            access = false;
-
-            UpdateState();
-        }
-
         #endregion
 
         #region Pop Up
@@ -146,21 +137,32 @@ namespace Custom.Interactable
         #endregion
 
         #region Operation
+        public void OnInputReceived(Key _key)
+        {
+            if (_key == Key.W)
+                Operate(true);
+            else if (_key == Key.S)
+                Operate(false);
+        }
+
+
 
         private void Operate(bool isUp)
         {
-            if (IsTop && isUp || IsBottom && !isUp || states.Contains("Access Denied") ) { return; }
+            if (IsTop && isUp || IsBottom && !isUp || states.Contains("Access Denied") ) return;
 
             targetTransform = isUp? owningShaft.GetFloorAbove(elevatorIndex) : owningShaft.GetFloorBelow(elevatorIndex);
 
             if (playerMotor)
-            {
-
                 StartCoroutine(MoveToTarget(playerController, playerRB, playerMotor, playerCollider, playerRenderer));
-            }
         }
 
-        IEnumerator MoveToTarget(PlayerController _playerController, Rigidbody2D _playerRB, CharacterMotor2D _playerMotor, Collider2D _playerCollider, SpriteRenderer _playerRenderer)
+        private IEnumerator MoveToTarget(
+            PlayerController _playerController, 
+            Rigidbody2D _playerRB, 
+            CharacterMotor2D _playerMotor, 
+            Collider2D _playerCollider, 
+            SpriteRenderer _playerRenderer)
         {
             _playerMotor.OnUnpossessed(playerController);
             _playerRB.gravityScale = 0;
@@ -200,7 +202,6 @@ namespace Custom.Interactable
             _playerRenderer.enabled = true;
             _playerMotor.OnPossessed(_playerController);
         }
-
         #endregion
     }
 }

@@ -1,17 +1,11 @@
-using System.Collections;
-
 using UnityEngine;
 using UnityEngine.UI;
 
-using Custom.Controller;
-using Custom.Manager;
-using Custom.Manager.EventHandling;
-
-using static Custom.Interactable.InteractableElevator;
-using Custom.Interactable;
-using System;
 using TMPro;
-using System.Drawing;
+
+using Custom.Interactable;
+using Custom.Manager.EventHandling;
+using static Custom.Interactable.InteractableElevator;
 
 namespace Custom.UI
 {
@@ -23,11 +17,9 @@ namespace Custom.UI
         [SerializeField] private InteractableElevator connectedElevator;
         [SerializeField] private TextMeshProUGUI[] inputText;
 
-        [Header("POPUP")]
-        [SerializeField] private float easeDuration = 0.1f;
+
 
         #region SetUp
-
         private void OnEnable()
         {
             EventAggregator.Subscribe<UpdateElevatorUI>(UpdatePopup);
@@ -40,16 +32,7 @@ namespace Custom.UI
 
         private void Awake()
         {
-            if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
-            {
-                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.black : UnityEngine.Color.red;
-                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.black : UnityEngine.Color.red;
-            }
-            else
-            {
-                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.black : UnityEngine.Color.blue;
-                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.black : UnityEngine.Color.blue;
-            }
+            UpdateArrowPopup();
 
             inputText = new TextMeshProUGUI[arrowImages.Length];
 
@@ -72,7 +55,6 @@ namespace Custom.UI
         #region Display Popup
 
         private bool popupVisible = false;
-        private Coroutine popupCoroutine;
 
 
 
@@ -81,13 +63,6 @@ namespace Custom.UI
             if (popupVisible == _show) return;
             popupVisible = _show;
 
-            if (popupCoroutine != null) StopCoroutine(popupCoroutine);
-
-            popupCoroutine = StartCoroutine(PopupCoroutine(_show));
-        }
-
-        private IEnumerator PopupCoroutine(bool _show)
-        {
             SetPopupActive(_show);
 
             if (connectedElevator != null)
@@ -95,8 +70,6 @@ namespace Custom.UI
                 inputText[0].alpha = connectedElevator.IsTop ? 0 : 1;
                 inputText[1].alpha = connectedElevator.IsBottom ? 0 : 1;
             }
-
-            yield return null;
         }
 
         private void SetPopupActive(bool _active)
@@ -109,7 +82,12 @@ namespace Custom.UI
 
         private void UpdatePopup(UpdateElevatorUI _event)
         {
-            if (connectedElevator != null && Array.IndexOf(connectedElevator.States, "Access Denied") > -1)
+            UpdateArrowPopup();
+        }
+
+        private void UpdateArrowPopup()
+        {
+            if (connectedElevator && !connectedElevator.Accessible)
             {
                 arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.clear : UnityEngine.Color.red;
                 arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.clear : UnityEngine.Color.red;
@@ -120,7 +98,6 @@ namespace Custom.UI
                 arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.clear : UnityEngine.Color.blue;
             }
         }
-
         #endregion
     }
 }
