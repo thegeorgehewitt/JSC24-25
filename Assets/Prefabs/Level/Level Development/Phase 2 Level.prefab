@@ -1812,6 +1812,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1927265250166007991, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2916424553002418655, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: m_Color.a
       value: 0.19607843
@@ -1828,6 +1832,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.4245283
       objectReference: {fileID: 0}
+    - target: {fileID: 4109672476251525396, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4486568507856741927, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: open
       value: 1
@@ -1839,6 +1847,22 @@ PrefabInstance:
     - target: {fileID: 4631841617709058082, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: m_Name
       value: Door (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.a
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2601,6 +2625,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1927265250166007991, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2916424553002418655, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: m_Color.a
       value: 0.19607843
@@ -2617,6 +2645,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.4245283
       objectReference: {fileID: 0}
+    - target: {fileID: 4109672476251525396, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4486568507856741927, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: open
       value: 1
@@ -2628,6 +2660,22 @@ PrefabInstance:
     - target: {fileID: 4631841617709058082, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: m_Name
       value: Door (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.a
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -43319,6 +43367,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1927265250166007991, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2916424553002418655, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: m_Color.a
       value: 0.19607843
@@ -43335,6 +43387,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.4245283
       objectReference: {fileID: 0}
+    - target: {fileID: 4109672476251525396, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4486568507856741927, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: open
       value: 1
@@ -43350,6 +43406,22 @@ PrefabInstance:
     - target: {fileID: 5458236464512437613, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.a
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948423161442613208, guid: ed86dd0410ff9674aabd940a5a829527, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

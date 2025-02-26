@@ -48,12 +48,16 @@ namespace Custom.UI
 
         private void OnEnable()
         {
-            CharacterControlInteract.OnNewActiveOption += activeOption => { ActiveOption = activeOption; };
+            CharacterControlInteract.OnSelectNewInteraction += OnSelectNewInteraction;
+            CharacterControlInteract.OnFocusNewInteractableObject += OnFocusNewInteractableObject;
+            CharacterControlInteract.OnUnfocusInteractableObject += OnUnfocusInteractableObject;
         }
 
         private void OnDisable()
         {
-            CharacterControlInteract.OnNewActiveOption -= activeOption => { ActiveOption = activeOption; };
+            CharacterControlInteract.OnSelectNewInteraction -= OnSelectNewInteraction;
+            CharacterControlInteract.OnFocusNewInteractableObject -= OnFocusNewInteractableObject;
+            CharacterControlInteract.OnUnfocusInteractableObject -= OnUnfocusInteractableObject;
         }
 
         private void Awake()
@@ -72,13 +76,39 @@ namespace Custom.UI
             maskImage.fillAmount = 0;
         }
 
+        private void Update()
+        {
+            Core_DisplayInfo(currentObject);
+        }
 
+
+
+        #region Callbacks - CharacterControlInteract
+        private void OnSelectNewInteraction(int _activeOption)
+        {
+            ActiveOption = _activeOption;
+        }
+
+        private void OnFocusNewInteractableObject(InteractableObject _object)
+        {
+            Core_DisplayInfo(_object);
+        }
+
+        private void OnUnfocusInteractableObject(InteractableObject _object)
+        {
+            ShowPopup(false);
+
+            currentObject = null;
+        }
+        #endregion
 
         #region Display Popup
         private InteractableObject currentObject;
 
         private void Core_DisplayInfo(InteractableObject _object)
         {
+            if (!_object) return;
+
             if (currentObject != _object)
             {
                 currentObject = _object;
