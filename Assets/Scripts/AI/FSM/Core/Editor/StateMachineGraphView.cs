@@ -223,8 +223,8 @@ namespace Custom.FSM.Editor
             {
                 StartNode = selectedNode,
 
-                DrawStartArrow = true,
-                DrawEndArrow = true,
+                DrawStartArrow = false,
+                DrawEndArrow = false,
 
                 EndFollowsCursor = true,
             };
@@ -239,10 +239,11 @@ namespace Custom.FSM.Editor
 
         private void ConfirmTransition(MouseUpEvent _event)
         {
-            if (_event.button == 2) return;
-
+            // Left click
             if (_event.button == 0)
             {
+                bool validTransition = false;
+
                 curTransitionArrow.EndFollowsCursor = false;
 
                 List<VisualElement> elementsAtCursor = new();
@@ -250,14 +251,21 @@ namespace Custom.FSM.Editor
 
                 foreach (var element in elementsAtCursor)
                 {
-                    Debug.Log(element.name);
                     if (element is StateNode node && element != curTransitionArrow.StartNode)
                     {
                         curTransitionArrow.EndNode = node;
+                        node.AddTransition(curTransitionArrow, Direction.Input);
+                        validTransition = true;
                         break;
                     }
                 }
+
+                if (!validTransition)
+                {
+                    RemoveElement(curTransitionArrow);
+                }
             }
+            // Right click
             else if (_event.button == 1)
             {
                 RemoveElement(curTransitionArrow);

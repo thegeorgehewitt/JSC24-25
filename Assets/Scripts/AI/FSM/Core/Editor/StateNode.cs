@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using Custom.Extensions;
+using System.Linq;
 
 namespace Custom.FSM.Editor
 {
@@ -27,8 +28,8 @@ namespace Custom.FSM.Editor
         private readonly List<StateNodeBehaviour> behaviours = new();
         private readonly HelpBox emptyStateHelpBox;
 
-        private readonly List<StateNodeTransition> inputTransitions = new();
-        private readonly List<StateNodeTransition> outputTransitions = new();
+        private readonly HashSet<StateNodeTransition> inputTransitions = new();
+        private readonly HashSet<StateNodeTransition> outputTransitions = new();
 
 
         /// <summary>
@@ -220,12 +221,12 @@ namespace Custom.FSM.Editor
 
         private void OnDetachFromPanel(DetachFromPanelEvent _event)
         {
-            foreach (var transition in inputTransitions)
+            foreach (var transition in inputTransitions.ToArray())
             {
                 transition.RemoveFromHierarchy();
             }
 
-            foreach (var transition in outputTransitions)
+            foreach (var transition in outputTransitions.ToArray())
             {
                 transition.RemoveFromHierarchy();
             }

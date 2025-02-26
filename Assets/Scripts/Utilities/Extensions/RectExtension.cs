@@ -26,6 +26,27 @@ namespace Custom.Extensions
             if (minDist == topDist) return RectSide.Top;
             return RectSide.Bottom;
         }
+
+        /// <inheritdoc cref="ClosestSide(Rect, Vector2)"/>
+        /// <param name="_includingSides"> Sides to includes in checking. </param>
+        public static RectSide ClosestSide(this Rect _rect, Vector2 _point, RectSide _includingSides)
+        {
+            float topDist = (new Vector2(_rect.center.x, _rect.yMax) - _point).sqrMagnitude;
+            float bottomDist = (new Vector2(_rect.center.x, _rect.yMin) - _point).sqrMagnitude;
+            float leftDist = (new Vector2(_rect.xMin, _rect.center.y) - _point).sqrMagnitude;
+            float rightDist = (new Vector2(_rect.xMax, _rect.center.y) - _point).sqrMagnitude;
+
+            float minDist = Mathf.Min(
+                ((_includingSides & RectSide.Top) == RectSide.Top) ? topDist : Mathf.Infinity, 
+                ((_includingSides & RectSide.Bottom) == RectSide.Bottom) ? bottomDist : Mathf.Infinity, 
+                ((_includingSides & RectSide.Left) == RectSide.Left) ? leftDist : Mathf.Infinity,
+                ((_includingSides & RectSide.Right) == RectSide.Right) ? rightDist : Mathf.Infinity);
+
+            if (minDist == leftDist) return RectSide.Left;
+            if (minDist == rightDist) return RectSide.Right;
+            if (minDist == topDist) return RectSide.Top;
+            return RectSide.Bottom;
+        }
     }
 
 

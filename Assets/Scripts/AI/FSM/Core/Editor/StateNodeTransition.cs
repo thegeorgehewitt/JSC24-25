@@ -1,16 +1,17 @@
 using UnityEngine;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine.UIElements;
 using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.Experimental.GraphView;
 
 using Custom.Extensions;
-using System.Runtime.Remoting.Messaging;
 
 namespace Custom.FSM.Editor
 {
     public class StateNodeTransition : GraphElement
     {
         private StateTransition transitionData;
+
+        private TransitionStatus status;
 
         // The start of the transition curve in local space of parent element.
         private Vector2 localStartPoint;
@@ -24,10 +25,10 @@ namespace Custom.FSM.Editor
 
         private bool drawStartArrow;
         private bool drawEndArrow;
-        private float arrowSize = 10.0f;
+        private float arrowSize = 12.0f;
 
         private Color lineColor = Color.white;
-        private float lineWidth = 1.5f;
+        private float lineWidth = 1.0f;
 
         private Orientation orientation;
 
@@ -333,6 +334,8 @@ namespace Custom.FSM.Editor
 
             if (drawEndArrow)
                 DrawArrow(_mgc.painter2D, GetBezierPoint(1), GetBezierTangent(1), true);
+
+            DrawArrow(_mgc.painter2D, GetBezierPoint(0.5f), GetBezierTangent(0.5f), true);
         }
 
         private void DrawCurve(Painter2D _painter)
@@ -420,5 +423,15 @@ namespace Custom.FSM.Editor
             style.height = Mathf.Abs(height);
         }
         #endregion
+    }
+
+
+
+    public enum TransitionStatus
+    {
+        Active,
+        Inactive,
+        Solo,
+        Mute,
     }
 }

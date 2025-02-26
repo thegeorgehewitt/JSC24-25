@@ -21,6 +21,15 @@ namespace Custom.FSM.Editor
         {
             capabilities |= Capabilities.Selectable | Capabilities.Deletable;
 
+            style.paddingTop = 0;
+            style.paddingBottom = 0;
+            style.paddingLeft = 0;
+            style.paddingRight = 0;
+            style.marginTop = 0;
+            style.marginBottom = 0;
+            style.marginLeft = 0;
+            style.marginRight = 0;
+
             VisualTreeAsset visualTreeAsset = Resources.Load<VisualTreeAsset>("StateNodeBehaviour");
 
             if (!visualTreeAsset) return;
