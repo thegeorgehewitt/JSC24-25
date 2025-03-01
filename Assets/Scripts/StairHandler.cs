@@ -1,145 +1,74 @@
+using Custom.Controller;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class StairHandler : MonoBehaviour
 {
-    [SerializeField] private float slopeCheckDistance = 0.5f;
+    [SerializeField] private float slopeCheckDistance = 0.1f;
     [SerializeField] private float maxSlopeAngle = 45f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private GameObject parentBody;
+
+    [SerializeField] PhysicsMaterial2D noneFriction;
+    [SerializeField] PhysicsMaterial2D maxFriction;
 
     private Rigidbody2D rb;
     private CapsuleCollider2D cc;
-    private bool isOnSlope;
-    private bool canWalkOnSlope;
-    private float xInput;
-    private float slopeDownAngle;
-    private float slopeSideAngle;
-    private float lastSlopeAngle;
+    private CharacterMotor2D characterMotor2DRef;
+    private InputAction PlayerIA;
+    private PlayerInput playerInput;
+
+    public bool IsOnSlope { get; private set; }
+
+    public Vector2 SlopeDirection { get; private set; } = Vector2.right;
     private Vector2 slopeNormalPerp;
-    private Vector2 newVelocity;
+    private float slopeDownAngle;
+    private float lastSlopeAngle;
 
-    private float movespeed = 5;
-
-    [SerializeField]
-    private PhysicsMaterial2D noFriction;
-    [SerializeField]
-    private PhysicsMaterial2D fullFriction;
-
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();       
-        cc = GetComponent<CapsuleCollider2D>(); 
+        rb = parentBody.GetComponent<Rigidbody2D>();
+        cc = parentBody.GetComponent<CapsuleCollider2D>();
+        characterMotor2DRef = GetComponent<CharacterMotor2D>();
+        playerInput = GetComponent<PlayerInput>();
+        
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        CheckInput();
-    }
-
-    void FixedUpdate()
-    {
+        
         SlopeCheck();
-        AdjustMovementOnSlope();
     }
 
-    void CheckInput()
-    {
-        xInput = Input.GetAxisRaw("Horizontal");
+    public void ChangePlayerFriction()
+    {        
     }
-
     private void SlopeCheck()
     {
-        Vector2 checkPos = transform.position - (Vector3)(new Vector2(0.0f, cc.size.y / 2));
-        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance, groundLayer);
-
-        SlopeCheckHorizontal(checkPos);
+        Vector2 checkPos = (Vector2)transform.position - new Vector2(0.0f, cc.size.y / 2);
         SlopeCheckVertical(checkPos);
-    }
-
-    private void SlopeCheckHorizontal(Vector2 checkPos)
-    {
-        RaycastHit2D slopeHitFront = Physics2D.Raycast(checkPos, transform.right, slopeCheckDistance, groundLayer);
-        RaycastHit2D slopeHitBack = Physics2D.Raycast(checkPos, -transform.right, slopeCheckDistance, groundLayer);
-
-        if (slopeHitFront)
-        {
-            isOnSlope = true;
-            slopeSideAngle = Vector2.Angle(slopeHitFront.normal, Vector2.up);
-            Debug.Log($"Slope Side Angle (Front): {slopeSideAngle}");
-            Debug.DrawRay(slopeHitFront.point, slopeHitFront.normal, Color.red);
-        }
-        else if (slopeHitBack)
-        {
-            isOnSlope = true;
-            slopeSideAngle = Vector2.Angle(slopeHitBack.normal, Vector2.up);
-            Debug.Log($"Slope Side Angle (Back): {slopeSideAngle}");
-            Debug.DrawRay(slopeHitBack.point, slopeHitBack.normal, Color.yellow);
-        }
-        else
-        {
-            slopeSideAngle = 0.0f;
-            isOnSlope = false;
-        }
     }
 
     private void SlopeCheckVertical(Vector2 checkPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance, groundLayer);
-
         if (hit)
         {
-            slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
             slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
+            slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
 
-            //isOnSlope = slopeDownAngle != 0 && slopeDownAngle <= maxSlopeAngle;
-            //canWalkOnSlope = slopeDownAngle <= maxSlopeAngle;
+            IsOnSlope = slopeDownAngle > 0f && slopeDownAngle < maxSlopeAngle;
+            SlopeDirection = slopeNormalPerp;
 
-            if (slopeDownAngle != lastSlopeAngle)
-            {
-                isOnSlope = true;
-            }
+            Debug.DrawRay(hit.point, slopeNormalPerp * 2f, Color.red, 0.1f);
 
-            lastSlopeAngle = slopeDownAngle;
-
-            Debug.DrawRay(hit.point, hit.normal, Color.green);
-            Debug.DrawRay(hit.point, slopeNormalPerp, Color.blue);
-            Debug.Log($"Slope Angle (Vertical): {slopeDownAngle}, Can Walk: {canWalkOnSlope}");
         }
         else
         {
-            isOnSlope = false;
-            canWalkOnSlope = true;
+            IsOnSlope = false;
+            SlopeDirection = Vector2.right;
         }
-
-        if (slopeDownAngle > maxSlopeAngle || slopeSideAngle > maxSlopeAngle)
-        {
-            canWalkOnSlope = false;
-        }
-        else
-        {
-            canWalkOnSlope = true;
-        }
-
-        if (isOnSlope && canWalkOnSlope && xInput == 0.0f)
-        {
-            rb.sharedMaterial = fullFriction;
-        }
-        else
-        {
-            rb.sharedMaterial = noFriction;
-        }
-    }
-
-
-    private void AdjustMovementOnSlope()
-    {
-        float speed = rb.velocity.magnitude;
-        newVelocity.Set(movespeed* slopeNormalPerp.x * -xInput, movespeed* slopeNormalPerp.y * -xInput);
-        rb.velocity = newVelocity;
-
-
-        Debug.Log($"Adjusting movement on slope: {rb.velocity}");
-        Debug.DrawRay(transform.position, rb.velocity, Color.magenta);
     }
 }

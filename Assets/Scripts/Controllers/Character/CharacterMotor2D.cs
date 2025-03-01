@@ -77,7 +77,7 @@ namespace Custom.Controller
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
         public Vector2 velocity = new();
-
+        public bool isOnOneWayPlatform = false;
 
         private ContactFilter2D proximityCheckContactFilter;
         private List<Collider2D> proximityCheckContacts = new();
@@ -226,13 +226,30 @@ namespace Custom.Controller
         #region Proximity Check
         private void UpdateProximityCheck()
         {
+
             grounded = groundCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
+
+            isOnOneWayPlatform = false;
+            foreach (var col in proximityCheckContacts)
+            {
+                if (col.TryGetComponent<PlatformEffector2D>(out _))
+                {
+                    
+                    onCeiling = false;
+                    onWall = false;
+                    isOnOneWayPlatform = true;
+                    break;
+                }
+            }
 
             onCeiling = ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
             if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
             else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
 
             onWall = wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
+
+            
+
         }
         #endregion
 
@@ -329,6 +346,14 @@ namespace Custom.Controller
             headSocket.localPosition = new Vector2(0, orgColSize.y / 2 - headOffset);
             frontSocket.localPosition = new Vector2(frontSocket.localPosition.x, offsetY);
             frontSocket.localScale = new Vector2(1.0f, _heightMult);
+        }
+        #endregion
+
+        #region Oneway Platform
+
+        public void SetOnOneWayPlatform(bool value)
+        {
+            isOnOneWayPlatform = value;
         }
         #endregion
     }
