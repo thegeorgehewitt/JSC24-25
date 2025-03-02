@@ -10,9 +10,9 @@ namespace Custom.AI.Pathfinding.Internal
         public int2 startPosition;
         public int2 endPosition;
         public NativeArray<Node> nodeArray;
-        public NativeList<int> linkedNotesIndex;
-        public NativeList<int> linkedNotesCount;
-        public NativeList<int2> linkedNodes;
+        public NativeArray<int> linkedNotesIndex;
+        public NativeArray<int> linkedNotesCount;
+        public NativeArray<int2> linkedNodes;
 
         // OUT
         [WriteOnly] public NativeArray<bool> pathFound;
@@ -59,12 +59,6 @@ namespace Custom.AI.Pathfinding.Internal
                 int currentNodeIndex = GetLowestCostFNodeIndex(openList, nodeArray);
                 Node currentNode = nodeArray[currentNodeIndex];
                 int2 currentNodePosition = new(currentNode.x, currentNode.y);
-
-                // If came from other node, get last offset.
-                if (currentNode.parentIndex != -1)
-                {
-                    Node cameFromNode = nodeArray[currentNode.parentIndex];
-                }
 
                 if (currentNodeIndex == endNodeIndex) break; // Found path.
 

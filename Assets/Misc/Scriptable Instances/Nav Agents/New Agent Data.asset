@@ -9,15 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d32c5b051a4a0be4fb6073653671f921, type: 3}
+  m_Script: {fileID: 11500000, guid: 44f22c9b8fff8ad4988bd35fa5554b3b, type: 3}
   m_Name: New Agent Data
   m_EditorClassIdentifier: 
   gravityAccel: {x: 0, y: -21}
-  mass: 1
-  dragForce: 0.1
-  height: 0.8
+  height: 1
   width: 0.8
   speed: 5
-  jumpHeight: 3
+  jumpHeight: 4
   jumpDistance: 3
-  dropHeight: 6
+  dropHeight: 4

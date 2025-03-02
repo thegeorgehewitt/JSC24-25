@@ -5,189 +5,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.Utility;
+using Custom.Manager;
 
 namespace Custom.AI.Pathfinding
 {
-    public class WalkJumpAgent : PathFindAgentBase
+    public class WalkJumpAgent : NavGridAgentBase
     {
-        private const int WALK = 1;
-        private const int JUMP = 2;
-        private const int DROP = 3;
+        /*
+         * Movement types.
+         */
+        protected const int WALK = 0;
+        protected const int JUMP = 1;
+        protected const int DROP = 2;
 
 
 
-        private readonly Dictionary<Vector2Int, PathNode> pathNodeLookup = new();
-        private PathNode[] pathNodes = { };
-
-        private bool drawEqual = true;
-        private bool drawHigher = true;
-        private bool drawLower = true;
-        private bool drawAllNodes = true;
-        private int drawNodeIndex = 0;
-
-        private List<Vector2Int> resultPath = new();
-        private Vector2Int startNode, endNode;
-
-
-
-        private void Start()
+        private void Awake()
         {
-            navGrid.RegisterAgent(this);
-        }
-
-        private void Update()
-        {
-            pathNodes = navGrid.GetAgentNodeGraph(this);
-
-            pathNodeLookup.Clear();
-            foreach (var pathNode in pathNodes)
-            {
-                pathNodeLookup.Add(pathNode.position, pathNode);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                drawEqual = !drawEqual;
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                drawHigher = !drawHigher;
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                drawLower = !drawLower;
-
-            if (Input.GetKeyDown(KeyCode.Q))
-                drawAllNodes = !drawAllNodes;
-
-            if (Input.GetKeyDown(KeyCode.T))
-                drawNodeIndex = Mathf.Min(pathNodes.Length - 1, drawNodeIndex + 1);
-            if (Input.GetKeyDown(KeyCode.R))
-                drawNodeIndex = Mathf.Max(0, drawNodeIndex - 1);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                startNode = pathNodes[Random.Range(1, pathNodes.Length - 1)].position;
-                endNode = pathNodes[Random.Range(1, pathNodes.Length - 1)].position;
-
-                PathFinding2D.FindPath(this, navGrid, startNode, endNode, resultPath);
-
-                if (resultPath.Count >= 2)
-                {
-                    StartRandomPathfinding();
-                }
-            }
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            if (!Application.isPlaying) return;
-
-            Vector2 start = navGrid.CellToWorld(pathNodes[0].position).Value;
-            Vector2 end = navGrid.CellToWorld(pathNodes[drawNodeIndex].position).Value;
-
-            DrawJumpCurve(start, end, 0.05f, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
-
-            if (drawAllNodes)
-            {
-                foreach (var node in pathNodes)
-                {
-                    if (node.position == startNode)
-                    {
-                        Gizmos.color = Color.cyan;
-                        Gizmos.DrawSphere(navGrid.CellToWorld(node.position).Value, 0.2f);
-
-                    }
-                    else if (node.position == endNode)
-                    {
-                        Gizmos.color = Color.magenta;
-                        Gizmos.DrawSphere(navGrid.CellToWorld(node.position).Value, 0.2f);
-                    }
-                    else
-                    {
-                        Gizmos.color = Color.white;
-                        Gizmos.DrawWireSphere(navGrid.CellToWorld(node.position).Value, 0.2f);
-                    }
-
-                    DrawConnectedPoints(node, false);
-                }
-            }
-            else if (drawNodeIndex >= 0 && drawNodeIndex < pathNodes.Length)
-            {
-                PathNode node = pathNodes[drawNodeIndex];
-
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(navGrid.CellToWorld(node.position).Value, 0.2f);
-
-                DrawConnectedPoints(node, true);
-            }
-
-            if (resultPath.Count >= 2)
-            {
-                Gizmos.color = Color.yellow;
-
-                var previousNode = resultPath[0];
-                foreach (var nextNode in resultPath)
-                {
-                    Gizmos.DrawLine(navGrid.CellToWorld(previousNode).Value, navGrid.CellToWorld(nextNode).Value);
-
-                    previousNode = nextNode;
-                }
-            }
+            OnPathFindCanceled += StopMoving;
         }
 
 
-
-        #region Editor Debug
-        private void DrawConnectedPoints(PathNode _node, bool _drawPointSphere)
-        {
-            foreach (var linkedNode in _node.linkedNodes.Keys)
-            {
-                if (_drawPointSphere)
-                {
-                    Gizmos.color = Color.white;
-                    Gizmos.DrawWireSphere(navGrid.CellToWorld(linkedNode).Value, 0.2f);
-                }
-
-                if (_node.linkedNodes[linkedNode] == DROP)
-                {
-                    Gizmos.color = drawLower ? new Color(0, 1, 0, 0.5f) : Color.clear;
-                    Gizmos.DrawLine(navGrid.CellToWorld(_node.position).Value, navGrid.CellToWorld(linkedNode).Value);
-                }
-                else if (_node.linkedNodes[linkedNode] == JUMP)
-                {
-                    Vector2 start = navGrid.CellToWorld(_node.position).Value;
-                    Vector2 end = navGrid.CellToWorld(linkedNode).Value;
-
-                    DrawJumpCurve(start, end, 0.05f, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
-                }
-                else
-                {
-                    Gizmos.color = drawEqual ? new Color(0, 0, 1, 0.5f) : Color.clear;
-                    Gizmos.DrawLine(navGrid.CellToWorld(_node.position).Value, navGrid.CellToWorld(linkedNode).Value);
-                }
-            }
-        }
-
-        private void DrawJumpCurve(Vector2 _p0, Vector2 _p1, float _step, Color _color)
-        {
-            Gizmos.color = _color;
-
-            if (!GetJumpDuration(_p0, _p1, out float tTotal)) return;
-
-            float tCurrent;
-            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_p0, _p1, agentData.gravityAccel, tTotal);
-            Vector2 previousPoint = _p0;
-            Vector2 nextPoint;
-
-            for (float t = 0.0f; t <= 1.0f; t += _step)
-            {
-                tCurrent = tTotal * t;
-                nextPoint = _p0 + (initialVelocity * tCurrent) + (0.5f * tCurrent * tCurrent * agentData.gravityAccel);
-
-                Gizmos.DrawLine(previousPoint, nextPoint);
-
-                previousPoint = nextPoint;
-            }
-
-            Gizmos.DrawLine(previousPoint, _p1);
-        }
-        #endregion
 
         #region Node Graph Baking
         public override PathNode[] ConnectGraphNodes(Vector2Int[] _nodes)
@@ -234,13 +72,13 @@ namespace Custom.AI.Pathfinding
                     }
 
                     // Find drop nodes to either sides.
-                    if (nextNode.y >= node.y - navGrid.FloorToCell(agentData.dropHeight) - 1 && nextNode.y < node.y)    // In range of drop height
+                    if (nextNode.y >= node.y - navGrid.FloorToCell(agentData.dropHeight) && nextNode.y < node.y)        // In range of drop height
                         if ((nextNode.x == node.x + 1 && !navGrid.OccupiedFromTo(node + Vector2Int.right, nextNode))    // Not occupied to the right downward.
                         || (nextNode.x == node.x - 1 && !navGrid.OccupiedFromTo(node + Vector2Int.left, nextNode)))     // Not occupied to the left downward.
                             map[node].linkedNodes.TryAdd(nextNode, DROP);
 
                     // Find jump nodes to either sides.
-                    if (nextNode.y <= node.y + navGrid.FloorToCell(agentData.jumpHeight) + 1 && nextNode.y > node.y // In range of vertical jump
+                    if (nextNode.y <= node.y + navGrid.FloorToCell(agentData.jumpHeight) && nextNode.y > node.y     // In range of vertical jump
                         && nextNode.x <= node.x + navGrid.FloorToCell(agentData.jumpDistance) + 1                   // In range of horizontal jump to the right
                         && nextNode.x >= node.x - navGrid.FloorToCell(agentData.jumpDistance) - 1                   // In range of horizontal jump to the left
                         && JumpPossible(node, nextNode))
@@ -275,25 +113,7 @@ namespace Custom.AI.Pathfinding
                     // If below cell unwalkable and exists.
                     if (!_grid.Occupied(new(x, y - 1)) || !_grid.Contains(new(x, y - 1))) continue;
 
-                    // If there are walls to either side of the cell or drops to either side of the walls.
-                    if (!_grid.Occupied(new(x + 1, y)) && !_grid.Occupied(new(x - 1, y))
-                        && _grid.Occupied(new(x + 1, y - 1)) && _grid.Occupied(new(x - 1, y - 1))) continue;
-
                     result.Add(new(x, y));
-
-                    // Drop left
-                    if (navGrid.GetFirstOccupied(new(x + 1, y), new(x + 1, y - navGrid.FloorToCell(agentData.dropHeight) - 1), out Vector2Int cellLeft)
-                        && (cellLeft.y + 1 < y))
-                    {
-                        result.Add(cellLeft + Vector2Int.up);
-                    }
-
-                    // Drop right
-                    if (navGrid.GetFirstOccupied(new(x - 1, y), new(x - 1, y - navGrid.FloorToCell(agentData.dropHeight) - 1), out Vector2Int cellRight)
-                        && (cellRight.y + 1 < y))
-                    {
-                        result.Add(cellRight + Vector2Int.up);
-                    }
                 }
             }
 
@@ -326,148 +146,122 @@ namespace Custom.AI.Pathfinding
         #endregion
 
         #region Movement
-        private Coroutine randomPathFindingCoroutine;
-        private Coroutine followPathCoroutine;
         private Coroutine movementCoroutine;
 
-        private Vector2Int currentNode;
-        private bool followingPath = false;
-        private bool moving = false;
-        private int movement;
 
 
-
-        protected override void MoveFromTo(Vector2Int _start, Vector2Int _end)
+        protected override void MoveFromTo(Vector2 _start, Vector2 _end, int _movement, bool _override)
         {
-            PathNode startNode = pathNodeLookup[_start];
+            if (_override)
+            {
+                if (_start.y > _end.y)
+                    _movement = DROP;
+                else if (_start.y < _end.y)
+                    _movement = JUMP;
+                else
+                    _movement = WALK;
+            }
 
-            if (!startNode.linkedNodes.ContainsKey(_end)) return;
-
-            int movement = startNode.linkedNodes[_end];
-            Vector2 start = navGrid.CellToWorld(_start).Value;
-            Vector2 end = navGrid.CellToWorld(_end).Value;
-
-            switch (movement)
+            switch (_movement)
             {
                 case WALK:
-                    Walk(start, end);
+                    Walk(_start, _end);
                     break;
 
                 case DROP:
-                    Drop(start, end);
+                    Drop(_start, _end);
                     break;
 
                 case JUMP:
-                    Jump(start, end);
+                    Jump(_start, _end);
                     break;
             }
         }
 
 
 
-        private void StopFollowPath()
+        protected void StopMoving()
         {
-            if (followPathCoroutine != null)
-                StopCoroutine(followPathCoroutine);
+            if (Movement != WALK) return;
+
+            ForceStopMoving();
         }
 
-        private void StartRandomPathfinding()
+        private void ForceStopMoving()
         {
-            if (randomPathFindingCoroutine != null)
-                StopCoroutine(randomPathFindingCoroutine);
+            if (movementCoroutine != null)
+                StopCoroutine(movementCoroutine);
 
-            StopFollowPath();
-
-            randomPathFindingCoroutine = StartCoroutine(RandomPathfindingCoroutine());
-        }
-
-        private IEnumerator RandomPathfindingCoroutine()
-        {
-            while (true)
-            {
-                if (!followingPath)
-                {
-                    endNode = pathNodes[Random.Range(1, pathNodes.Length - 1)].position;
-                    PathFinding2D.FindPath(this, navGrid, startNode, endNode, resultPath);
-                    startNode = endNode;
-
-                    followPathCoroutine = StartCoroutine(FollowPathCoroutine());
-                }
-
-                yield return null;
-            }
-        }
-
-
-
-        private IEnumerator FollowPathCoroutine()
-        {
-            int prevIndex = 0, nextIndex = 1;
-
-            followingPath = true;
-            while (nextIndex < resultPath.Count)
-            {
-                if (!moving)
-                {
-                    MoveFromTo(resultPath[prevIndex], resultPath[nextIndex]);
-
-                    prevIndex++;
-                    nextIndex++;
-                }
-
-                yield return null;
-            }
-
-            followingPath = false;
+            Moving = false;
         }
 
 
 
         private void Walk(Vector2 _start, Vector2 _end)
         {
-            movement = WALK;
-
             movementCoroutine = StartCoroutine(WalkCoroutine(_start, _end));
         }
 
         private IEnumerator WalkCoroutine(Vector2 _start, Vector2 _end)
         {
-            moving = true;
-            float elapsed = 0;
+            Moving = true;
 
             transform.position = _start;
+
+            float elapsed = 0;
             while (elapsed < (_end - _start).magnitude / agentData.speed)
             {
                 elapsed += Time.deltaTime;
-                transform.position = Vector2.MoveTowards(transform.position, _end, agentData.speed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, _end, agentData.speed * TimeManager.DeltaTime);
                 yield return null;
             }
 
             transform.position = _end;
-            moving = false;
+
+            Moving = false;
         }
 
 
 
         private void Drop(Vector2 _start, Vector2 _end)
         {
-            movement = DROP;
-
-            GetJumpDuration(_start, _end, out float t);
-            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, t));
+            movementCoroutine = StartCoroutine(DropCoroutine(_start, _end));
         }
 
-        private IEnumerator DropCoroutine(Vector2 _start, Vector2 _end, float _t, float _waitTime = 0.05f)
+        private IEnumerator DropCoroutine(Vector2 _start, Vector2 _end, float _waitTime = 0.05f)
         {
-            moving = true;
-            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_start, _end, agentData.gravityAccel, _t);
-            Vector3 currentVelocity = initialVelocity;
-            float elapsed = 0;
+            Moving = true;
 
             transform.position = _start;
-            while (elapsed < _t)
+
+            // Start moving horizontally.
+            Vector3 hVel = agentData.speed * Mathf.Sign(_end.x - _start.x) * Vector3.right;
+
+            while (IsGrounded)
             {
-                transform.position += currentVelocity * Time.deltaTime;
+                transform.position += hVel * TimeManager.DeltaTime;
+
+                yield return null;
+            }
+
+            // Calculate next movement to test if agent can reach the target destination during falling or not.
+            float elapsed = 0;
+            float fallDuration = EstimateDropDuration(_start, _end);
+
+            if (Mathf.Abs(transform.position.x - _end.x) / fallDuration > agentData.speed)
+            {
+                GetJumpDuration(transform.position, _end, out float jumpDuration);
+
+                fallDuration = jumpDuration;
+            }
+
+            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(transform.position, _end, agentData.gravityAccel, fallDuration);
+            Vector3 currentVelocity = initialVelocity;
+
+            // Start falling or jumping.
+            while (elapsed < fallDuration)
+            {
+                transform.position += currentVelocity * TimeManager.DeltaTime;
 
                 elapsed += Time.deltaTime;
                 currentVelocity = agentData.gravityAccel * elapsed + initialVelocity;
@@ -478,37 +272,39 @@ namespace Custom.AI.Pathfinding
             transform.position = _end;
 
             yield return new WaitForSeconds(_waitTime);
-            moving = false;
+
+            Moving = false;
         }
 
         private float EstimateDropDuration(Vector2 _start, Vector2 _end)
         {
-            // Initial velocity is calculated using the second equation of motion
-            // with original velocity in the Y axis is 0 (since we are dropping).
-            return Mathf.Sqrt(2.0f * agentData.gravityAccel.magnitude * (_start - _end).magnitude) / agentData.gravityAccel.magnitude;
+            // Since we are defining down ward distances as negative
+            // and _end.y will always greater than _start.y so we need to abstract _end for _start.
+            return Mathf.Sqrt(2.0f * (_end.y - _start.y) / agentData.gravityAccel.y);
         }
 
 
 
         private void Jump(Vector2 _start, Vector2 _end)
         {
-            movement = JUMP;
-
-            GetJumpDuration(_start, _end, out float t);
-            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end, t));
+            movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end));
         }
 
-        private IEnumerator JumpCoroutine(Vector2 _start, Vector2 _end, float _t, float _waitTime = 0.05f)
+        private IEnumerator JumpCoroutine(Vector2 _start, Vector2 _end, float _waitTime = 0.05f)
         {
-            moving = true;
-            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_start, _end, agentData.gravityAccel, _t);
+            Moving = true;
+
+            transform.position = _start;
+
+            // Offset transform using kinematic equations.
+            GetJumpDuration(_start, _end, out float jumpDuration);
+            Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_start, _end, agentData.gravityAccel, jumpDuration);
             Vector3 currentVelocity = initialVelocity;
             float elapsed = 0;
 
-            transform.position = _start;
-            while (elapsed < _t)
+            while (elapsed < jumpDuration)
             {
-                transform.position += currentVelocity * Time.deltaTime;
+                transform.position += currentVelocity * TimeManager.DeltaTime;
 
                 elapsed += Time.deltaTime;
                 currentVelocity = agentData.gravityAccel * elapsed + initialVelocity;
@@ -519,20 +315,41 @@ namespace Custom.AI.Pathfinding
             transform.position = _end;
 
             yield return new WaitForSeconds(_waitTime);
-            moving = false;
+
+            Moving = false;
         }
 
-        private bool GetJumpDuration(Vector2 _start, Vector2 _end, out float _t)
+        protected bool GetJumpDuration(Vector2 _start, Vector2 _end, out float _t)
         {
             Vector2 peak = Vector2.Max(_start, _end) + new Vector2(agentData.width, agentData.height) / 2.0f;
 
             bool result = ProjMotionUtil.GetTimeAtPoint(
-                _start, _end, peak, 
+                _start, _end, peak,
                 agentData.gravityAccel, out float t, true);
 
             _t = t;
 
             return result;
+        }
+        #endregion
+
+        #region Pathfinding
+        protected override bool GetTargetCell(Vector2 _worldLocation, out Vector2Int _cellLocation)
+        {
+            _cellLocation = navGrid.WorldToCell(_worldLocation);
+
+            if (!navGrid.Contains(_cellLocation)) return false;
+
+            var pathNode = FindClosestPathNode(_worldLocation);
+            if (!pathNode.HasValue) return false;
+            _cellLocation = pathNode.Value.position;
+
+            if (navGrid.GetFirstOccupied(_cellLocation, _cellLocation - new Vector2Int(0, navGrid.CellBounds.y), out Vector2Int projectedNode))
+                if ((_worldLocation - navGrid.CellToWorld(pathNode.Value.position).Value).sqrMagnitude 
+                    > (_worldLocation - navGrid.CellToWorld(projectedNode + Vector2Int.up).Value).sqrMagnitude)
+                    _cellLocation = projectedNode + Vector2Int.up;
+
+            return true;
         }
         #endregion
     }

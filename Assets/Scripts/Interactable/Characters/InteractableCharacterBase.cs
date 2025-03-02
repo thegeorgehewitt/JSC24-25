@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.Utility;
+using Custom.AI.Pathfinding;
+
+using FSMC.Runtime;
 
 namespace Custom.Interactable.Character
 {
@@ -40,7 +43,6 @@ namespace Custom.Interactable.Character
         [Tooltip("If false, ignore all blockable objects.")]
         [SerializeField] protected bool useBlockFilter = false;
         [Tooltip("If target is in this radius from this character, they are automatically detected.")] 
-        [Range(0, 1)]
         [SerializeField] protected float proximityDetectRange = 1.0f;
 
         [Header("FIELD OF VIEW CHECK")]
@@ -54,7 +56,13 @@ namespace Custom.Interactable.Character
         [Tooltip("Used to visualize character's FOV only.")]
         [SerializeField] protected FieldOfViewDisplay FOVDisplay;
 
+        [Header("BEHAVIOUR")]
+        [SerializeField] protected FSMC_ExecutorCharacter fsm;
+        [SerializeField] protected NavGridAgentBase navAgent;
+
         protected bool activated = true;
+
+        public bool Stationary => !navAgent;
 
 
 

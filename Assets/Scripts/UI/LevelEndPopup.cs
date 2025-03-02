@@ -59,7 +59,7 @@ namespace Custom.UI
             // Pause Controls
             if (_show)
             {
-                TimeManager.timeScale = 0;
+                TimeManager.TimeScale = 0;
                 PlayerController.PauseMotor();
             }
         }

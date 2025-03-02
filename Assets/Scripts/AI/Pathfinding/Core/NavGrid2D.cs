@@ -16,14 +16,14 @@ namespace Custom.AI.Pathfinding
         {
             public int registered;
             public PathNode[] graph;
-            public PathFindAgentBase agentClass;
+            public NavGridAgentBase agentClass;
         }
 
 
 
         public static event Action<NavGrid2D> OnNavGridUpdated;
-        public static event Action<PathFindAgentBase> OnNewAgentRegistered;
-        public static event Action<PathFindAgentBase> OnAgentUnregistered;
+        public static event Action<NavGridAgentBase> OnNewAgentRegistered;
+        public static event Action<NavGridAgentBase> OnAgentUnregistered;
 
 
 
@@ -46,7 +46,7 @@ namespace Custom.AI.Pathfinding
 
 
 
-        private bool isDirty;
+        private bool isDirty = true;
         private ContactFilter2D contactFilter;
 
         /*
@@ -165,6 +165,11 @@ namespace Custom.AI.Pathfinding
 
             if (!obstacleDetectBounds) obstacleDetectBounds = GetComponent<BoxCollider2D>();
 
+            obstacleDetectBounds.isTrigger = true;
+        }
+
+        private void Start()
+        {
             Bake();
         }
 
@@ -175,19 +180,11 @@ namespace Custom.AI.Pathfinding
                 UpdateObstacle();
             }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                var tilePos = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                tilemap.CompressBounds();
-                tilemap.SetTile(tilePos, testTile);
-
-                isDirty = true;
-            }
             if (Input.GetMouseButtonDown(1))
             {
                 var tilePos = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 tilemap.CompressBounds();
-                tilemap.SetTile(tilePos, null);
+                tilemap.SetTile(tilePos, tilemap.HasTile(tilePos) ? null : testTile);
 
                 isDirty = true;
             }
@@ -246,7 +243,7 @@ namespace Custom.AI.Pathfinding
         #region Static Baking
         private void Bake()
         {
-            tilemap?.CompressBounds();
+            if (tilemap) tilemap.CompressBounds();
 
             // Generate node grid.
             Vector2Int cellPos;
@@ -293,46 +290,41 @@ namespace Custom.AI.Pathfinding
 
         #region Pathfinding
         /// <summary>
-        /// Register a <see cref="PathFindAgentBase"/> to this nav grid. <br/>
+        /// Register a <see cref="NavGridAgentBase"/> to this nav grid. <br/>
         /// Node graph of this agent will automatically be updated after baking. <br/>
-        /// <b>NOTE:</b> Agents with the same type and <see cref="PathFindAgentBase.agentData"/> will be considered the same agent.
+        /// <b>NOTE:</b> Agents with the same type and <see cref="NavGridAgentBase.agentData"/> will be considered the same agent.
         /// </summary>
-        /// <param name="_agent"> The <see cref="PathFindAgentBase"/> to register. </param>
+        /// <param name="_agent"> The <see cref="NavGridAgentBase"/> to register. </param>
         /// <returns>
         /// <see langword="true"/> if a new agent is registered. Otherwise, <see langword="false"/>.
         /// </returns>
-        public bool RegisterAgent(PathFindAgentBase _agent)
+        public bool RegisterAgent(NavGridAgentBase _agent)
         {
             int key = _agent.GetHashCode();
             if (nodeGraphs.ContainsKey(key))
             {
                 nodeGraphs[key].registered++;
-
-                Debug.Log($"Increased register node graph for: {_agent.GetType().Name} ({key})");
             }
             else
             {
                 nodeGraphs.Add(key, new NodeGraph()
                 {
                     registered = 1,
-                    graph = _agent.ConnectGraphNodes(_agent.GenerateGraphNodes(this)),
                     agentClass = _agent,
                 });
-
-                Debug.Log($"Generated node graph for: {_agent.GetType().Name} ({key})");
             }
 
             return true;
         }
 
         /// <summary>
-        /// Unregister a <see cref="PathFindAgentBase"/> from this nav grid. <br/>
+        /// Unregister a <see cref="NavGridAgentBase"/> from this nav grid. <br/>
         /// </summary>
-        /// <param name="_agent"> The <see cref="PathFindAgentBase"/> to unregister. </param>
+        /// <param name="_agent"> The <see cref="NavGridAgentBase"/> to unregister. </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="_agent"/> is already registered. Otherwise, <see langword="false"/>.
         /// </returns>
-        public bool UnregisterAgent(PathFindAgentBase _agent)
+        public bool UnregisterAgent(NavGridAgentBase _agent)
         {
             int key = _agent.GetHashCode();
             if (!nodeGraphs.ContainsKey(key)) return false;
@@ -348,12 +340,12 @@ namespace Custom.AI.Pathfinding
         /// <summary>
         /// Get generated node graph of <paramref name="_agent"/>.
         /// </summary>
-        /// <param name="_agent"> The <see cref="PathFindAgentBase"/> to retrieve graph from. </param>
+        /// <param name="_agent"> The <see cref="NavGridAgentBase"/> to retrieve graph from. </param>
         /// <returns>
         /// If <paramref name="_agent"/> is registered, returns calculated node graph.
         /// Otherwise, returns empty array.
         /// </returns>
-        public PathNode[] GetAgentNodeGraph(PathFindAgentBase _agent)
+        public PathNode[] GetAgentNodeGraph(NavGridAgentBase _agent)
         {
             int key = _agent.GetHashCode();
             if (!nodeGraphs.ContainsKey(key)) return new PathNode[0];

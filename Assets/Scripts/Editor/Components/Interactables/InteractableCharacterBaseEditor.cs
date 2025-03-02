@@ -4,6 +4,7 @@ using UnityEditor.AnimatedValues;
 
 using Custom.Interactable.Character;
 using Custom.Utility;
+using Custom.AI.Pathfinding;
 
 namespace Custom.Editor
 {
@@ -27,6 +28,9 @@ namespace Custom.Editor
         private SerializedProperty angle;
         private SerializedProperty localRotation;
         private SerializedProperty FOVDisplay;
+
+        private SerializedProperty fsm;
+        private SerializedProperty navAgent;
 
 
         private AnimBool expandEnemyProperties;
@@ -55,6 +59,9 @@ namespace Custom.Editor
             angle = AssignToProperty("angle");
             localRotation = AssignToProperty("localRotation");
             FOVDisplay = AssignToProperty("FOVDisplay");
+
+            navAgent = AssignToProperty("navAgent");
+            fsm = AssignToProperty("fsm");
         }
 
         private void InitAnimValues()
@@ -142,8 +149,8 @@ namespace Custom.Editor
                 if (trackableLayers.intValue == 0)
                 {
                     EditorGUILayout.HelpBox(
-                        "Tracking Layers is not set." +
-                        "Enemy will not be able to detect objects.",
+                        "Tracking Layers is not set.\n" +
+                        "This character will not be able to detect objects.",
                         MessageType.Warning);
                 }
 
@@ -179,6 +186,18 @@ namespace Custom.Editor
                             $"Assign a {typeof(FieldOfViewDisplay)} to view accurate FOV display.",
                             MessageType.Info);
                     }
+                }
+                #endregion
+
+                #region Behaviour
+                EditorGUILayout.PropertyField(fsm, new GUIContent("FSM Executor"));
+                EditorGUILayout.PropertyField(navAgent);
+
+                if (!navAgent.objectReferenceValue)
+                {
+                    EditorGUILayout.HelpBox(
+                        $"A character with no {typeof(NavGridAgentBase)} attached is considered stationary.",
+                        MessageType.Info); 
                 }
                 #endregion
 

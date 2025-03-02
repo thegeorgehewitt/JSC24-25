@@ -2,21 +2,13 @@ using UnityEngine;
 
 namespace Custom.AI.Pathfinding
 {
-    [CreateAssetMenu(fileName = "New Agent Data", menuName = "Custom/Path Find Agent")]
-    public class PathFindAgentData : ScriptableObject
+    [CreateAssetMenu(fileName = "New Agent Data", menuName = "Custom/Pathfinding/Nav Grid Agent")]
+    public class NavGridAgentData : ScriptableObject
     {
         [Header("GENERAL")]
         [Tooltip("Gravitational acceleration of this agent in world unit.")]
         public Vector2 gravityAccel = new (0, -9.8f);
 
-        [Tooltip("")]
-        public float mass = 1.0f;
-
-        [Tooltip("")]
-        public float dragForce = 0.1f;
-
-
-        [Header("SIZE")]
         [Tooltip("Height of agent in world unit.")]
         public float height = 1.8f;
 
@@ -41,6 +33,8 @@ namespace Custom.AI.Pathfinding
 
 
 
-        public float TerminalVelocity => Mathf.Sqrt(2 * mass * gravityAccel.magnitude / dragForce);
+        public Vector2 Size => new(width, height);
+
+        public Vector2 Extents => Size * 0.5f;
     }
 }

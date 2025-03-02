@@ -19,16 +19,13 @@ namespace Custom.AI.Pathfinding
         /// </summary>
         /// <param name="_start">       Starting node location on <paramref name="_grid"/>. </param>
         /// <param name="_end">         Final node location on <paramref name="_grid"/>. </param>
-        /// <param name="_grid">        <see cref="NavGrid2D"/> to reference from. </param>
         /// <param name="_resultPath">  A list containing node locations forming the path from <paramref name="_start"/> to <paramref name="_end"/> if found. <br/>
         ///                             If a path was not found, this is empty. </param>
-        /// <param name="_flag">        See <see cref="PathfindingFlag"/> for more details. </param>                            
         /// <returns>
         /// <see langword="true"/> if a path was found. Otherwise, <see langword="false"/>.
         /// </returns>
         public static bool FindPath(
-            PathFindAgentBase _agent,
-            NavGrid2D _grid, 
+            NavGridAgentBase _agent,
             Vector2Int _start, 
             Vector2Int _end, 
             List<Vector2Int> _resultPath)
@@ -38,11 +35,12 @@ namespace Custom.AI.Pathfinding
             NativeList<int2> resultPath = new(Allocator.TempJob);
 
             InitializeJobPropertiesFromNodeGraph(
-                _grid.GetAgentNodeGraph(_agent), Allocator.TempJob,
+                _agent.NavGrid.GetAgentNodeGraph(_agent),
                 out NativeArray<Node> nativeNodeArray,
-                out NativeList<int> linkedNotesIndex,
-                out NativeList<int> linkedNotesCount,
-                out NativeList<int2> linkedNodes);
+                out NativeArray<int> linkedNotesIndex,
+                out NativeArray<int> linkedNotesCount,
+                out NativeList<int2> linkedNodes,
+                Allocator.TempJob);
 
             // Execute job.
             FindPathJob findPathJob = new()
@@ -52,7 +50,7 @@ namespace Custom.AI.Pathfinding
                 nodeArray = nativeNodeArray,
                 linkedNotesIndex = linkedNotesIndex,
                 linkedNotesCount = linkedNotesCount,
-                linkedNodes = linkedNodes,
+                linkedNodes = linkedNodes.AsArray(),
 
                 pathFound = pathFound,
                 resultPath = resultPath
@@ -61,14 +59,18 @@ namespace Custom.AI.Pathfinding
             findPathJob.Schedule().Complete();
 
             // Record result.
-            _resultPath.Clear();
-            for (int i = resultPath.Length - 1; i >= 0; i--)
-            {
-                int2 node = resultPath[i];
-                _resultPath.Add(new(node.x, node.y));
-            }
-
             bool result = pathFound[0];
+
+            _resultPath.Clear();
+
+            if (result)
+            {
+                for (int i = resultPath.Length - 1; i >= 0; i--)
+                {
+                    int2 node = resultPath[i];
+                    _resultPath.Add(new(node.x, node.y));
+                }
+            }
 
             // Dispose native collections.
             pathFound.Dispose();
@@ -85,15 +87,16 @@ namespace Custom.AI.Pathfinding
 
 
         private static void InitializeJobPropertiesFromNodeGraph(
-            PathNode[] _graph, Allocator _allocator,
+            PathNode[] _graph,
             out NativeArray<Node> _nodeArray,
-            out NativeList<int> _linkedNotesIndex,
-            out NativeList<int> _linkedNotesCount,
-            out NativeList<int2> _linkedNodes)
+            out NativeArray<int> _linkedNotesIndex,
+            out NativeArray<int> _linkedNotesCount,
+            out NativeList<int2> _linkedNodes,
+            Allocator _allocator)
         {
             _nodeArray = new(_graph.Length, _allocator);
-            _linkedNotesIndex = new(_allocator);
-            _linkedNotesCount = new(_allocator);
+            _linkedNotesIndex = new(_graph.Length, _allocator);
+            _linkedNotesCount = new(_graph.Length,_allocator);
             _linkedNodes = new(_allocator);
 
             int linkedNodesCounter = 0;
@@ -103,8 +106,8 @@ namespace Custom.AI.Pathfinding
                 Node node = _graph[i];
 
                 _nodeArray[i] = node;
-                _linkedNotesIndex.Add(linkedNodesCounter);
-                _linkedNotesCount.Add(_graph[i].linkedNodes.Count);
+                _linkedNotesIndex[i] = linkedNodesCounter;
+                _linkedNotesCount[i] = _graph[i].linkedNodes.Count;
 
                 linkedNodesCounter += _linkedNotesCount[i];
 

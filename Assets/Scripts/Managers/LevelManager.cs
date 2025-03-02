@@ -40,7 +40,7 @@ namespace Custom.Manager
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-            TimeManager.timeScale = 1.0f;
+            TimeManager.TimeScale = 1.0f;
         }
 
         public static void ExitApplication()
