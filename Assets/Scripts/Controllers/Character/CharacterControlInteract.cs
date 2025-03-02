@@ -25,6 +25,9 @@ namespace Custom.Controller
         public static event Action OnInteractObjectOutOfRange;
         public static event Action OnVisionBlocked;
         public static event Action<InteractableObject> OnHoverNewInteractableObject;
+        public static event Action<int> OnNewActiveOption;
+
+
 
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
@@ -116,20 +119,19 @@ namespace Custom.Controller
                 activeOption = Mathf.Clamp(activeOption, 0, hoverObject.InteractionData.Length - 1);
 
                 // Call to interactable object display.
-                InteractableObjectDisplayPopup.ActiveOption = activeOption;
+                OnNewActiveOption?.Invoke(activeOption);
             }
         }
 
         private void UpdateDefaultValues()
         {
-            if (!hoverObject)
-            {
-                // We reset the scroll value and activeOption to discard changes from last hovered object.
-                scrollValue = 0;
-                activeOption = 0;
+            if (hoverObject) return;
 
-                InteractableObjectDisplayPopup.ActiveOption = activeOption;
-            }
+            // We reset the scroll value and activeOption to discard changes from last hovered object.
+            scrollValue = 0;
+            activeOption = 0;
+
+            OnNewActiveOption?.Invoke(activeOption);
         }
         #endregion
 

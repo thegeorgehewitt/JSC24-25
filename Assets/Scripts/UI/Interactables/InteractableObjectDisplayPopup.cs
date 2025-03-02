@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 
 using Custom.Interactable;
+using Custom.Controller;
 
 namespace Custom.UI
 {
@@ -44,6 +45,16 @@ namespace Custom.UI
         }
 
 
+
+        private void OnEnable()
+        {
+            CharacterControlInteract.OnNewActiveOption += activeOption => { ActiveOption = activeOption; };
+        }
+
+        private void OnDisable()
+        {
+            CharacterControlInteract.OnNewActiveOption -= activeOption => { ActiveOption = activeOption; };
+        }
 
         private void Awake()
         {
