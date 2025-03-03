@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8986459344397636453}
   - component: {fileID: 6156078392703246370}
   - component: {fileID: 4645981724998807570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: sample for oneway platform
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -96,13 +96,13 @@ BoxCollider2D:
   m_GameObject: {fileID: 4264634150141166065}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 55261a7741f1462438c07ffb062c9f68, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1911
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
