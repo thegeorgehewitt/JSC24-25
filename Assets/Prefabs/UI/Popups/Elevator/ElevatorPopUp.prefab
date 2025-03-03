@@ -337,31 +337,6 @@ MonoBehaviour:
   mainDisplay: {fileID: 9073041614048536351}
   connectedElevator: {fileID: 0}
   inputText: []
-  easeDuration: 0.15
-  easeCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &7556979228533850433
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +534,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -1194516743
+  m_SortingLayerID: -600685117
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &9127993553020278757

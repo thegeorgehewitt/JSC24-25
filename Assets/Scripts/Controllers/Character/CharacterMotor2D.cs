@@ -62,6 +62,8 @@ namespace Custom.Controller
         [SerializeField] private float maxFallSpeed = 9f;
         [SerializeField] private float jumpEndEarlyGravityModifier = 5f;
 
+        [SerializeField] private SlopeHandler slopeHandler;
+
         /*
          * VISIBILITY
          */
@@ -153,10 +155,14 @@ namespace Custom.Controller
 
         private void FixedUpdate()
         {
-            HandleGravity();
             HandleFlip();
+            HandleGravity();
+            Vector2 slopedVel = HandleSlope(velocity);
 
-            rigidbody.velocity = paused ? Vector2.zero : velocity;
+            rigidbody.velocity = paused ? Vector2.zero : slopedVel;
+
+            Debug.DrawRay(transform.position, slopedVel, Color.green, Time.fixedDeltaTime);
+            Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
         }
 
 
@@ -298,7 +304,7 @@ namespace Custom.Controller
             if (!useGravity) return;
 
             // If on ground and falling.
-            if (IsGrounded && velocity.y < 0)
+            if (IsGrounded && velocity.y <= 0)
             {
                 velocity.y = 0;
             }
@@ -333,6 +339,20 @@ namespace Custom.Controller
 
             transform.localScale = localScale;
             lastDirection = velocity.x;
+        }
+        #endregion
+
+        #region Slope
+        private Vector2 HandleSlope(Vector2 _input)
+        {
+            // We are returning a new vector instead of modifying the original vector is to reserve any 
+            // previously applied momentum from other control scripts.
+
+            if (!IsGrounded) return _input;
+
+            return new Vector2(
+                _input.x * slopeHandler.SlopeDirection.x,
+                _input.y + _input.x * slopeHandler.SlopeDirection.y);
         }
         #endregion
 

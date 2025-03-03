@@ -29,6 +29,7 @@ namespace Custom.Editor
         private SerializedProperty fallAcceleration;
         private SerializedProperty maxFallSpeed;
         private SerializedProperty jumpEndEarlyGravityModifier;
+        private SerializedProperty slopeHandler;
 
         private SerializedProperty enableVisibilityCheck;
         private SerializedProperty lightEventListener;
@@ -168,6 +169,9 @@ namespace Custom.Editor
                 GUI.enabled = true;
 
                 EditorGUILayout.Space(10);
+                EditorGUILayout.PropertyField(slopeHandler);
+
+                EditorGUILayout.Space(10);
             }
             EditorGUILayout.EndFadeGroup();
 
@@ -281,6 +285,7 @@ namespace Custom.Editor
             fallAcceleration = AssignToProperty("fallAcceleration");
             maxFallSpeed = AssignToProperty("maxFallSpeed");
             jumpEndEarlyGravityModifier = AssignToProperty("jumpEndEarlyGravityModifier");
+            slopeHandler = AssignToProperty("slopeHandler");
 
             enableVisibilityCheck = AssignToProperty("enableVisibilityCheck");
             lightEventListener = AssignToProperty("lightEventListener");

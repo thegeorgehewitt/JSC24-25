@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 7236829821057059442}
   - component: {fileID: 4773218601208523903}
   - component: {fileID: 198324785649722540}
+  - component: {fileID: 5747121414722829360}
   m_Layer: 7
   m_Name: Controls
   m_TagString: Untagged
@@ -377,6 +378,26 @@ MonoBehaviour:
   angle: 60
   offAlpha: 0.02
   onAlpha: 1
+--- !u!114 &5747121414722829360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989193682148753962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ca5b8db13978b4983716b9eb526d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slopeCheckDistance: 0.3
+  maxSlopeAngle: 45
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1088
+  parentBody: {fileID: 7489048534138405090}
+  noneFriction: {fileID: 6200000, guid: c78b6323ec111b141a8c201223c44fa2, type: 2}
+  maxFriction: {fileID: 6200000, guid: 55261a7741f1462438c07ffb062c9f68, type: 2}
 --- !u!1 &3534369279633472950
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,7 +798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0
+  visibility: 0.55569685
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,11 +863,11 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 1.7853982
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: c78b6323ec111b141a8c201223c44fa2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -934,6 +955,7 @@ MonoBehaviour:
   fallAcceleration: 25
   maxFallSpeed: 15
   jumpEndEarlyGravityModifier: 5
+  slopeHandler: {fileID: 5747121414722829360}
   enableVisibilityCheck: 1
   lightEventListener: {fileID: 7520197564098527792}
   paused: 0
