@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -5177388603050735206, guid: 71ebafeef3c03457483266a33ab2b270, type: 3}
-  m_Color: {r: 0.42346027, g: 0.49056602, b: 0.42808828, a: 1}
+  m_Color: {r: 0.39716092, g: 0.7075472, b: 0.41541895, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2608321510888662958}
   - component: {fileID: 1669243585473573076}
-  - component: {fileID: -7130063031114604517}
+  - component: {fileID: 4274162969073572575}
   m_Layer: 9
   m_Name: ObjectiveTerminal
   m_TagString: Untagged
@@ -163,7 +163,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-7130063031114604517
+--- !u!114 &4274162969073572575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,13 +172,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6384640948594923722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d035a1e25489444db08ed4993f57b08, type: 3}
+  m_Script: {fileID: 11500000, guid: fe13a101f22c05943a5038f1714fc0c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectData: {fileID: 11400000, guid: 6c266e0ac40f7784aa872c8cf2005e39, type: 2}
+  objectData: {fileID: 11400000, guid: 4df5583aad607fc4b90a25f401f80261, type: 2}
   interactionData:
-  - data: {fileID: 11400000, guid: 56d46b6ac675dd148847af93c77a087c, type: 2}
+  - data: {fileID: 11400000, guid: c0362ebae369a6e449e6a07b9dda7cbd, type: 2}
     interactEvent:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 4274162969073572575}
+          m_TargetAssemblyTypeName: Custom.Interactable.InteractableObjectiveTerminal,
+            Assembly-CSharp
+          m_MethodName: Interact
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   spriteRenderer: {fileID: 8651064824262431475}
+  completed: 0
