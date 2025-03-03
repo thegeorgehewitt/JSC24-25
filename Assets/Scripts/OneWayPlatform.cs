@@ -1,11 +1,17 @@
 using Custom.Controller;
+using Custom.Interactable.Interfaces;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider2D))]
-public class OneWayPlatform : MonoBehaviour
+public class OneWayPlatform : MonoBehaviour, IProximityInputReceiver
 {
     private Collider2D platformCollider;
     private PlatformEffector2D effector;
+
+    private int colliderCounter;
+
+
 
     void Start()
     {
@@ -13,15 +19,32 @@ public class OneWayPlatform : MonoBehaviour
         effector = GetComponent<PlatformEffector2D>();
     }
 
-    public void DropThroughPlatform(Collider2D player)
+    public void DropThroughPlatform()
     {
-        Physics2D.IgnoreCollision(player, platformCollider, true);
-        Invoke(nameof(ResetCollision), 2f);
+        platformCollider.isTrigger = true;
+
+        colliderCounter = 0;
     }
 
-    private void ResetCollision()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Collider2D playerCollider = FindObjectOfType<PlayerController>().GetComponent<Collider2D>();
-        Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+        colliderCounter++;
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        colliderCounter--;
+
+        if (colliderCounter <= 0)
+            platformCollider.isTrigger = false;
+    }
+
+    public void OnInputReceived(Key _key)
+    {
+        if (_key == Key.S)
+        {
+            DropThroughPlatform();
+        }
+    }
+            
 }
