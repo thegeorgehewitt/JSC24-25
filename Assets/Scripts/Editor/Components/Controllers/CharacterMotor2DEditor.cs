@@ -15,6 +15,7 @@ namespace Custom.Editor
         private CharacterMotor2D asTarget;
 
         private SerializedProperty rigidbody;
+        private SerializedProperty animator;
         private SerializedProperty capsuleCollider;
 
         private SerializedProperty solidLayers;
@@ -114,6 +115,18 @@ namespace Custom.Editor
                 EditorGUILayout.HelpBox(
                     $"Missing {capsuleCollider.type} reference.\n" +
                     $"Motor will be disabled.",
+                    MessageType.Error);
+            }
+
+            EditorGUILayout.Space(10);
+            
+            EditorGUILayout.PropertyField(animator);
+
+            if (!animator.objectReferenceValue)
+            {
+                EditorGUILayout.HelpBox(
+                    "Missing Animator reference.\n" +
+                    "Animations will be disabled.",
                     MessageType.Error);
             }
 
@@ -272,6 +285,7 @@ namespace Custom.Editor
         {
             rigidbody = AssignToProperty("rigidbody");
             capsuleCollider = AssignToProperty("capsuleCollider");
+            animator = AssignToProperty("animator");
 
             solidLayers = AssignToProperty("solidLayers");
             groundCheck = AssignToProperty("groundCheck");

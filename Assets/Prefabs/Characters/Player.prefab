@@ -258,6 +258,7 @@ MonoBehaviour:
     values:
     - {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
     - {fileID: 0}
+  animator: {fileID: 1856093301908427868}
   jumpPower: 12
 --- !u!114 &3938290388967934858
 MonoBehaviour:
@@ -277,6 +278,7 @@ MonoBehaviour:
     - Horizontal
     values:
     - {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  animator: {fileID: 1856093301908427868}
   groundMaxSpeed: 6
   groundAcceleration: 30
   groundDeceleration: 20
@@ -301,6 +303,7 @@ MonoBehaviour:
     - Roll
     values:
     - {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  animator: {fileID: 1856093301908427868}
   rollRange: 4
   rollDuration: 0.3
   cooldown: 0.5
@@ -661,6 +664,7 @@ GameObject:
   - component: {fileID: 1034671343576945524}
   - component: {fileID: 7520197564098527792}
   - component: {fileID: 3725793931521571199}
+  - component: {fileID: 1856093301908427868}
   m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
@@ -724,7 +728,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 31b72ecbe44dc41438301bb3fa2e69fc, type: 3}
+  m_Sprite: {fileID: 695186369, guid: 15a9eca4c32438a4cac8581a28cb80ac, type: 3}
   m_Color: {r: 0.66442686, g: 0.745283, b: 0.74085253, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -811,6 +815,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8c96ce3176ac34db35ee18522539d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1856093301908427868
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7009367374004171967}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5e604a3f0e392124497da72e1e3abff4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7489048534138405090
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,6 +966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 38866415588869136}
+  animator: {fileID: 1856093301908427868}
   capsuleCollider: {fileID: 3051175788289900178}
   solidLayers:
     serializedVersion: 2
