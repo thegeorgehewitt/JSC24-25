@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/[PHASE 2] Level Development.unity
     guid: d046acb9bb71f7b4ea356d6a6fa60d5d
+  - enabled: 1
+    path: Assets/Scenes/[PHASE 3] Verticality Level.unity
+    guid: 1b74ba9136dce0549b45ac068de696db
   m_configObjects: {}
