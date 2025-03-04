@@ -27,11 +27,18 @@ namespace Custom.Controller
         [SerializeField] private float airAcceleration = 8.0f;
         [SerializeField] private float airDeceleration = 8.0f;
 
+        private SlopeHandler stairHandler;
 
+
+
+        private void Awake()
+        {
+            stairHandler = GetComponentInChildren<SlopeHandler>();
+        }
 
         private void FixedUpdate()
         {
-            ExecuteMovement();
+            ExecuteMovement();                        
         }
 
 
@@ -39,15 +46,15 @@ namespace Custom.Controller
         #region Movement
         private void ExecuteMovement()
         {
-            if (attachedMotor.GetState("Dashing")) return;
-
+            if (attachedMotor.GetState("Rolling")) return;
             var direction = GetInputActionWithName("Horizontal").ReadValue<Vector2>();
             float maxSpeed = attachedMotor.IsGrounded ? groundMaxSpeed : airMaxSpeed;
             float targetSpeed = ((attachedMotor.velocity.x * direction.x > 0)               // If the character is moving in the same direction as input direction
                                 ? Mathf.Max(maxSpeed, Mathf.Abs(attachedMotor.velocity.x))  // Target speed is the larger between max speed and current speed.
                                 : maxSpeed) * direction.x;
 
-            if (attachedMotor.IsOnWall) attachedMotor.velocity.x = 0;
+            if (attachedMotor.IsOnWall) 
+                attachedMotor.velocity.x = 0;
 
             // Decelerate character horizontal speed.
             if (direction.x == 0)

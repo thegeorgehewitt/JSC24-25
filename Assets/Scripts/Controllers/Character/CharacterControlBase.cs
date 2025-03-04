@@ -34,14 +34,30 @@ namespace Custom.Controller
 
 
 
+        protected virtual void Start()
+        {
+            if (!attachedMotor) OnDeactivate();
+
+            foreach (var name in InputActionKeysName)
+            {
+                if (!inputActions[name])
+                {
+                    OnDeactivate();
+                    break;
+                }
+            }
+        }
+
+
+
         /// <summary>
         /// Called when <see cref="SetActive"/> is set to <see langword="true"/>.
         /// </summary>
-        protected virtual void OnActivate() { }
+        protected virtual void OnActivate() => enabled = true;
         /// <summary>
         /// Called when <see cref="SetActive"/> is set to <see langword="false"/>.
         /// </summary>
-        protected virtual void OnDeactivate() { }
+        protected virtual void OnDeactivate() => enabled = false;
 
         /// <summary>
         /// <para> Get <see cref="InputAction"/> with given name. </para>

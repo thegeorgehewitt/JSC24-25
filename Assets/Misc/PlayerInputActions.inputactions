@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Flashlight",
+                    "type": "Button",
+                    "id": "13e1076e-82de-49e5-bca9-cbb041a6170b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -227,26 +236,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "positive",
                     "id": "8d220e21-d8ad-48be-90e8-5fa357cade23",
                     "path": "<Mouse>/scroll/down",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=0.005)",
                     "groups": "",
                     "action": "Interact Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "negative",
                     "id": "b210ef6a-5c6e-489f-98e4-c9c611944fa7",
                     "path": "<Mouse>/scroll/up",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=0.005)",
                     "groups": "",
                     "action": "Interact Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ac664356-992b-4fe9-a801-4eed718aa788",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Flashlight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

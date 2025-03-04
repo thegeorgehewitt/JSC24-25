@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Platform
+  - Stairway
   layers:
   - Default
   - TransparentFX
@@ -43,6 +45,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 2360708143
+    locked: 0
+  - name: Midground
+    uniqueID: 2224256571
     locked: 0
   - name: Objects
     uniqueID: 3694282179

@@ -1,22 +1,23 @@
-using System;
+using Custom.Manager.EventHandling;
+using Custom.Interactable.Interfaces;
 
-using Custom.Interactable.Enemy;
+using static Custom.Interactable.Interfaces.IAttackableEnemy;
 
 namespace Custom.Controller
 {
     public class CharacterControlDamageable : CharacterControlBase
     {
+        public class DeathEvent { }
+
         public override string[] InputActionKeysName { get => new string[] { }; }
 
-        public static event Action OnMotorDamaged;
 
 
-
-        private void OnMotorShot(CharacterMotor2D _motor2D)
+        private void OnMotorShot(AttackEvent _event)
         {
-            if (_motor2D != attachedMotor) return;
+            if (_event.Target != attachedMotor) return;
 
-            OnMotorDamaged?.Invoke();
+            EventAggregator.Publish(new DeathEvent());
         }
 
 
@@ -31,12 +32,12 @@ namespace Custom.Controller
 
         protected override void OnActivate()
         {
-
+            EventAggregator.Subscribe<AttackEvent>(OnMotorShot);
         }
 
         protected override void OnDeactivate() 
         {
-
+            EventAggregator.Unsubscribe<AttackEvent>(OnMotorShot);
         }
     }
 }

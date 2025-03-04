@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+
 using UnityEngine;
+
 using FunkyCode.LightingSettings;
 using FunkyCode.LightSettings;
 using FunkyCode.EventHandling;
+
 namespace FunkyCode
 {
 	[ExecuteInEditMode]
@@ -40,6 +43,9 @@ namespace FunkyCode
 
 		public float spotAngleInner = 360;
 		public float spotAngleOuter = 360;
+
+		[Tooltip("How should LightEventListener react to this light based on distance from light source.")]
+		public AnimationCurve eventImpactCurveMap = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
 		// soft shadow
 		public float coreSize = 0.5f;
@@ -534,21 +540,7 @@ namespace FunkyCode
 
 		void Draw()
 		{
-			if (!isActiveAndEnabled)
-			{
-				return;
-			}
-			
-			UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
-		
-			if (applyRotation != Rotation.Disabled)
-			{
-				GizmosHelper.DrawCircle(transform.position, transform2D.rotation, 360, size); // spotAngle
-			}
-				else
-			{
-				GizmosHelper.DrawCircle(transform.position, 0, 360, size); // spotAngle
-			}
+			if (!isActiveAndEnabled) return;
 
 			UnityEngine.Gizmos.color = new Color(0, 1f, 1f);
 			

@@ -25,6 +25,9 @@ namespace Custom.Controller
         public static event Action OnInteractObjectOutOfRange;
         public static event Action OnVisionBlocked;
         public static event Action<InteractableObject> OnHoverNewInteractableObject;
+        public static event Action<int> OnNewActiveOption;
+
+
 
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
@@ -33,31 +36,24 @@ namespace Custom.Controller
         [SerializeField] private LayerMask interactableLayers;
         [SerializeField] private LayerMask blockableLayers;
 
-        [Header("REFERENCE")]
-        [SerializeField] private InputActionAsset inputActionScroll;
-
         [Header("INTERACT CURSOR")]
         [SerializeField] private InteractCursor interactCursor;
         [SerializeField] private float defaultCursorSize = 0.5f;
         [SerializeField] private Color outOfRangeColor = Color.red;
         [SerializeField] private Color inRangeColor = Color.cyan;
 
-        private InteractableObject hoverObject;
-        private bool outOfRange;
-        private bool blockedVision;
-        private ContactFilter2D contactFilter;
-        private List<RaycastHit2D> interactRayHits = new();
-
 
 
         private void OnEnable()
         {
             GetInputActionWithName("Interact").performed += _ => Interact();
+            GetInputActionWithName("Scroll").performed += OnScroll;
         }
 
         private void OnDisable()
         {
             GetInputActionWithName("Interact").performed -= _ => Interact();
+            GetInputActionWithName("Scroll").performed -= OnScroll;
         }
 
         private void Awake()
@@ -72,9 +68,15 @@ namespace Custom.Controller
         private void FixedUpdate()
         {
             UpdateHoverInteractableObject();
+            UpdateInteractionPopup();
+            UpdateDefaultValues();
         }
 
 
+
+        #region Actions
+        private int activeOption;
+        private float scrollValue;
 
         private void Interact()
         {
@@ -90,9 +92,55 @@ namespace Custom.Controller
             }
             else
             {
-                hoverObject.Interact();
+                hoverObject.Interact(activeOption);
             }
         }
+
+        private void OnScroll(InputAction.CallbackContext _context)
+        {
+            if (!hoverObject) return;
+
+            var value = _context.ReadValue<float>();
+
+            // If scroll in the opposite direction from current direction, reset scroll value.
+            if (value * scrollValue < 0)
+            {
+                scrollValue = 0;
+            }
+
+            scrollValue += value;
+
+            // When rounded to correct value, update current active option.
+            if (Mathf.Abs(scrollValue) >= 1)
+            {
+                int roundedScrollValue = Mathf.RoundToInt(scrollValue);
+                scrollValue = 0;
+                activeOption += roundedScrollValue;
+                activeOption = Mathf.Clamp(activeOption, 0, hoverObject.InteractionData.Length - 1);
+
+                // Call to interactable object display.
+                OnNewActiveOption?.Invoke(activeOption);
+            }
+        }
+
+        private void UpdateDefaultValues()
+        {
+            if (hoverObject) return;
+
+            // We reset the scroll value and activeOption to discard changes from last hovered object.
+            scrollValue = 0;
+            activeOption = 0;
+
+            OnNewActiveOption?.Invoke(activeOption);
+        }
+        #endregion
+
+        #region Hover Object
+        private InteractableObject hoverObject;
+        private bool outOfRange;
+        private bool blockedVision;
+        private ContactFilter2D contactFilter;
+        private List<RaycastHit2D> interactRayHits = new();
 
         private void UpdateHoverInteractableObject()
         {
@@ -129,38 +177,50 @@ namespace Custom.Controller
             blockedVision = hoverObject ? (hitPos.transform != hoverObject.transform && hitPos) : hitPos;
             outOfRange = distance > interactRange;
 
-            #region Interact Cursor & Interactable Object Display Popup
+            if (blockedVision)
+            {
+                UpdateInteractCursor(targetPos, hitPos.point);
+            }
+            else
+            {
+                UpdateInteractCursor(targetPos, targetPos);
+            }
+        }
+
+        private void UpdateInteractionPopup()
+        {
             if (hoverObject)
             {
-                //var direction = InputAssetScroll.ReadValue<Vector2>();
+                InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
+            }
+            else
+            {
+                InteractableObjectDisplayPopup.ShowPopup(false);
+            }
+        }
+
+        private void UpdateInteractCursor(Vector3 _cursorPos, Vector3 _lineEndPos)
+        {
+            interactCursor.SetLinePosition(interactRayOrigin.position, _lineEndPos);
+
+            interactCursor.SetPosition(_cursorPos);
+            interactCursor.SetColor(outOfRange ? outOfRangeColor : inRangeColor);
+            interactCursor.SetLineFadeAmount(outOfRange ? 1f : 0f);
+
+            if (hoverObject)
+            {
                 interactCursor.SetLineActive(true);
                 interactCursor.SetSize(hoverObject.ObjectBoundsSize);
-                InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
             }
             else
             {
                 interactCursor.SetLineActive(outOfRange);
                 interactCursor.SetSize(Vector2.one * defaultCursorSize);
-                InteractableObjectDisplayPopup.ShowPopup(false);
             }
-
-            if (blockedVision)
-            {
-                interactCursor.SetLinePosition(interactRayOrigin.position, hitPos.point);
-            }
-            else
-            {
-                interactCursor.SetLinePosition(interactRayOrigin.position, targetPos);
-            }
-
-            interactCursor.SetPosition(targetPos);
-            interactCursor.SetColor(outOfRange ? outOfRangeColor : inRangeColor);
-            interactCursor.SetLineFadeAmount(outOfRange ? 1f : 0f);
-            #endregion
         }
+        #endregion
 
-
-
+        #region CharacterControlBase
         protected override void OnActivate()
         {
             interactCursor.gameObject.SetActive(true);
@@ -172,5 +232,6 @@ namespace Custom.Controller
             interactCursor.gameObject.SetActive(false);
             enabled = false;
         }
+        #endregion
     }
 }
