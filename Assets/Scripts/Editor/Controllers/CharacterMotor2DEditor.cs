@@ -15,6 +15,7 @@ namespace Custom.Editor
         private CharacterMotor2D asTarget;
 
         private SerializedProperty rigidbody;
+        private SerializedProperty animator;
 
         private SerializedProperty solidLayers;
         private SerializedProperty groundCheck;
@@ -98,6 +99,18 @@ namespace Custom.Editor
                 EditorGUILayout.HelpBox(
                     "Missing Rigidbody2D reference.\n" +
                     "Motor will be disabled.",
+                    MessageType.Error);
+            }
+
+            EditorGUILayout.Space(10);
+            
+            EditorGUILayout.PropertyField(animator);
+
+            if (!animator.objectReferenceValue)
+            {
+                EditorGUILayout.HelpBox(
+                    "Missing Animator reference.\n" +
+                    "Animations will be disabled.",
                     MessageType.Error);
             }
 
@@ -245,6 +258,7 @@ namespace Custom.Editor
         private void SetupSerializedProperties()
         {
             rigidbody = serializedObject.FindProperty("rigidbody");
+            animator = serializedObject.FindProperty("animator");
 
             solidLayers = serializedObject.FindProperty("solidLayers");
             groundCheck = serializedObject.FindProperty("groundCheck");

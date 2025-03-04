@@ -4,6 +4,8 @@ namespace Custom.Controller
 {
     public class CharacterControlJump : CharacterControlBase
     {
+        [SerializeField] private Animator animator;
+
         public override string[] InputActionKeysName
         {
             get => new string[] {
@@ -47,6 +49,8 @@ namespace Custom.Controller
             if (!attachedMotor.IsGrounded) return;
 
             attachedMotor.velocity += Vector2.up * jumpPower;
+
+            animator.SetTrigger("Jump");
         }
 
         #endregion

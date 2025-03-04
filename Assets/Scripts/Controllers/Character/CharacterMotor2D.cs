@@ -22,6 +22,7 @@ namespace Custom.Controller
          */
         [ReadOnly]
         [SerializeField] private new Rigidbody2D rigidbody;
+        [SerializeField] private Animator animator;
 
         /*
          * PROXIMITY CHECK
@@ -76,6 +77,7 @@ namespace Custom.Controller
         private void Reset()
         {
             rigidbody = GetComponent<Rigidbody2D>();
+            animator = GetComponentInChildren<Animator>();
         }
 #endif
 
@@ -118,6 +120,8 @@ namespace Custom.Controller
             HandleGravity();
 
             rigidbody.velocity = paused ? Vector2.zero : velocity;
+
+            animator.SetFloat("Vertical Speed", velocity.y);
         }
 
 
@@ -164,6 +168,11 @@ namespace Custom.Controller
         private void UpdateProximityCheck()
         {
             grounded = groundCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
+
+            if (grounded)
+            {
+                animator.SetTrigger("Land");
+            }
 
             onCeiling = ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
             if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
