@@ -6,6 +6,8 @@ namespace Custom.Controller
 {
     public class CharacterControlWalk : CharacterControlBase
     {
+        [SerializeField] private Animator animator;
+
         public override string[] InputActionKeysName
         {
             get => new string[] {
@@ -59,6 +61,8 @@ namespace Custom.Controller
                 float acceleration = attachedMotor.IsGrounded ? groundAcceleration : airAcceleration;
                 attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, targetSpeed, acceleration * TimeManager.FixedDeltaTime);
             }
+
+            animator.SetFloat("Horizontal Speed", Mathf.Abs(attachedMotor.velocity.x));
         }
         #endregion
     }

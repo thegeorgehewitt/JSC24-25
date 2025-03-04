@@ -39,6 +39,7 @@ namespace Custom.Controller
          */
         [ReadOnly]
         [SerializeField] private new Rigidbody2D rigidbody;
+        [SerializeField] private Animator animator;
         [SerializeField] private CapsuleCollider2D capsuleCollider;
 
         /*
@@ -107,6 +108,7 @@ namespace Custom.Controller
         private void Reset()
         {
             rigidbody = GetComponent<Rigidbody2D>();
+            animator = GetComponentInChildren<Animator>();
         }
 #endif
 
@@ -168,6 +170,7 @@ namespace Custom.Controller
             Vector2 slopedVel = HandleSlope(velocity);
 
             rigidbody.velocity = paused ? Vector2.zero : slopedVel;
+            animator.SetFloat("Vertical Speed", velocity.y);
 
             Debug.DrawRay(transform.position, slopedVel, Color.green, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
@@ -259,6 +262,11 @@ namespace Custom.Controller
             // Ceiling Check
             ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
             onCeiling = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
+
+            if (grounded)
+            {
+                animator.SetTrigger("Land");
+            }
 
             if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
             else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }

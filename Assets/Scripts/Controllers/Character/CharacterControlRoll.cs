@@ -8,6 +8,9 @@ namespace Custom.Controller
 {
     public class CharacterControlRoll : CharacterControlBase
     {
+        [SerializeField] private Animator animator;
+
+
         public override string[] InputActionKeysName
         {
             get => new string[] {
@@ -73,6 +76,8 @@ namespace Custom.Controller
             attachedMotor.velocity = Vector2.right * direction * rollRange / rollDuration;
 
             attachedMotor.SetHeightMult(0.5f, 0.0f);
+
+            animator.SetTrigger("Roll");
 
             while (cooldownLeft > 0)
             {
