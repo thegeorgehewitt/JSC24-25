@@ -48,9 +48,9 @@ namespace Custom.Controller
 
             if (!attachedMotor.IsGrounded) return;
 
-            attachedMotor.velocity += Vector2.up * jumpPower;
+            if (animator) { animator.SetTrigger("Jump"); }
 
-            animator.SetTrigger("Jump");
+            attachedMotor.velocity += Vector2.up * jumpPower;
         }
 
         #endregion

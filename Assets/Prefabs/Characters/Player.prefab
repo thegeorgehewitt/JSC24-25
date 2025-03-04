@@ -356,6 +356,7 @@ MonoBehaviour:
   inputActions:
     keys: []
     values: []
+  animator: {fileID: 1856093301908427868}
 --- !u!114 &198324785649722540
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -73,11 +73,11 @@ namespace Custom.Controller
             cooldownLeft = cooldown;
 
             attachedMotor.SetState("Rolling", true);
+            if (animator) { animator.SetTrigger("Roll"); }
             attachedMotor.velocity = Vector2.right * direction * rollRange / rollDuration;
 
             attachedMotor.SetHeightMult(0.5f, 0.0f);
 
-            animator.SetTrigger("Roll");
 
             while (cooldownLeft > 0)
             {

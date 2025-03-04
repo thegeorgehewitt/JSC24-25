@@ -170,7 +170,7 @@ namespace Custom.Controller
             Vector2 slopedVel = HandleSlope(velocity);
 
             rigidbody.velocity = paused ? Vector2.zero : slopedVel;
-            animator.SetFloat("Vertical Speed", velocity.y);
+            animator?.SetFloat("Vertical Speed", velocity.y);
 
             Debug.DrawRay(transform.position, slopedVel, Color.green, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);

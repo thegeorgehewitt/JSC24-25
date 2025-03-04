@@ -66,6 +66,8 @@ namespace Custom.UI
 
         private IEnumerator PopupCoroutine(bool _show)
         {
+            yield return new WaitForSeconds(1);
+
             float elapsedTime = 0;
             float targetAmount = _show ? 1 : 0;
             float orgAmount = maskImage.fillAmount;
