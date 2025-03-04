@@ -69,7 +69,7 @@ namespace Custom.Controller
                 attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, targetSpeed, acceleration * TimeManager.FixedDeltaTime);
             }
 
-            animator.SetFloat("Horizontal Speed", Mathf.Abs(attachedMotor.velocity.x));
+            animator?.SetFloat("Horizontal Speed", Mathf.Abs(attachedMotor.velocity.x));
         }
         #endregion
     }

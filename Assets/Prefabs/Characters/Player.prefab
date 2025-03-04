@@ -356,6 +356,7 @@ MonoBehaviour:
   inputActions:
     keys: []
     values: []
+  animator: {fileID: 1856093301908427868}
 --- !u!114 &198324785649722540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,7 +749,7 @@ SortingGroup:
   m_GameObject: {fileID: 7009367374004171967}
   m_Enabled: 1
   m_SortingLayerID: -1965371899
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_SortAtRoot: 1
 --- !u!114 &1034671343576945524
