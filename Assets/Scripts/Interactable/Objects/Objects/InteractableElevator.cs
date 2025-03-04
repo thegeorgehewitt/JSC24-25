@@ -16,25 +16,22 @@ namespace Custom.Interactable
     [RequireComponent(typeof(BoxCollider2D))]
     public class InteractableElevator : InteractableObject, IToggleable, IProximityInputReceiver
     {
-        [Header("ELEVATOR REFERENCES")]
+        [Header("REFERENCES")]
         [SerializeField] BoxCollider2D overlapCollider;
         [SerializeField] ElevatorShaft owningShaft;
         [SerializeField] ElevatorPopUp elevatorUI;
 
-        [Header("ELEVATOR CONTROL")]
+        [Header("CONTROL")]
         [SerializeField] private bool access = true;
-        [SerializeField] private float elevatorSpeed = 4;
-        [SerializeField] private Transform targetTransform;
+        [SerializeField] private float elevatorAcceleration = 2.0f;
+        [SerializeField] private float elevatorMaxSpeed = 4.0f;
 
         [Header("FLOOR INFORMATION")]
         [SerializeField] private int elevatorIndex;
 
         // Player Character References.
         private CharacterMotor2D playerMotor;
-        private PlayerController playerController;
-        private Rigidbody2D playerRB;
-        private CapsuleCollider2D playerCollider;
-        private SpriteRenderer playerRenderer;
+        private Transform targetTransform;
 
         public bool Accessible => access;
 
@@ -67,6 +64,20 @@ namespace Custom.Interactable
             UpdateState();
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            elevatorUI.ShowPopup(true);
+
+            playerMotor = PlayerController.Instance.ControlledMotor;
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            elevatorUI.ShowPopup(false);
+
+            playerMotor = null;
+        }
+
 
 
         public void Init(int _index, ElevatorShaft _owningShaft)
@@ -78,6 +89,13 @@ namespace Custom.Interactable
         }
 
         #region Update Access
+        public void OnAccessUpdated(bool access)
+        {
+            this.access = access;
+
+            UpdateState();
+        }
+
         private void UpdateState()
         {
             states = new List<string> { access ? "Access Granted" : "Access Denied" };
@@ -89,55 +107,10 @@ namespace Custom.Interactable
         {
             owningShaft.UpdateStates(!access);
         }
-
-        public void OnAccessUpdated(bool access)
-        {
-            this.access = access;
-
-            UpdateState();
-        }
-        #endregion
-
-        #region Pop Up
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            elevatorUI.ShowPopup(true);
-
-            if (collision.GetComponent<CharacterMotor2D>() != null)
-            {
-                playerMotor = collision.GetComponent<CharacterMotor2D>();
-                playerCollider = playerMotor.GetCollider();
-            }
-            if (collision.GetComponent<PlayerController>() != null)
-            {
-                playerController = collision.GetComponent<PlayerController>();
-            }
-            if (collision.GetComponent<Rigidbody2D>() != null)
-            {
-                playerRB = collision.GetComponent<Rigidbody2D>();
-            }
-            if (collision.GetComponentInChildren<SpriteRenderer>() != null)
-            {
-                playerRenderer = collision.GetComponentInChildren<SpriteRenderer>();
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            elevatorUI.ShowPopup(false);
-
-            playerMotor = null;
-            playerController = null;
-            playerCollider = null;
-            playerRB = null;
-            playerRenderer = null;
-        }
-
         #endregion
 
         #region Operation
-        public void OnInputReceived(Key _key)
+        public void OnInputReceived(Key _key, InputActionPhase _phase)
         {
             if (_key == Key.W)
                 Operate(true);
@@ -147,60 +120,51 @@ namespace Custom.Interactable
 
 
 
-        private void Operate(bool isUp)
+        private void Operate(bool _goUp)
         {
-            if (IsTop && isUp || IsBottom && !isUp || states.Contains("Access Denied") ) return;
+            if (IsTop && _goUp || IsBottom && !_goUp || states.Contains("Access Denied") ) return;
 
-            targetTransform = isUp? owningShaft.GetFloorAbove(elevatorIndex) : owningShaft.GetFloorBelow(elevatorIndex);
+            targetTransform = _goUp? owningShaft.GetFloorAbove(elevatorIndex) : owningShaft.GetFloorBelow(elevatorIndex);
 
             if (playerMotor)
-                StartCoroutine(MoveToTarget(playerController, playerRB, playerMotor, playerCollider, playerRenderer));
+                StartCoroutine(MoveToTarget(playerMotor));
         }
 
-        private IEnumerator MoveToTarget(
-            PlayerController _playerController, 
-            Rigidbody2D _playerRB, 
-            CharacterMotor2D _playerMotor, 
-            Collider2D _playerCollider, 
-            SpriteRenderer _playerRenderer)
+        private IEnumerator MoveToTarget(CharacterMotor2D _playerMotor)
         {
-            _playerMotor.OnUnpossessed(playerController);
-            _playerRB.gravityScale = 0;
-            _playerMotor.SetGravityActive(false);
-            _playerRB.velocity = new Vector2(0,0);
-            _playerMotor.velocity = new Vector2(0,0);
-            _playerCollider.enabled = false;
-            _playerRenderer.enabled = false;
+            PlayerController.Unpossess(_playerMotor);
+            _playerMotor.SetCollision(false);
+            _playerMotor.SetVisibility(false);
+            _playerMotor.SetPause(true, true);
 
+            // Move player motor to current elevator.
             while (Vector3.Distance(_playerMotor.transform.position, transform.position) > 0.1f)
             {
                 if (TimeManager.timeScale > 0)
                 {
-                    _playerMotor.transform.position = Vector3.MoveTowards(_playerMotor.transform.position, transform.position, elevatorSpeed * Time.deltaTime);
+                    _playerMotor.transform.position = Vector3.MoveTowards(_playerMotor.transform.position, transform.position, elevatorMaxSpeed * Time.deltaTime);
                 }
                 yield return null;
             }
 
             _playerMotor.transform.position = transform.position;
 
+            // Move player motor to target elevator.
             while (Vector3.Distance(_playerMotor.transform.position, targetTransform.position) > 0.1f)
             {
                 if (TimeManager.timeScale > 0)
                 {
-                    _playerMotor.transform.position = Vector3.MoveTowards(_playerMotor.transform.position, targetTransform.position, elevatorSpeed * Time.deltaTime);
+                    _playerMotor.transform.position = Vector3.MoveTowards(_playerMotor.transform.position, targetTransform.position, elevatorMaxSpeed * Time.deltaTime);
                 }
                 yield return null;
             }
 
             targetTransform = null;
 
-            _playerCollider.enabled = true;
-            _playerRB.gravityScale = 1;
-            _playerMotor.SetGravityActive(true);
-
-            yield return new WaitForSeconds(0.2f);
-            _playerRenderer.enabled = true;
-            _playerMotor.OnPossessed(_playerController);
+            PlayerController.Possess(_playerMotor);
+            _playerMotor.SetCollision(true);
+            _playerMotor.SetPause(false);
+            _playerMotor.SetVisibility(true);
         }
         #endregion
     }

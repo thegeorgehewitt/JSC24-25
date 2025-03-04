@@ -131,10 +131,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1911
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -199,14 +199,9 @@ MonoBehaviour:
   owningShaft: {fileID: 0}
   elevatorUI: {fileID: 4734480174312028110}
   access: 1
-  elevatorSpeed: 4
-  targetTransform: {fileID: 0}
+  elevatorAcceleration: 2
+  elevatorMaxSpeed: 4
   elevatorIndex: 0
-  playerMotor: {fileID: 0}
-  playerController: {fileID: 0}
-  playerRB: {fileID: 0}
-  playerCollider: {fileID: 0}
-  playerRenderer: {fileID: 0}
 --- !u!1001 &7713445237651012637
 PrefabInstance:
   m_ObjectHideFlags: 0

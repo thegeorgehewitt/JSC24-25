@@ -1,50 +1,105 @@
+using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.InputSystem;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+using Custom.Interactable.Interfaces;
+using Custom.Controller;
 
 namespace Custom.LevelBuilding
 {
-    public class OneWayStair : MonoBehaviour
+    [RequireComponent(typeof(Collider2D))]
+    public class OneWayStair : MonoBehaviour, IProximityInputReceiver
     {
-        [SerializeField] public Transform entryPoint;
-        [SerializeField] public Transform exitPoint;
+        [SerializeField] private Collider2D stairCollider;
+        [SerializeField] private float bottomPositionOffset = 0.0f;
 
-        private bool isNearStair = false;
-        private GameObject player;
+        private CharacterMotor2D playerMotor;
+        public int colliderCounter;
+
+        private bool goingUp;
+        private bool falling;
+
+        private float BottomPosition => stairCollider.bounds.min.y + bottomPositionOffset;
 
 
 
-        void Update()
+#if UNITY_EDITOR
+        private void Reset()
         {
-            if (isNearStair)
-            {
-                TeleportPlayer();
-            }
+            if (!stairCollider) stairCollider = GetComponent<Collider2D>();
+        }
+#endif
+
+        private void Awake()
+        {
+            if (!stairCollider) stairCollider = GetComponent<Collider2D>();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player"))
-            {
-                isNearStair = true;
-                player = collision.gameObject;
-            }
+            if (colliderCounter == 0)
+                playerMotor = PlayerController.Instance.ControlledMotor;
+
+            colliderCounter++;
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player"))
+            colliderCounter--;
+
+            if (colliderCounter == 0)
             {
-                isNearStair = false;
-                player = null;
+                playerMotor = null;
+                goingUp = false;
+                falling = false;
+
+                stairCollider.isTrigger = false;
             }
         }
 
-
-
-        private void TeleportPlayer()
+        private void OnTriggerStay2D(Collider2D collision)
         {
-            if (player != null)
+            if (!playerMotor) return;
+
+            stairCollider.isTrigger = (!goingUp && playerMotor.FootPosition.y <= BottomPosition) || falling;
+        }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            Vector2 startPos = new(stairCollider.bounds.min.x, BottomPosition);
+            Vector2 endPos = new(stairCollider.bounds.max.x, BottomPosition);
+
+            Handles.color = Color.yellow;
+            Handles.DrawDottedLine(startPos, endPos, 0.2f);
+            Handles.Label(
+                startPos + Vector2.up * 0.15f * HandleUtility.GetHandleSize(startPos), 
+                "Bottom Line");
+        }
+#endif
+
+
+
+        public void OnInputReceived(Key _key, InputActionPhase _phase)
+        {
+            if (!playerMotor) return;
+
+            if (_key == Key.W)
             {
-                player.transform.position = exitPoint.position;
+                if (_phase == InputActionPhase.Started)
+                    goingUp = true;
+                else if (_phase == InputActionPhase.Canceled)
+                    goingUp = false;
+            }
+            
+            if (_key == Key.S && _phase == InputActionPhase.Started)
+            {
+                stairCollider.isTrigger = true;
+                falling = true;
             }
         }
     }

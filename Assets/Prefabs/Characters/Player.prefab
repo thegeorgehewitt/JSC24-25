@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3209507196876545385}
   - component: {fileID: 7799931965240558983}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ceiling Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -77,7 +77,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7715410574035912978}
   - component: {fileID: 18109036695352397}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -392,12 +392,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slopeCheckDistance: 0.3
   maxSlopeAngle: 45
-  groundLayer:
+  groundLayers:
     serializedVersion: 2
     m_Bits: 1088
   parentBody: {fileID: 7489048534138405090}
-  noneFriction: {fileID: 6200000, guid: c78b6323ec111b141a8c201223c44fa2, type: 2}
-  maxFriction: {fileID: 6200000, guid: 55261a7741f1462438c07ffb062c9f68, type: 2}
 --- !u!1 &3534369279633472950
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,7 +443,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -507,7 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6150135434310804845}
   - component: {fileID: 8161772550625873705}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Proximity Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -744,7 +742,7 @@ SortingGroup:
   m_GameObject: {fileID: 7009367374004171967}
   m_Enabled: 1
   m_SortingLayerID: -1965371899
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_SortAtRoot: 1
 --- !u!114 &1034671343576945524
@@ -798,7 +796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0.55569685
+  visibility: 0.44565132
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -995,7 +993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1607994832737569372}
   - component: {fileID: 9159892701245259349}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flashlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -104,29 +104,46 @@ namespace Custom.Controller
             inputActionAsset.FindAction(_action.id).Disable();
         }
 
+
+
         /// <summary>
         /// Set the controlling motor to a new <see cref="CharacterMotor2D"/>.
         /// </summary>
         /// <param name="_motor"> The <see cref="CharacterMotor2D"/> to possess. </param>
-        public void Possess(CharacterMotor2D _motor)
+        public static void Possess(CharacterMotor2D _motor)
         {
-            controlledMotor.OnUnpossessed(this);
-            controlledMotor = _motor;
-            controlledMotor.OnPossessed(this);
+            Instance.controlledMotor?.OnUnpossessed(Instance);
+            Instance.controlledMotor = _motor;
+            Instance.controlledMotor?.OnPossessed(Instance);
 
-            OnControlledMotorChanged?.Invoke(controlledMotor);
+            OnControlledMotorChanged?.Invoke(Instance.controlledMotor);
+        }
+
+        /// <summary>
+        /// If this controller was controlling the given <see cref="CharacterMotor2D"/>, stop controlling it. <br/>
+        /// Otherwise, this function do nothing.
+        /// </summary>
+        /// <param name="_motor"> The <see cref="CharacterMotor2D"/> to unpossess. </param>
+        public static void Unpossess(CharacterMotor2D _motor)
+        {
+            if (Instance.controlledMotor != _motor) return;
+
+            Instance.controlledMotor?.OnUnpossessed(Instance);
+            Instance.controlledMotor = null;
+
+            OnControlledMotorChanged?.Invoke(Instance.controlledMotor);
         }
 
 
 
         /// <summary>
-        /// Pause any input registered to PlayerController.
+        /// Freeze the <see cref="controlledMotor"/> any input registered to PlayerController.
         /// </summary>
         public static void PauseMotor()
         {
             if (!Instance.controlledMotor) return;
 
-            Instance.controlledMotor.paused = true;
+            Instance.controlledMotor.SetPause(true);
             Instance.controlledMotor.OnUnpossessed(Instance);
         }
     }

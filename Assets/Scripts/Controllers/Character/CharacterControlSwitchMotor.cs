@@ -14,7 +14,6 @@ namespace Custom.Controller
 
 
         [Header("REFERENCES")]
-        [SerializeField] private PlayerController controller;
         [SerializeField] private CharacterMotor2D motor;
 
 
@@ -33,7 +32,7 @@ namespace Custom.Controller
 
         private void Possess()
         {
-            controller.Possess(motor);
+            PlayerController.Possess(motor);
         }
     }
 }

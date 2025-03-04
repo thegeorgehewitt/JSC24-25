@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -7,7 +8,7 @@ using FunkyCode;
 
 using Custom.Manager;
 using Custom.Attribute;
-using System.Linq;
+using Custom.Utility;
 
 namespace Custom.Controller
 {
@@ -75,7 +76,7 @@ namespace Custom.Controller
          * CONTROLS
          */
         [Tooltip("While paused, the controller will not be affected by physics simulation and player controller inputs.")]
-        [SerializeField] public bool paused;
+        [SerializeField] private bool paused;
         [SerializeField] private InputGroupMode inputGroupMode;
         [SerializeField] private List<CharacterControlBase> controlScripts;
 
@@ -83,17 +84,22 @@ namespace Custom.Controller
 
         private ContactFilter2D proximityCheckContactFilter;
         private List<Collider2D> proximityCheckContacts = new();
+        private List<SpriteRenderer> renderers = new();
 
         private bool grounded;
-        public bool IsGrounded { get { return grounded; } }
+        public bool IsGrounded => grounded;
 
         private bool onCeiling;
-        public bool IsOnCeiling { get { return onCeiling; } }
+        public bool IsOnCeiling => onCeiling;
 
         private bool onWall;
-        public bool IsOnWall { get { return onWall; } }
+        public bool IsOnWall => onWall;
 
         public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.Visibility : 1.0f; } }
+
+        public bool IsPaused => paused;
+
+        public Vector2 FootPosition => capsuleCollider.bounds.center - new Vector3(0, capsuleCollider.bounds.extents.y);
 
 
 
@@ -146,6 +152,8 @@ namespace Custom.Controller
 
             rigidbody.gravityScale = 0;
             orgColSize = capsuleCollider.size;
+
+            renderers = GetComponentsInChildren<SpriteRenderer>().ToList();
         }
 
         private void Update()
@@ -232,16 +240,15 @@ namespace Custom.Controller
         #region Proximity Check
         private void UpdateProximityCheck()
         {
+            // Ground Check
             grounded = groundCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
-            if (grounded && CheckOnlyOneWay(proximityCheckContacts))
+            if (grounded && CheckOnlyOneWay(proximityCheckContacts, out PlatformEffector2D[] effectors))
             {
-                foreach (Collider2D contact in proximityCheckContacts)
+                grounded = false;
+
+                foreach (PlatformEffector2D effector in effectors)
                 {
-                    if (contact.transform.position.y + ((contact as BoxCollider2D).size.y / 2.5) > groundCheck.transform.position.y - groundCheck.radius)
-                    {
-                        grounded = false;
-                    }
-                    else
+                    if (PlayerIsOnEffectorSide(effector))
                     {
                         grounded = true;
                         break;
@@ -249,27 +256,52 @@ namespace Custom.Controller
                 }
             }
 
+            // Ceiling Check
             ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
             onCeiling = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
             if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
             else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
 
+            // Wall Check
             wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
             onWall = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
         }
 
-        private bool CheckOnlyOneWay(List<Collider2D> collisionResults)
+
+
+        private bool CheckOnlyOneWay(List<Collider2D> collisionResults, out PlatformEffector2D[] _effectors)
         {
             foreach (Collider2D col in collisionResults)
             {
                 if (!col.gameObject.TryGetComponent<PlatformEffector2D>(out _))
                 {
+                    _effectors = new PlatformEffector2D[] { };
                     return false;
                 }
             }
+
+            _effectors = collisionResults.Select(e => e.GetComponent<PlatformEffector2D>()).ToArray();
             return true;
+        }
+
+        private bool CheckOnlyOneWay(List<Collider2D> collisionResults)
+        {
+            return CheckOnlyOneWay(collisionResults, out _);
+        }
+
+        private bool PlayerIsOnEffectorSide(PlatformEffector2D _effector)
+        {
+            ViewCone cone = new()
+            {
+                Origin = _effector.transform.position + _effector.transform.up * (_effector.transform.localScale.y / 2.0f - 0.01f),
+                Angle = _effector.surfaceArc,
+                Radius = float.PositiveInfinity,
+                Rotation = _effector.rotationalOffset + _effector.transform.eulerAngles.z
+            };
+
+            return FieldOfView.GetPointsInViewCone(cone, FootPosition).Length == 1;
         }
 
         public CapsuleCollider2D GetCollider() { return capsuleCollider; }
@@ -384,6 +416,37 @@ namespace Custom.Controller
             headSocket.localPosition = new Vector2(0, orgColSize.y / 2 - headOffset);
             frontSocket.localPosition = new Vector2(frontSocket.localPosition.x, offsetY);
             frontSocket.localScale = new Vector2(1.0f, _heightMult);
+        }
+        #endregion
+
+        #region Collision & Visibility Controls
+        public void SetCollision(bool _active)
+        {
+            capsuleCollider.enabled = _active;
+        }
+
+        public void SetVisibility(bool _visible)
+        {
+            for (int i = 0; i < renderers.Count; i++)
+            {
+                if (renderers[i])
+                {
+                    renderers[i].enabled = _visible;
+                }
+                else
+                {
+                    renderers.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        public void SetPause(bool _pause, bool _resetVelocity = false)
+        {
+            paused = _pause;
+
+            if (_resetVelocity)
+                velocity = Vector2.zero;
         }
         #endregion
     }

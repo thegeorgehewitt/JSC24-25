@@ -23,15 +23,11 @@ namespace Custom.LevelBuilding
         private void OnTriggerEnter2D(Collider2D collision)
         {
             colliderCounter++;
-
-            Debug.Log($"Overlap with: {collision.name} + {collision.GetType()}");
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
             colliderCounter--;
-
-            Debug.Log($"End Overlap with: {collision.name} + {collision.GetType()}");
 
             if (colliderCounter <= 0)
                 platformCollider.isTrigger = false;
@@ -39,17 +35,10 @@ namespace Custom.LevelBuilding
 
 
 
-        public void DropThroughPlatform()
-        {
-            platformCollider.isTrigger = true;
-        }
-
-        public void OnInputReceived(Key _key)
+        public void OnInputReceived(Key _key, InputActionPhase _phase)
         {
             if (_key == Key.S)
-            {
-                DropThroughPlatform();
-            }
+                platformCollider.isTrigger = true;
         }
     }
 }

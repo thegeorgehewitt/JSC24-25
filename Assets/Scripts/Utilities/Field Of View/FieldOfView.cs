@@ -58,7 +58,7 @@ namespace Custom.Utility
         /// <returns>
         /// An array of all points captured in <paramref name="_viewCone"/>.
         /// </returns>
-        public static Vector3[] GetPointsInViewCone(ViewCone _viewCone, Vector3[] _points)
+        public static Vector3[] GetPointsInViewCone(ViewCone _viewCone, params Vector3[] _points)
         {
             List<Vector3> inViewPoints = new();
 
@@ -76,7 +76,7 @@ namespace Custom.Utility
         }
 
         /// <inheritdoc cref="GetPointsInViewCone(ViewCone, Vector3[])"/>
-        public static Vector3[] GetPointsInViewCone(ViewCone _viewCone, Vector2[] _points)
+        public static Vector3[] GetPointsInViewCone(ViewCone _viewCone, params Vector2[] _points)
         {
             return GetPointsInViewCone(_viewCone, _points.Select(e => (Vector3)e).ToArray());
         }

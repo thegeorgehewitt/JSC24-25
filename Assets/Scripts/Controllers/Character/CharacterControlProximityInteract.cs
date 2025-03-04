@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 using Custom.Interactable.Interfaces;
+using System.Linq;
 
 namespace Custom.Controller
 {
@@ -14,7 +17,7 @@ namespace Custom.Controller
 
         private InputAction anyKeyAction;
 
-        private IProximityInputReceiver proximityInputReceiver;
+        private readonly List<IProximityInputReceiver> inputReceivers = new();
 
 
 
@@ -33,7 +36,8 @@ namespace Custom.Controller
         {
             if (anyKeyAction != null)
             {
-                anyKeyAction.performed += OnAnyKeyPressed;
+                anyKeyAction.started += OnAnyKeyPressed;
+                anyKeyAction.canceled += OnAnyKeyReleased;
                 anyKeyAction.Enable();
             }
         }
@@ -42,7 +46,8 @@ namespace Custom.Controller
         {
             if (anyKeyAction != null)
             {
-                anyKeyAction.performed -= OnAnyKeyPressed;
+                anyKeyAction.started -= OnAnyKeyPressed;
+                anyKeyAction.canceled -= OnAnyKeyReleased;
                 anyKeyAction.Disable();
             }
         }
@@ -51,23 +56,38 @@ namespace Custom.Controller
         {
             if (!collision.gameObject.TryGetComponent(out IProximityInputReceiver asReceiver)) return;
 
-            proximityInputReceiver = asReceiver;
+            inputReceivers.Add(asReceiver);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
             if (!collision.gameObject.TryGetComponent(out IProximityInputReceiver asReceiver)) return;
 
-            proximityInputReceiver = asReceiver;
+            inputReceivers.Remove(asReceiver);
         }
 
 
 
         private void OnAnyKeyPressed(InputAction.CallbackContext _context)
         {
+            if (inputReceivers.Count == 0) return;
             if (_context.control is not KeyControl control) return;
 
-            proximityInputReceiver?.OnInputReceived(control.keyCode);
+            foreach (var receiver in inputReceivers)
+            {
+                receiver.OnInputReceived(control.keyCode, InputActionPhase.Started);
+            }
+        }
+
+        private void OnAnyKeyReleased(InputAction.CallbackContext _context)
+        {
+            if (inputReceivers.Count == 0) return;
+            if (_context.control is not KeyControl control) return;
+
+            foreach (var receiver in inputReceivers)
+            {
+                receiver.OnInputReceived(control.keyCode, InputActionPhase.Canceled);
+            }
         }
     }
 }
