@@ -35,9 +35,9 @@ namespace Custom.LevelBuilding
 
 
 
-        public void OnInputReceived(Key _key, InputActionPhase _phase)
+        public void OnInputReceived(Key _key, KeyPhase _phase)
         {
-            if (_key == Key.S)
+            if (_key == Key.S && _phase == KeyPhase.Pressed)
                 platformCollider.isTrigger = true;
         }
     }

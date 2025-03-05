@@ -84,19 +84,19 @@ namespace Custom.LevelBuilding
 
 
 
-        public void OnInputReceived(Key _key, InputActionPhase _phase)
+        public void OnInputReceived(Key _key, KeyPhase _phase)
         {
             if (!playerMotor) return;
 
             if (_key == Key.W)
             {
-                if (_phase == InputActionPhase.Started)
+                if (_phase == KeyPhase.Pressed)
                     goingUp = true;
-                else if (_phase == InputActionPhase.Canceled)
+                else if (_phase == KeyPhase.Released)
                     goingUp = false;
             }
             
-            if (_key == Key.S && _phase == InputActionPhase.Started)
+            if (_key == Key.S && _phase == KeyPhase.Pressed)
             {
                 stairCollider.isTrigger = true;
                 falling = true;

@@ -15,40 +15,36 @@ namespace Custom.Controller
 
 
 
-        private InputAction anyKeyAction;
-
+        private readonly HashSet<Key> heldKeys = new();
         private readonly List<IProximityInputReceiver> inputReceivers = new();
 
 
 
-        private void Awake()
+        private void Update()
         {
-            anyKeyAction = new("Any Key");
+            if (Keyboard.current == null) return;
 
-            // Bind all keyboard keys to input action.
-            foreach (Key key in System.Enum.GetValues(typeof(Key)))
+            // This is quite inefficient but currently there is no big performance impact just yet.
+            // Might need refactoring in future development.
+            foreach (KeyControl key in Keyboard.current.allKeys)
             {
-                anyKeyAction.AddBinding($"<Keyboard>/{key.ToString().ToLower()}");
-            }
-        }
-
-        private void OnEnable()
-        {
-            if (anyKeyAction != null)
-            {
-                anyKeyAction.started += OnAnyKeyPressed;
-                anyKeyAction.canceled += OnAnyKeyReleased;
-                anyKeyAction.Enable();
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (anyKeyAction != null)
-            {
-                anyKeyAction.started -= OnAnyKeyPressed;
-                anyKeyAction.canceled -= OnAnyKeyReleased;
-                anyKeyAction.Disable();
+                if (key.isPressed)
+                {
+                    if (!heldKeys.Contains(key.keyCode))
+                    {
+                        heldKeys.Add(key.keyCode);
+                        CallbackOnReceiver(key.keyCode, KeyPhase.Pressed);
+                    }
+                    else
+                    {
+                        CallbackOnReceiver(key.keyCode, KeyPhase.Held);
+                    }
+                }
+                else if (heldKeys.Contains(key.keyCode))
+                {
+                    heldKeys.Remove(key.keyCode);
+                    CallbackOnReceiver(key.keyCode, KeyPhase.Released);
+                }
             }
         }
 
@@ -68,25 +64,11 @@ namespace Custom.Controller
 
 
 
-        private void OnAnyKeyPressed(InputAction.CallbackContext _context)
+        private void CallbackOnReceiver(Key _key, KeyPhase _phase)
         {
-            if (inputReceivers.Count == 0) return;
-            if (_context.control is not KeyControl control) return;
-
             foreach (var receiver in inputReceivers)
             {
-                receiver.OnInputReceived(control.keyCode, InputActionPhase.Started);
-            }
-        }
-
-        private void OnAnyKeyReleased(InputAction.CallbackContext _context)
-        {
-            if (inputReceivers.Count == 0) return;
-            if (_context.control is not KeyControl control) return;
-
-            foreach (var receiver in inputReceivers)
-            {
-                receiver.OnInputReceived(control.keyCode, InputActionPhase.Canceled);
+                receiver?.OnInputReceived(_key, _phase);
             }
         }
     }

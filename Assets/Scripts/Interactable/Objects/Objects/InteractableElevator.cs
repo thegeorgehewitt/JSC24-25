@@ -110,8 +110,10 @@ namespace Custom.Interactable
         #endregion
 
         #region Operation
-        public void OnInputReceived(Key _key, InputActionPhase _phase)
+        public void OnInputReceived(Key _key, KeyPhase _phase)
         {
+            if (_phase != KeyPhase.Pressed) return;
+
             if (_key == Key.W)
                 Operate(true);
             else if (_key == Key.S)
