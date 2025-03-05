@@ -2,7 +2,6 @@ using System.Linq;
 using System.Collections;
 
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -49,6 +48,12 @@ namespace Custom.AI.Pathfinding
                     StopDebuggingPathFind();
 
                 isStopped = !isStopped;
+            }
+
+            if (followingCursor)
+            {
+                targetPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+                SetTargetLocation(targetPos);
             }
         }
 
@@ -162,7 +167,13 @@ namespace Custom.AI.Pathfinding
         {
             Gizmos.color = _color;
 
-            if (!GetJumpDuration(_p0, _p1, out float tTotal)) return;
+            float peakOffset;
+            if (_p0.y <= _p1.y)
+                peakOffset = agentData.height / 2.0f;
+            else
+                peakOffset = 0;
+
+            if (!GetJumpDuration(_p0, _p1, peakOffset, out float tTotal)) return;
 
             float tCurrent;
             Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_p0, _p1, agentData.gravityAccel, tTotal);
@@ -185,6 +196,7 @@ namespace Custom.AI.Pathfinding
 
         #region Pathfinding Debug
         private Vector2 targetPos;
+        private bool followingCursor = false;
         private bool isStopped = true;
 
         private Coroutine pathfindingDebugCoroutine;
@@ -197,6 +209,8 @@ namespace Custom.AI.Pathfinding
                 StopCoroutine(pathfindingDebugCoroutine);
 
             StopFollowPath();
+
+            followingCursor = false;
         }
 
 
@@ -227,19 +241,7 @@ namespace Custom.AI.Pathfinding
 
         private void StartFollowCursor()
         {
-            pathfindingDebugCoroutine = StartCoroutine(FollowCursorCoroutine());
-        }
-
-        private IEnumerator FollowCursorCoroutine()
-        {
-            while (true)
-            {
-                targetPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-                SetTargetLocation(targetPos);
-
-                yield return null;
-            }
+            followingCursor = true;
         }
         #endregion
     }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New Agent Data
   m_EditorClassIdentifier: 
   gravityAccel: {x: 0, y: -21}
-  height: 1
+  height: 0.95
   width: 0.8
   speed: 5
   jumpHeight: 4

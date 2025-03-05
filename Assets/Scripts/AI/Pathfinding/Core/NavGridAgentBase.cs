@@ -149,7 +149,7 @@ namespace Custom.AI.Pathfinding
 
         public override int GetHashCode()
         {
-            return System.HashCode.Combine(GetType(), agentData);   
+            return HashCode.Combine(GetType(), agentData);   
         }
 
 
@@ -199,17 +199,26 @@ namespace Custom.AI.Pathfinding
         /// </returns>
         public bool SetTargetLocation(Vector2 _worldLocation)
         {
+            // Get the custom defined closest node to the given world location.
             if (!GetTargetCell(_worldLocation, out Vector2Int targetCell)) return false;
 
+            // Get closest path node to start position (transform.position) and end position (world location of targetCell).
             var startNode = FindClosestPathNode(transform.position);
             if (!startNode.HasValue) return false;
 
             var endNode = FindClosestPathNode(navGrid.CellToWorld(targetCell).Value);
             if (!startNode.HasValue) return false;
 
-            if (!PathFinding2D.FindPath(this, startNode.Value.position, endNode.Value.position, CurrentPath)) return false;
+            // Get new path.
+            List<Vector2Int> newPath = new();
+            if (!PathFinding2D.FindPath(this, startNode.Value.position, endNode.Value.position, newPath)) return false;
 
-            StartFollowPath();
+            // If the current position is closer to the next node than the starting node, skip the starting node.
+            if (Vector2.Distance(navGrid.CellToWorld(newPath[0]).Value, navGrid.CellToWorld(newPath[1]).Value)
+                > Vector2.Distance(transform.position, navGrid.CellToWorld(newPath[1]).Value))
+                newPath.RemoveAt(0);
+
+            StartFollowPath(newPath);
 
             return true;
         }
@@ -270,8 +279,13 @@ namespace Custom.AI.Pathfinding
         /// </summary>
         protected void StopFollowPath()
         {
+            if (!FollowingPath) return;
+
             if (followPathCoroutine != null)
+            {
                 StopCoroutine(followPathCoroutine);
+                followPathCoroutine = null;
+            }
 
             FollowingPath = false;
             Movement = -1;
@@ -282,11 +296,12 @@ namespace Custom.AI.Pathfinding
         /// <summary>
         /// Start following <see cref="CurrentPath"/>'s nodes in index sequence.
         /// </summary>
-        protected void StartFollowPath()
+        protected void StartFollowPath(List<Vector2Int> _nextPath)
         {
-            StopFollowPath();
+            // Might need optimization, left this for future implementations.
+            CurrentPath = _nextPath;
 
-            followPathCoroutine = StartCoroutine(FollowPathCoroutine());
+            followPathCoroutine ??= StartCoroutine(FollowPathCoroutine());
         }
 
 
@@ -294,11 +309,6 @@ namespace Custom.AI.Pathfinding
         private IEnumerator FollowPathCoroutine()
         {
             FollowingPath = true;
-
-            // If the current position is closer to the next node than the starting node, skip the starting node.
-            if (Vector2.Distance(navGrid.CellToWorld(CurrentPath[0]).Value, navGrid.CellToWorld(CurrentPath[1]).Value) 
-                > Vector2.Distance(transform.position, navGrid.CellToWorld(CurrentPath[1]).Value))
-                CurrentPath.RemoveAt(0);
 
             Vector2Int nextNode = CurrentPath[0];
 
@@ -319,7 +329,12 @@ namespace Custom.AI.Pathfinding
                     currentNode = nextNode;
                     CurrentPath.RemoveAt(0);
                     nextNode = CurrentPath[0];
-                    Movement = GetPathNode(currentNode).Value.linkedNodes[nextNode];
+
+                    var pathNode = GetPathNode(currentNode);
+                    if (!pathNode.HasValue) break;                                  // If current node is removed during pathfinding.
+                    if (!pathNode.Value.linkedNodes.ContainsKey(nextNode)) break;   // If next node is removed during .
+
+                    Movement = pathNode.Value.linkedNodes[nextNode];
 
                     MoveFromTo(
                         navGrid.CellToWorld(currentNode).Value,
@@ -330,8 +345,7 @@ namespace Custom.AI.Pathfinding
                 yield return null;
             }
 
-            while (Moving)
-                yield return null;
+            yield return new WaitWhile(() => Moving);
 
             CurrentPath.Clear();
 

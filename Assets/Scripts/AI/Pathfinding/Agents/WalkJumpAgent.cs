@@ -63,7 +63,7 @@ namespace Custom.AI.Pathfinding
                         else if (!navGrid.Occupied(node + new Vector2Int(1, -1))
                             && !navGrid.Occupied(nextNode + new Vector2Int(-1, -1))
                             && nextNode.x <= node.x + navGrid.FloorToCell(agentData.jumpDistance) + 1
-                            && JumpPossible(node, nextNode))
+                            && JumpPossible(node, nextNode, agentData.height / 2.0f))
                         {
                             closestRight = nextNode.x;
                             closetRightPoint = nextNode;
@@ -72,16 +72,28 @@ namespace Custom.AI.Pathfinding
                     }
 
                     // Find drop nodes to either sides.
-                    if (nextNode.y >= node.y - navGrid.FloorToCell(agentData.dropHeight) && nextNode.y < node.y)        // In range of drop height
-                        if ((nextNode.x == node.x + 1 && !navGrid.OccupiedFromTo(node + Vector2Int.right, nextNode))    // Not occupied to the right downward.
-                        || (nextNode.x == node.x - 1 && !navGrid.OccupiedFromTo(node + Vector2Int.left, nextNode)))     // Not occupied to the left downward.
+                    if (nextNode.y >= node.y - navGrid.FloorToCell(agentData.dropHeight) && nextNode.y < node.y)    // In range of drop height
+                    {
+                        Vector2Int dropNode = node + Vector2Int.right * (int)Mathf.Sign(nextNode.x - node.x);
+                        Vector2 dropPos = navGrid.CellToWorld(dropNode).Value;
+                        Vector2 landPos = navGrid.CellToWorld(nextNode).Value;
+                        float dropTime = EstimateDropDuration(node, landPos);
+                        float walkTime = Mathf.Abs(dropPos.x - landPos.x) / agentData.speed;
+
+                        if ((dropTime < walkTime                                                                // Need jumping
+                            && nextNode.x <= dropNode.x + navGrid.FloorToCell(agentData.jumpDistance) + 1       // In range of horizontal jump to the right
+                            && nextNode.x >= dropNode.x - navGrid.FloorToCell(agentData.jumpDistance) - 1       // In range of horizontal jump to the left
+                            && JumpPossible(dropNode, nextNode, agentData.height / 2.0f))                       
+                        || (dropTime >= walkTime                                                                // Can drop straight.
+                            && JumpPossible(dropNode, nextNode)))                                               
                             map[node].linkedNodes.TryAdd(nextNode, DROP);
+                    }
 
                     // Find jump nodes to either sides.
-                    if (nextNode.y <= node.y + navGrid.FloorToCell(agentData.jumpHeight) && nextNode.y > node.y     // In range of vertical jump
-                        && nextNode.x <= node.x + navGrid.FloorToCell(agentData.jumpDistance) + 1                   // In range of horizontal jump to the right
-                        && nextNode.x >= node.x - navGrid.FloorToCell(agentData.jumpDistance) - 1                   // In range of horizontal jump to the left
-                        && JumpPossible(node, nextNode))
+                    if (nextNode.y <= node.y + navGrid.FloorToCell(agentData.jumpHeight) && nextNode.y > node.y // In range of vertical jump
+                        && nextNode.x <= node.x + navGrid.FloorToCell(agentData.jumpDistance) + 1               // In range of horizontal jump to the right
+                        && nextNode.x >= node.x - navGrid.FloorToCell(agentData.jumpDistance) - 1               // In range of horizontal jump to the left
+                        && JumpPossible(node, nextNode, agentData.height / 2.0f))
                     {
                         map[node].linkedNodes.TryAdd(nextNode, JUMP);
                         map[nextNode].linkedNodes.TryAdd(node, DROP);
@@ -122,13 +134,13 @@ namespace Custom.AI.Pathfinding
 
 
 
-        private bool JumpPossible(Vector2Int _startNode, Vector2Int _endNode, float _step = 0.1f)
+        private bool JumpPossible(Vector2Int _startNode, Vector2Int _endNode, float _jumpPeakOffset = 0.0f, float _step = 0.1f)
         {
             Vector2 start = navGrid.CellToWorld(_startNode).Value;
             Vector2 end = navGrid.CellToWorld(_endNode).Value;
             Vector2 searchLocation;
 
-            if (!GetJumpDuration(start, end, out float tTotal)) return false;
+            if (!GetJumpDuration(start, end, _jumpPeakOffset, out float tTotal)) return false;
 
             float tCurrent;
             Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(start, end, agentData.gravityAccel, tTotal);
@@ -142,6 +154,19 @@ namespace Custom.AI.Pathfinding
             }
 
             return true;
+        }
+
+        protected bool GetJumpDuration(Vector2 _start, Vector2 _end, float _jumpPeakOffset, out float _t)
+        {
+            Vector2 peak = Vector2.Max(_start, _end) + new Vector2(0, _jumpPeakOffset);
+
+            bool result = ProjMotionUtil.GetTimeAtPoint(
+                _start, _end, peak,
+                agentData.gravityAccel, out float t, true);
+
+            _t = t;
+
+            return result;
         }
         #endregion
 
@@ -190,7 +215,10 @@ namespace Custom.AI.Pathfinding
         private void ForceStopMoving()
         {
             if (movementCoroutine != null)
+            {
                 StopCoroutine(movementCoroutine);
+                movementCoroutine = null;
+            }
 
             Moving = false;
         }
@@ -209,7 +237,8 @@ namespace Custom.AI.Pathfinding
             transform.position = _start;
 
             float elapsed = 0;
-            while (elapsed < (_end - _start).magnitude / agentData.speed)
+            float duration = (_end - _start).magnitude / agentData.speed;
+            while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 transform.position = Vector2.MoveTowards(transform.position, _end, agentData.speed * TimeManager.DeltaTime);
@@ -250,7 +279,7 @@ namespace Custom.AI.Pathfinding
 
             if (Mathf.Abs(transform.position.x - _end.x) / fallDuration > agentData.speed)
             {
-                GetJumpDuration(transform.position, _end, out float jumpDuration);
+                GetJumpDuration(transform.position, _end, agentData.height / 2.0f, out float jumpDuration);
 
                 fallDuration = jumpDuration;
             }
@@ -297,7 +326,7 @@ namespace Custom.AI.Pathfinding
             transform.position = _start;
 
             // Offset transform using kinematic equations.
-            GetJumpDuration(_start, _end, out float jumpDuration);
+            GetJumpDuration(_start, _end, agentData.height / 2.0f, out float jumpDuration);
             Vector2 initialVelocity = ProjMotionUtil.GetInitialVelocity(_start, _end, agentData.gravityAccel, jumpDuration);
             Vector3 currentVelocity = initialVelocity;
             float elapsed = 0;
@@ -317,19 +346,6 @@ namespace Custom.AI.Pathfinding
             yield return new WaitForSeconds(_waitTime);
 
             Moving = false;
-        }
-
-        protected bool GetJumpDuration(Vector2 _start, Vector2 _end, out float _t)
-        {
-            Vector2 peak = Vector2.Max(_start, _end) + new Vector2(agentData.width, agentData.height) / 2.0f;
-
-            bool result = ProjMotionUtil.GetTimeAtPoint(
-                _start, _end, peak,
-                agentData.gravityAccel, out float t, true);
-
-            _t = t;
-
-            return result;
         }
         #endregion
 
@@ -351,6 +367,6 @@ namespace Custom.AI.Pathfinding
 
             return true;
         }
-        #endregion
+        #endregion 
     }
 }
