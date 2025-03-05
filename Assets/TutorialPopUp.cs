@@ -8,6 +8,7 @@ public class TutorialPopUp : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tutorialPopUp;
     [SerializeField] private bool replayable;
     private bool complete = false;
+    [SerializeField] private float showDuration;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -26,7 +27,7 @@ public class TutorialPopUp : MonoBehaviour
     {
         tutorialPopUp.enabled = true;
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(showDuration);
 
         tutorialPopUp.enabled = false;
     }
