@@ -60,7 +60,7 @@ namespace Custom.UI
             if (_show)
             {
                 TimeManager.timeScale = 0;
-                PlayerController.PauseMotor();
+                PlayerMotorController.PauseMotor(true);
             }
         }
 

@@ -1,23 +1,14 @@
-using System;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Custom.Controller
 {
-    [DisallowMultipleComponent]
     public class PlayerController : MonoBehaviour
     {
-        public static PlayerController Instance;
-
-        public static event Action<CharacterMotor2D> OnControlledMotorChanged;
-
-        [Header("REFERENCE")]
-        [SerializeField] private InputActionAsset inputActionAsset;
-        [SerializeField] private CharacterMotor2D controlledMotor;
-
-        public InputActionAsset InputAsset { get { return inputActionAsset; } }
-        public CharacterMotor2D ControlledMotor { get { return controlledMotor; } }
+        [Header("CONTROL REFERENCES")]
+        [SerializeField] protected InputActionAsset inputActionAsset;
 
 
 
@@ -26,33 +17,9 @@ namespace Custom.Controller
         {
             // Get default InputActionAsset.
             // Remove this incase of performance lost when adding PlayerController component.
-            var inputAssets = Resources.FindObjectsOfTypeAll<InputActionAsset>();
-            if (inputAssets.Length > 0) inputActionAsset = inputAssets[0];
+            inputActionAsset = Resources.FindObjectsOfTypeAll<InputActionAsset>().FirstOrDefault();
         }
 #endif
-
-        private void Awake()
-        {
-            #region Singleton
-            if (!Instance)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(this);
-            }
-            #endregion
-        }
-
-        private void Start()
-        {
-            // Disable all inputs.
-            inputActionAsset.Disable();
-
-            // Possess default motor.
-            if (controlledMotor) Possess(controlledMotor);
-        }
 
 
 
@@ -102,49 +69,6 @@ namespace Custom.Controller
             if (!_action.enabled) return;
 
             inputActionAsset.FindAction(_action.id).Disable();
-        }
-
-
-
-        /// <summary>
-        /// Set the controlling motor to a new <see cref="CharacterMotor2D"/>.
-        /// </summary>
-        /// <param name="_motor"> The <see cref="CharacterMotor2D"/> to possess. </param>
-        public static void Possess(CharacterMotor2D _motor)
-        {
-            Instance.controlledMotor?.OnUnpossessed(Instance);
-            Instance.controlledMotor = _motor;
-            Instance.controlledMotor?.OnPossessed(Instance);
-
-            OnControlledMotorChanged?.Invoke(Instance.controlledMotor);
-        }
-
-        /// <summary>
-        /// If this controller was controlling the given <see cref="CharacterMotor2D"/>, stop controlling it. <br/>
-        /// Otherwise, this function do nothing.
-        /// </summary>
-        /// <param name="_motor"> The <see cref="CharacterMotor2D"/> to unpossess. </param>
-        public static void Unpossess(CharacterMotor2D _motor)
-        {
-            if (Instance.controlledMotor != _motor) return;
-
-            Instance.controlledMotor?.OnUnpossessed(Instance);
-            Instance.controlledMotor = null;
-
-            OnControlledMotorChanged?.Invoke(Instance.controlledMotor);
-        }
-
-
-
-        /// <summary>
-        /// Freeze the <see cref="controlledMotor"/> any input registered to PlayerController.
-        /// </summary>
-        public static void PauseMotor()
-        {
-            if (!Instance.controlledMotor) return;
-
-            Instance.controlledMotor.SetPause(true);
-            Instance.controlledMotor.OnUnpossessed(Instance);
         }
     }
 }

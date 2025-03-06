@@ -42,7 +42,7 @@ namespace Custom.LevelBuilding
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (colliderCounter == 0)
-                playerMotor = PlayerController.Instance.ControlledMotor;
+                playerMotor = PlayerMotorController.Instance.ControlledMotor;
 
             colliderCounter++;
         }

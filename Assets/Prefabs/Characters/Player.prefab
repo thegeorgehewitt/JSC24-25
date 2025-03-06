@@ -979,7 +979,7 @@ MonoBehaviour:
   useGravity: 1
   fallAcceleration: 25
   maxFallSpeed: 15
-  jumpEndEarlyGravityModifier: 5
+  jumpEndEarlyGravityModifier: 3
   slopeHandler: {fileID: 5747121414722829360}
   enableVisibilityCheck: 1
   lightEventListener: {fileID: 7520197564098527792}

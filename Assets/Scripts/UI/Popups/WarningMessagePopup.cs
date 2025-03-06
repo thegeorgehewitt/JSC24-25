@@ -8,7 +8,7 @@ using Custom.Controller;
 
 namespace Custom.UI
 {
-    public class WarningMessages : MonoBehaviour
+    public class WarningMessagePopup : MonoBehaviour
     {
         [Header("REFERENCES")]
         [SerializeField] private TextMeshProUGUI text;

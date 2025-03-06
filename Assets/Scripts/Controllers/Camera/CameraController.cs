@@ -19,12 +19,12 @@ namespace Custom.Controller
 
         private void OnEnable()
         {
-            PlayerController.OnControlledMotorChanged += OnControlledMotorChanged;
+            PlayerMotorController.OnControlledMotorChanged += OnControlledMotorChanged;
         }
 
         private void OnDisable()
         {
-            PlayerController.OnControlledMotorChanged -= OnControlledMotorChanged;
+            PlayerMotorController.OnControlledMotorChanged -= OnControlledMotorChanged;
         }
 
         private void Awake()

@@ -66,7 +66,7 @@ namespace Custom.Controller
 
         private void CallbackOnReceiver(Key _key, KeyPhase _phase)
         {
-            foreach (var receiver in inputReceivers)
+            foreach (var receiver in inputReceivers.ToArray())
             {
                 receiver?.OnInputReceived(_key, _phase);
             }

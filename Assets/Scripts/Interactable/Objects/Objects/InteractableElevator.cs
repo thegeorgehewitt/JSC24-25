@@ -68,7 +68,7 @@ namespace Custom.Interactable
         {
             elevatorUI.ShowPopup(true);
 
-            playerMotor = PlayerController.Instance.ControlledMotor;
+            playerMotor = PlayerMotorController.Instance.ControlledMotor;
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -134,7 +134,7 @@ namespace Custom.Interactable
 
         private IEnumerator MoveToTarget(CharacterMotor2D _playerMotor)
         {
-            PlayerController.Unpossess(_playerMotor);
+            PlayerMotorController.Unpossess(_playerMotor);
             _playerMotor.SetCollision(false);
             _playerMotor.SetVisibility(false);
             _playerMotor.SetPause(true, true);
@@ -163,7 +163,7 @@ namespace Custom.Interactable
 
             targetTransform = null;
 
-            PlayerController.Possess(_playerMotor);
+            PlayerMotorController.Possess(_playerMotor);
             _playerMotor.SetCollision(true);
             _playerMotor.SetPause(false);
             _playerMotor.SetVisibility(true);
