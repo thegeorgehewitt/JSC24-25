@@ -25,11 +25,13 @@ namespace Custom.Controller
         private void OnEnable()
         {
             GetInputActionWithName("Jump").performed += _ => { jumpAttempt = true; };
+            GetInputActionWithName("Jump").canceled += _ => CancelJump();
         }
 
         private void OnDisable()
         {
             GetInputActionWithName("Jump").performed -= _ => { jumpAttempt = true; };
+            GetInputActionWithName("Jump").canceled -= _ => CancelJump();
         }
 
         private void FixedUpdate()
@@ -40,7 +42,6 @@ namespace Custom.Controller
 
 
         #region Movement
-
         private void ExecuteMovement()
         {
             if (!jumpAttempt) return;
@@ -50,9 +51,14 @@ namespace Custom.Controller
 
             if (animator) { animator.SetTrigger("Jump"); }
 
+            attachedMotor.SetState("JumpEndedEarly", false);
             attachedMotor.velocity += Vector2.up * jumpPower;
         }
 
+        private void CancelJump()
+        {
+            attachedMotor.SetState("JumpEndedEarly", true);
+        }
         #endregion
     }
 }

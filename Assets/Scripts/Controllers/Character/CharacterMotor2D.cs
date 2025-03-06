@@ -179,9 +179,9 @@ namespace Custom.Controller
 
 
         #region Possess
-        private PlayerController controller;
+        private PlayerMotorController controller;
 
-        public void OnPossessed(PlayerController _controller)
+        public void OnPossessed(PlayerMotorController _controller)
         {
             controller = _controller;
 
@@ -194,23 +194,23 @@ namespace Custom.Controller
                 switch (inputGroupMode)
                 {
                     case InputGroupMode.IndividualAction:
-                        foreach (var actionMap in control.InputActions)
+                        foreach (var action in control.InputActions)
                         {
-                            _controller?.EnableAction(actionMap);
+                            controller?.EnableAction(action);
                         }
                         break;
 
                     case InputGroupMode.InputMap:
                         foreach (var actionMap in control.InputActionMaps)
                         {
-                            _controller?.EnableActionMap(actionMap);
+                            controller?.EnableActionMap(actionMap);
                         }
                         break;
                 }
             }
         }
 
-        public void OnUnpossessed(PlayerController _controller)
+        public void OnUnpossessed(PlayerMotorController _controller)
         {
             controller = null;
 
@@ -223,16 +223,16 @@ namespace Custom.Controller
                 switch (inputGroupMode)
                 {
                     case InputGroupMode.IndividualAction:
-                        foreach (var actionMap in control.InputActions)
+                        foreach (var action in control.InputActions)
                         {
-                            _controller?.DisableAction(actionMap);
+                            controller?.DisableAction(action);
                         }
                         break;
 
                     case InputGroupMode.InputMap:
                         foreach (var actionMap in control.InputActionMaps)
                         {
-                            _controller?.DisableActionMap(actionMap);
+                            controller?.DisableActionMap(actionMap);
                         }
                         break;
                 }
@@ -267,9 +267,6 @@ namespace Custom.Controller
             {
                 animator.SetTrigger("Land");
             }
-
-            if (onCeiling && !GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", true); }
-            else if (!onCeiling && GetState("JumpEndedEarly")) { SetState("JumpEndedEarly", false); }
 
             // Wall Check
             wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
@@ -343,19 +340,26 @@ namespace Custom.Controller
         {
             if (!useGravity) return;
 
-            // If on ground and falling.
+            // If on ground and falling or standing.
             if (IsGrounded && velocity.y <= 0)
             {
                 velocity.y = 0;
             }
             // If in air.
-            else
+            else 
             {
                 float inAirGravity = fallAcceleration;
+
                 if (GetState("JumpEndedEarly") && velocity.y > 0)
                 {
                     inAirGravity *= jumpEndEarlyGravityModifier;
                 }
+
+                if (onCeiling)
+                {
+                    velocity.y = 0;
+                }
+
                 velocity.y = Mathf.MoveTowards(velocity.y, -maxFallSpeed, inAirGravity * TimeManager.FixedDeltaTime);
             }
         }
@@ -455,6 +459,9 @@ namespace Custom.Controller
 
             if (_resetVelocity)
                 velocity = Vector2.zero;
+
+            if (animator)
+                animator.speed = _pause ? 0.0f : 1.0f;
         }
         #endregion
     }

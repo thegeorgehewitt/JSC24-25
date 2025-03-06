@@ -31,6 +31,8 @@ namespace Custom.Controller
         [SerializeField] private float offAlpha = 0.1f;
         [SerializeField] private float onAlpha = 1.0f;
 
+        private bool lastActivated;
+
 
         public float Radius 
         {
@@ -88,6 +90,23 @@ namespace Custom.Controller
             float rotation = Vector2.SignedAngle(transform.up, mouseWorldPos - flashLight.transform.position);
 
             flashLight.transform.localEulerAngles = new Vector3(0, 0, rotation);
+        }
+
+
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            activated = lastActivated;
+        }
+
+        protected override void OnDeactivate()
+        {
+            base.OnDeactivate();
+
+            lastActivated = activated;
+            activated = false;
         }
 
 

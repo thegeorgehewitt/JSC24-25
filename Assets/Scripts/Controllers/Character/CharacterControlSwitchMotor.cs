@@ -32,7 +32,7 @@ namespace Custom.Controller
 
         private void Possess()
         {
-            PlayerController.Possess(motor);
+            PlayerMotorController.Possess(motor);
         }
     }
 }
