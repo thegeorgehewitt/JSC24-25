@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f56dfdd55d173ce4e8cd5ec34c492c9c
+guid: f290e9d21a397694db3d5e54b451c94c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -44,7 +44,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 8
+  spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
@@ -97,190 +97,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_0
+      name: Death Anim_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 448
-        width: 64
+        y: 64
+        width: 134
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c05f374716c5bc4469c847f3d18c4df6
-      internalID: -885726178
+      spriteID: 1bc580c1ce3a1db40abba65ee4423970
+      internalID: 2101780375
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_1
+      name: Death Anim_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 448
-        width: 64
+        x: 134
+        y: 64
+        width: 134
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 09324beec47e76b42bad1ce11ccf16d2
-      internalID: -988057977
+      spriteID: 3abf26f2bc40a6c42be06a5b6874ade6
+      internalID: -1803136560
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_2
+      name: Death Anim_2
       rect:
         serializedVersion: 2
-        x: 128
-        y: 448
-        width: 64
+        x: 268
+        y: 64
+        width: 134
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2edfc2f026727674e81f173a5c426116
-      internalID: 788785915
+      spriteID: 489b45307b4c67045bb9bb0091f22ffb
+      internalID: 255336179
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_3
+      name: Death Anim_3
       rect:
         serializedVersion: 2
-        x: 192
-        y: 448
-        width: 64
+        x: 402
+        y: 64
+        width: 134
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c1e750a32cc8e248ababecd640c9f74
-      internalID: 1775444320
+      spriteID: cfe29f5551728d4478d225f09a962640
+      internalID: -604089165
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 448
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 549b68c312d975148b16273a40a6cbd2
-      internalID: -1088123332
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_5
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 448
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9a357332eae957d44b9c3fa9f390504e
-      internalID: 93857904
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_6
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 448
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ce381be8fab9f344c86c422e51c8edec
-      internalID: -1462005654
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_7
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 448
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9d350137b1f720648866b4cae3c73d53
-      internalID: 1358280456
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Death 02-23-2025 09-11-45_8
+      name: Death Anim_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 384
-        width: 64
+        y: 0
+        width: 134
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25cedd41d66ba3640849d5c5080edd2f
-      internalID: 787808851
+      spriteID: be8ac89615e61d84faeb6a0de6e0a29d
+      internalID: 647298587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Death Anim_5
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 0
+        width: 134
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c49851e48c4aaa4d82c2bd419511ed3
+      internalID: -672971113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Death Anim_6
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 0
+        width: 134
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 943a93a475ab329409e2a271156ac3e3
+      internalID: -478867149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Death Anim_7
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 0
+        width: 134
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 673279e57dcbef34a99802dc1170212f
+      internalID: -1110155438
       vertices: []
       indices: 
       edges: []
@@ -296,16 +275,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Death 02-23-2025 09-11-45_0: -885726178
-      Death 02-23-2025 09-11-45_1: -988057977
-      Death 02-23-2025 09-11-45_2: 788785915
-      Death 02-23-2025 09-11-45_3: 1775444320
-      Death 02-23-2025 09-11-45_4: -1088123332
-      Death 02-23-2025 09-11-45_5: 93857904
-      Death 02-23-2025 09-11-45_6: -1462005654
-      Death 02-23-2025 09-11-45_7: 1358280456
-      Death 02-23-2025 09-11-45_8: 787808851
-      Death 02-23-2025 09-11-45_9: 1726306282
+      Death Anim_0: 2101780375
+      Death Anim_1: -1803136560
+      Death Anim_2: 255336179
+      Death Anim_3: -604089165
+      Death Anim_4: 647298587
+      Death Anim_5: -672971113
+      Death Anim_6: -478867149
+      Death Anim_7: -1110155438
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

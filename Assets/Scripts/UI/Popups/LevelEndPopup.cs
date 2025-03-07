@@ -55,13 +55,6 @@ namespace Custom.UI
             if (popupCoroutine != null) StopCoroutine(popupCoroutine);
 
             popupCoroutine = StartCoroutine(PopupCoroutine(_show));
-
-            // Pause Controls
-            if (_show)
-            {
-                TimeManager.timeScale = 0;
-                PlayerMotorController.PauseMotor(true);
-            }
         }
 
         private IEnumerator PopupCoroutine(bool _show)
@@ -77,6 +70,13 @@ namespace Custom.UI
                 elapsedTime += Time.deltaTime;
                 maskImage.fillAmount = Mathf.Lerp(orgAmount, targetAmount, easeCurve.Evaluate(elapsedTime / easeDuration));
                 yield return null;
+            }
+
+            // Pause Controls
+            if (_show)
+            {
+                TimeManager.timeScale = 0;
+                PlayerMotorController.PauseMotor(true);
             }
 
             SetPopupActive(_show);
