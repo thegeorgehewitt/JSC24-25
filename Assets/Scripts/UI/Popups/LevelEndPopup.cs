@@ -55,17 +55,17 @@ namespace Custom.UI
             if (popupCoroutine != null) StopCoroutine(popupCoroutine);
 
             popupCoroutine = StartCoroutine(PopupCoroutine(_show));
-
-            // Pause Controls
-            if (_show)
-            {
-                TimeManager.timeScale = 0;
-                PlayerMotorController.PauseMotor(true);
-            }
         }
 
         private IEnumerator PopupCoroutine(bool _show)
         {
+            // Pause Controls
+            if (_show)
+            {
+                PlayerMotorController.PauseMotor(true);
+                TimeManager.timeScale = 0;
+            }
+
             yield return new WaitForSeconds(1);
 
             float elapsedTime = 0;

@@ -21,7 +21,10 @@ namespace Custom.Controller
         {
             if (_event.Target != attachedMotor) return;
 
-            animator?.SetTrigger("Death");
+            if (animator != null)
+            {
+                animator.SetTrigger("Death");
+            }
 
             EventAggregator.Publish(new DeathEvent());
         }

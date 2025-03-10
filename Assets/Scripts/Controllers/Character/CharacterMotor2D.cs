@@ -170,7 +170,7 @@ namespace Custom.Controller
             Vector2 slopedVel = HandleSlope(velocity);
 
             rigidbody.velocity = paused ? Vector2.zero : slopedVel;
-            animator?.SetFloat("Vertical Speed", velocity.y);
+            animator.SetFloat("Vertical Speed", velocity.y);
 
             Debug.DrawRay(transform.position, slopedVel, Color.green, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
@@ -243,6 +243,8 @@ namespace Custom.Controller
         #region Proximity Check
         private void UpdateProximityCheck()
         {
+            bool startGrounded = grounded;
+
             // Ground Check
             grounded = groundCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts) > 0;
             if (grounded && CheckOnlyOneWay(proximityCheckContacts, out PlatformEffector2D[] effectors))
@@ -263,15 +265,22 @@ namespace Custom.Controller
             ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
             onCeiling = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
-            if (grounded)
-            {
-                animator.SetTrigger("Land");
-            }
 
             // Wall Check
             wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
             onWall = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
+
+            if (startGrounded == grounded) return;
+            
+            if (grounded)
+            {
+                animator.SetTrigger("Land");
+            }
+            else
+            {
+                animator.ResetTrigger("Land");
+            }
         }
 
 
@@ -460,7 +469,7 @@ namespace Custom.Controller
             if (_resetVelocity)
                 velocity = Vector2.zero;
 
-            if (animator)
+            if (animator && !animator.GetBool("Death"))
                 animator.speed = _pause ? 0.0f : 1.0f;
         }
         #endregion

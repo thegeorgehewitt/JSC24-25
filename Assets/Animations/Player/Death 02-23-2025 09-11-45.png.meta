@@ -100,10 +100,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_0
       rect:
         serializedVersion: 2
-        x: 33
+        x: 0
         y: 448
-        width: 29
-        height: 62
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,10 +121,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_1
       rect:
         serializedVersion: 2
-        x: 97
-        y: 449
-        width: 31
-        height: 63
+        x: 64
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,10 +142,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_2
       rect:
         serializedVersion: 2
-        x: 161
-        y: 449
-        width: 31
-        height: 63
+        x: 128
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,10 +163,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_3
       rect:
         serializedVersion: 2
-        x: 225
-        y: 449
-        width: 31
-        height: 63
+        x: 192
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +184,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_4
       rect:
         serializedVersion: 2
-        x: 272
-        y: 449
-        width: 47
-        height: 63
+        x: 256
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,10 +205,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_5
       rect:
         serializedVersion: 2
-        x: 326
-        y: 449
-        width: 57
-        height: 62
+        x: 320
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,10 +226,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_6
       rect:
         serializedVersion: 2
-        x: 385
-        y: 449
-        width: 62
-        height: 62
+        x: 384
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,10 +247,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_7
       rect:
         serializedVersion: 2
-        x: 450
+        x: 448
         y: 448
-        width: 62
-        height: 62
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,10 +268,10 @@ TextureImporter:
       name: Death 02-23-2025 09-11-45_8
       rect:
         serializedVersion: 2
-        x: 1
-        y: 386
-        width: 63
-        height: 62
+        x: 0
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -279,7 +279,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34a798e560eb544469881b91ce31cc80
+      spriteID: 25cedd41d66ba3640849d5c5080edd2f
       internalID: 787808851
       vertices: []
       indices: 
@@ -305,6 +305,7 @@ TextureImporter:
       Death 02-23-2025 09-11-45_6: -1462005654
       Death 02-23-2025 09-11-45_7: 1358280456
       Death 02-23-2025 09-11-45_8: 787808851
+      Death 02-23-2025 09-11-45_9: 1726306282
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

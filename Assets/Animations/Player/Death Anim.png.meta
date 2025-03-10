@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e6e8d9f01d8741b44be3dcab9719220b
+guid: f290e9d21a397694db3d5e54b451c94c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_0
+      name: Death Anim_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 448
-        width: 27
-        height: 62
+        y: 64
+        width: 134
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d3e888b84370f94791b66d7417211bd
-      internalID: 2129422746
+      spriteID: 1bc580c1ce3a1db40abba65ee4423970
+      internalID: 2101780375
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_1
+      name: Death Anim_1
       rect:
         serializedVersion: 2
-        x: 63
-        y: 448
-        width: 32
-        height: 63
+        x: 134
+        y: 64
+        width: 134
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1704cbef440f62147be56b18833e5e10
-      internalID: 1181976786
+      spriteID: 3abf26f2bc40a6c42be06a5b6874ade6
+      internalID: -1803136560
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_2
+      name: Death Anim_2
       rect:
         serializedVersion: 2
-        x: 127
-        y: 448
-        width: 36
-        height: 63
+        x: 268
+        y: 64
+        width: 134
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7267abb271ec084fb180681b7473720
-      internalID: 330934078
+      spriteID: 489b45307b4c67045bb9bb0091f22ffb
+      internalID: 255336179
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_3
+      name: Death Anim_3
       rect:
         serializedVersion: 2
-        x: 191
-        y: 448
-        width: 30
-        height: 62
+        x: 402
+        y: 64
+        width: 134
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,104 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79574cb2a9b3b394885b8d037a0a1a29
-      internalID: 430978646
+      spriteID: cfe29f5551728d4478d225f09a962640
+      internalID: -604089165
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 448
-        width: 28
-        height: 63
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 53372b884578135469248811b37b7e86
-      internalID: -103878032
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_5
-      rect:
-        serializedVersion: 2
-        x: 319
-        y: 448
-        width: 37
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e5d883a2a7d40424b83d8ec23f91043e
-      internalID: -1650853336
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_6
-      rect:
-        serializedVersion: 2
-        x: 383
-        y: 448
-        width: 36
-        height: 63
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1d798c931b2036946a64c7ac7d210a07
-      internalID: 483519365
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_7
-      rect:
-        serializedVersion: 2
-        x: 447
-        y: 448
-        width: 29
-        height: 63
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d6a6cde97d727ab40b086e7d06499fe8
-      internalID: -1627908834
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_8
+      name: Death Anim_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 384
-        width: 28
-        height: 63
+        y: 0
+        width: 134
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -279,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 314fb2a666aa6bc4c81c95073a5d32c3
-      internalID: 1560967614
+      spriteID: be8ac89615e61d84faeb6a0de6e0a29d
+      internalID: 647298587
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Jump 02-23-2025 03-37-19_9
+      name: Death Anim_5
       rect:
         serializedVersion: 2
-        x: 63
-        y: 384
-        width: 31
-        height: 63
+        x: 134
+        y: 0
+        width: 134
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -300,8 +216,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa0608318d3674a48b5de37005e7af3e
-      internalID: 27281483
+      spriteID: 7c49851e48c4aaa4d82c2bd419511ed3
+      internalID: -672971113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Death Anim_6
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 0
+        width: 134
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 943a93a475ab329409e2a271156ac3e3
+      internalID: -478867149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Death Anim_7
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 0
+        width: 134
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 673279e57dcbef34a99802dc1170212f
+      internalID: -1110155438
       vertices: []
       indices: 
       edges: []
@@ -317,16 +275,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Jump 02-23-2025 03-37-19_0: 2129422746
-      Jump 02-23-2025 03-37-19_1: 1181976786
-      Jump 02-23-2025 03-37-19_2: 330934078
-      Jump 02-23-2025 03-37-19_3: 430978646
-      Jump 02-23-2025 03-37-19_4: -103878032
-      Jump 02-23-2025 03-37-19_5: -1650853336
-      Jump 02-23-2025 03-37-19_6: 483519365
-      Jump 02-23-2025 03-37-19_7: -1627908834
-      Jump 02-23-2025 03-37-19_8: 1560967614
-      Jump 02-23-2025 03-37-19_9: 27281483
+      Death Anim_0: 2101780375
+      Death Anim_1: -1803136560
+      Death Anim_2: 255336179
+      Death Anim_3: -604089165
+      Death Anim_4: 647298587
+      Death Anim_5: -672971113
+      Death Anim_6: -478867149
+      Death Anim_7: -1110155438
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
