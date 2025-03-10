@@ -1,6 +1,8 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.UI;
+
 using Custom.Controller;
 using Custom.Manager;
 
@@ -9,18 +11,23 @@ namespace Custom.UI
     public class VictoryPopup : MonoBehaviour
     {
         [Header("REFERENCES")]
+        [SerializeField] private Image maskImage;
         [SerializeField] private GameObject mainDisplay;
+
+        [Header("POPUP")]
+        [SerializeField] private float easeDuration = 0.1f;
+        [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
 
 
         private void OnEnable()
         {
-            ObjectiveTrackerPopup.OnObjectiveCompleted += () => SetPopupActive(true);
+            ObjectiveTrackerPopup.OnObjectiveCompleted += () => ShowPopup(true);
         }
 
         private void OnDisable()
         {
-            ObjectiveTrackerPopup.OnObjectiveCompleted -= () => SetPopupActive(true);
+            ObjectiveTrackerPopup.OnObjectiveCompleted -= () => ShowPopup(true);
         }
 
         private void Awake()
@@ -30,15 +37,52 @@ namespace Custom.UI
 
 
 
-        private void SetPopupActive(bool _active)
-        {
-            mainDisplay.SetActive(_active);
+        #region Display Popup
 
-            if (_active)
+        private bool popupVisible = false;
+        private Coroutine popupCoroutine;
+
+
+
+        public void ShowPopup(bool _show)
+        {
+            if (popupVisible == _show) return;
+            popupVisible = _show;
+
+            if (popupCoroutine != null) StopCoroutine(popupCoroutine);
+
+            popupCoroutine = StartCoroutine(PopupCoroutine(_show));
+
+            // Pause Controls
+            if (_show)
             {
                 TimeManager.timeScale = 0;
                 PlayerMotorController.PauseMotor(true);
             }
         }
+
+        private IEnumerator PopupCoroutine(bool _show)
+        {
+            float elapsedTime = 0;
+            float targetAmount = _show ? 1 : 0;
+            float orgAmount = maskImage.fillAmount;
+
+            while (elapsedTime < easeDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                maskImage.fillAmount = Mathf.Lerp(orgAmount, targetAmount, easeCurve.Evaluate(elapsedTime / easeDuration));
+                yield return null;
+            }
+
+            SetPopupActive(_show);
+        }
+
+        private void SetPopupActive(bool _active)
+        {
+            maskImage.fillAmount = _active ? 1 : 0;
+            mainDisplay.SetActive(_active);
+        }
+
+        #endregion
     }
 }
