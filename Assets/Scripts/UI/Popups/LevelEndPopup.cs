@@ -59,6 +59,13 @@ namespace Custom.UI
 
         private IEnumerator PopupCoroutine(bool _show)
         {
+            // Pause Controls
+            if (_show)
+            {
+                PlayerMotorController.PauseMotor(true);
+                TimeManager.timeScale = 0;
+            }
+
             yield return new WaitForSeconds(1);
 
             float elapsedTime = 0;
@@ -70,13 +77,6 @@ namespace Custom.UI
                 elapsedTime += Time.deltaTime;
                 maskImage.fillAmount = Mathf.Lerp(orgAmount, targetAmount, easeCurve.Evaluate(elapsedTime / easeDuration));
                 yield return null;
-            }
-
-            // Pause Controls
-            if (_show)
-            {
-                TimeManager.timeScale = 0;
-                PlayerMotorController.PauseMotor(true);
             }
 
             SetPopupActive(_show);
