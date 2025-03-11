@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -29,33 +29,29 @@ namespace Custom.AI.Pathfinding
 
         // Static Baking
         [SerializeField] private LayerMask blockableLayers;
-
-        // Grid Generation
         [SerializeField] private GridGenerationMode gridGenerateMode;
         [SerializeField] private Tilemap tilemap;
         [SerializeField] private Vector2 center;
         [SerializeField] private Vector2 size;
         [SerializeField] private Vector2Int cellCount;
+        [SerializeField] private float minAngle = 0.0f;
+        [SerializeField] private float maxAngle = 60.0f;
 
         // Dynamic Obstacles
         [SerializeField] private BoxCollider2D obstacleDetectBounds;
         [SerializeField] private ObstacleUpdateMode obstacleUpdateMode;
 
-        [Space]
-        [SerializeField] private TileBase testTile;
-
 
 
         private bool isDirty = true;
-        private ContactFilter2D contactFilter;
 
         /*
          * Occupied cells are true, otherwise false.
          */
-        private readonly Dictionary<Vector2Int, bool> grid = new();
+        private readonly Dictionary<Vector2Int, NavCellType> grid = new();
 
         /*
-         * A "node graph" is defined by a List<PathNode>.
+         * A "node graph" is defined by a collection of PathNodes.
          * A "node graph collection" contains node graphs for each of registered agents.
          * Each NavGrid2D have their own collections of node graphs.
          */
@@ -158,11 +154,6 @@ namespace Custom.AI.Pathfinding
 
         private void Awake()
         {
-            contactFilter.useTriggers = true;
-            contactFilter.useDepth = false;
-            contactFilter.useLayerMask = true;
-            contactFilter.layerMask = blockableLayers;
-
             if (!obstacleDetectBounds) obstacleDetectBounds = GetComponent<BoxCollider2D>();
 
             obstacleDetectBounds.isTrigger = true;
@@ -179,15 +170,6 @@ namespace Custom.AI.Pathfinding
             {
                 UpdateObstacle();
             }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                var tilePos = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                tilemap.CompressBounds();
-                tilemap.SetTile(tilePos, tilemap.HasTile(tilePos) ? null : testTile);
-
-                isDirty = true;
-            }
         }
 
         private void LateUpdate()
@@ -195,7 +177,6 @@ namespace Custom.AI.Pathfinding
             if (isDirty)
             {
                 Bake();
-                isDirty = false;
             }
 
             if (obstacleUpdateMode == ObstacleUpdateMode.Late)
@@ -231,7 +212,32 @@ namespace Custom.AI.Pathfinding
         {
             foreach (var node in grid)
             {
-                Gizmos.color = node.Value ? Color.red : Color.green;
+                switch (node.Value)
+                {
+                    case NavCellType.Empty:
+                        Gizmos.color = Color.green;
+                        break;
+
+                    case NavCellType.Flat:
+                        Gizmos.color = Color.red;
+                        break;
+
+                    case NavCellType.OneWay:
+                        Gizmos.color = Color.magenta;
+                        break;
+
+                    case NavCellType.Slope:
+                        Gizmos.color = Color.cyan;
+                        break;
+
+                    case NavCellType.OneWaySlope:
+                        Gizmos.color = Color.yellow;
+                        break;
+
+                    default:
+                        Gizmos.color = Color.white;
+                        break;
+                }
 
                 Gizmos.DrawWireCube(CellToWorld(node.Key).Value, CellSize * 0.95f);
             }
@@ -247,13 +253,14 @@ namespace Custom.AI.Pathfinding
 
             // Generate node grid.
             Vector2Int cellPos;
+
             for (int x = 0; x < CellBounds.x; x++)
             {
                 for (int y = 0; y < CellBounds.y; y++)
                 {
                     cellPos = new(x, y);
 
-                    grid[cellPos] = Physics2D.OverlapBoxAll(CellToWorld(cellPos).Value, CellSize * 0.95f, 0, contactFilter.layerMask).Length > 0;
+                    grid[cellPos] = GenerateCellTypeAt(CellToWorld(cellPos).Value);
                 }
             }
 
@@ -267,7 +274,49 @@ namespace Custom.AI.Pathfinding
                 nodeGraphs[graph.Key].graph = graph.Value.agentClass.ConnectGraphNodes(graph.Value.agentClass.GenerateGraphNodes(this));
             }
 
+            isDirty = false;
+
             OnNavGridUpdated?.Invoke(this);
+        }
+
+        private NavCellType GenerateCellTypeAt(Vector2 _worldLocation)
+        {
+            RaycastHit2D[] hitResult = new RaycastHit2D[] { };
+
+            // Sort cell type.
+            // When defining new cell types, manual definition must be sorted here.
+            hitResult = Physics2D.RaycastAll(_worldLocation + 0.475f * CellSize.y * Vector2.up, Vector2.down, CellSize.y * 0.95f);
+
+            if (hitResult.Length == 0)
+            {
+                return NavCellType.Empty;
+            }
+            else
+            {
+                bool allTrigger = true;
+                bool allEffector = true;
+                bool allSlope = true;
+                float zRotation;
+
+                foreach (var hit in hitResult)
+                {
+                    if (allTrigger && !hit.collider.isTrigger) allTrigger = false;
+                    if (allEffector && !hit.collider.usedByEffector) allEffector = false;
+
+                    zRotation = Mathf.Abs(Vector2.Angle(Vector2.up, hit.normal));
+                    zRotation = Mathf.Min(zRotation, 360 - zRotation);
+                    if (allSlope && (zRotation <= minAngle || zRotation > maxAngle)) allSlope = false; 
+                }
+
+                if (allTrigger)
+                    return NavCellType.Empty;
+                else if (allEffector)
+                    return allSlope ? NavCellType.OneWaySlope : NavCellType.OneWay;
+                else if (allSlope)
+                    return NavCellType.Slope;
+                else 
+                    return NavCellType.Flat;
+            }
         }
         #endregion
 
@@ -379,6 +428,31 @@ namespace Custom.AI.Pathfinding
 
 
         /// <summary>
+        /// Return the generated <see cref="NavCellType"/> at the given location.
+        /// </summary>
+        /// <param name="_cellLocation">    The location in cell space. </param>
+        /// <returns>
+        /// The cell type at the given position if found. Otherwise, return <see cref="NavCellType.None"/>.
+        /// </returns>
+        public NavCellType GetCellTypeAt(Vector2Int _cellLocation)
+        {
+            if (!Contains(_cellLocation)) return NavCellType.None;
+
+            return grid[_cellLocation];
+        }
+
+        /// <inheritdoc cref="Contains(Vector2Int)"/>
+        /// <param name="_cellLocation">    The location in world space. </param>
+        public NavCellType GetCellTypeAt(Vector2 _worldLocation)
+        {
+            if (!Contains(_worldLocation)) return NavCellType.None;
+
+            return grid[WorldToCell(_worldLocation)];
+        }
+
+
+
+        /// <summary>
         /// Check if cell at the given location is occupied or not.
         /// </summary>
         /// <param name="_cellLocation"> Location to check for in cell space. </param>
@@ -390,7 +464,7 @@ namespace Custom.AI.Pathfinding
         {
             if (!Contains(_cellLocation)) return false;
 
-            return grid[_cellLocation];
+            return grid[_cellLocation] != NavCellType.Empty;
         }
 
         /// <param name="_worldLocation"> Location to check for in world space. </param>
@@ -399,7 +473,7 @@ namespace Custom.AI.Pathfinding
         {
             if (!Contains(_worldLocation)) return false;
 
-            return grid[WorldToCell(_worldLocation)];
+            return grid[WorldToCell(_worldLocation)] != NavCellType.Empty;
         }
 
 
@@ -431,7 +505,7 @@ namespace Custom.AI.Pathfinding
             {
                 if (!Contains(location)) continue;
 
-                if (grid[location]) return true;
+                if (grid[location] != NavCellType.Empty) return true;
             }
 
             return false;
@@ -686,6 +760,8 @@ namespace Custom.AI.Pathfinding
         FreeBounds,
     }
 
+
+
     /// <summary>
     /// When should the nav grid re-bake cell grid during obstacle updates.
     /// </summary>
@@ -703,8 +779,47 @@ namespace Custom.AI.Pathfinding
 
         /// <summary>
         /// Updates every FixedUpdate(). <br/>
-        /// <b>NOTE:</b> High performance impact.
+        /// <b>NOTE:</b> High performance impact, use with caution.
         /// </summary>
         Fixed,
+    }
+
+
+
+    /// <summary>
+    /// Defined types for different cells.
+    /// </summary>
+    public enum NavCellType
+    {
+        /// <summary>
+        /// This should never be used. <br/>
+        /// Return value of nav grid functions when a cell is not found.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// A cell that is not overlapped with any collider in blockable layers of the nav grid.
+        /// </summary>
+        Empty,
+
+        /// <summary>
+        /// A cell that is overlapped with a collider in blockable layers of the nav grid.
+        /// </summary>
+        Flat,
+
+        /// <summary>
+        /// A cell that is overlapped with a rotated collider in blockable layers of the nav grid.
+        /// </summary>
+        Slope,
+
+        /// <summary>
+        /// A cell that is overlapped with a collider using a platform effector in blockable layers of the nav grid.
+        /// </summary>
+        OneWay,
+
+        /// <summary>
+        /// A cell that is overlapped with a rotated collider using a platform effector in blockable layers of the nav grid.
+        /// </summary>
+        OneWaySlope,
     }
 }

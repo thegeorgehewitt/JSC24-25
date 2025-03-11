@@ -88,11 +88,6 @@ namespace Custom.Editor
         {
             base.OnInspectorGUI();
 
-            EditorGUILayout.HelpBox(
-                $"This inspector is controlled by a custom editor.\n" +
-                $"Edit this in {GetType()} script.",
-                MessageType.None);
-
             EditorGUILayout.Space();
 
             #region References

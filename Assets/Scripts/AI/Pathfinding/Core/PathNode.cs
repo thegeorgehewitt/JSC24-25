@@ -12,7 +12,9 @@ namespace Custom.AI.Pathfinding
 
         /*
          * Linked nodes are defined by the node location and a movement value.
-         * Movement values can be used by agents to determine to type of movement to perform to reach said node.
+         * Movement values are used to define movement cost between each node.
+         * 
+         * Movement values can also be used by agents to determine to type of movement to perform to reach said node.
          */
         public readonly Dictionary<Vector2Int, int> linkedNodes;
 

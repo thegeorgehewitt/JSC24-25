@@ -13,6 +13,7 @@ namespace Custom.AI.Pathfinding.Internal
         public NativeArray<int> linkedNotesIndex;
         public NativeArray<int> linkedNotesCount;
         public NativeArray<int2> linkedNodes;
+        public NativeArray<int> movementCostMult;
 
         // OUT
         [WriteOnly] public NativeArray<bool> pathFound;
@@ -33,7 +34,7 @@ namespace Custom.AI.Pathfinding.Internal
                 node.parentIndex = -1;
 
                 node.gCost = int.MaxValue;
-                node.hCost = CalculateDistanceCost(nodePos, endPosition);
+                node.hCost = CalculateDistanceCost(nodePos, endPosition, 1);
                 node.CalculateFCost();
 
                 nodeArray[i] = node;
@@ -83,7 +84,7 @@ namespace Custom.AI.Pathfinding.Internal
                     if (closedList.Contains(nextNodeIndex)) continue;
 
                     Node nextNode = nodeArray[nextNodeIndex];
-                    int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNodePosition, nextNodePosition);
+                    int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNodePosition, nextNodePosition, movementCostMult[i]);
 
                     if (tentativeGCost < nextNode.gCost)
                     {
@@ -118,10 +119,10 @@ namespace Custom.AI.Pathfinding.Internal
 
 
 
-        private readonly int CalculateDistanceCost(int2 _from, int2 _to)
+        private readonly int CalculateDistanceCost(int2 _from, int2 _to, int _costMult)
         {
             int2 dist = _to - _from;
-            return math.abs(dist.x) + math.abs(dist.y);
+            return (math.abs(dist.x) + math.abs(dist.y)) * _costMult;
         }
 
         private readonly int GetLowestCostFNodeIndex(NativeList<int> _openList, NativeArray<Node> _nodeArray)

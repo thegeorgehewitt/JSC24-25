@@ -12,11 +12,11 @@ namespace Custom.AI.Pathfinding
     public class WalkJumpAgent : NavGridAgentBase
     {
         /*
-         * Movement types.
+         * Movement costs.
          */
-        protected const int WALK = 0;
-        protected const int JUMP = 1;
+        protected const int WALK = 1;
         protected const int DROP = 2;
+        protected const int JUMP = 3;
 
 
 
@@ -35,27 +35,26 @@ namespace Custom.AI.Pathfinding
             foreach (var node in _nodes)
             {
                 int closestRight = int.MaxValue;
-                Vector2Int closetRightPoint = node;
+                Vector2Int closetRightNode = node;
                 int closestRightMovement = WALK;
 
-                // Find closest point on the same height.
                 foreach (var nextNode in _nodes)
                 {
                     if (node == nextNode) continue;
 
                     // Find closest node to the right.
-                    if (nextNode.y == node.y 
+                    if (nextNode.y == node.y
                         && nextNode.x > node.x
                         && closestRight > nextNode.x
-                        && !navGrid.Occupied(node + Vector2Int.right)
-                        && !navGrid.Occupied(nextNode + Vector2Int.left))
+                        && navGrid.GetCellTypeAt(node + Vector2Int.right) != NavCellType.Flat
+                        && navGrid.GetCellTypeAt(nextNode + Vector2Int.left) != NavCellType.Flat)
                     {
                         // Node on same platform.
                         if (navGrid.Occupied(node + new Vector2Int(1, -1))
                             && navGrid.Occupied(nextNode + new Vector2Int(-1, -1)))
                         {
                             closestRight = nextNode.x;
-                            closetRightPoint = nextNode;
+                            closetRightNode = nextNode;
                             closestRightMovement = WALK;
                         }
 
@@ -66,12 +65,29 @@ namespace Custom.AI.Pathfinding
                             && JumpPossible(node, nextNode, agentData.height / 2.0f))
                         {
                             closestRight = nextNode.x;
-                            closetRightPoint = nextNode;
+                            closetRightNode = nextNode;
                             closestRightMovement = JUMP;
                         }
                     }
 
-                    // Find drop nodes to either sides.
+                    // Find slope node to the right
+                    if (nextNode.x == node.x + 1
+                        && ((nextNode.y == node.y - 1 && !navGrid.Occupied(node + Vector2Int.right))
+                            || (nextNode.y == node.y + 1 && !navGrid.Occupied(nextNode + Vector2Int.left))))
+                    {
+                        var thisType = navGrid.GetCellTypeAt(node + Vector2Int.down);
+                        var nextType = navGrid.GetCellTypeAt(nextNode + Vector2Int.down);
+
+                        // Node on same slope.
+                        if ((thisType == NavCellType.Slope || thisType == NavCellType.OneWaySlope)
+                            || (nextType == NavCellType.Slope || nextType == NavCellType.OneWaySlope))
+                        {
+                            map[node].linkedNodes.TryAdd(nextNode, WALK);
+                            map[nextNode].linkedNodes.TryAdd(node, WALK);
+                        }
+                    }
+
+                    // Find drop nodes.
                     if (nextNode.y >= node.y - navGrid.FloorToCell(agentData.dropHeight) && nextNode.y < node.y)    // In range of drop height
                     {
                         Vector2Int dropNode = node + Vector2Int.right * (int)Mathf.Sign(nextNode.x - node.x);
@@ -85,11 +101,13 @@ namespace Custom.AI.Pathfinding
                             && nextNode.x >= dropNode.x - navGrid.FloorToCell(agentData.jumpDistance) - 1       // In range of horizontal jump to the left
                             && JumpPossible(dropNode, nextNode, agentData.height / 2.0f))                       
                         || (dropTime >= walkTime                                                                // Can drop straight.
-                            && JumpPossible(dropNode, nextNode)))                                               
+                            && JumpPossible(dropNode, nextNode)))
+                        {
                             map[node].linkedNodes.TryAdd(nextNode, DROP);
+                        }                                              
                     }
 
-                    // Find jump nodes to either sides.
+                    // Find jump nodes.
                     if (nextNode.y <= node.y + navGrid.FloorToCell(agentData.jumpHeight) && nextNode.y > node.y // In range of vertical jump
                         && nextNode.x <= node.x + navGrid.FloorToCell(agentData.jumpDistance) + 1               // In range of horizontal jump to the right
                         && nextNode.x >= node.x - navGrid.FloorToCell(agentData.jumpDistance) - 1               // In range of horizontal jump to the left
@@ -101,10 +119,10 @@ namespace Custom.AI.Pathfinding
                 }
 
                 // Add closet right node
-                if (closetRightPoint != node)
+                if (closetRightNode != node)
                 {
-                    map[node].linkedNodes.TryAdd(closetRightPoint, closestRightMovement);
-                    map[closetRightPoint].linkedNodes.TryAdd(node, closestRightMovement);
+                    map[node].linkedNodes.TryAdd(closetRightNode, closestRightMovement);
+                    map[closetRightNode].linkedNodes.TryAdd(node, closestRightMovement);
                 }
             }
 
@@ -134,7 +152,7 @@ namespace Custom.AI.Pathfinding
 
 
 
-        private bool JumpPossible(Vector2Int _startNode, Vector2Int _endNode, float _jumpPeakOffset = 0.0f, float _step = 0.1f)
+        private bool JumpPossible(Vector2Int _startNode, Vector2Int _endNode, float _jumpPeakOffset = 0.0f, float _step = 0.1f, bool _excludeOneWay = true)
         {
             Vector2 start = navGrid.CellToWorld(_startNode).Value;
             Vector2 end = navGrid.CellToWorld(_endNode).Value;
@@ -150,7 +168,23 @@ namespace Custom.AI.Pathfinding
                 tCurrent = tTotal * t;
                 searchLocation = start + (initialVelocity * tCurrent) + (0.5f * tCurrent * tCurrent * agentData.gravityAccel);
 
-                if (navGrid.Occupied(searchLocation, new Vector2(agentData.width, agentData.height) * 0.5f)) return false;
+                if (_excludeOneWay)
+                {
+                    Vector2Int min = navGrid.WorldToCell(searchLocation - agentData.Extents);
+                    Vector2Int max = navGrid.WorldToCell(searchLocation + agentData.Extents);
+
+                    for (int y = min.y; y <= max.y; y++)
+                        for (int x = min.x; x <= max.x; x++)
+                        {
+                            var cellType = navGrid.GetCellTypeAt(new(x, y));
+
+                            if (cellType == NavCellType.Flat || cellType == NavCellType.Slope) return false;
+                        }
+                }
+                else
+                {
+                    if (navGrid.Occupied(searchLocation, agentData.Extents)) return false;
+                }
             }
 
             return true;
@@ -264,13 +298,16 @@ namespace Custom.AI.Pathfinding
             transform.position = _start;
 
             // Start moving horizontally.
-            Vector3 hVel = agentData.speed * Mathf.Sign(_end.x - _start.x) * Vector3.right;
-
-            while (IsGrounded)
+            if (_start.x != _end.x)
             {
-                transform.position += hVel * TimeManager.DeltaTime;
+                Vector3 hVel = agentData.speed * Mathf.Sign(_end.x - _start.x) * Vector3.right;
 
-                yield return null;
+                while (IsGrounded)
+                {
+                    transform.position += hVel * TimeManager.DeltaTime;
+
+                    yield return null;
+                }
             }
 
             // Calculate next movement to test if agent can reach the target destination during falling or not.

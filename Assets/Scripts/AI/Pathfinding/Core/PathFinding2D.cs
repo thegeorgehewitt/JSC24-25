@@ -40,6 +40,7 @@ namespace Custom.AI.Pathfinding
                 out NativeArray<int> linkedNotesIndex,
                 out NativeArray<int> linkedNotesCount,
                 out NativeList<int2> linkedNodes,
+                out NativeList<int> movementCostMult,
                 Allocator.TempJob);
 
             // Execute job.
@@ -51,6 +52,7 @@ namespace Custom.AI.Pathfinding
                 linkedNotesIndex = linkedNotesIndex,
                 linkedNotesCount = linkedNotesCount,
                 linkedNodes = linkedNodes.AsArray(),
+                movementCostMult = movementCostMult.AsArray(),
 
                 pathFound = pathFound,
                 resultPath = resultPath
@@ -80,6 +82,7 @@ namespace Custom.AI.Pathfinding
             linkedNotesIndex.Dispose();
             linkedNotesCount.Dispose();
             linkedNodes.Dispose();
+            movementCostMult.Dispose();
 
             return result;
         }
@@ -92,12 +95,14 @@ namespace Custom.AI.Pathfinding
             out NativeArray<int> _linkedNotesIndex,
             out NativeArray<int> _linkedNotesCount,
             out NativeList<int2> _linkedNodes,
+            out NativeList<int> _movementCostMult,
             Allocator _allocator)
         {
             _nodeArray = new(_graph.Length, _allocator);
             _linkedNotesIndex = new(_graph.Length, _allocator);
             _linkedNotesCount = new(_graph.Length,_allocator);
             _linkedNodes = new(_allocator);
+            _movementCostMult = new(_allocator);
 
             int linkedNodesCounter = 0;
 
@@ -111,9 +116,10 @@ namespace Custom.AI.Pathfinding
 
                 linkedNodesCounter += _linkedNotesCount[i];
 
-                foreach (var linkedNode in _graph[i].linkedNodes.Keys)
+                foreach (var linkedNode in _graph[i].linkedNodes)
                 {
-                    _linkedNodes.Add(new(linkedNode.x, linkedNode.y));
+                    _linkedNodes.Add(new(linkedNode.Key.x, linkedNode.Key.y));
+                    _movementCostMult.Add(linkedNode.Value);
                 }
             }
         }
