@@ -10,18 +10,14 @@ namespace Custom.Interactable
 {
     using Interfaces;
 
-    public class InteractableDoor : InteractableObject, IToggleable, IOverloadable
+    public class InteractableDoor : InteractableObject, IToggleable, IOverloadable, IAnimEvent
     {
         [Header("DOOR REFERENCES")]
         [SerializeField] private Collider2D doorCollider;
-        [SerializeField] private LightCollider2D lightCollider;
+        [SerializeField] private Animator animator;
 
         [Header("OPEN & CLOSE")]
         [SerializeField] private bool open = false;
-        [SerializeField] private Color closedColor = Color.white;
-        [SerializeField] private Color openedColor = Color.white / 2;
-        [SerializeField] private float easeDuration = 0.1f;
-        [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         [Header("DEADLOCK & UNLOCK")]
         [SerializeField] private bool deadlocked = false;
@@ -54,9 +50,7 @@ namespace Custom.Interactable
 
         private void SetOpen(bool _open)
         {
-            spriteRenderer.color = _open ? openedColor : closedColor;
             doorCollider.enabled = !_open;
-            if (lightCollider) lightCollider.enabled = !_open;
 
             UpdateStates();
         }
@@ -78,29 +72,11 @@ namespace Custom.Interactable
             else if (isActiveAndEnabled)
 #endif
             {
-                if (openCoroutine != null) StopCoroutine(openCoroutine);
+                UpdateStates();
 
-                openCoroutine = StartCoroutine(OpenCoroutine(_open));
+                animator.SetTrigger(_open ? "Open" : "Close");
             }
         }
-
-        private IEnumerator OpenCoroutine(bool _open)
-        {
-            float elapsedTime = 0;
-            Color orgColor = spriteRenderer.color;
-            Color targetColor = _open ? openedColor : closedColor;
-
-            while (elapsedTime < easeDuration)
-            {
-                elapsedTime += TimeManager.DeltaTime;
-                spriteRenderer.color = Color.Lerp(orgColor, targetColor, easeCurve.Evaluate(elapsedTime / easeDuration));
-
-                yield return null;
-            }
-
-            SetOpen(_open);
-        }
-
 
 
         public void Toggle()
@@ -137,6 +113,14 @@ namespace Custom.Interactable
 
             SetOpen(open);
             UpdateStates();
+        }
+
+        public void AnimEvent()
+        {
+            SetOpen(open);
+
+            animator.ResetTrigger("Open");
+            animator.ResetTrigger("Close");
         }
     }
 }
