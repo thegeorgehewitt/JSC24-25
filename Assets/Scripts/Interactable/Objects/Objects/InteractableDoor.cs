@@ -55,6 +55,13 @@ namespace Custom.Interactable
             UpdateStates();
         }
 
+        private void UpdateStates(bool _open)
+        {
+            states.Clear();
+            states.Add(open ? "Open" : "Closed");
+            if (deadlocked) states.Add("Deadlocked");
+        }
+
         private void UpdateStates()
         {
             states.Clear();
@@ -74,7 +81,8 @@ namespace Custom.Interactable
             {
                 UpdateStates();
 
-                animator.SetTrigger(_open ? "Open" : "Close");
+                animator.SetBool("Open", _open);
+                animator.SetBool("Close", !_open);
             }
         }
 
@@ -83,7 +91,12 @@ namespace Custom.Interactable
         {
             if (deadlocked) return;
 
+            if (animator.GetBool("Open") || animator.GetBool("Close")) return;
+
             open = !open;
+
+            animator.SetBool("Open", false);
+            animator.SetBool("Close", false);
 
             Open(open);
         }
@@ -119,8 +132,8 @@ namespace Custom.Interactable
         {
             SetOpen(open);
 
-            animator.ResetTrigger("Open");
-            animator.ResetTrigger("Close");
+            animator.SetBool("Open", false);
+            animator.SetBool("Close", false);
         }
     }
 }
