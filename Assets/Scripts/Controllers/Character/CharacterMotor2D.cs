@@ -469,8 +469,16 @@ namespace Custom.Controller
             if (_resetVelocity)
                 velocity = Vector2.zero;
 
-            if (animator && !animator.GetBool("Death"))
-                animator.speed = _pause ? 0.0f : 1.0f;
+            if (animator)
+            {
+                if (!animator.GetBool("IsDead"))
+                    animator.speed = _pause ? 0.0f : 1.0f;
+                else if (!_pause)
+                {
+                    animator.SetBool("IsDead", false);
+                    animator.SetTrigger("Respawn");
+                }
+            }
         }
         #endregion
     }

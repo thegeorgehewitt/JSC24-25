@@ -23,7 +23,7 @@ namespace Custom.Controller
 
             if (animator != null)
             {
-                animator.SetTrigger("Death");
+                animator.SetBool("IsDead", true);
             }
 
             EventAggregator.Publish(new DeathEvent());
