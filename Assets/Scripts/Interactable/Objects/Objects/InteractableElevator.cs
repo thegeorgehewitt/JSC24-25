@@ -20,6 +20,8 @@ namespace Custom.Interactable
         [SerializeField] BoxCollider2D overlapCollider;
         [SerializeField] ElevatorShaft owningShaft;
         [SerializeField] ElevatorPopUp elevatorUI;
+        [SerializeField] Animator animator;
+        [SerializeField] Transform moveToTransform;
 
         [Header("CONTROL")]
         [SerializeField] private bool access = true;
@@ -66,13 +68,25 @@ namespace Custom.Interactable
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (access)
+            {
+                animator.SetBool("Open", true);
+                animator.SetBool("Close", false);
+            }
+
             elevatorUI.ShowPopup(true);
 
-            playerMotor = PlayerMotorController.Instance.ControlledMotor;
+            if (playerMotor == null) playerMotor = PlayerMotorController.Instance.ControlledMotor;
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
+            if (access)
+            {
+                animator.SetBool("Close", true);
+                animator.SetBool("Open", false);
+            }
+
             elevatorUI.ShowPopup(false);
 
             playerMotor = null;
@@ -93,6 +107,12 @@ namespace Custom.Interactable
         {
             this.access = access;
 
+            if (playerMotor != null)
+            {
+                animator.SetBool("Open", access);
+                animator.SetBool("Close", !access);
+            }
+
             UpdateState();
         }
 
@@ -110,6 +130,7 @@ namespace Custom.Interactable
         #endregion
 
         #region Operation
+
         public void OnInputReceived(Key _key, KeyPhase _phase)
         {
             if (_phase != KeyPhase.Pressed) return;
@@ -120,8 +141,6 @@ namespace Custom.Interactable
                 Operate(false);
         }
 
-
-
         private void Operate(bool _goUp)
         {
             if (IsTop && _goUp || IsBottom && !_goUp || states.Contains("Access Denied") ) return;
@@ -129,7 +148,11 @@ namespace Custom.Interactable
             targetTransform = _goUp? owningShaft.GetFloorAbove(elevatorIndex) : owningShaft.GetFloorBelow(elevatorIndex);
 
             if (playerMotor)
+            {
+                playerMotor.GetAnimator().SetBool("UsingElevator", true);
+                owningShaft.PassMotor(elevatorIndex, playerMotor, _goUp);
                 StartCoroutine(MoveToTarget(playerMotor));
+            }
         }
 
         private IEnumerator MoveToTarget(CharacterMotor2D _playerMotor)
@@ -163,10 +186,25 @@ namespace Custom.Interactable
 
             targetTransform = null;
 
-            PlayerMotorController.Possess(_playerMotor);
+
+            _playerMotor.SetPause(false, true);
+            _playerMotor.GetAnimator().ResetTrigger("Land");
+            _playerMotor.GetAnimator().SetBool("UsingElevator", false);
             _playerMotor.SetCollision(true);
-            _playerMotor.SetPause(false);
+
+            yield return new WaitForSeconds(0.4f);
+            PlayerMotorController.Possess(_playerMotor);
             _playerMotor.SetVisibility(true);
+        }
+
+        public Transform GetMoveToTransform()
+        {
+            return moveToTransform;
+        }
+
+        public void SetMotor(CharacterMotor2D _playerMotor)
+        {
+            playerMotor = _playerMotor;
         }
         #endregion
     }

@@ -94,8 +94,8 @@ namespace Custom.UI
             }
             else
             {
-                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.clear : UnityEngine.Color.blue;
-                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.clear : UnityEngine.Color.blue;
+                arrowImages[0].color = connectedElevator.IsTop ? UnityEngine.Color.clear : UnityEngine.Color.white;
+                arrowImages[1].color = connectedElevator.IsBottom ? UnityEngine.Color.clear : UnityEngine.Color.white;
             }
         }
         #endregion

@@ -1,3 +1,4 @@
+using Custom.Controller;
 using System;
 using System.Collections.Generic;
 
@@ -36,7 +37,40 @@ namespace Custom.Interactable
         {
             if (elevators.Count > currentIndex + 1)
             {
-                return elevators[currentIndex + 1].transform;
+                return elevators[currentIndex + 1].GetMoveToTransform();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public Transform GetFloorAbove(int currentIndex)
+        {
+            if (currentIndex > 0)
+            {
+                return elevators[currentIndex - 1].GetMoveToTransform();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public InteractableElevator GetElevatorBelow(int currentIndex)
+        {
+            if (elevators.Count > currentIndex + 1)
+            {
+                return elevators[currentIndex + 1];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public InteractableElevator GetElevatorAbove(int currentIndex)
+        {
+            if (currentIndex > 0)
+            {
+                return elevators[currentIndex - 1];
             }
             else
             {
@@ -44,16 +78,9 @@ namespace Custom.Interactable
             }
         }
 
-        public Transform GetFloorAbove(int currentIndex)
+        public void PassMotor(int currentIndex, CharacterMotor2D playerMotor, bool isUp)
         {
-            if (currentIndex > 0)
-            {
-                return elevators[currentIndex - 1].transform;
-            }
-            else
-            {
-                return null;
-            }
+            (isUp? GetElevatorAbove(currentIndex) : GetElevatorBelow(currentIndex)).SetMotor(playerMotor);
         }
 
         public bool IsBottomFloor(int currentIndex)

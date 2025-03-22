@@ -481,5 +481,10 @@ namespace Custom.Controller
             }
         }
         #endregion
+
+        public Animator GetAnimator()
+        {
+            return animator;
+        }
     }
 }
