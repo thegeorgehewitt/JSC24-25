@@ -6,17 +6,15 @@ using UnityEngine;
 using Custom.Utility;
 using Custom.AI.Pathfinding;
 
-using FSMC.Runtime;
-
 namespace Custom.Interactable.Character
 {
     public abstract class InteractableCharacterBase : InteractableObject
     {
         /// <summary>
-        /// Result of 
+        /// Result of <see cref="AcquireTarget">AcquireTarget</see>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        protected struct AcquireTargetResult<T> where T : Component
+        public struct AcquireTargetResult<T> where T : Component
         {
             /// <summary>
             /// If valid target was found, contains the highest priority target. Other wise <see langword="null"/>.
@@ -39,35 +37,47 @@ namespace Custom.Interactable.Character
 
         [Header("PROXIMITY CHECK")]
         [Tooltip("Detect targets in a radius around the character. This will always be prioritized before FOV detection.")]
-        [SerializeField] protected bool enableProximity = false;
-        [Tooltip("If false, ignore all blockable objects.")]
-        [SerializeField] protected bool useBlockFilter = false;
+        [SerializeField] public bool enableProximity = false;
+        [Tooltip("If true, blockable objects will block proximity check similar to FOV check.\n" +
+                 "If false, ignore all blockable objects.")]
+        [SerializeField] public bool useBlockFilter = false;
         [Tooltip("If target is in this radius from this character, they are automatically detected.")] 
-        [SerializeField] protected float proximityDetectRange = 1.0f;
+        [SerializeField] public float proximityDetectRange = 1.0f;
 
         [Header("FIELD OF VIEW CHECK")]
         [Tooltip("Detect targets in a view cone ")]
-        [SerializeField] protected bool enableFieldOfView = true;
-        [SerializeField] protected float radius = 10.0f;
+        [SerializeField] public bool enableFieldOfView = true;
+        [SerializeField] public float radius = 10.0f;
         [Range(0, 360)]
-        [SerializeField] protected float angle = 20.0f;
+        [SerializeField] public float angle = 20.0f;
         [Range(0, 360)]
-        [SerializeField] protected float localRotation = 0.0f;
+        [SerializeField] public float localRotation = 0.0f;
         [Tooltip("Used to visualize character's FOV only.")]
         [SerializeField] protected FieldOfViewDisplay FOVDisplay;
 
         [Header("BEHAVIOUR")]
-        [SerializeField] protected FSMC_ExecutorCharacter fsm;
+        [SerializeField] protected AI.BehaviourTree.BehaviourTree behaviourTree;
         [SerializeField] protected NavGridAgentBase navAgent;
 
         protected bool activated = true;
 
         public bool Stationary => !navAgent;
 
+        public NavGridAgentBase NavAgent => navAgent;
+
 
 
 #if UNITY_EDITOR
         protected virtual void OnValidate()
+        {
+            if (FOVDisplay)
+            {
+                FOVDisplay.viewCone = GetViewCone();
+                FOVDisplay.blockableFilter = visionBlockFilter;
+            }
+        }
+
+        protected virtual void Update()
         {
             if (FOVDisplay)
             {
@@ -88,7 +98,7 @@ namespace Custom.Interactable.Character
         /// <returns>
         /// See <see cref="AcquireTargetResult"/> for more detailed info.
         /// </returns>
-        protected AcquireTargetResult<T> AcquireTarget<T>(IComparer<T> _comparer)
+        public AcquireTargetResult<T> AcquireTarget<T>(IComparer<T> _comparer)
             where T : Component
         {
             AcquireTargetResult<T> result = new();

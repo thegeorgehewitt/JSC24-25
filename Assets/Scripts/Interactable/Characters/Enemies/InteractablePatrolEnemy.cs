@@ -1,33 +1,27 @@
-using System.Collections.Generic;
-
 using UnityEngine;
 
-using Custom.Manager;
-using Custom.AI.Pathfinding;
-using Custom.Interactable.Interfaces;
 using Custom.Controller;
+using Custom.AI.Pathfinding;
+using Custom.AI.BehaviourTree;
+using Custom.Interactable.Interfaces;
 using Custom.Manager.EventHandling;
 
 namespace Custom.Interactable.Character.Enemy
 {
-    [RequireComponent(typeof(NavGridAgentBase))]
+    [RequireComponent(typeof(NavGridAgentBase), typeof(PatrolEnemyBT))]
     public class InteractablePatrolEnemy : InteractableEnemyBase, IAttackableEnemy
     {
-        [SerializeField] private List<Vector3> patrolPoints = new();
-        [SerializeField] private float maxLeashDistance = 0.0f;
+        [SerializeField] private Vector3[] patrolPoints = new Vector3[] { };
+        [SerializeField] private PatrolMode patrolMode;
 
-        private int patrolIndex = 0;
+        public Vector3[] PatrolPoints => patrolPoints;
 
 
 
         private void Awake()
         {
             if (!navAgent) navAgent = GetComponent<NavGridAgentBase>();
-        }
-
-        private void Update()
-        {
-            
+            if (!behaviourTree) behaviourTree = GetComponent<PatrolEnemyBT>();
         }
 
 
@@ -36,5 +30,30 @@ namespace Custom.Interactable.Character.Enemy
         {
             EventAggregator.Publish(new IAttackableEnemy.AttackEvent(_target));
         }
+    }
+
+
+
+    /// <summary>
+    /// How a character patrol.
+    /// </summary>
+    public enum PatrolMode
+    {
+        /// <summary>
+        /// The character moves from first to last point. <br/>
+        /// Loops back to the first patrol point once the end point is reached.
+        /// </summary>
+        Loop,
+
+        /// <summary>
+        /// The character moves from first to last point. <br/>
+        /// Moves back from last point to first point once the end point is reached.
+        /// </summary>
+        PingPong,
+
+        /// <summary>
+        /// The character moves randomly between a current point and its connected points. <br/>
+        /// </summary>
+        Random,
     }
 }

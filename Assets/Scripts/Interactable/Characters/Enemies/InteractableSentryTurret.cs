@@ -71,24 +71,19 @@ namespace Custom.Interactable.Character.Enemy
         }
 
         #region Targeting 
-        private void UpdateCurrentTarget()
+        protected override void OnPlayerDetected()
         {
-            scanResult = AcquireTarget(DefaultComparer);
-
-            if (scanResult.target)
-            {
-                if (scanResult.target.Visibility > minDetectLevel || scanResult.proximityChecked)
-                {
-                    SetLineTargetPosition(scanResult.target.transform.position);
-                    LockOn(true);
-                }
-            }
-            else
-            {
-                SetLineTargetPosition(GetLaserEndPos());
-                LockOn(false);
-            }
+            SetLineTargetPosition(lastScanResult.target.transform.position);
+            LockOn(true);
         }
+
+        protected override void OnPlayerLost()
+        {
+            SetLineTargetPosition(GetLaserEndPos());
+            LockOn(false);
+        }
+
+
 
         public override ViewCone GetViewCone()
         {
@@ -151,7 +146,7 @@ namespace Custom.Interactable.Character.Enemy
 
             if (_lockOn)
             {
-                Attack(scanResult.target);
+                Attack(lastScanResult.target);
             }
         }
         #endregion

@@ -93,7 +93,7 @@ namespace Custom.AI.Pathfinding
                         Vector2Int dropNode = node + Vector2Int.right * (int)Mathf.Sign(nextNode.x - node.x);
                         Vector2 dropPos = navGrid.CellToWorld(dropNode).Value;
                         Vector2 landPos = navGrid.CellToWorld(nextNode).Value;
-                        float dropTime = EstimateDropDuration(node, landPos);
+                        float dropTime = EstimateDropDuration(dropPos, landPos);
                         float walkTime = Mathf.Abs(dropPos.x - landPos.x) / agentData.speed;
 
                         if ((dropTime < walkTime                                                                // Need jumping
@@ -239,7 +239,7 @@ namespace Custom.AI.Pathfinding
 
 
 
-        protected void StopMoving()
+        protected void StopMoving(bool _pathCompleted)
         {
             if (Movement != WALK) return;
 
@@ -274,7 +274,7 @@ namespace Custom.AI.Pathfinding
             float duration = (_end - _start).magnitude / agentData.speed;
             while (elapsed < duration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += TimeManager.DeltaTime;
                 transform.position = Vector2.MoveTowards(transform.position, _end, agentData.speed * TimeManager.DeltaTime);
                 yield return null;
             }
@@ -329,7 +329,7 @@ namespace Custom.AI.Pathfinding
             {
                 transform.position += currentVelocity * TimeManager.DeltaTime;
 
-                elapsed += Time.deltaTime;
+                elapsed += TimeManager.DeltaTime;
                 currentVelocity = agentData.gravityAccel * elapsed + initialVelocity;
 
                 yield return null;
@@ -372,7 +372,7 @@ namespace Custom.AI.Pathfinding
             {
                 transform.position += currentVelocity * TimeManager.DeltaTime;
 
-                elapsed += Time.deltaTime;
+                elapsed += TimeManager.DeltaTime;
                 currentVelocity = agentData.gravityAccel * elapsed + initialVelocity;
 
                 yield return null;

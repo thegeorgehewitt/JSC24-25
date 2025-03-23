@@ -4,19 +4,15 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using Custom.Attribute;
-using Custom.Manager;
-
 namespace Custom.AI.Pathfinding
 {
     public abstract class NavGridAgentBase : MonoBehaviour
     {
-        public event Action OnPathFindCanceled;
+        public event Action<bool> OnPathFindCanceled;
 
 
 
         [Header("NAVIGATION")]
-        [ReadOnly]
         [SerializeField] protected NavGrid2D navGrid;
         [SerializeField] protected NavGridAgentData agentData;
 
@@ -52,6 +48,11 @@ namespace Custom.AI.Pathfinding
         public List<Vector2Int> CurrentPath { get; private set; } = new();
 
         /// <summary>
+        /// Get the current following node if valid, otherwise return the closest path node to the agent position.
+        /// </summary>
+        public Vector2Int CurrentNode => currentNode != new Vector2Int(-1, -1) ? currentNode : FindClosestPathNode(transform.position).Value.position;
+
+        /// <summary>
         /// Use this value in child classes to control how movement is handled during pathfinding. <br/><br/>
         /// While <see langword="true"/>: pathfinding logic will pause to wait for movement. <br/>
         /// While <see langword="false"/>: pathfinding logic will call <see cref="MoveFromTo(Vector2Int, Vector2Int, int)"/> to next node in current path.
@@ -63,6 +64,11 @@ namespace Custom.AI.Pathfinding
         /// A value of -1 means the agent is not following a path.
         /// </summary>
         protected int Movement { get; private set; }
+
+        /// <summary>
+        /// Get the current targeted location for pathfinding.
+        /// </summary>
+        protected Vector3 TargetLocation { get; private set; }
 
 
 
@@ -92,6 +98,11 @@ namespace Custom.AI.Pathfinding
 
         protected virtual void Start()
         {
+            foreach (var collider in Physics2D.OverlapPointAll(transform.position))
+            {
+                if (collider.gameObject.TryGetComponent(out NavGrid2D asNavGrid)) navGrid = asNavGrid;
+            }
+
             if (navGrid != null)
             {
                 navGrid.RegisterAgent(this);
@@ -207,7 +218,7 @@ namespace Custom.AI.Pathfinding
             if (!startNode.HasValue) return false;
 
             var endNode = FindClosestPathNode(navGrid.CellToWorld(targetCell).Value);
-            if (!startNode.HasValue) return false;
+            if (!endNode.HasValue) return false;
 
             // Get new path.
             List<Vector2Int> newPath = new();
@@ -219,6 +230,8 @@ namespace Custom.AI.Pathfinding
                 newPath.RemoveAt(0);
 
             StartFollowPath(newPath);
+
+            TargetLocation = _worldLocation;
 
             return true;
         }
@@ -268,7 +281,7 @@ namespace Custom.AI.Pathfinding
         #endregion
 
         #region Movement
-        private Vector2Int currentNode = Vector2Int.zero;
+        private Vector2Int currentNode = new(-1, -1);
 
         private Coroutine followPathCoroutine;
 
@@ -277,7 +290,8 @@ namespace Custom.AI.Pathfinding
         /// <summary>
         /// Stop following <see cref="CurrentPath"/>.
         /// </summary>
-        protected void StopFollowPath()
+        /// <param name="_pathCompleted"> Is follow path stopped after reaching the final node. </param>
+        protected void StopFollowPath(bool _pathCompleted)
         {
             if (!FollowingPath) return;
 
@@ -290,7 +304,7 @@ namespace Custom.AI.Pathfinding
             FollowingPath = false;
             Movement = -1;
 
-            OnPathFindCanceled?.Invoke();
+            OnPathFindCanceled?.Invoke(_pathCompleted);
         }
 
         /// <summary>
@@ -349,7 +363,7 @@ namespace Custom.AI.Pathfinding
 
             CurrentPath.Clear();
 
-            StopFollowPath();
+            StopFollowPath(true);
         }
         #endregion
     }

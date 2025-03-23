@@ -223,7 +223,7 @@ namespace Custom.AI.Pathfinding
                         break;
 
                     case NavCellType.OneWay:
-                        Gizmos.color = Color.magenta;
+                        Gizmos.color = Color.yellow;
                         break;
 
                     case NavCellType.Slope:
@@ -231,7 +231,7 @@ namespace Custom.AI.Pathfinding
                         break;
 
                     case NavCellType.OneWaySlope:
-                        Gizmos.color = Color.yellow;
+                        Gizmos.color = Color.magenta;
                         break;
 
                     default:
@@ -281,11 +281,9 @@ namespace Custom.AI.Pathfinding
 
         private NavCellType GenerateCellTypeAt(Vector2 _worldLocation)
         {
-            RaycastHit2D[] hitResult = new RaycastHit2D[] { };
-
             // Sort cell type.
             // When defining new cell types, manual definition must be sorted here.
-            hitResult = Physics2D.RaycastAll(_worldLocation + 0.475f * CellSize.y * Vector2.up, Vector2.down, CellSize.y * 0.95f);
+            RaycastHit2D[] hitResult = Physics2D.RaycastAll(_worldLocation + 0.475f * CellSize.y * Vector2.up, Vector2.down, CellSize.y * 0.95f, blockableLayers);
 
             if (hitResult.Length == 0)
             {

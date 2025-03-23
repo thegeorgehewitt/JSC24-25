@@ -1,10 +1,8 @@
-using System;
-
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 
 using Custom.AI.Pathfinding;
-using UnityEngine;
 
 namespace Custom.Editor
 {
@@ -137,6 +135,13 @@ namespace Custom.Editor
                 {
                     case (int)GridGenerationMode.Tilemap:
                         EditorGUILayout.PropertyField(tilemap);
+
+                        if (tilemap.objectReferenceValue == null)
+                        {
+                            EditorGUILayout.HelpBox(
+                                "Tilemap reference is empty. This nav grid is invalid and will create unexpected behaviour.",
+                                MessageType.Error);
+                        }
                         break;
 
                     case (int)GridGenerationMode.FreeBounds:

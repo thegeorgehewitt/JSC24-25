@@ -29,7 +29,7 @@ namespace Custom.Editor
         private SerializedProperty localRotation;
         private SerializedProperty FOVDisplay;
 
-        private SerializedProperty fsm;
+        private SerializedProperty behaviourTree;
         private SerializedProperty navAgent;
 
 
@@ -61,7 +61,7 @@ namespace Custom.Editor
             FOVDisplay = AssignToProperty("FOVDisplay");
 
             navAgent = AssignToProperty("navAgent");
-            fsm = AssignToProperty("fsm");
+            behaviourTree = AssignToProperty("behaviourTree");
         }
 
         private void InitAnimValues()
@@ -190,7 +190,7 @@ namespace Custom.Editor
                 #endregion
 
                 #region Behaviour
-                EditorGUILayout.PropertyField(fsm, new GUIContent("FSM Executor"));
+                EditorGUILayout.PropertyField(behaviourTree);
                 EditorGUILayout.PropertyField(navAgent);
 
                 if (!navAgent.objectReferenceValue)

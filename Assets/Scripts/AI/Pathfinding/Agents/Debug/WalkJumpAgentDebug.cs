@@ -16,11 +16,11 @@ namespace Custom.AI.Pathfinding
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                drawEqual = !drawEqual;
+                drawWalk = !drawWalk;
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                drawHigher = !drawHigher;
+                drawJump = !drawJump;
             if (Input.GetKeyDown(KeyCode.Alpha3))
-                drawLower = !drawLower;
+                drawDrop = !drawDrop;
 
             if (Input.GetKeyDown(KeyCode.Q))
                 drawAllNodes = !drawAllNodes;
@@ -34,16 +34,6 @@ namespace Custom.AI.Pathfinding
             {
                 if (isStopped)
                     StartFollowCursor();
-                else
-                    StopDebuggingPathFind();
-
-                isStopped = !isStopped;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (isStopped)
-                    StartRandomPathfinding();
                 else
                     StopDebuggingPathFind();
 
@@ -100,10 +90,10 @@ namespace Custom.AI.Pathfinding
             if (FollowingPath)
             {
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawSphere(targetPos, 0.2f);
+                Gizmos.DrawSphere(TargetLocation, 0.2f);
                 if (CurrentPath.Count > 0)
                 {
-                    Gizmos.DrawLine(targetPos, navGrid.CellToWorld(CurrentPath.Last()).Value);
+                    Gizmos.DrawLine(TargetLocation, navGrid.CellToWorld(CurrentPath.Last()).Value);
                 }
 
                 Gizmos.color = Color.yellow;
@@ -125,9 +115,9 @@ namespace Custom.AI.Pathfinding
 
 
         #region Editor Debug
-        private bool drawEqual = true;
-        private bool drawHigher = true;
-        private bool drawLower = true;
+        private bool drawWalk = true;
+        private bool drawJump = true;
+        private bool drawDrop = true;
         private bool drawAllNodes = true;
         private int drawNodeIndex = 0;
 
@@ -145,7 +135,7 @@ namespace Custom.AI.Pathfinding
 
                 if (_node.linkedNodes[linkedNode] == DROP)
                 {
-                    Gizmos.color = drawLower ? new Color(0, 1, 0, 0.5f) : Color.clear;
+                    Gizmos.color = drawDrop ? new Color(0, 1, 0, 0.5f) : Color.clear;
                     Gizmos.DrawLine(navGrid.CellToWorld(_node.position).Value, navGrid.CellToWorld(linkedNode).Value);
                 }
                 else if (_node.linkedNodes[linkedNode] == JUMP)
@@ -153,11 +143,11 @@ namespace Custom.AI.Pathfinding
                     Vector2 start = navGrid.CellToWorld(_node.position).Value;
                     Vector2 end = navGrid.CellToWorld(linkedNode).Value;
 
-                    DrawJumpCurve(start, end, 0.05f, drawHigher ? new Color(1, 0, 0, 0.5f) : Color.clear);
+                    DrawJumpCurve(start, end, 0.05f, drawJump ? new Color(1, 0, 0, 0.5f) : Color.clear);
                 }
                 else
                 {
-                    Gizmos.color = drawEqual ? new Color(0, 0, 1, 0.5f) : Color.clear;
+                    Gizmos.color = drawWalk ? new Color(0, 0, 1, 0.5f) : Color.clear;
                     Gizmos.DrawLine(navGrid.CellToWorld(_node.position).Value, navGrid.CellToWorld(linkedNode).Value);
                 }
             }
@@ -208,7 +198,7 @@ namespace Custom.AI.Pathfinding
             if (pathfindingDebugCoroutine != null)
                 StopCoroutine(pathfindingDebugCoroutine);
 
-            StopFollowPath();
+            StopFollowPath(false);
 
             followingCursor = false;
         }

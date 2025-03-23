@@ -6,6 +6,10 @@ namespace Custom.Manager
     {
         public static TimeManager Instance;
 
+#if UNITY_EDITOR
+        [SerializeField] private float timeScale = 1.0f;
+#endif
+
         /// <summary>
         /// Use this property instead of directly using <see cref="Time.deltaTime"/> to enable
         /// other features of <see cref="TimeManager"> like time pause or slow-mo.
@@ -45,5 +49,14 @@ namespace Custom.Manager
             TimeScale = Time.timeScale;
             originalTimeScale = Time.timeScale;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (!Application.isPlaying) return;
+
+            TimeScale = timeScale;
+        }
+#endif
     }
 }
