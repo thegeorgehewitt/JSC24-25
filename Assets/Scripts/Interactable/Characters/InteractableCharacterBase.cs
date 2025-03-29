@@ -189,5 +189,17 @@ namespace Custom.Interactable.Character
             currentAnimatorState = _animatorState;
             OnAnimatorStateUpdated(currentAnimatorState);
         }
+
+        public void UpdateFlip()
+        {
+            if (localRotation < 180)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else
+            {
+                spriteRenderer.flipX = false;
+            }
+        }
     }
 }

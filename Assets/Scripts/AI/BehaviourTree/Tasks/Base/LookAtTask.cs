@@ -46,6 +46,8 @@ namespace Custom.AI.BehaviourTree
 
             character.localRotation = Mathf.MoveTowardsAngle(character.localRotation, targetRotation, turnSpeed * TimeManager.DeltaTime);
 
+            character.UpdateFlip();
+
             return character.localRotation == targetRotation ? NodeState.Success : NodeState.Running;
         }
 

@@ -47,7 +47,10 @@ namespace Custom.Interactable
         }
 #endif
 
-
+        private void Awake()
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
 
         public virtual void Interact(int _option)
         {
