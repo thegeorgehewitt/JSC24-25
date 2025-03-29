@@ -30,7 +30,11 @@ namespace Custom.AI.BehaviourTree
                     (
                         new Parallel // Move To The Player & Look At The Player
                         (
-                            new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION)),
+                            new Sequencer
+                            (
+                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.WALK_STATE),
+                                new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION))
+                            ),
                             new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 2000.0f)
                         ),
 
@@ -40,6 +44,7 @@ namespace Custom.AI.BehaviourTree
                             (
                                 new Sequencer
                                 (
+                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.IDLE_STATE),
                                     new GetRandomAngleTask(LOOK_AT_ANGLE, 270.0f, 300.0f),
                                     new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 270.0f),
                                     new WaitTask(0.5f, 0.8f)
@@ -75,7 +80,11 @@ namespace Custom.AI.BehaviourTree
                         (
                             new Parallel
                             (
-                                new MoveToTask(enemy.NavAgent, Bind<Vector3>(PATROL_LOCATION)),
+                                new Sequencer
+                                (
+                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.WALK_STATE),
+                                    new MoveToTask(enemy.NavAgent, Bind<Vector3>(PATROL_LOCATION))
+                                ),
                                 new LookAtTask(enemy, Bind<Vector3>(MOVING_DIRECTION), true, 720.0f)
                             ),
                             new GetMovingDirectionTask(enemy.NavAgent, MOVING_DIRECTION)
@@ -85,6 +94,7 @@ namespace Custom.AI.BehaviourTree
                         (
                             new Sequencer
                             (
+                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.IDLE_STATE),
                                 new GetRandomAngleTask(LOOK_AT_ANGLE, 270.0f, 300.0f),
                                 new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360.0f),
                                 new WaitTask(1.0f, 1.5f)
