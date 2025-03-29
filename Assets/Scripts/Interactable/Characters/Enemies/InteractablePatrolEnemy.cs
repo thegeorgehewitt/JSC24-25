@@ -20,6 +20,7 @@ namespace Custom.Interactable.Character.Enemy
         public const string IDLE_STATE = "Idle";
         public const string WALK_STATE = "Walk";
         public const string JUMP_STATE = "Jump";
+        public const string LAND_STATE = "Land";
         public const string FIRE_STATE = "Fire";
         public const string HACKED_STATE = "Hacked";
 
@@ -52,6 +53,9 @@ namespace Custom.Interactable.Character.Enemy
                     break;
                 case JUMP_STATE:
                     animator.SetTrigger(JUMP_STATE);
+                    break;
+                case LAND_STATE:
+                    animator.SetTrigger(LAND_STATE);
                     break;
                 case FIRE_STATE:
                     animator.SetTrigger(FIRE_STATE);

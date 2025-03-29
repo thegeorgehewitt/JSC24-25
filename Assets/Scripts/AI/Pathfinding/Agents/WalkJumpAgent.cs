@@ -6,6 +6,7 @@ using UnityEngine;
 
 using Custom.Utility;
 using Custom.Manager;
+using Custom.Interactable.Character.Enemy;
 
 namespace Custom.AI.Pathfinding
 {
@@ -18,10 +19,11 @@ namespace Custom.AI.Pathfinding
         protected const int DROP = 2;
         protected const int JUMP = 3;
 
-
+        private Animator animator;
 
         private void Awake()
         {
+            animator = GetComponent<Animator>();
             OnPathFindCanceled += StopMoving;
         }
 
@@ -288,6 +290,7 @@ namespace Custom.AI.Pathfinding
 
         private void Drop(Vector2 _start, Vector2 _end)
         {
+            animator.SetTrigger("Jump");
             movementCoroutine = StartCoroutine(DropCoroutine(_start, _end));
         }
 
@@ -337,6 +340,8 @@ namespace Custom.AI.Pathfinding
 
             transform.position = _end;
 
+            animator.SetTrigger("Land");
+
             yield return new WaitForSeconds(_waitTime);
 
             Moving = false;
@@ -353,6 +358,7 @@ namespace Custom.AI.Pathfinding
 
         private void Jump(Vector2 _start, Vector2 _end)
         {
+            animator.SetTrigger("Jump");
             movementCoroutine = StartCoroutine(JumpCoroutine(_start, _end));
         }
 
@@ -368,6 +374,8 @@ namespace Custom.AI.Pathfinding
             Vector3 currentVelocity = initialVelocity;
             float elapsed = 0;
 
+
+
             while (elapsed < jumpDuration)
             {
                 transform.position += currentVelocity * TimeManager.DeltaTime;
@@ -379,6 +387,8 @@ namespace Custom.AI.Pathfinding
             }
 
             transform.position = _end;
+
+            animator.SetTrigger("Land");
 
             yield return new WaitForSeconds(_waitTime);
 
