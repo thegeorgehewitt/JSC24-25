@@ -33,10 +33,7 @@ namespace Custom.AI.BehaviourTree
                 agent.OnPathFindCanceled += OnPathFindCanceled;
 
             if (movingToTarget)
-            {
-                Debug.Log(targetLocation.Value);
                 return NodeState.Running;
-            }
 
             agent.OnPathFindCanceled -= OnPathFindCanceled;
             return pathCompleted ? NodeState.Success : NodeState.Failure;
