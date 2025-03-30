@@ -1,3 +1,4 @@
+using Custom.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Custom.Checkpoint
             if (collision.CompareTag("Player"))
             {
                 CheckpointManager.Instance.UpdateCheckpoint(transform.position);
+                SaveSystem.Instance.SaveGame();
             }
         }
     }

@@ -1,4 +1,5 @@
 using Custom.Controller;
+using Custom.Manager;
 using Custom.Manager.EventHandling;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using static Custom.Controller.CharacterControlDamageable;
 
 namespace Custom.Checkpoint
 {
-    public class CheckpointManager : MonoBehaviour
+    public class CheckpointManager : MonoBehaviour, IPersistent
     {
         public static CheckpointManager Instance;
 
@@ -39,7 +40,11 @@ namespace Custom.Checkpoint
 
         private void Start()
         {
-            currentCheckpoint = PlayerMotorController.Instance.transform.position;
+            if (currentCheckpoint == Vector3.zero)
+            {
+                currentCheckpoint = PlayerMotorController.Instance.transform.position;
+            }
+            ReloadCheckpoint();
         }
 
         public void UpdateCheckpoint(Vector3 newCheckpoint)
@@ -50,6 +55,7 @@ namespace Custom.Checkpoint
         public void ReloadCheckpoint()
         {
             PlayerMotorController.PauseMotor(false, true);
+            SaveSystem.Instance.LoadGame();
             PlayerMotorController.Instance.transform.position = currentCheckpoint;
         }
 
@@ -65,6 +71,29 @@ namespace Custom.Checkpoint
             yield return new WaitForSeconds(1);
 
             ReloadCheckpoint();
+        }
+
+        public void LoadData(PersistentData data)
+        {
+            if (data != null && data.checkpoint != Vector3.zero)
+            {
+                currentCheckpoint = data.checkpoint;
+            }
+        }
+
+        public void SaveData(PersistentData data)
+        {
+            data.checkpoint = currentCheckpoint;
+        }
+
+        public void GenerateGuid()
+        {
+            // no implementation needed
+        }
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
         }
     }
 }

@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elevators: []
   elevatorPrefab: {fileID: 0}
+  access: 0
+  Key: 
 --- !u!1001 &3098786370885572707
 PrefabInstance:
   m_ObjectHideFlags: 0

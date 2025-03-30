@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 using Custom.Scriptable;
+using System;
 
 namespace Custom.Interactable
 {
@@ -36,6 +37,7 @@ namespace Custom.Interactable
         public InteractableObjectData ObjectData { get { return objectData; } }
         public ObjectInteractionData[] InteractionData { get { return interactionData.Select(e => e.data).ToArray(); } }
         public string[] States { get { return states.ToArray(); } }
+
 
 
 

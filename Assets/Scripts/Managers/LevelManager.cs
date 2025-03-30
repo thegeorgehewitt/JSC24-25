@@ -12,11 +12,11 @@ namespace Custom.Manager
     // since we need to call functions with UnityEvent in the inspector.
     // (And for some reason there is no static function call in Unity yet)
 
-    public class LevelManager : MonoBehaviour
+    public class LevelManager : MonoBehaviour, IPersistent
     {
         public static LevelManager Instance;
 
-
+        public static string savedScene;
 
         private void Awake()
         {
@@ -50,6 +50,29 @@ namespace Custom.Manager
 #else
             Application.Quit();
 #endif
+        }
+
+        public void LoadData(PersistentData data)
+        {
+            if (data != null && data.scene != "")
+            {
+                savedScene = data.scene;
+            }
+        }
+
+        public void SaveData(PersistentData data)
+        {
+           data.scene = SceneManager.GetActiveScene().name;
+        }
+
+        public GameObject GetGameObject()
+        {
+            return this.gameObject;
+        }
+
+        public void GenerateGuid()
+        {
+            // no implementation needed
         }
     }
 }

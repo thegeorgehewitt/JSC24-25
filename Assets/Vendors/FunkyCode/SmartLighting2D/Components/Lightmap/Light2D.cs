@@ -5,11 +5,13 @@ using UnityEngine;
 using FunkyCode.LightingSettings;
 using FunkyCode.LightSettings;
 using FunkyCode.EventHandling;
+using System;
+using Custom.Manager;
 
 namespace FunkyCode
 {
 	[ExecuteInEditMode]
-	public class Light2D : LightingMonoBehaviour
+    public class Light2D : LightingMonoBehaviour, IPersistent
 	{
 		public enum LightType
 		{
@@ -105,7 +107,10 @@ namespace FunkyCode
 		private LightBuffer2D buffer = null;
 		private static Sprite defaultSprite = null;
 
-		public LightBuffer2D Buffer
+        // Saving
+        public string Key = Guid.NewGuid().ToString();
+
+        public LightBuffer2D Buffer
 		{
 			get => buffer;
 			set => buffer = value;
@@ -553,5 +558,53 @@ namespace FunkyCode
 				break;
 			}
 		}
-	}
+
+        #region Save/Load
+
+        public void LoadData(PersistentData data)
+        {
+            if (data != null)
+            {
+				LightData savedStateData = data.lightStates.Find(MatchesKey);
+
+                if (savedStateData != default(LightData))
+                {
+                    this.enabled = savedStateData.on;
+                }
+
+            }
+        }
+
+        public void SaveData(PersistentData data)
+        {
+            LightData savedStateData = data.lightStates.Find(MatchesKey);
+
+            if (savedStateData != default(LightData))
+            {
+                savedStateData.on = this.isActiveAndEnabled;
+            }
+            else
+            {
+                data.lightStates.Add(new LightData { Key = this.Key, on = this.isActiveAndEnabled });
+            }
+        }
+
+        protected bool MatchesKey(LightData data)
+        {
+            if (data == null) return false;
+            return data.Key == Key;
+        }
+
+		public void GenerateGuid()
+		{
+			Key = Guid.NewGuid().ToString();
+		}
+
+        public GameObject GetGameObject()
+        {
+			return this.gameObject;
+        }
+
+        #endregion
+    }
 }
