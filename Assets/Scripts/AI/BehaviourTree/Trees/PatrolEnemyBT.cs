@@ -22,13 +22,13 @@ namespace Custom.AI.BehaviourTree
 
         protected override Node SetupTree()
         {
-            return new Parallel
+            return new SimpleParallel
             (
                 new Selector
                 (
                     new Sequencer // Move To Last Seen Location
                     (
-                        new Parallel // Move To The Player & Look At The Player
+                        new SimpleParallel // Move To The Player & Look At The Player
                         (
                             new Sequencer
                             (
@@ -76,9 +76,9 @@ namespace Custom.AI.BehaviourTree
                     (
                         new Iterator<Vector3>(0, PATROL_LOCATION, enemy.PatrolPoints),
 
-                        new Parallel // Move & Look At Moving Direction
+                        new SimpleParallel // Move & Look At Moving Direction
                         (
-                            new Parallel
+                            new SimpleParallel
                             (
                                 new Sequencer
                                 (
