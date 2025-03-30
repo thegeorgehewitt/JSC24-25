@@ -211,6 +211,12 @@ namespace Custom.Interactable.Character.Enemy
             // Recruit functionality (coroutine)
             Debug.Log($"Turret ({name}): Recruited.");
         }
+
         #endregion
+
+        public override void OnAnimatorStateUpdated(string _state)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

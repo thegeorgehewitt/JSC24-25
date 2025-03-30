@@ -58,6 +58,7 @@ namespace Custom.Interactable.Character
         [Header("BEHAVIOUR")]
         [SerializeField] protected AI.BehaviourTree.BehaviourTree behaviourTree;
         [SerializeField] protected NavGridAgentBase navAgent;
+        [SerializeField] protected Animator animator;
 
         protected bool activated = true;
 
@@ -175,6 +176,30 @@ namespace Custom.Interactable.Character
                 Radius = radius,
                 Rotation = localRotation + transform.eulerAngles.z
             };
+        }
+
+        public abstract void OnAnimatorStateUpdated(string _state);
+
+        private string currentAnimatorState;
+
+        public void SetAnimstorState(string _animatorState)
+        {
+            if (currentAnimatorState == _animatorState) return;
+
+            currentAnimatorState = _animatorState;
+            OnAnimatorStateUpdated(currentAnimatorState);
+        }
+
+        public void UpdateFlip()
+        {
+            if (localRotation < 180)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else
+            {
+                spriteRenderer.flipX = false;
+            }
         }
     }
 }
