@@ -4,7 +4,7 @@ using Custom.AI.Pathfinding;
 
 namespace Custom.AI.BehaviourTree
 {
-    public class GetMovingDirectionTask : Node
+    public class GetMovingDirectionTask : Task
     {
         private NavGridAgentBase agent;
         private string outputKey;
@@ -26,7 +26,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             currentPosition = agent.transform.position;
 

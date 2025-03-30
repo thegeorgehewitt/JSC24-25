@@ -1,10 +1,15 @@
+using System;
+
 using UnityEngine;
 
 namespace Custom.AI.BehaviourTree
 {
     public abstract class BehaviourTree : MonoBehaviour
     {
+        public event Action<Blackboard, Node> OnTaskRunning;
+
         private Node root = null;
+        private Node runningTask;
 
         public Blackboard Blackboard { get; private set; } = new();
 
@@ -15,12 +20,24 @@ namespace Custom.AI.BehaviourTree
             Blackboard.Clear();
 
             root = SetupTree();
+            if (root == null)
+            {
+                enabled = false;
+                return;
+            }
+
+            root.Initialize(this);
         }
 
         protected virtual void Update()
         {
-            if (root != null)
-                root.TryEvaluate(Blackboard);
+            root.TryEvaluate(Blackboard, out runningTask);
+
+            if (runningTask != null)
+            {
+                Debug.Log($"Running Task: {runningTask.FullPath}");
+                OnTaskRunning?.Invoke(Blackboard, runningTask);
+            }
 
             if (Input.GetKeyDown(KeyCode.Q)) Blackboard.PrintAll();
         }
@@ -38,17 +55,10 @@ namespace Custom.AI.BehaviourTree
         /// <summary>
         /// Creates a new bindable property linked to the blackboard.
         /// </summary>
-        /// <param name="_key">           The key to bind the property to in the blackboard. </param>
-        /// <param name="_defaultValue">  The default value if the key is not found. </param>
+        /// <param name="_key"> The key to bind the property to in the blackboard. </param>
         /// <returns>
         /// A new instance of <see cref="BindableProperty{T}"/> bound to the specified blackboard key.
         /// </returns>
-        protected BindableProperty<T> Bind<T>(string _key, T _defaultValue)
-        {
-            return new BindableProperty<T>(_key, Blackboard, _defaultValue);
-        }
-
-        /// <inheritdoc cref="Bind{T}(string, T)"/>
         protected BindableProperty<T> Bind<T>(string _key)
         {
             return new BindableProperty<T>(_key, Blackboard);

@@ -2,12 +2,12 @@
 
 namespace Custom.AI.BehaviourTree
 {
-    public class InRangeDecorator : Node
+    public class InRangeDecorator : Decorator
     {
-        private BindableProperty<Vector3> from;
-        private BindableProperty<Vector3> to;
-        private BindableProperty<float> minDistance;
-        private BindableProperty<float> maxDistance;
+        private readonly BindableProperty<Vector3> from;
+        private readonly BindableProperty<Vector3> to;
+        private readonly BindableProperty<float> minDistance;
+        private readonly BindableProperty<float> maxDistance;
 
 
 
@@ -25,14 +25,11 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override bool CheckCondition(Blackboard _blackboard)
         {
             float distance = Vector3.Distance(from, to);
 
-            if (distance > minDistance && distance < maxDistance)
-                return NodeState.Success;
-            else
-                return NodeState.Failure;
+            return distance > minDistance && distance < maxDistance;
         }
     }
 }

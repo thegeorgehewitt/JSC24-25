@@ -30,7 +30,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             _blackboard.SetOrAdd(keyName, values[index]);
 

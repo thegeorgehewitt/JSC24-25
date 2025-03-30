@@ -1,6 +1,6 @@
 ﻿namespace Custom.AI.BehaviourTree
 {
-    public class BlackboardKeyTask : Node
+    public class BlackboardKeyTask : Task
     {
         public enum Mode
         {
@@ -41,7 +41,7 @@
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             switch (mode)
             {

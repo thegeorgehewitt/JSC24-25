@@ -2,7 +2,7 @@
 
 namespace Custom.AI.BehaviourTree
 {
-    public class GetComponentLocationTask : Node
+    public class GetComponentLocationTask : Task
     {
         private readonly BindableProperty<Component> component;
         private readonly string locationKeyName;
@@ -19,7 +19,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             Component comp = component;
             if (comp == null)

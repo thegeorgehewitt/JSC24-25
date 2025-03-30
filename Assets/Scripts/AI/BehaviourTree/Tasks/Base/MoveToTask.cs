@@ -1,10 +1,10 @@
-﻿using Custom.AI.Pathfinding;
+﻿using UnityEngine;
 
-using UnityEngine;
+using Custom.AI.Pathfinding;
 
 namespace Custom.AI.BehaviourTree
 {
-    public class MoveToTask : Node
+    public class MoveToTask : Task
     {
         private readonly NavGridAgentBase agent;
         private readonly BindableProperty<Vector3> targetLocation;
@@ -24,32 +24,27 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
-            bool lastState = movingToTarget;
+            bool lastMoveState = movingToTarget;
             movingToTarget = agent.SetTargetLocation(targetLocation.Value);
 
-            if (!lastState && movingToTarget)
+            if (!lastMoveState && movingToTarget)
                 agent.OnPathFindCanceled += OnPathFindCanceled;
 
             if (movingToTarget)
-                return NodeState.Running;
-
-            NodeState completeState = NodeState.Failure;
-            if (pathCompleted)
             {
-                pathCompleted = false;
-                completeState = NodeState.Success;
+                Debug.Log(targetLocation.Value);
+                return NodeState.Running;
             }
 
             agent.OnPathFindCanceled -= OnPathFindCanceled;
-
-            return completeState;
+            return pathCompleted ? NodeState.Success : NodeState.Failure;
         }
 
         private void OnPathFindCanceled(bool _completed)
         {
-            Debug.Log($"{FullPath}: {_completed}");
+            if (!movingToTarget) return;
 
             movingToTarget = false;
             pathCompleted = _completed;

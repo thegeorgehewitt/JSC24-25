@@ -5,7 +5,7 @@ using Custom.Manager;
 
 namespace Custom.AI.BehaviourTree
 {
-    public class LookAtTask : Node
+    public class LookAtTask : Task
     {
         private readonly InteractableCharacterBase character;
         private readonly BindableProperty<float> turnSpeed;
@@ -40,7 +40,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             float targetRotation = GetTargetRotation();
 

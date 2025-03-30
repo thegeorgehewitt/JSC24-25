@@ -16,6 +16,8 @@ namespace Custom.Interactable.Character.Enemy
 
         public Vector3[] PatrolPoints => patrolPoints;
 
+        public const string IDLE_STATE = "Idle";
+
 
 
         private void Awake()

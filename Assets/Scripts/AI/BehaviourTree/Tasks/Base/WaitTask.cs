@@ -4,7 +4,7 @@ using Custom.Manager;
 
 namespace Custom.AI.BehaviourTree
 {
-    public class WaitTask : Node
+    public class WaitTask : Task
     {
         private bool random;
 
@@ -33,7 +33,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             if (elapsedTime < waitDuration)
             {

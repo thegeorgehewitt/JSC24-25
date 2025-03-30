@@ -146,6 +146,8 @@ namespace Custom.AI.BehaviourTree
         {
             if (!data.ContainsKey(_key)) return;
 
+            OnPropertyChanged?.Invoke(_key);
+
             data[_key] = null;
         }
 

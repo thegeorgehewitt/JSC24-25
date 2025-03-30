@@ -2,7 +2,7 @@
 
 namespace Custom.AI.BehaviourTree
 {
-    public class UpdateDetectionLevelTask : Node
+    public class UpdateDetectionLevelTask : Task
     {
         private readonly InteractableEnemyBase enemy;
         private readonly string keyName;
@@ -19,7 +19,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             //_blackboard.SetOrAdd<float>(keyName, );
 

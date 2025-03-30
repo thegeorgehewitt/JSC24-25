@@ -2,45 +2,27 @@
 {
     public class Selector : Composite
     {
-        private int currentIndex;
-
-
-
         public Selector(params Node[] _children) 
             : base(_children) { }
 
 
 
-        public override void OnAbort(Blackboard _blackboard)
-        {
-            currentIndex = 0;
-        }
+        protected override NodeState AllChildEvaluatedState => NodeState.Failure;
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override CompositeState OnChildEvaluated(NodeState _childState)
         {
-            while (currentIndex < children.Length)
+            switch (_childState)
             {
-                switch (children[currentIndex].TryEvaluate(_blackboard))
-                {
-                    case NodeState.Failure:
-                        break;
+                case NodeState.Running:
+                    return CompositeState.Resume;
 
-                    case NodeState.Running:
-                        return NodeState.Running;
+                case NodeState.Success:
+                    return CompositeState.ExitSuccess;
 
-                    case NodeState.Success:
-                        currentIndex = 0;
-                        return NodeState.Success;
-
-                    default: break;
-                }
-
-                currentIndex++;
+                case NodeState.Failure:
+                default:
+                    return CompositeState.Continue;
             }
-
-            currentIndex = 0;
-
-            return NodeState.Success;
         }
     }
 }

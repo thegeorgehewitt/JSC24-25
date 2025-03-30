@@ -1,19 +1,31 @@
+using System;
 using System.Collections.Generic;
 
 namespace Custom.AI.BehaviourTree
 {
     /// <summary>
-    /// Base class for all Nodes in a behaviour tree structure.
+    /// Base class for all Nodes in a behaviour tree structure. (Decorators are not considered a node)
     /// </summary>
-    public abstract class Node
+    public abstract class Node : Executable
     {
+        public event Action OnStartEvaluating;
+        public event Action OnFinishedEvaluating;
+
+
+
         protected string name;
         protected Composite parent = null;
-        protected int childrenIndex = -1;
+        protected int childIndex = -1;
 
         protected readonly List<Decorator> decorators = new();
 
-        public int ChildrenIndex => childrenIndex;
+        public Node Root => (parent == null) ? this : parent.Root;
+
+        public int ChildIndex => childIndex;
+
+        public int DecoratorsCount => decorators.Count;
+
+        public Composite Parent => parent;
 
         public string Name
         {
@@ -33,8 +45,20 @@ namespace Custom.AI.BehaviourTree
                     currentNode = currentNode.parent;
                 }
 
-                return "Root/" + path;
+                return path;
             }
+        }
+
+
+
+        public virtual void PrintSubTree()
+        {
+            foreach (Decorator decorator in decorators)
+            {
+                UnityEngine.Debug.Log($"{FullPath + "/" + decorator.GetType().Name + " (Decor)"} : {decorator.ExecuteOrder}");
+            }
+
+            UnityEngine.Debug.Log($"{FullPath} ({childIndex}) : {ExecuteOrder}");
         }
 
 
@@ -47,39 +71,74 @@ namespace Custom.AI.BehaviourTree
         /// <returns>
         /// See <see cref="NodeState"/> for more details.
         /// </returns>
-        public abstract NodeState Evaluate(Blackboard _blackboard);
+        protected abstract NodeState OnEvaluated(Blackboard _blackboard);
 
         /// <summary>
         /// Called upon decorators failing.
         /// </summary>
         /// <param name="_blackboard"> The attached blackboard of this behaviour tree. </param>
-        public virtual void OnAbort(Blackboard _blackboard) { }
+        protected virtual void OnAborted(Blackboard _blackboard) { }
 
 
 
         /// <summary>
-        /// Called by composite nodes to evaluate the node if all decorators are passed.
+        /// Attempts to evaluate the node while checking its decorators. <br/>
+        /// If any decorator fails, the evaluation is aborted and the node returns <see cref="NodeState.Failure"/>.
         /// </summary>
-        /// <param name="_blackboard"></param>
+        /// <param name="_blackboard">  The <see cref="Blackboard"/> used for evaluation. </param>
+        /// <param name="_taskNode">    The resulting <see cref="Node"/> if evaluation succeeds; otherwise, <see langword="null"/>. </param>
         /// <returns>
-        /// <see cref="NodeState.Failure"/> if any decorator not succeeded;
-        /// otherwise, return <see cref="Evaluate(Blackboard)"/> value.
+        /// The <see cref="NodeState"/> of the evaluation, either the node's result or <see cref="NodeState.Failure"/> if aborted.
         /// </returns>
-        public NodeState TryEvaluate(Blackboard _blackboard)
+        public NodeState TryEvaluate(Blackboard _blackboard, out Node _taskNode)
         {
             foreach (var decorator in decorators)
             {
-                if (decorator.Evaluate(_blackboard) == NodeState.Failure)
+                if (!decorator.Evaluate(_blackboard))
                 {
-                    OnAbort(_blackboard);
+                    OnAborted(_blackboard);
+
+                    _taskNode = null;
+
                     return NodeState.Failure;
                 }
             }
 
-            var temp = Evaluate(_blackboard);
-            //UnityEngine.Debug.Log($"{FullPath}: {temp}");
+            var nodeState = Evaluate(_blackboard, out Node taskNode);
+            _taskNode = taskNode;
 
-            return temp;
+            return nodeState;
+        }
+
+        protected virtual NodeState Evaluate(Blackboard _blackboard, out Node _taskNode)
+        {
+            _taskNode = this;
+
+            return OnEvaluated(_blackboard);
+        }
+
+
+
+        /// <summary>
+        /// Setup the node to be ready for evaluation. <br/>
+        /// Should only be called in <see cref="BehaviourTree"/> once.
+        /// </summary>
+        /// <param name="_behaviourTree"> The behaviour tree to attach to. </param>
+        public virtual void Initialize(BehaviourTree _behaviourTree)
+        {
+            CalculateExecuteOrder();
+
+            foreach (Decorator decorator in decorators)
+            {
+                decorator.ObserveTree(_behaviourTree);
+            }
+        }
+
+        /// <summary>
+        /// Setup decorators to observe the behaviour tree task execution.
+        /// </summary>
+        protected void InitializeDecorators(BehaviourTree _behaviourTree)
+        {
         }
 
         /// <summary>
@@ -91,14 +150,42 @@ namespace Custom.AI.BehaviourTree
         /// </returns>
         public Node AddDecorator(params Decorator[] _decorators)
         {
-            decorators.AddRange(_decorators);
+            foreach (var decorator in _decorators)
+            {
+                decorators.Add(decorator);
+                decorator.AttachTo(this);
+            }
+
             return this;
         }
 
-        public void AttachTo(Composite _composite, int _childIndex)
+        /// <summary>
+        /// Attaches the current node to a <see cref="Composite"/> parent at a specified child index.
+        /// </summary>
+        /// <param name="_composite">   The <see cref="Composite"/> node to attach to. </param>
+        /// <param name="_index">       The index to assign this node to. </param>
+        public void AttachTo(Composite _composite, int _index)
         {
             parent = _composite;
-            childrenIndex = _childIndex;
+            childIndex = _index;
+        }
+
+
+
+        public override void CalculateExecuteOrder()
+        {
+            ExecuteOrder = decorators.Count;
+
+            if (parent != null)
+                ExecuteOrder += parent.GetExecutionOrderAtIndex(childIndex - 1) + 1;
+
+            foreach (var decorator in decorators)
+                decorator.CalculateExecuteOrder();
+        }
+
+        public override int GetLowestExecuteOrderInSubTree()
+        {
+            return ExecuteOrder;
         }
     }
 

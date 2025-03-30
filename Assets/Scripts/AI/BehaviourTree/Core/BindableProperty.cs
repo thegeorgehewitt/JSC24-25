@@ -1,4 +1,6 @@
-﻿namespace Custom.AI.BehaviourTree
+﻿using System;
+
+namespace Custom.AI.BehaviourTree
 {
     /// <summary>
     /// Represents a property that can either have a direct value or be bound to a blackboard value.
@@ -22,10 +24,7 @@
             Bind(_blackboardKey, _blackboard);
         }
 
-        public BindableProperty(string _blackboardKey, Blackboard _blackboard, T _defaultValue)
-        {
-            Bind(_blackboardKey, _blackboard, _defaultValue);
-        }
+
 
         public static implicit operator BindableProperty<T>(T _value)
         {
@@ -42,27 +41,9 @@
         /// <summary>
         /// Binds the property to a blackboard key, allowing it to retrieve its value from the blackboard.
         /// </summary>
-        /// <param name="_key"> The key used to look up the value in the blackboard. </param>
+        /// <param name="_key">             The key used to look up the value in the blackboard. </param>
         /// <param name="_blackboard">      The blackboard to bind this property to. </param>
         /// <param name="_defaultValue">    The default value to assign to this property. </param>
-        public void Bind(string _key, Blackboard _blackboard, T _defaultValue)
-        {
-            key = _key;
-            blackboard = _blackboard;
-
-            if (blackboard.HasKey(_key))
-            {
-                Value = blackboard.Get<T>(_key);
-            }
-            else
-            {
-                blackboard.SetOrAdd(_key, Value);
-            }
-
-            blackboard.OnPropertyChanged += OnPropertyChanged;
-        }
-
-        /// <inheritdoc cref="Bind(string, Blackboard, T)"/>
         public void Bind(string _key, Blackboard _blackboard)
         {
             key = _key;
@@ -74,7 +55,7 @@
             }
             else
             {
-                blackboard.Add(_key);
+                blackboard.SetOrAdd(_key, Value);
             }
 
             blackboard.OnPropertyChanged += OnPropertyChanged;

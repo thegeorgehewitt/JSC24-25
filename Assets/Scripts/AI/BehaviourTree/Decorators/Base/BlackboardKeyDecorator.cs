@@ -35,22 +35,38 @@
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override bool CheckCondition(Blackboard _blackboard)
         {
             switch (mode)
             {
                 case Mode.Set:
-                    if (_blackboard.HasValidKey(keyName)) return NodeState.Success;
-                    break;
+                    return _blackboard.HasValidKey(keyName);
 
                 case Mode.NotSet:
-                    if (!_blackboard.HasValidKey(keyName)) return NodeState.Success;
-                    break;
+                    return !_blackboard.HasValidKey(keyName);
 
                 default: break;
             }
 
-            return NodeState.Failure;
+            return false;
         }
+    }
+
+
+
+    /// <summary>
+    /// Define when blackboard decorator try to request abort.
+    /// </summary>
+    public enum ObserveMode
+    {
+        /// <summary>
+        /// Restarts whenever the value of the observed blackboard key changed.
+        /// </summary>
+        OnResultChange,
+
+        /// <summary>
+        /// Restarts when result of evaluated condition is changed. 
+        /// </summary>
+        OnValueChange
     }
 }

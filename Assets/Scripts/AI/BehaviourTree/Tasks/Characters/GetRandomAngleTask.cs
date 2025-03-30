@@ -2,7 +2,7 @@
 
 namespace Custom.AI.BehaviourTree
 {
-    public class GetRandomAngleTask : Node
+    public class GetRandomAngleTask : Task
     {
         private readonly string keyName;
         private readonly BindableProperty<float> fromAngle;
@@ -29,7 +29,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
             float angle;
             if (fromAngle > toAngle)

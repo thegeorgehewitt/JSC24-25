@@ -2,45 +2,32 @@ namespace Custom.AI.BehaviourTree
 {
     public class Sequencer : Composite
     {
-        private int currentIndex = 0;
-
-
-
         public Sequencer(params Node[] _children)
             : base(_children) { }
 
 
 
-        public override void OnAbort(Blackboard _blackboard)
+        protected override NodeState AllChildEvaluatedState => NodeState.Success;
+
+        protected override void OnAborted(Blackboard _blackboard)
         {
-            currentIndex = 0;
+            currentChildIndex = 0;
         }
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override CompositeState OnChildEvaluated(NodeState _childState)
         {
-            while (currentIndex < children.Length)
+            switch (_childState)
             {
-                switch (children[currentIndex].TryEvaluate(_blackboard))
-                {
-                    case NodeState.Failure:
-                        currentIndex = 0;
-                        return NodeState.Failure;
+                case NodeState.Running:
+                    return CompositeState.Resume;
 
-                    case NodeState.Running:
-                        return NodeState.Running;
+                case NodeState.Success:
+                    return CompositeState.Continue;
 
-                    case NodeState.Success:
-                        break;
-
-                    default: break;
-                }
-
-                currentIndex++;
+                case NodeState.Failure:
+                default:
+                    return CompositeState.ExitFailure;
             }
-
-            currentIndex = 0;
-
-            return NodeState.Success;
         }
     }
 }

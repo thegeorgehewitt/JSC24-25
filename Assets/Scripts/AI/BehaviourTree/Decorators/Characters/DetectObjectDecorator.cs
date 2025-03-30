@@ -2,37 +2,43 @@
 
 using UnityEngine;
 
-using Custom.Interactable.Character;
+using Custom.Interactable.Character.Enemy;
 
 namespace Custom.AI.BehaviourTree
 {
     public class DetectObjectDecorator<T> : Decorator where T : Component
     {
-        private InteractableCharacterBase character;
-        private IComparer<T> comparer;
-        private string storeKey;
+        private readonly InteractableEnemyBase enemy;
+        private readonly IComparer<T> comparer;
+        private readonly string storeKey;
 
 
 
         public DetectObjectDecorator(
-            InteractableCharacterBase _character,
+
+            InteractableEnemyBase _enemy,
             IComparer<T> _comparer,
             string _storeKey)
+            : base()
         {
-            character = _character;
+            enemy = _enemy;
             comparer = _comparer;
             storeKey = _storeKey;
         }
 
 
 
-        public override NodeState Evaluate(Blackboard _blackboard)
+        protected override bool CheckCondition(Blackboard _blackboard)
         {
-            var result = character.AcquireTarget(comparer);
+            var result = enemy.AcquireTarget(comparer);
 
-            _blackboard.SetOrAdd(storeKey, result.target);
+            bool targetFound = result.target != null;
+            if (targetFound)
+                _blackboard.SetOrAdd(storeKey, result.target);
+            else
+                _blackboard.Invalidate(storeKey);
 
-            return result.target == null ? NodeState.Failure : NodeState.Success;
+            return targetFound;
         }
     }
 }
