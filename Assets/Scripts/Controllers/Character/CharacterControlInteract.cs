@@ -41,6 +41,8 @@ namespace Custom.Controller
         [SerializeField] private float defaultCursorSize = 0.5f;
         [SerializeField] private Color outOfRangeColor = Color.red;
         [SerializeField] private Color inRangeColor = Color.cyan;
+        [SerializeField] private bool distanceRestrictActive;
+        [SerializeField] private bool blockedRestrictActive;
 
 
 
@@ -82,11 +84,11 @@ namespace Custom.Controller
         {
             if (!hoverObject) return;
 
-            if (outOfRange)
+            if (outOfRange && distanceRestrictActive)
             {
                 OnInteractObjectOutOfRange?.Invoke();
             }
-            else if (blockedVision)
+            else if (blockedVision && blockedRestrictActive)
             {
                 OnVisionBlocked?.Invoke();
             }
@@ -177,7 +179,7 @@ namespace Custom.Controller
             blockedVision = hoverObject ? (hitPos.transform != hoverObject.transform && hitPos) : hitPos;
             outOfRange = distance > interactRange;
 
-            if (blockedVision)
+            if (blockedVision && blockedRestrictActive)
             {
                 UpdateInteractCursor(targetPos, hitPos.point);
             }
@@ -204,8 +206,8 @@ namespace Custom.Controller
             interactCursor.SetLinePosition(interactRayOrigin.position, _lineEndPos);
 
             interactCursor.SetPosition(_cursorPos);
-            interactCursor.SetColor(outOfRange ? outOfRangeColor : inRangeColor);
-            interactCursor.SetLineFadeAmount(outOfRange ? 1f : 0f);
+            interactCursor.SetColor((outOfRange && distanceRestrictActive) ? outOfRangeColor : inRangeColor);
+            interactCursor.SetLineFadeAmount((outOfRange && distanceRestrictActive) ? 1f : 0f);
 
             if (hoverObject)
             {
@@ -214,7 +216,7 @@ namespace Custom.Controller
             }
             else
             {
-                interactCursor.SetLineActive(outOfRange);
+                interactCursor.SetLineActive(outOfRange && distanceRestrictActive);
                 interactCursor.SetSize(Vector2.one * defaultCursorSize);
             }
         }
