@@ -54,6 +54,7 @@ public class SoundManager : MonoBehaviour
     private void OnSceneUnloaded(Scene scene)
     {
         StopMusic();
+        CancelInvoke();
     }
 
     public void PlayMusic(bool isLoop = true)
