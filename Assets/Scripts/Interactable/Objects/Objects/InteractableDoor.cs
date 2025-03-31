@@ -22,6 +22,7 @@ namespace Custom.Interactable
         [SerializeField] private Color openedColor = Color.white / 2;
         [SerializeField] private float easeDuration = 0.1f;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        [SerializeField] private string soundName;
 
         [Header("DEADLOCK & UNLOCK")]
         [SerializeField] private bool deadlocked = false;
@@ -54,9 +55,12 @@ namespace Custom.Interactable
 
         private void SetOpen(bool _open)
         {
+            SoundManager.Instance.PlaySFX(soundName, this.transform.position, 1f);
+            
             spriteRenderer.color = _open ? openedColor : closedColor;
             doorCollider.enabled = !_open;
             if (lightCollider) lightCollider.enabled = !_open;
+
 
             UpdateStates();
         }
