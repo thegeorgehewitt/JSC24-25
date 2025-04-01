@@ -51,9 +51,10 @@ namespace Custom.Interactable
 
                 if (savedStateData != default(ObjectiveTerminalData))
                 {
-                    if (savedStateData.completed == true && !states.Contains("Acquired")) Interact();
+                    if (savedStateData.completed && !states.Contains("Acquired")) 
+                        Interact();
 
-                    if (savedStateData.completed == false && states.Contains("Acquired"))
+                    if (!savedStateData.completed && states.Contains("Acquired"))
                     {
                         states.Clear();
                         spriteRenderer.color = new Color(0.4f, 0.7f, 0.4f);
