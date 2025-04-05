@@ -10,6 +10,7 @@ namespace Custom.AI.BehaviourTree
         private readonly BindableProperty<Vector3> targetLocation;
 
         private bool movingToTarget = false;
+        private bool newTargetSet = false;
         private bool pathCompleted = false;
 
 
@@ -24,26 +25,39 @@ namespace Custom.AI.BehaviourTree
 
 
 
+        protected override void OnAborted(Blackboard _blackboard)
+        {
+            if (movingToTarget)
+                agent.CancelPathfinding();
+        }
+
         protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
-            bool lastMoveState = movingToTarget;
-            movingToTarget = agent.SetTargetLocation(targetLocation.Value);
+            bool lastTargetSet = newTargetSet;
+            newTargetSet = agent.SetTargetLocation(targetLocation.Value);
 
-            if (!lastMoveState && movingToTarget)
+            if (!lastTargetSet && newTargetSet)
+            {
+                movingToTarget = true;
                 agent.OnPathFindCanceled += OnPathFindCanceled;
+            }
 
             if (movingToTarget)
                 return NodeState.Running;
 
             agent.OnPathFindCanceled -= OnPathFindCanceled;
+
             return pathCompleted ? NodeState.Success : NodeState.Failure;
         }
+
+
 
         private void OnPathFindCanceled(bool _completed)
         {
             if (!movingToTarget) return;
 
             movingToTarget = false;
+            newTargetSet = false;
             pathCompleted = _completed;
         }
     }

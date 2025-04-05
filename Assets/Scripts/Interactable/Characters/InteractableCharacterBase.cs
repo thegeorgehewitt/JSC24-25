@@ -77,6 +77,7 @@ namespace Custom.Interactable.Character
                 FOVDisplay.blockableFilter = visionBlockFilter;
             }
         }
+#endif
 
         protected virtual void Update()
         {
@@ -86,10 +87,10 @@ namespace Custom.Interactable.Character
                 FOVDisplay.blockableFilter = visionBlockFilter;
             }
         }
-#endif
 
 
 
+        #region Target Acquisition
         /// <summary>
         /// Get the highest priority target of type <typeparamref name="T"/> in detection zones.
         /// <para> <b>NOTE:</b> Only objects with a <see cref="Collider2D"/> attached will be detected. </para>
@@ -113,7 +114,7 @@ namespace Custom.Interactable.Character
             // Get all components in proximity range if enabled.
             if (enableProximity)
             {
-                ContactFilter2D proximityFilter = useBlockFilter ? visionBlockFilter : new ContactFilter2D();
+                ContactFilter2D proximityFilter = useBlockFilter ? visionBlockFilter : new ContactFilter2D() { useLayerMask = true };
                 
                 ViewCone proximityViewCone = new ViewCone()
                 {
@@ -177,12 +178,19 @@ namespace Custom.Interactable.Character
                 Rotation = localRotation + transform.eulerAngles.z
             };
         }
+        #endregion
+
+
+        #region Display
+        private string currentAnimatorState;
+
+
 
         public abstract void OnAnimatorStateUpdated(string _state);
 
-        private string currentAnimatorState;
 
-        public void SetAnimstorState(string _animatorState)
+
+        public void SetAnimatorState(string _animatorState)
         {
             if (currentAnimatorState == _animatorState) return;
 
@@ -201,5 +209,6 @@ namespace Custom.Interactable.Character
                 spriteRenderer.flipX = false;
             }
         }
+        #endregion
     }
 }

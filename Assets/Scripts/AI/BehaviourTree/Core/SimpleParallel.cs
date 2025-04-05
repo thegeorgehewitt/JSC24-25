@@ -1,4 +1,6 @@
-﻿namespace Custom.AI.BehaviourTree
+﻿using System.Diagnostics;
+
+namespace Custom.AI.BehaviourTree
 {
     /// <summary>
     /// Allows for multiple <see cref="NodeState.Running"/> nodes execution in a single evaluation.
@@ -11,37 +13,34 @@
         /// </summary>
         /// <param name="_main">        The main task to check for <see cref="NodeState.Running"/>. </param>
         /// <param name="_secondary">   The secondary task to run along with <paramref name="_main"/> task. </param>
-        public SimpleParallel(Node _main, Node _secondary)
+        public SimpleParallel(Node _main, Task _secondary)
             : base(_main, _secondary) { }
 
 
 
-        protected override NodeState AllChildEvaluatedState => NodeState.Running;
+        protected override NodeState AllChildEvaluatedState => NodeState.Success;
 
-        protected override CompositeState OnChildEvaluated(NodeState _childState)
+        protected override void OnAborted(Blackboard _blackboard)
         {
-            if (currentChildIndex != 0) 
-                return CompositeState.Continue;
-
-            if (_childState == NodeState.Failure)
-                return CompositeState.ExitFailure;
-
-            if (_childState == NodeState.Success)
-                return CompositeState.ExitSuccess;
-
-            return CompositeState.Continue;
+            children[0].Abort(_blackboard);
         }
 
-        protected override NodeState OnEvaluated(Blackboard _blackboard)
+        protected override CompositeState OnChildEvaluated(NodeState _childState, Blackboard _blackboard)
         {
-            NodeState mainTaskState = children[0].TryEvaluate(_blackboard, out _);
-
-            if (mainTaskState == NodeState.Running)
+            switch (_childState)
             {
-                children[1].TryEvaluate(_blackboard, out _);
-            }
+                case NodeState.Failure:
+                    return CompositeState.ExitFailure;
 
-            return mainTaskState;
+                case NodeState.Success:
+                    return CompositeState.ExitSuccess;
+
+                case NodeState.Running:
+                default:
+                    children[1].TryEvaluate(_blackboard, out _);
+                    currentChildIndex = 0;
+                    return CompositeState.Resume;
+            }
         }
     }
 }

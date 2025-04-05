@@ -9,17 +9,20 @@ namespace Custom.Utility
     {
         /// <summary>
         /// Find all components of type <typeparamref name="T"/> in view cone.
-        /// <para> <b>NOTE:</b>  </para>
         /// </summary>
         /// <typeparam name="T">            Any class inherit from <see cref="Component"/>. </typeparam>
-        /// <param name="_viewCone">        </param>
+        /// <param name="_viewCone">        The view cone to detect objects from. </param>
         /// <param name="_targetLayers">    Layers of objects to retrieve component from. </param>
-        /// <param name="_blockFilter">     </param>
-        /// <param name="_type">            See <see cref="DetectionType"/> for more information. </param>
+        /// <param name="_blockFilter">     Used to define blockable objects. </param>
+        /// <param name="_type">            See <see cref="DetectionType"/> for more details. </param>
         /// <returns>
         /// List of all components found.
         /// </returns>
-        public static List<T> FindAllInViewCone<T>(ViewCone _viewCone, int _targetLayers, ContactFilter2D _blockFilter, DetectionType _type = DetectionType.Dynamic) 
+        public static List<T> FindAllInViewCone<T>(
+            ViewCone _viewCone, 
+            int _targetLayers, 
+            ContactFilter2D _blockFilter, 
+            DetectionType _type = DetectionType.Dynamic) 
             where T : Component
         {
             List<T> visibleTargets = new();
@@ -27,7 +30,7 @@ namespace Custom.Utility
 
             foreach (var collider in targetsInViewRadius)
             {
-                Vector2[] targetPoints = GetTargetPoints(collider);
+                Vector2[] targetPoints = GetTargetPoints(collider, _type);
 
                 // Skip any triggers
                 if (collider.isTrigger) continue;

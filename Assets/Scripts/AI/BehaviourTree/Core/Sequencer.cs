@@ -11,10 +11,12 @@ namespace Custom.AI.BehaviourTree
 
         protected override void OnAborted(Blackboard _blackboard)
         {
+            children[currentChildIndex].Abort(_blackboard);
+
             currentChildIndex = 0;
         }
 
-        protected override CompositeState OnChildEvaluated(NodeState _childState)
+        protected override CompositeState OnChildEvaluated(NodeState _childState, Blackboard _blackboard)
         {
             switch (_childState)
             {

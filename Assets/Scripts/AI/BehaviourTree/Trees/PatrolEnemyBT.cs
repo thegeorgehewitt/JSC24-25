@@ -10,9 +10,9 @@ namespace Custom.AI.BehaviourTree
         /*
          * Blackboard keys.
          */
-        private const string DETECTED_PLAYER = "Detected Player";
         private const string DETECTED_PLAYER_LOCATION = "Detected Player Location";
         private const string PATROL_LOCATION = "Patrol Location";
+
         private const string MOVING_DIRECTION = "Moving Direction";
         private const string LOOK_AT_ANGLE = "Look At Direction";
 
@@ -22,105 +22,102 @@ namespace Custom.AI.BehaviourTree
 
         protected override Node SetupTree()
         {
-            return new SimpleParallel
-            (
-                new Selector
-                (
-                    new Sequencer // Move To Last Seen Location
-                    (
-                        new SimpleParallel // Move To The Player & Look At The Player
-                        (
-                            new Sequencer
-                            (
-                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.WALK_STATE),
-                                new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION))
-                            ),
-                            new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 2000.0f)
-                        ),
-
-                        new Sequencer // Look Around Sequence (Investigating)
-                        (
-                            new Repeater // Look Around to the Right (Investigating)
-                            (
-                                new Sequencer
-                                (
-                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.IDLE_STATE),
-                                    new GetRandomAngleTask(LOOK_AT_ANGLE, 270.0f, 300.0f),
-                                    new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 270.0f),
-                                    new WaitTask(0.5f, 0.8f)
-                                ),
-                                3, 4
-                            ),
-
-                            new Repeater // Look Around To The Left (Investigating)
-                            (
-                                new Sequencer
-                                (
-                                    new GetRandomAngleTask(LOOK_AT_ANGLE, 50.0f, 90.0f),
-                                    new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 270.0f),
-                                    new WaitTask(0.5f, 0.8f)
-                                ),
-                                3, 4
-                            )
+            return new Selector(
+                new Selector(
+                    new Sequencer(
+                        new GetComponentLocationTask(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION),
+                        new SimpleParallel(
+                            new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION)),
+                            new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
                         )
+                    ) { Name = "Chase" }
+                    .AddService(
+                        new GetComponentLocationService(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION))
+                    .AddDecorator(
+                        new ShouldChasePlayerDecorator(
+                            enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER),
+                            InteractablePatrolEnemy.BT_PLAYER_ALERTED, InteractablePatrolEnemy.BT_DETECTED_PLAYER)
+                            .SetAbortMode(AbortMode.Both)),
+
+                    new Selector(
+                        new Sequencer(
+                            new SimpleParallel(
+                                new LockOnPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER)),
+                                new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
+                            ) { Name = "Locking On" }
+                            .AddService(
+                                new GetComponentLocationService(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION))
+                            .AddDecorator(
+                                new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_LOCKED_ON, BlackboardKeyDecorator.Mode.NotSet)
+                                    .SetAbortMode(AbortMode.Self),
+                                new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set)
+                                    .SetAbortMode(AbortMode.Self)),
+
+                            new ShootPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))
+                        ) { Name = "Lock On & Shoot" }
                         .AddDecorator(
-                            new BlackboardKeyDecorator(DETECTED_PLAYER, BlackboardKeyDecorator.Mode.NotSet)),
+                            new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set),
+                            new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_ALERTED, BlackboardKeyDecorator.Mode.Set)
+                                .SetAbortMode(AbortMode.LowerPiority)),
 
-                        new BlackboardKeyTask(DETECTED_PLAYER_LOCATION, BlackboardKeyTask.Mode.Invalidate)
-                    ) { Name = "Chase Player" }
-                    .AddDecorator(
-                        new BlackboardKeyDecorator(DETECTED_PLAYER_LOCATION, BlackboardKeyDecorator.Mode.Set)),
-
-                    
-                    new Sequencer // Patrol Then Look Around
-                    (
-                        new Iterator<Vector3>(0, PATROL_LOCATION, enemy.PatrolPoints),
-
-                        new SimpleParallel // Move & Look At Moving Direction
-                        (
-                            new SimpleParallel
-                            (
-                                new Sequencer
-                                (
-                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.WALK_STATE),
-                                    new MoveToTask(enemy.NavAgent, Bind<Vector3>(PATROL_LOCATION))
-                                ),
-                                new LookAtTask(enemy, Bind<Vector3>(MOVING_DIRECTION), true, 720.0f)
+                        new Sequencer(
+                            new Repeater(
+                                new Sequencer(
+                                    new GetRandomAngleTask(LOOK_AT_ANGLE, 270, 320),
+                                    new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360),
+                                    new WaitTask(0.5f, 0.8f)
+                                ), 3, 4
                             ),
-                            new GetMovingDirectionTask(enemy.NavAgent, MOVING_DIRECTION)
-                        ),
-
-                        new Repeater // Look Around To The Right (Investigating)
-                        (
-                            new Sequencer
-                            (
-                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.IDLE_STATE),
-                                new GetRandomAngleTask(LOOK_AT_ANGLE, 270.0f, 300.0f),
-                                new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360.0f),
-                                new WaitTask(1.0f, 1.5f)
+                            new Repeater(
+                                new Sequencer(
+                                    new GetRandomAngleTask(LOOK_AT_ANGLE, 40, 90),
+                                    new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360),
+                                    new WaitTask(0.5f, 0.8f)
+                                ), 3, 4
                             ),
-                            2
-                        ),
+                            new WaitTask(1.5f, 1.8f)
+                        ) { Name = "Investigate" }
 
-                        new Repeater // Look Around To The Left (Investigating)
-                        (
-                            new Sequencer
-                            (
-                                new GetRandomAngleTask(LOOK_AT_ANGLE, 60.0f, 90.0f),
-                                new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360.0f),
-                                new WaitTask(1.0f, 1.5f)
-                            ),
-                            2
-                        )
-                    ) { Name = "Patrol" }
-                    .AddDecorator(
-                        new BlackboardKeyDecorator(DETECTED_PLAYER_LOCATION, BlackboardKeyDecorator.Mode.NotSet))
-                ),
+                    ) { Name = "Player Last Seen Reached" }
 
-                // Detect Player 
-                new GetComponentLocationTask(Bind<Component>(DETECTED_PLAYER), DETECTED_PLAYER_LOCATION).AddDecorator(
-                    new DetectObjectDecorator<CharacterMotor2D>(enemy, enemy.DefaultComparer, DETECTED_PLAYER))
-            );
+                ) { Name = "Player Alerted" }
+                .AddDecorator(
+                    new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_ALERTED, BlackboardKeyDecorator.Mode.Set)
+                        .SetAbortMode(AbortMode.LowerPiority)),
+
+
+
+                new Sequencer(
+                    new Iterator<Vector3>(0, PATROL_LOCATION, enemy.PatrolPoints),
+                    new SimpleParallel(
+                        new MoveToTask(enemy.NavAgent, Bind<Vector3>(PATROL_LOCATION)),
+                        new LookAtTask(enemy, Bind<Vector3>(MOVING_DIRECTION), true, 360)
+                    )
+                    .AddService(
+                        new GetMovingDirectionService(enemy.NavAgent, MOVING_DIRECTION)),
+
+                    new Repeater(
+                        new Sequencer(
+                            new GetRandomAngleTask(LOOK_AT_ANGLE, 270, 300),
+                            new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 180),
+                            new WaitTask(1.2f, 1.8f)
+                        ), 2, 3
+                    ),
+                    new LookAtTask(enemy, 270, 180),
+                    new WaitTask(2f, 2.8f),
+                    new LookAtTask(enemy, 90, 270),
+                    new Repeater(
+                        new Sequencer(
+                            new GetRandomAngleTask(LOOK_AT_ANGLE, 60, 90),
+                            new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 180),
+                            new WaitTask(1.2f, 1.8f)
+                        ), 2, 3
+                    ),
+                    new LookAtTask(enemy, 90, 180),
+                    new WaitTask(2f, 2.8f)
+                ) { Name = "Patrol" }
+
+            ) { Name = "Root" };
         }
     }
 }

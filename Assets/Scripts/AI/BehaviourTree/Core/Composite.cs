@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 
+using UnityEngine;
+
 namespace Custom.AI.BehaviourTree
 {
     /// <summary>
@@ -40,6 +42,7 @@ namespace Custom.AI.BehaviourTree
 
         protected Node[] children = new Node[] { };
         protected int currentChildIndex = 0;
+        protected bool currentChildPassed;
 
         public int CurrentChildIndex => currentChildIndex;
 
@@ -71,39 +74,60 @@ namespace Custom.AI.BehaviourTree
         /// <returns>
         /// See <see cref="CompositeState"/> for more details.
         /// </returns>
-        protected abstract CompositeState OnChildEvaluated(NodeState _childState);
+        protected abstract CompositeState OnChildEvaluated(NodeState _childState, Blackboard _blackboard);
 
 
 
-        protected override NodeState Evaluate(Blackboard _blackboard, out Node _taskNode)
+        public override NodeState Evaluate(Blackboard _blackboard, out Node _taskNode)
         {
             _taskNode = null;
-            
+            Node runningTask = null;
+            CompositeState compositeState = CompositeState.ExitFailure;
+
             while (currentChildIndex < ChildrenCount)
             {
-                var childState = OnChildEvaluated(children[currentChildIndex].TryEvaluate(_blackboard, out Node runningTask));
+                if (!currentChildPassed)
+                {
+                    currentChildPassed = children[currentChildIndex].CanStartEvaluate(_blackboard);
 
-                switch (childState)
+                    if (!currentChildPassed)
+                        compositeState = OnChildEvaluated(NodeState.Failure, _blackboard);
+                }
+
+                if (currentChildPassed)
+                {
+                    compositeState = OnChildEvaluated(children[currentChildIndex].Evaluate(_blackboard, out runningTask), _blackboard);
+                }
+
+                switch (compositeState)
                 {
                     case CompositeState.Resume:
                         _taskNode = runningTask;
+                        foreach (var service in services)
+                        {
+                            service.Evaluate(_blackboard);
+                        }
                         return NodeState.Running;
 
                     case CompositeState.Continue:
                         currentChildIndex++;
+                        currentChildPassed = false;
                         break;
 
                     case CompositeState.ExitSuccess:
                         currentChildIndex = 0;
+                        currentChildPassed = false;
                         return NodeState.Success;
 
                     case CompositeState.ExitFailure:
                         currentChildIndex = 0;
+                        currentChildPassed = false;
                         return NodeState.Failure;
                 }
             }
 
             currentChildIndex = 0;
+            currentChildPassed = false;
 
             return AllChildEvaluatedState;
         }
@@ -127,16 +151,19 @@ namespace Custom.AI.BehaviourTree
         /// <see langword="true"/> if the execution was successfully aborted to the specified child index; 
         /// otherwise, <see langword="false"/>.
         /// </returns>
-        public bool AbortExecutionToChild(int _index)
+        public bool AbortExecutionToChild(Blackboard _blackboard, int _index)
         {
-            if (_index < 0 || _index > ChildrenCount) return false;
+            if (_index < 0) return false;
+
+            if (_index != currentChildIndex)
+            {
+                children[currentChildIndex].Abort(_blackboard);
+            }
 
             currentChildIndex = _index;
+            currentChildPassed = true;
 
-            while (parent != null)
-            {
-                parent.AbortExecutionToChild(childIndex);
-            }
+            parent?.AbortExecutionToChild(_blackboard, childIndex);
 
             return true;
         }
@@ -144,7 +171,7 @@ namespace Custom.AI.BehaviourTree
         /// <summary>
         /// Get the execution order of a child at the given index.
         /// </summary>
-        /// <param name="_index"> The index of the child to look for.. </param>
+        /// <param name="_index"> The index of the child to look for. </param>
         /// <returns>
         /// The child execution order if <paramref name="_index"/> is valid;
         /// otherwise, return the execution order of this composite.
@@ -152,7 +179,7 @@ namespace Custom.AI.BehaviourTree
         public int GetExecutionOrderAtIndex(int _index)
         {
             if (_index < 0 || _index >= ChildrenCount) 
-                return ExecuteOrder;
+                return ExecuteOrder + ServicesCount;
             else
                 return children[_index].GetLowestExecuteOrderInSubTree();
         }
@@ -161,7 +188,7 @@ namespace Custom.AI.BehaviourTree
 
         public override int GetLowestExecuteOrderInSubTree()
         {
-            if (children.Length == 0) return ExecuteOrder;
+            if (children.Length == 0) return ExecuteOrder + ServicesCount;
 
             return children.Last().GetLowestExecuteOrderInSubTree();
         }

@@ -51,9 +51,9 @@ namespace Custom.Interactable.Character.Enemy
             laserDisplay.useWorldSpace = true;
         }
 
-        private void Update()
+        protected override void Update()
         {
-            UpdateCurrentTarget();
+            base.Update();
 
             UpdateState();
         } 
@@ -71,9 +71,9 @@ namespace Custom.Interactable.Character.Enemy
         }
 
         #region Targeting 
-        protected override void OnPlayerDetected()
+        protected override void OnPlayerDetected(CharacterMotor2D _newTarget)
         {
-            SetLineTargetPosition(lastScanResult.target.transform.position);
+            SetLineTargetPosition(_newTarget.transform.position);
             LockOn(true);
         }
 

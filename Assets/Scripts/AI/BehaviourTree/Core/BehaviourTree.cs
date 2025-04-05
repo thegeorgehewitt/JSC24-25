@@ -17,8 +17,6 @@ namespace Custom.AI.BehaviourTree
 
         protected virtual void Start()
         {
-            Blackboard.Clear();
-
             root = SetupTree();
             if (root == null)
             {
@@ -35,11 +33,11 @@ namespace Custom.AI.BehaviourTree
 
             if (runningTask != null)
             {
-                Debug.Log($"Running Task: {runningTask.FullPath}");
+                Debug.Log($"Running Task: {runningTask.FullPath} ({runningTask.ExecuteOrder})");
                 OnTaskRunning?.Invoke(Blackboard, runningTask);
             }
 
-            if (Input.GetKeyDown(KeyCode.Q)) Blackboard.PrintAll();
+            if (Input.GetKeyDown(KeyCode.P)) Blackboard.PrintAll();
         }
 
 

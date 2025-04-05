@@ -3,12 +3,8 @@
     /// <summary>
     /// Base class for define whether or not a branch in the tree, or even a single node, can be executed.
     /// </summary>
-    public abstract class Decorator : Executable
+    public abstract class Decorator : NodeAttachment
     {
-        // This serve the same purpose as Node.childIndex.
-        private int callIndex;
-
-        protected Node AttachedNode { get; private set; }
         protected AbortMode AbortMode { get; private set; }
         protected bool ReverseCondition { get; private set; }
 
@@ -60,16 +56,6 @@
         }
 
         /// <summary>
-        /// Attach this decorator to the given node.
-        /// </summary>
-        /// <param name="_attachedNode"> The <see cref="Node"/> to attach this decorator to. </param>
-        public void AttachTo(Node _attachedNode)
-        {
-            AttachedNode = _attachedNode;
-            callIndex = _attachedNode.DecoratorsCount - 1;
-        }
-
-        /// <summary>
         /// Observe task execution changes of the assigned <see cref="BehaviourTree"/>.
         /// </summary>
         /// <param name="_behaviourTree"> The behaviour tree to observe. </param>
@@ -111,12 +97,12 @@
 
         public override void CalculateExecuteOrder()
         {
-            ExecuteOrder = AttachedNode.ExecuteOrder - AttachedNode.DecoratorsCount + callIndex;
+            ExecuteOrder = attachedNode.ExecuteOrder - attachedNode.DecoratorsCount + callIndex;
         }
 
         public override int GetLowestExecuteOrderInSubTree()
         {
-            return AttachedNode.GetLowestExecuteOrderInSubTree();
+            return attachedNode.GetLowestExecuteOrderInSubTree();
         }
 
         private void OnTaskRunning(Blackboard _blackboard, Node _runningTask)
@@ -126,12 +112,11 @@
             switch (AbortMode)
             {
                 case AbortMode.Self:
-                    if (_runningTask.ExecuteOrder < selfSubtreeExecuteOrder
-                        && _runningTask.ExecuteOrder > AttachedNode.ExecuteOrder
+                    if (_runningTask.ExecuteOrder <= selfSubtreeExecuteOrder
+                        && _runningTask.ExecuteOrder >= attachedNode.ExecuteOrder
                         && !Evaluate(_blackboard))
                     {
-                        UnityEngine.Debug.Log($"{AttachedNode.FullPath}/{GetType().Name} aborting self");
-                        AttachedNode.Parent.AbortExecutionToChild(AttachedNode.ChildIndex + 1);
+                        attachedNode.Parent?.AbortExecutionToChild(_blackboard, attachedNode.ChildIndex + 1);
                     }
                     break;
 
@@ -139,8 +124,7 @@
                     if (_runningTask.ExecuteOrder > selfSubtreeExecuteOrder
                         && Evaluate(_blackboard))
                     {
-                        UnityEngine.Debug.Log($"{AttachedNode.FullPath}/{GetType().Name} aborting lower piority: {_runningTask.ExecuteOrder} to {selfSubtreeExecuteOrder}");
-                        AttachedNode.Parent.AbortExecutionToChild(AttachedNode.ChildIndex);
+                        attachedNode.Parent?.AbortExecutionToChild(_blackboard, attachedNode.ChildIndex);
                     }
                     break;
 
@@ -148,16 +132,14 @@
                     if (_runningTask.ExecuteOrder > selfSubtreeExecuteOrder
                         && Evaluate(_blackboard))
                     {
-                        UnityEngine.Debug.Log($"{AttachedNode.FullPath}/{GetType().Name} aborting lower piority: {_runningTask.ExecuteOrder} to {selfSubtreeExecuteOrder}");
-                        AttachedNode.Parent.AbortExecutionToChild(AttachedNode.ChildIndex);
+                        attachedNode.Parent?.AbortExecutionToChild(_blackboard, attachedNode.ChildIndex);
                     }
 
-                    if (_runningTask.ExecuteOrder < selfSubtreeExecuteOrder
-                        && _runningTask.ExecuteOrder > AttachedNode.ExecuteOrder
+                    if (_runningTask.ExecuteOrder <= selfSubtreeExecuteOrder
+                        && _runningTask.ExecuteOrder >= attachedNode.ExecuteOrder
                         && !Evaluate(_blackboard))
                     {
-                        UnityEngine.Debug.Log($"{AttachedNode.FullPath}/{GetType().Name} aborting self");
-                        AttachedNode.Parent.AbortExecutionToChild(AttachedNode.ChildIndex + 1);
+                        attachedNode.Parent?.AbortExecutionToChild(_blackboard, attachedNode.ChildIndex + 1);
                     }
                     break;
 
@@ -165,5 +147,36 @@
                 default: break;
             }
         }
+    }
+
+
+
+    /// <summary>
+    /// Define when and how a decorator observe and aborts nodes execution.
+    /// </summary>
+    public enum AbortMode
+    {
+        /// <summary>
+        /// Use traditional behaviour tree flow control. <br/>
+        /// The decorator will only be evaluated once on each resets.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Abort the attached node once the condition check failed while executing. <br/>
+        /// The decorator will always be evaluated as long as the attached node is running.
+        /// </summary>
+        Self,
+
+        /// <summary>
+        /// Abort all nodes to the right (lower piority) once the condition check succeeded while executing. <br/>
+        /// The decorator will always be evaluated as long as a lower piority node is running.
+        /// </summary>
+        LowerPiority,
+
+        /// <summary>
+        /// Combine both <see cref="Self"/> & <see cref="LowerPiority"/>.
+        /// </summary>
+        Both,
     }
 }

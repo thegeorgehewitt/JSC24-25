@@ -8,7 +8,12 @@ namespace Custom.Editor
     [CustomEditor(typeof(InteractableEnemyBase), true)]
     public class InteractableEnemyBaseEditor : InteractableCharacterBaseEditor
     {
-        private SerializedProperty minDetectLevel;
+        private SerializedProperty lockOnDuration;
+        private SerializedProperty normalizedLockOnDistance;
+
+        private SerializedProperty minVisibilityDetectLevel;
+        private SerializedProperty baseDetectRate; 
+        private SerializedProperty baseIgnoreRate;
 
         private AnimBool expandProperties;
 
@@ -24,7 +29,12 @@ namespace Custom.Editor
         {
             base.OnEnable();
 
-            minDetectLevel = AssignToProperty("minDetectLevel");
+            lockOnDuration = AssignToProperty("lockOnDuration");
+            normalizedLockOnDistance = AssignToProperty("normalizedLockOnDistance");
+
+            minVisibilityDetectLevel = AssignToProperty("minVisibilityDetectLevel");
+            baseDetectRate = AssignToProperty("baseDetectRate");
+            baseIgnoreRate = AssignToProperty("baseIgnoreRate");
 
             expandProperties = new(IsExpanded);
             expandProperties.valueChanged.AddListener(Repaint);
@@ -45,7 +55,12 @@ namespace Custom.Editor
                 EditorGUILayout.Space();
                 EditorGUI.indentLevel++;
 
-                EditorGUILayout.PropertyField(minDetectLevel);
+                EditorGUILayout.PropertyField(minVisibilityDetectLevel);
+                EditorGUILayout.PropertyField(baseDetectRate);
+                EditorGUILayout.PropertyField(baseIgnoreRate);
+
+                EditorGUILayout.PropertyField(lockOnDuration);
+                EditorGUILayout.PropertyField(normalizedLockOnDistance);
 
                 EditorGUI.indentLevel--;
                 EditorGUILayout.Space();

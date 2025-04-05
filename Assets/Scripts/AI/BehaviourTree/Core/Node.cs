@@ -18,14 +18,16 @@ namespace Custom.AI.BehaviourTree
         protected int childIndex = -1;
 
         protected readonly List<Decorator> decorators = new();
+        protected readonly List<Service> services = new();
 
         public Node Root => (parent == null) ? this : parent.Root;
+
+        public Composite Parent => parent;
 
         public int ChildIndex => childIndex;
 
         public int DecoratorsCount => decorators.Count;
-
-        public Composite Parent => parent;
+        public int ServicesCount => services.Count;
 
         public string Name
         {
@@ -59,6 +61,11 @@ namespace Custom.AI.BehaviourTree
             }
 
             UnityEngine.Debug.Log($"{FullPath} ({childIndex}) : {ExecuteOrder}");
+
+            foreach (Service service in services)
+            {
+                UnityEngine.Debug.Log($"{FullPath + "/" + service.GetType().Name + " (Serv)"} : {service.ExecuteOrder}");
+            }
         }
 
 
@@ -82,15 +89,14 @@ namespace Custom.AI.BehaviourTree
 
 
         /// <summary>
-        /// Attempts to evaluate the node while checking its decorators. <br/>
-        /// If any decorator fails, the evaluation is aborted and the node returns <see cref="NodeState.Failure"/>.
+        /// Determines whether the evaluation can start by checking all decorators. <br/>
+        /// If any decorator fails, the evaluation is aborted.
         /// </summary>
-        /// <param name="_blackboard">  The <see cref="Blackboard"/> used for evaluation. </param>
-        /// <param name="_taskNode">    The resulting <see cref="Node"/> if evaluation succeeds; otherwise, <see langword="null"/>. </param>
+        /// <param name="_blackboard"> The attached blackboard of this behaviour tree. </param>
         /// <returns>
-        /// The <see cref="NodeState"/> of the evaluation, either the node's result or <see cref="NodeState.Failure"/> if aborted.
+        /// <see langword="true"/> if all decorators allow evaluation; otherwise, <see langword="false"/>.
         /// </returns>
-        public NodeState TryEvaluate(Blackboard _blackboard, out Node _taskNode)
+        public bool CanStartEvaluate(Blackboard _blackboard)
         {
             foreach (var decorator in decorators)
             {
@@ -98,11 +104,37 @@ namespace Custom.AI.BehaviourTree
                 {
                     OnAborted(_blackboard);
 
-                    _taskNode = null;
-
-                    return NodeState.Failure;
+                    return false;
                 }
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Abort the execution of this node. <br/>
+        /// Custom behaviour on abort can be defined by overriding <see cref="OnAborted(Blackboard)"/> in child classes.
+        /// </summary>
+        /// <param name="_blackboard"> The attached blackboard of this behaviour tree. </param>
+        public void Abort(Blackboard _blackboard)
+        {
+            OnAborted(_blackboard);
+        }
+
+        /// <summary>
+        /// Attempts to evaluate the node while checking its decorators. <br/>
+        /// If any decorator fails, the evaluation is aborted and the node returns <see cref="NodeState.Failure"/>.
+        /// </summary>
+        /// <param name="_blackboard">  The attached blackboard of this behaviour tree. </param>
+        /// <param name="_taskNode">    The resulting <see cref="Node"/> if evaluation succeeds; otherwise, <see langword="null"/>. </param>
+        /// <returns>
+        /// The <see cref="NodeState"/> of the evaluation, either the node's result or <see cref="NodeState.Failure"/> if aborted.
+        /// </returns>
+        public NodeState TryEvaluate(Blackboard _blackboard, out Node _taskNode)
+        {
+            _taskNode = null;
+
+            if (!CanStartEvaluate(_blackboard)) return NodeState.Failure;
 
             var nodeState = Evaluate(_blackboard, out Node taskNode);
             _taskNode = taskNode;
@@ -110,11 +142,29 @@ namespace Custom.AI.BehaviourTree
             return nodeState;
         }
 
-        protected virtual NodeState Evaluate(Blackboard _blackboard, out Node _taskNode)
+        /// <summary>
+        /// Evaluates the node and determines its state.
+        /// </summary>
+        /// <param name="_blackboard">  The attached blackboard of this behaviour tree. </param>
+        /// <param name="_taskNode">    The resulting <see cref="Node"/> if evaluation succeeds; otherwise, <see langword="null"/>. </param>
+        /// <returns>
+        /// The resulting <see cref="NodeState"/> after evaluation.
+        /// </returns>
+        public virtual NodeState Evaluate(Blackboard _blackboard, out Node _taskNode)
         {
             _taskNode = this;
 
-            return OnEvaluated(_blackboard);
+            var nodeState = OnEvaluated(_blackboard);
+
+            if (nodeState == NodeState.Running)
+            {
+                foreach (var service in services)
+                {
+                    service.Evaluate(_blackboard);
+                }
+            }
+
+            return nodeState;
         }
 
 
@@ -135,13 +185,6 @@ namespace Custom.AI.BehaviourTree
         }
 
         /// <summary>
-        /// Setup decorators to observe the behaviour tree task execution.
-        /// </summary>
-        protected void InitializeDecorators(BehaviourTree _behaviourTree)
-        {
-        }
-
-        /// <summary>
         /// Add <see cref="Decorator"/>s to this node.
         /// </summary>
         /// <param name="_decorators"> List of decorators to add. </param>
@@ -150,11 +193,31 @@ namespace Custom.AI.BehaviourTree
         /// </returns>
         public Node AddDecorator(params Decorator[] _decorators)
         {
-            foreach (var decorator in _decorators)
+            for (int i = 0; i < _decorators.Length; i++)
             {
-                decorators.Add(decorator);
-                decorator.AttachTo(this);
+                _decorators[i].AttachTo(this, DecoratorsCount + i);
             }
+
+            decorators.AddRange(_decorators);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add <see cref="Service"/>s to this node.
+        /// </summary>
+        /// <param name="_services"> List of services to add. </param>
+        /// <returns>
+        /// This node. Used for better workflow when creating behaviour trees via script.
+        /// </returns>
+        public Node AddService(params Service[] _services)
+        {
+            for (int i = 0; i < _services.Length; i++)
+            {
+                _services[i].AttachTo(this, ServicesCount + i);
+            }
+
+            services.AddRange(_services);
 
             return this;
         }
@@ -181,11 +244,14 @@ namespace Custom.AI.BehaviourTree
 
             foreach (var decorator in decorators)
                 decorator.CalculateExecuteOrder();
+
+            foreach (var service in services)
+                service.CalculateExecuteOrder();
         }
 
         public override int GetLowestExecuteOrderInSubTree()
         {
-            return ExecuteOrder;
+            return ExecuteOrder + ServicesCount;
         }
     }
 

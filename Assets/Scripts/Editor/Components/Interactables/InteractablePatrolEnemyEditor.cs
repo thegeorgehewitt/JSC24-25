@@ -2,7 +2,6 @@
 using UnityEditor;
 
 using Custom.Interactable.Character.Enemy;
-using UnityEngine.UIElements;
 
 namespace Custom.Editor
 {
@@ -10,7 +9,6 @@ namespace Custom.Editor
     public class InteractablePatrolEnemyEditor : InteractableEnemyBaseEditor
     {
         private SerializedProperty patrolPoints;
-        private SerializedProperty patrolMode;
 
 
 
@@ -19,7 +17,6 @@ namespace Custom.Editor
             base.OnEnable();
 
             patrolPoints = AssignToProperty("patrolPoints");
-            patrolMode = AssignToProperty("patrolMode");
         }
 
         protected override void OnSceneGUI()
@@ -42,7 +39,7 @@ namespace Custom.Editor
                         patrolPoints.GetArrayElementAtIndex(i).vector3Value,
                         GetColorFromPalette(previousIndex * 0.1f),
                         GetColorFromPalette(i * 0.1f),
-                        patrolMode.enumValueIndex == (int)PatrolMode.Loop && i == patrolPoints.arraySize - 1 && patrolPoints.arraySize == 2);
+                        i == patrolPoints.arraySize - 1 && patrolPoints.arraySize == 2);
                 }
 
                 previousIndex = i;
@@ -58,22 +55,18 @@ namespace Custom.Editor
                     "(Start)", middleText);
             }
 
-            // Draw a complete loop if patrol mode is PatrolMode.Loop.
-            if (patrolMode.enumValueIndex == (int)PatrolMode.Loop && patrolPoints.arraySize > 2)
-            {
-                DrawArrowBetweenPoints(
-                    patrolPoints.GetArrayElementAtIndex(patrolPoints.arraySize - 1).vector3Value,
-                    patrolPoints.GetArrayElementAtIndex(0).vector3Value,
-                    GetColorFromPalette((patrolPoints.arraySize - 1) * 0.1f),
-                    GetColorFromPalette(0));
-            }
+            // Draw a complete loop.
+            DrawArrowBetweenPoints(
+                patrolPoints.GetArrayElementAtIndex(patrolPoints.arraySize - 1).vector3Value,
+                patrolPoints.GetArrayElementAtIndex(0).vector3Value,
+                GetColorFromPalette((patrolPoints.arraySize - 1) * 0.1f),
+                GetColorFromPalette(0));
 
             serializedObject.ApplyModifiedProperties();
         }
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.PropertyField(patrolMode);
             EditorGUILayout.PropertyField(patrolPoints);
 
             EditorGUILayout.Space();

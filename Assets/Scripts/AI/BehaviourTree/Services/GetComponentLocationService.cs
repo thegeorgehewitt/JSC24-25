@@ -2,7 +2,7 @@
 
 namespace Custom.AI.BehaviourTree
 {
-    public class GetComponentLocationTask : Task
+    public class GetComponentLocationService : Service
     {
         private readonly BindableProperty<Component> component;
         private readonly bool invalidateAtNull;
@@ -10,7 +10,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        public GetComponentLocationTask(
+        public GetComponentLocationService(
             BindableProperty<Component> _component,
             string _outputKey,
             bool _invalidateAtNull = false)
@@ -22,7 +22,7 @@ namespace Custom.AI.BehaviourTree
 
 
 
-        protected override NodeState OnEvaluated(Blackboard _blackboard)
+        public override void Evaluate(Blackboard _blackboard)
         {
             Component comp = component;
             if (comp == null)
@@ -34,8 +34,6 @@ namespace Custom.AI.BehaviourTree
             {
                 _blackboard.SetOrAdd(locationKeyName, comp.transform.position);
             }
-
-            return NodeState.Success;
         }
     }
 }

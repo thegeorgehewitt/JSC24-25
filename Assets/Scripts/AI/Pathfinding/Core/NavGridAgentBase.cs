@@ -264,6 +264,21 @@ namespace Custom.AI.Pathfinding
             return result;
         }
 
+        /// <summary>
+        /// Cancel the current path finding (including movement if executing)/
+        /// </summary>
+        /// <returns>
+        /// Whether the operation was successful or not.
+        /// </returns>
+        public bool CancelPathfinding()
+        {
+            if (!FollowingPath) return false;
+
+            StopFollowPath(false);
+
+            return true;
+        }
+
 
 
         private void OnNavGridUpdated(NavGrid2D _navGrid)

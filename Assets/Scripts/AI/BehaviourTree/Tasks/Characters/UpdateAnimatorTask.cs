@@ -19,7 +19,7 @@ namespace Custom.AI.BehaviourTree
 
         protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
-            character.SetAnimstorState(newState);
+            character.SetAnimatorState(newState);
             return NodeState.Success;
         }
     }

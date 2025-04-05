@@ -29,7 +29,14 @@
 
         protected override NodeState AllChildEvaluatedState => NodeState.Success;
 
-        protected override CompositeState OnChildEvaluated(NodeState _childState)
+        protected override void OnAborted(Blackboard _blackboard)
+        {
+            children[0].Abort(_blackboard);
+
+            ResetValues();
+        }
+
+        protected override CompositeState OnChildEvaluated(NodeState _childState, Blackboard _blackboard)
         {
             if (_childState != NodeState.Running)
                 repeatCount++;
@@ -41,20 +48,6 @@
             }
 
             return CompositeState.Resume;
-        }
-
-        protected override NodeState OnEvaluated(Blackboard _blackboard)
-        {
-            if (children[0].TryEvaluate(_blackboard, out _) != NodeState.Running)
-                repeatCount++;
-
-            if (repeats > 0 && repeatCount >= repeats)
-            {
-                ResetValues();
-                return NodeState.Success;
-            }
-
-            return NodeState.Running;
         }
 
 
