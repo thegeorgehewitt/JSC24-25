@@ -109,6 +109,50 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8506677307579217801}
     m_Modifications:
+    - target: {fileID: 648149381773061430, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: orthographic size
+      value: 3.3180606
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: outerBounds.x
+      value: -11.43568
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: outerBounds.y
+      value: 1.0660825
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: outerBounds.width
+      value: 22.07173
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: outerBounds.height
+      value: 7.0600796
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: maxOrthographicSize
+      value: 3.5300398
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: minOrthographicSize
+      value: 3.3180606
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: validBounds.m_Center.x
+      value: -11.43568
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: validBounds.m_Center.y
+      value: 1.0660825
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: validBounds.m_Extent.x
+      value: 5.13709
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189387296739240343, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
+      propertyPath: validBounds.m_Extent.y
+      value: 0.21197915
+      objectReference: {fileID: 0}
     - target: {fileID: 3702975428854156845, guid: 58cbc42261e9a584d82ed0166e55a3c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.51

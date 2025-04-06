@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using Custom.Interactable;
 using Custom.Decorative;
 using Custom.UI;
+using Custom.Controller.General;
 
 namespace Custom.Controller
 {
@@ -146,7 +147,7 @@ namespace Custom.Controller
 
         private void UpdateHoverInteractableObject()
         {
-            var mousePosWorld = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+            var mousePosWorld = CameraController2D.MainCamera.ScreenToWorldPoint(Input.mousePosition);
             var overlapCols = Physics2D.OverlapCircleAll(mousePosWorld, interactSnapRadius, interactableLayers);
             var rayDirection = interactCursor.transform.position - interactRayOrigin.position;
 
