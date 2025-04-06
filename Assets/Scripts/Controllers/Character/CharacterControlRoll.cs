@@ -9,7 +9,7 @@ namespace Custom.Controller
     public class CharacterControlRoll : CharacterControlBase
     {
         [SerializeField] private Animator animator;
-
+        private string[] rollSFXNames = new string[] { "SFX_Roll_01", "SFX_Roll_02" };
 
         public override string[] InputActionKeysName
         {
@@ -74,6 +74,8 @@ namespace Custom.Controller
 
             attachedMotor.SetState("Rolling", true);
             if (animator) { animator.SetTrigger("Roll"); }
+            
+
             attachedMotor.velocity = Vector2.right * direction * rollRange / rollDuration;
 
             attachedMotor.SetHeightMult(0.5f, 0.0f);
@@ -99,5 +101,14 @@ namespace Custom.Controller
             cooldownLeft = 0;
         }
         #endregion
+
+        public void PlayRollSFX()
+        {
+            if (rollSFXNames.Length > 0)
+            {
+                string clip = rollSFXNames[Random.Range(0, rollSFXNames.Length)];
+                SoundManager.Instance.PlaySFX(clip, transform.position, 1.0f);
+            }
+        }
     }
 }

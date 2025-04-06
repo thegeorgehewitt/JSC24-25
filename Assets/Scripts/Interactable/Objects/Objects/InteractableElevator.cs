@@ -29,6 +29,7 @@ namespace Custom.Interactable
         [Header("FLOOR INFORMATION")]
         [SerializeField] private int elevatorIndex;
 
+
         // Player Character References.
         private CharacterMotor2D playerMotor;
         private Transform targetTransform;
@@ -69,6 +70,8 @@ namespace Custom.Interactable
             elevatorUI.ShowPopup(true);
 
             playerMotor = PlayerMotorController.Instance.ControlledMotor;
+
+            SoundManager.Instance.PlaySFX("Elevator_Door Open", transform.position);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -76,6 +79,8 @@ namespace Custom.Interactable
             elevatorUI.ShowPopup(false);
 
             playerMotor = null;
+
+            SoundManager.Instance.PlaySFX("Elevator_Door Close", transform.position);
         }
 
 

@@ -304,6 +304,9 @@ MonoBehaviour:
     values:
     - {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   animator: {fileID: 1856093301908427868}
+  rollSFXNames:
+  - Roll_1
+  - Roll_2
   rollRange: 4
   rollDuration: 0.3
   cooldown: 0.5
@@ -664,6 +667,7 @@ GameObject:
   - component: {fileID: 7520197564098527792}
   - component: {fileID: 3725793931521571199}
   - component: {fileID: 1856093301908427868}
+  - component: {fileID: 4441663916601899798}
   m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
@@ -835,6 +839,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4441663916601899798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7009367374004171967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444cd3c42a743f3418f651a8356d171f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollController: {fileID: 0}
 --- !u!1 &7489048534138405090
 GameObject:
   m_ObjectHideFlags: 0

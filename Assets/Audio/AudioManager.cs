@@ -96,7 +96,7 @@ public class SoundManager : MonoBehaviour
     {
         if (sfxDictionary.ContainsKey(soundName))
         {
-            AudioSource.PlayClipAtPoint(sfxDictionary[soundName], position, volume);
+            AudioSource.PlayClipAtPoint(sfxDictionary[soundName], position, volume);            
         }
         else
         {

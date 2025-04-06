@@ -9,6 +9,7 @@ namespace Custom.Interactable
     public class InteractableObjectiveTerminal : InteractableObject
     {
         private Collider2D[] colliders;
+        [SerializeField] private string soundName;
 
 
 
@@ -30,6 +31,7 @@ namespace Custom.Interactable
             {
                 states.Add("Acquired");
                 spriteRenderer.color = new Color(0.2f, 0.2f, 0.2f);
+                SoundManager.Instance.PlaySFX(soundName, this.transform.position, 1f);
             }
 
             foreach (var collider in colliders)

@@ -6,6 +6,8 @@ namespace Custom.Controller
     {
         [SerializeField] private Animator animator;
 
+        [SerializeField] private string[] jumpSFXNames = new string[] { "SFX_Jump_Land_03" };
+
         public override string[] InputActionKeysName
         {
             get => new string[] {
@@ -58,6 +60,16 @@ namespace Custom.Controller
         private void CancelJump()
         {
             attachedMotor.SetState("JumpEndedEarly", true);
+        }
+
+        public void PlayJumpSFX()
+        {
+            if (jumpSFXNames.Length > 0)
+            {
+                string clip = jumpSFXNames[Random.Range(0, jumpSFXNames.Length)];
+                Debug.Log("PlayJumpSFX: " + clip);
+                SoundManager.Instance.PlaySFX(clip, transform.position, 1.0f);
+            }
         }
         #endregion
     }

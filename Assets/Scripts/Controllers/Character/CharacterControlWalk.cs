@@ -6,7 +6,10 @@ namespace Custom.Controller
 {
     public class CharacterControlWalk : CharacterControlBase
     {
+        private bool footstepToggle = false;
         [SerializeField] private Animator animator;
+        
+     
 
         public override string[] InputActionKeysName
         {
@@ -27,6 +30,9 @@ namespace Custom.Controller
         [SerializeField] private float airAcceleration = 8.0f;
         [SerializeField] private float airDeceleration = 8.0f;
 
+
+        private float footstepCooldown = 0.4f;
+        private float footstepTimer = 0f;
 
 
         private void FixedUpdate()
@@ -63,6 +69,25 @@ namespace Custom.Controller
             }
 
             animator?.SetFloat("Horizontal Speed", Mathf.Abs(attachedMotor.velocity.x));
+
+            if (attachedMotor.IsGrounded && Mathf.Abs(attachedMotor.velocity.x) > 0.1f)
+            {
+                footstepTimer += TimeManager.FixedDeltaTime;
+
+                if (footstepTimer >= footstepCooldown)
+                {
+                    footstepTimer = 0f;
+                    string clipName = footstepToggle ? "SFX_Footstep1" : "SFX_Footstep2";
+                    SoundManager.Instance.PlaySFX(clipName, transform.position, 0.7f);
+                    footstepToggle = !footstepToggle;
+
+                }
+            }
+            else
+            {
+                footstepTimer = 0f;
+            }
+
         }
         #endregion
     }
