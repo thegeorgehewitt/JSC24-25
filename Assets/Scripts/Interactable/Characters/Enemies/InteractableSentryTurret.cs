@@ -21,7 +21,7 @@ namespace Custom.Interactable.Character.Enemy
         [Header("TARGETING")]
         [Tooltip("The default rotation is Vector2.right. Enable this to flip it to Vector2.left")]
         [SerializeField] private bool flip;
-        [SerializeField] private float lockOnDuration = 1.0f;
+        //[SerializeField] private float lockOnDuration = 1.0f;
         [SerializeField] private Color nontargetingColor = Color.gray;
         [SerializeField] private Color targetingColor = Color.red;
 

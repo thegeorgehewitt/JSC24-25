@@ -49,16 +49,13 @@ namespace Custom.AI.BehaviourTree
                                 new GetComponentLocationService(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION))
                             .AddDecorator(
                                 new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_LOCKED_ON, BlackboardKeyDecorator.Mode.NotSet)
-                                    .SetAbortMode(AbortMode.Self),
-                                new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set)
                                     .SetAbortMode(AbortMode.Self)),
 
                             new ShootPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))
                         ) { Name = "Lock On & Shoot" }
                         .AddDecorator(
-                            new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set),
                             new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_ALERTED, BlackboardKeyDecorator.Mode.Set)
-                                .SetAbortMode(AbortMode.LowerPiority)),
+                                .SetAbortMode(AbortMode.Both)),
 
                         new Sequencer(
                             new Repeater(
@@ -77,6 +74,25 @@ namespace Custom.AI.BehaviourTree
                             ),
                             new WaitTask(1.5f, 1.8f)
                         ) { Name = "Investigate" }
+                        .AddDecorator(
+                            new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.NotSet)
+                                .SetAbortMode(AbortMode.Self)),
+
+                        new Sequencer(
+                            new GetComponentLocationTask(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION),
+                            new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720),
+                            new WaitTask(5f))
+                        .AddDecorator(
+                            new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set)
+                            .SetAbortMode(AbortMode.Self))
+                    //new Repeater(
+                    //    new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720))
+                    //.AddService(
+                    //        new GetComponentLocationService(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION))
+                    //.AddDecorator(
+                    //new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set)
+                    //    .SetAbortMode(AbortMode.Self))
+
 
                     ) { Name = "Player Last Seen Reached" }
 

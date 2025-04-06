@@ -38,7 +38,7 @@
 
         protected override CompositeState OnChildEvaluated(NodeState _childState, Blackboard _blackboard)
         {
-            if (_childState != NodeState.Running)
+            if (repeats > 0 && _childState != NodeState.Running)
                 repeatCount++;
 
             if (repeats > 0 && repeatCount >= repeats)
