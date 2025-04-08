@@ -7,7 +7,7 @@ using UnityEditor;
 #endif
 
 using Custom.Utility;
-using Custom.Controller;
+using Custom.Controller.General;
 
 namespace Custom.AI.Pathfinding
 {
@@ -42,7 +42,7 @@ namespace Custom.AI.Pathfinding
 
             if (followingCursor)
             {
-                targetPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+                targetPos = CameraController2D.MainCamera.ScreenToWorldPoint(Input.mousePosition);
                 SetTargetLocation(targetPos);
             }
         }

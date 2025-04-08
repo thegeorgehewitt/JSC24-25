@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 using Custom.Scriptable;
-using System;
 
 namespace Custom.Interactable
 {

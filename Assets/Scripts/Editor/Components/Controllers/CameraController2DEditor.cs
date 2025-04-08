@@ -7,8 +7,6 @@ using Custom.Utility;
 
 namespace Custom.Editor
 {
-    using Styles;
-
     [CustomEditor(typeof(CameraController2D))]
     public class CameraController2DEditor : CustomBaseEditor
     {
@@ -128,7 +126,7 @@ namespace Custom.Editor
             EditorGUILayout.Space();
 
             #region Tracking
-            IsTrackingExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsTrackingExpanded, "Tracking", CustomEditorStyles.foldoutHeader);
+            IsTrackingExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsTrackingExpanded, "Tracking", CustomGUIStyles.foldoutHeader);
             EditorGUILayout.EndFoldoutHeaderGroup();
             expandTracking.target = IsTrackingExpanded;
 
@@ -161,7 +159,7 @@ namespace Custom.Editor
             #endregion
 
             #region Bounds
-            IsBoundsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsBoundsExpanded, "Bounds", CustomEditorStyles.foldoutHeader);
+            IsBoundsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsBoundsExpanded, "Bounds", CustomGUIStyles.foldoutHeader);
             EditorGUILayout.EndFoldoutHeaderGroup();
             expandBounds.target = IsBoundsExpanded;
 
