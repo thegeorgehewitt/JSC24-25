@@ -195,6 +195,7 @@ MonoBehaviour:
     - {x: -10.254103, y: -1.9468136}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 0
+  Key: b6b51f10-1223-412f-a861-3245b4828d4c
 --- !u!1 &7217191478896531976
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8146379599539097068}
   - component: {fileID: 5197918338584211243}
-  - component: {fileID: 6202490737869255038}
+  - component: {fileID: 5494793939707408072}
   m_Layer: 9
   m_Name: TempControl
   m_TagString: Untagged
@@ -360,7 +361,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6202490737869255038
+--- !u!114 &5494793939707408072
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,7 +370,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9165484879827527391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9318e0b780ce3ec4caa45040947b1ee9, type: 3}
+  m_Script: {fileID: 11500000, guid: fb8fc8cb93696ce4ba91336036b3d207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectData: {fileID: 11400000, guid: b0fa40619e7b77441a9bc04fe615b0b0, type: 2}
@@ -378,7 +379,7 @@ MonoBehaviour:
     interactEvent:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6202490737869255038}
+        - m_Target: {fileID: 5494793939707408072}
           m_TargetAssemblyTypeName: Custom.Interactable.InteractableTempControl,
             Assembly-CSharp
           m_MethodName: Trigger
@@ -396,15 +397,15 @@ MonoBehaviour:
   isOverheated: 0
   impactArea: {fileID: 8270244730662549922}
   contactFilter:
-    useTriggers: 1
-    useLayerMask: 0
+    useTriggers: 0
+    useLayerMask: 1
     useDepth: 0
     useOutsideDepth: 0
     useNormalAngle: 0
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 1792
+      m_Bits: 1536
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0

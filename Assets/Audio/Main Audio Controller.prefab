@@ -60,7 +60,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   soundEffects:
-  - {fileID: 8300000, guid: e5f3937470d48054782e35409eaf3a06, type: 3}
+  - {fileID: 8300000, guid: f5c2cbef632d1734a983599dfdd3faaa, type: 3}
   - {fileID: 8300000, guid: a15be7443c554e64f959626588e8030a, type: 3}
   - {fileID: 8300000, guid: 97ee21599b149594d8dc88fb33f02d2d, type: 3}
   - {fileID: 8300000, guid: 9d14aa221f2c5cc448370b9763c89fc6, type: 3}
@@ -69,6 +69,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 70fdf87416b5f1d4a9bb38f618903539, type: 3}
   - {fileID: 8300000, guid: c185e237774cd144e910a5816726b8ae, type: 3}
   - {fileID: 8300000, guid: 34356617ea79cf7459193b9edd2e4d13, type: 3}
+  menuMusicName: 
 --- !u!82 &8974063543220331330
 AudioSource:
   m_ObjectHideFlags: 0

@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8146379599539097068}
   - component: {fileID: 5197918338584211243}
-  - component: {fileID: 1632060452983216504}
+  - component: {fileID: 431607801235031482}
   m_Layer: 9
   m_Name: LightsControl
   m_TagString: Untagged
@@ -163,7 +163,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1632060452983216504
+--- !u!114 &431607801235031482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9165484879827527391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bff216cc0d3a854b89e160c25856d2c, type: 3}
+  m_Script: {fileID: 11500000, guid: afae2588d89fb7144a6c83df79a0c086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectData: {fileID: 11400000, guid: a69965603a171d749b81a51c8207f5a9, type: 2}
@@ -181,7 +181,7 @@ MonoBehaviour:
     interactEvent:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1632060452983216504}
+        - m_Target: {fileID: 431607801235031482}
           m_TargetAssemblyTypeName: Custom.Interactable.InteractableLightsControl,
             Assembly-CSharp
           m_MethodName: Toggle
@@ -195,5 +195,4 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   spriteRenderer: {fileID: 3459847120950194334}
-  on: 1
   linkedLights: []
