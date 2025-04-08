@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 13ce9093f7573304cba4fea257d4c39f
+<<<<<<<< HEAD:Assets/Scripts/Controllers/Character/CharacterControlProximityInteract.cs.meta
+guid: 4954f2d7a21eaa041b1b4208c1e4e43a
+========
+guid: a0298ff87d04a9646ad948a0e263dfe7
+>>>>>>>> origin/development/finite-state-machine:Assets/Scripts/Interactable/Objects/InteractableTerminal.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

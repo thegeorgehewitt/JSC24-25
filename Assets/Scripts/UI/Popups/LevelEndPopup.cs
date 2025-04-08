@@ -63,7 +63,7 @@ namespace Custom.UI
             if (_show)
             {
                 PlayerMotorController.PauseMotor(true);
-                TimeManager.timeScale = 0;
+                TimeManager.TimeScale = 0;
             }
 
             yield return new WaitForSeconds(1);

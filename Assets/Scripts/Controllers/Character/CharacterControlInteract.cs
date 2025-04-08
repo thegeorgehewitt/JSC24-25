@@ -24,10 +24,9 @@ namespace Custom.Controller
 
         public static event Action OnInteractObjectOutOfRange;
         public static event Action OnVisionBlocked;
-        public static event Action<InteractableObject> OnHoverNewInteractableObject;
-        public static event Action<int> OnNewActiveOption;
-
-
+        public static event Action<InteractableObject> OnFocusNewInteractableObject;
+        public static event Action<InteractableObject> OnUnfocusInteractableObject;
+        public static event Action<int> OnSelectNewInteraction;
 
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
@@ -70,8 +69,6 @@ namespace Custom.Controller
         private void FixedUpdate()
         {
             UpdateHoverInteractableObject();
-            UpdateInteractionPopup();
-            UpdateDefaultValues();
         }
 
 
@@ -120,20 +117,8 @@ namespace Custom.Controller
                 activeOption += roundedScrollValue;
                 activeOption = Mathf.Clamp(activeOption, 0, hoverObject.InteractionData.Length - 1);
 
-                // Call to interactable object display.
-                OnNewActiveOption?.Invoke(activeOption);
+                OnSelectNewInteraction?.Invoke(activeOption);
             }
-        }
-
-        private void UpdateDefaultValues()
-        {
-            if (hoverObject) return;
-
-            // We reset the scroll value and activeOption to discard changes from last hovered object.
-            scrollValue = 0;
-            activeOption = 0;
-
-            OnNewActiveOption?.Invoke(activeOption);
         }
         #endregion
 
@@ -152,7 +137,12 @@ namespace Custom.Controller
 
             if (overlapCols.Length <= 0)
             {
-                hoverObject = null;
+                if (hoverObject != null)
+                {
+                    OnUnfocusInteractableObject.Invoke(hoverObject);
+
+                    hoverObject = null;
+                }
             }
             else
             {
@@ -161,7 +151,7 @@ namespace Custom.Controller
                     if (!collider.transform.TryGetComponent(out InteractableObject asInteractable)) continue;
                     
                     hoverObject = asInteractable;
-                    OnHoverNewInteractableObject?.Invoke(hoverObject);
+                    OnFocusNewInteractableObject?.Invoke(hoverObject);
 
                     break;
                 }
@@ -179,50 +169,27 @@ namespace Custom.Controller
             blockedVision = hoverObject ? (hitPos.transform != hoverObject.transform && hitPos) : hitPos;
             outOfRange = distance > interactRange;
 
-            if (blockedVision && blockedRestrictActive)
-            {
-                UpdateInteractCursor(targetPos, hitPos.point);
-            }
-            else
-            {
-                UpdateInteractCursor(targetPos, targetPos);
-            }
+            UpdateInteractCursor(targetPos);
         }
 
-        private void UpdateInteractionPopup()
+        private void UpdateInteractCursor(Vector3 _cursorPos)
         {
-            if (hoverObject)
-            {
-                InteractableObjectDisplayPopup.DisplayInfo(hoverObject);
-            }
-            else
-            {
-                InteractableObjectDisplayPopup.ShowPopup(false);
-            }
-        }
-
-        private void UpdateInteractCursor(Vector3 _cursorPos, Vector3 _lineEndPos)
-        {
-            interactCursor.SetLinePosition(interactRayOrigin.position, _lineEndPos);
-
             interactCursor.SetPosition(_cursorPos);
+            interactCursor.SetColor(outOfRange ? outOfRangeColor : inRangeColor);
             interactCursor.SetColor((outOfRange && distanceRestrictActive) ? outOfRangeColor : inRangeColor);
-            interactCursor.SetLineFadeAmount((outOfRange && distanceRestrictActive) ? 1f : 0f);
 
             if (hoverObject)
             {
-                interactCursor.SetLineActive(true);
                 interactCursor.SetSize(hoverObject.ObjectBoundsSize);
             }
             else
             {
-                interactCursor.SetLineActive(outOfRange && distanceRestrictActive);
                 interactCursor.SetSize(Vector2.one * defaultCursorSize);
             }
         }
         #endregion
 
-        #region CharacterControlBase
+        #region Overrides - CharacterControlBase 
         protected override void OnActivate()
         {
             interactCursor.gameObject.SetActive(true);

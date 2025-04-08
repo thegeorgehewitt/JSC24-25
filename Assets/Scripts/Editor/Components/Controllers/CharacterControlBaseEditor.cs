@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 
@@ -5,8 +6,6 @@ using Custom.Controller;
 
 namespace Custom.Editor
 {
-    using Styles;
-    using UnityEngine;
 
     [CanEditMultipleObjects]
     [CustomEditor(typeof(CharacterControlBase), true)]
@@ -50,7 +49,7 @@ namespace Custom.Editor
             EditorGUILayout.Space(10);
 
             #region Controls
-            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Controls", CustomEditorStyles.foldoutHeader);
+            IsExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(IsExpanded, "Controls", CustomGUIStyles.foldoutHeader);
             expandControls.target = IsExpanded;
             EditorGUILayout.EndFoldoutHeaderGroup();
 

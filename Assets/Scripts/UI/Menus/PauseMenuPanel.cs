@@ -5,7 +5,7 @@ namespace Custom.UI.Menu
 {
     public class PauseMenuPanel : MenuPanelBase
     {
-        private float previousTimeScale = TimeManager.timeScale;
+        private float previousTimeScale = TimeManager.TimeScale;
 
 
 
@@ -13,8 +13,8 @@ namespace Custom.UI.Menu
         {
             base.OnOpenMenu();
 
-            previousTimeScale = TimeManager.timeScale;
-            TimeManager.timeScale = 0;
+            previousTimeScale = TimeManager.TimeScale;
+            TimeManager.TimeScale = 0;
 
             PlayerMotorController.PauseMotor(true);
         }
@@ -23,7 +23,7 @@ namespace Custom.UI.Menu
         {
             base.OnCloseMenu();
 
-            TimeManager.timeScale = previousTimeScale;
+            TimeManager.TimeScale = previousTimeScale;
 
             PlayerMotorController.PauseMotor(false);
         }

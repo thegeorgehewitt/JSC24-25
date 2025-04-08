@@ -6,22 +6,26 @@ namespace Custom.Manager
     {
         public static TimeManager Instance;
 
+#if UNITY_EDITOR
+        [SerializeField] private float timeScale = 1.0f;
+#endif
+
         /// <summary>
         /// Use this property instead of directly using <see cref="Time.deltaTime"/> to enable
         /// other features of <see cref="TimeManager"> like time pause or slow-mo.
         /// </summary>
-        public static float DeltaTime { get { return Time.deltaTime * timeScale; } }
+        public static float DeltaTime { get { return Time.deltaTime * TimeScale; } }
 
         /// <summary>
         /// Use this property instead of directly using <see cref="Time.fixedDeltaTime"/> to enable
         /// other features of <see cref="TimeManager"> like time pause or slow-mo.
         /// </summary>
-        public static float FixedDeltaTime { get { return Time.fixedDeltaTime * timeScale; } }
+        public static float FixedDeltaTime { get { return Time.fixedDeltaTime * TimeScale; } }
 
         /// <summary>
-        /// Clamped to [0..1]. Value of 0 will run at normal speed. Value of 1 will completely pause time.
+        /// Clamped to [0..1]. Value of 1 will run at normal speed. Value of 0 will completely pause time.
         /// </summary>
-        public static float timeScale = 1.0f;
+        public static float TimeScale { get; set; } = 1.0f;
 
         private float originalTimeScale; // Do we really need this?
 
@@ -42,8 +46,17 @@ namespace Custom.Manager
 
             DontDestroyOnLoad(transform.root);
 
-            timeScale = Time.timeScale;
+            TimeScale = Time.timeScale;
             originalTimeScale = Time.timeScale;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (!Application.isPlaying) return;
+
+            TimeScale = timeScale;
+        }
+#endif
     }
 }

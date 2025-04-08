@@ -1,0 +1,60 @@
+.node {
+    margin: 0;
+    padding: 0;
+    transition-property: opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease;
+}
+
+.selected {
+    border-color: rgb(226, 138, 50);
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.disabled {
+    opacity: 0.4;
+    transition-property: opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease;
+}
+
+#collapse-button {
+    align-self: stretch;
+    width: 15px;
+    margin-left: 20px;
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.1s;
+}
+
+#collapse-button:hover {
+    opacity: 0.9;
+    transition-duration: 0.1s;
+    transition-timing-function: ease;
+}
+
+.collapsed #collapse-button {
+    background-image: resource('GraphView/Nodes/NodeChevronLeft@2x');
+}
+
+.expanded #collapse-button {
+    background-image: resource('GraphView/Nodes/NodeChevronDown@2x');
+}
+
+.collapsed #behaviours-container {
+    display: none;
+}
+
+.expanded #behaviours-container {
+    display: flex;
+}
+
+.collapsed #main-container {
+    
+}
+
+.expanded #main-container {
+
+}

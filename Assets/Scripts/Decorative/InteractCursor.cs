@@ -13,7 +13,6 @@ namespace Custom.Decorative
     {
         [Header("REFERENCES")]
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private LineRenderer lineRenderer;
 
         [Header("TARGET CURSOR")]
         [SerializeField] private float cursorMargin = 0.3f;
@@ -25,8 +24,6 @@ namespace Custom.Decorative
         private Vector2 sliceToBoundsRatio;
         private Vector2 currentTargetSize;
 
-        private Material lineRendererMat;
-
         private List<SpriteRenderer> childRenderers = new();
 
 
@@ -35,9 +32,6 @@ namespace Custom.Decorative
         private void Reset()
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            lineRenderer = GetComponentInChildren<LineRenderer>();
-
-            lineRenderer.useWorldSpace = false;
         }
 #endif
 
@@ -47,9 +41,6 @@ namespace Custom.Decorative
 
             sliceToBoundsRatio = spriteRenderer.bounds.size / spriteRenderer.size;
             spriteRenderer.drawMode = SpriteDrawMode.Sliced;
-
-            lineRendererMat = lineRenderer.material;
-            lineRenderer.useWorldSpace = true;
         }
 
 
@@ -88,31 +79,12 @@ namespace Custom.Decorative
             transform.position = _target;
         }
 
-        public void SetLinePosition(Vector2 _origin, Vector2 _target)
-        {
-            lineRenderer.SetPosition(0, _origin);
-            lineRenderer.SetPosition(1, _target);
-        }
-
         public void SetColor(Color _color)
         {
             foreach (var renderer in childRenderers)
             {
                 renderer.color = _color;
             }
-
-            lineRenderer.startColor = _color;
-            lineRenderer.endColor = _color;
-        }
-
-        public void SetLineFadeAmount(float _amount)
-        {
-            lineRendererMat.SetFloat("_Fade_Amount", _amount);
-        }
-
-        public void SetLineActive(bool _active)
-        {
-            lineRenderer.enabled = _active;
         }
     }
 }
