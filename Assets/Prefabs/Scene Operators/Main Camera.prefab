@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 648149381773061430}
   - component: {fileID: 1319732664779112156}
   - component: {fileID: 4009261663982721186}
-  - component: {fileID: 6485489810739152541}
+  - component: {fileID: 1189387296739240343}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -138,7 +138,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &6485489810739152541
+--- !u!114 &1189387296739240343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,9 +147,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 5798960459785348923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45576a6b4c8080b4a898928fb1519519, type: 3}
+  m_Script: {fileID: 11500000, guid: dcbc0f47a9089e64098b31e366de61dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 648149381773061430}
   trackingTransform: {fileID: 0}
-  offset: {x: 0, y: 0}
+  enableSnapping: 1
+  snapEaseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  snapDuration: 0.5
+  speedMultiplier: 0.5
+  maxSpeed: 1
+  minSpeed: 0.01
+  enableBounds: 1
+  enableHardLock: 1
+  outerBounds:
+    serializedVersion: 2
+    x: -6.004803
+    y: 0.98155475
+    width: 11.876769
+    height: 7.1702943
+  validBounds:
+    m_Center: {x: -6.004803, y: 0.98155475, z: 0}
+    m_Extent: {x: 0.60505104, y: 0.58514714, z: 0}
+  panningDragMultiplier: 1
+  zoomDragMultiplier: 1
+  minOrthographicSize: 1
+  maxOrthographicSize: 3

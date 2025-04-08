@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 using FunkyCode;
 
+using Custom.Controller.General;
+
 namespace Custom.Controller
 {
     public class CharacterControlFlashLight : CharacterControlBase
@@ -86,7 +88,7 @@ namespace Custom.Controller
 
         private void FixedUpdate()
         {
-            Vector3 mouseWorldPos = CameraController.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseWorldPos = CameraController2D.MainCamera.ScreenToWorldPoint(Input.mousePosition);
             float rotation = Vector2.SignedAngle(transform.up, mouseWorldPos - flashLight.transform.position);
 
             flashLight.transform.localEulerAngles = new Vector3(0, 0, rotation);
