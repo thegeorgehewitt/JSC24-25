@@ -8,6 +8,7 @@ using Custom.Interactable;
 using Custom.Decorative;
 using Custom.UI;
 using Custom.Controller.General;
+using System.Collections;
 
 namespace Custom.Controller
 {
@@ -44,6 +45,12 @@ namespace Custom.Controller
         [SerializeField] private bool distanceRestrictActive;
         [SerializeField] private bool blockedRestrictActive;
 
+        [Header("CHARGE")]
+        [SerializeField] private int currentCharge;
+        [SerializeField] private int maxCharge;
+        [SerializeField] private float rechargeRate = 10;
+        Coroutine rechargeCoroutine;
+
 
 
         private void OnEnable()
@@ -73,7 +80,6 @@ namespace Custom.Controller
         }
 
 
-
         #region Actions
         private int activeOption;
         private float scrollValue;
@@ -92,7 +98,12 @@ namespace Custom.Controller
             }
             else
             {
-                hoverObject.Interact(activeOption);
+                currentCharge -= hoverObject.Interact(activeOption, currentCharge);
+
+                if (currentCharge < maxCharge && rechargeCoroutine == null)
+                {
+                    rechargeCoroutine = StartCoroutine(Recharge());
+                }
             }
         }
 
@@ -203,5 +214,18 @@ namespace Custom.Controller
             enabled = false;
         }
         #endregion
-    }
+
+        #region Charge Regeneration
+
+        private IEnumerator Recharge()
+        {
+            yield return new WaitForSeconds(rechargeRate);
+
+            currentCharge++;
+
+            rechargeCoroutine = null;
+        }
+
+            #endregion
+        }
 }

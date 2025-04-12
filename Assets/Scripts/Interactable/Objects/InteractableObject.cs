@@ -53,9 +53,15 @@ namespace Custom.Interactable
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
-        public virtual void Interact(int _option)
+        public virtual int Interact(int _option, int availableCharge)
         {
-            interactionData[_option].interactEvent?.Invoke();
+            if ( availableCharge >= InteractionData[_option].cost)
+            {
+                interactionData[_option].interactEvent?.Invoke();
+                return InteractionData[_option].cost;
+            }
+
+            return 0;
         }
     }
 }

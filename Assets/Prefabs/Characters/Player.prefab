@@ -346,6 +346,9 @@ MonoBehaviour:
   inRangeColor: {r: 0.44705883, g: 0.8862745, b: 0.85490197, a: 1}
   distanceRestrictActive: 0
   blockedRestrictActive: 0
+  currentCharge: 10
+  maxCharge: 10
+  rechargeRate: 20
 --- !u!114 &4773218601208523903
 MonoBehaviour:
   m_ObjectHideFlags: 0

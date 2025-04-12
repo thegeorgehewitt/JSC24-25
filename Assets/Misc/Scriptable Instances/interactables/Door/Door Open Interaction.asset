@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 41239586, guid: 46c6ab91937d2534ab51e4aa0994f1a9, type: 3}
   tag: Open
-  cost: 0
+  cost: 1

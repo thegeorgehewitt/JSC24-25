@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 19fb2e7a754b6674bb8949422d7b1e69, type: 3}
   tag: Toggle Access
-  cost: 0
+  cost: 2
