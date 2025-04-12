@@ -259,6 +259,8 @@ MonoBehaviour:
     - {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
     - {fileID: 0}
   animator: {fileID: 1856093301908427868}
+  jumpSFXNames:
+  - SFX_Jump_Land_03
   jumpPower: 12
 --- !u!114 &3938290388967934858
 MonoBehaviour:
@@ -279,9 +281,11 @@ MonoBehaviour:
     values:
     - {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   animator: {fileID: 1856093301908427868}
-  groundMaxSpeed: 6
+  groundMaxWalkSpeed: 6
+  groundMaxSpeed: 10
   groundAcceleration: 30
   groundDeceleration: 20
+  isSprinting: 0
   airMaxSpeed: 4
   airAcceleration: 8
   airDeceleration: 8
@@ -304,9 +308,6 @@ MonoBehaviour:
     values:
     - {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   animator: {fileID: 1856093301908427868}
-  rollSFXNames:
-  - Roll_1
-  - Roll_2
   rollRange: 4
   rollDuration: 0.3
   cooldown: 0.5
@@ -343,6 +344,8 @@ MonoBehaviour:
   defaultCursorSize: 0.5
   outOfRangeColor: {r: 0.8679245, g: 0.41349235, b: 0.41349235, a: 1}
   inRangeColor: {r: 0.44705883, g: 0.8862745, b: 0.85490197, a: 1}
+  distanceRestrictActive: 0
+  blockedRestrictActive: 0
 --- !u!114 &4773218601208523903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,6 +622,7 @@ MonoBehaviour:
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 0
+  Key: 8c3d2ab7-b36b-42e8-9288-55a40d6717c1
 --- !u!1 &6641870747818259321
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,7 +809,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0.37552145
+  visibility: 0.0031478761
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,6 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollController: {fileID: 0}
+  jump: {fileID: 0}
 --- !u!1 &7489048534138405090
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +870,7 @@ GameObject:
   - component: {fileID: 3051175788289900178}
   - component: {fileID: 7933555611519160503}
   - component: {fileID: 573359081064459370}
-  - component: {fileID: 3635031858833745614}
+  - component: {fileID: 7635029829007018049}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -1009,9 +1014,9 @@ MonoBehaviour:
   - {fileID: 2916642468219596251}
   - {fileID: 3938290388967934858}
   - {fileID: 5890741780418279463}
-  - {fileID: 3635031858833745614}
+  - {fileID: 0}
   velocity: {x: 0, y: 0}
---- !u!114 &3635031858833745614
+--- !u!114 &7635029829007018049
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1020,10 +1025,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7489048534138405090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13ce9093f7573304cba4fea257d4c39f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4954f2d7a21eaa041b1b4208c1e4e43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passiveControl: 1
+  passiveControl: 0
   inputActions:
     keys: []
     values: []
@@ -1144,6 +1149,7 @@ MonoBehaviour:
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 0
+  Key: cef81e5d-f43c-4c7f-ac03-1b6904510853
 --- !u!1001 &9042455680178233769
 PrefabInstance:
   m_ObjectHideFlags: 0
