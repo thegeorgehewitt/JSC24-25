@@ -27,7 +27,9 @@ namespace Custom.AI.BehaviourTree
                     new Sequencer(
                         new GetComponentLocationTask(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION),
                         new SimpleParallel(
-                            new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION)),
+                            new SimpleParallel(
+                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_WALK_STATE),
+                                new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION))),
                             new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
                         )
                     ) { Name = "Chase" }
@@ -42,7 +44,9 @@ namespace Custom.AI.BehaviourTree
                     new Selector(
                         new Sequencer(
                             new SimpleParallel(
-                                new LockOnPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER)),
+                                new SimpleParallel(
+                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
+                                    new LockOnPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))),
                                 new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
                             ) { Name = "Locking On" }
                             .AddService(
@@ -50,6 +54,8 @@ namespace Custom.AI.BehaviourTree
                             .AddDecorator(
                                 new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_LOCKED_ON, BlackboardKeyDecorator.Mode.NotSet)
                                     .SetAbortMode(AbortMode.Self)),
+
+                            new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_FIRE_STATE),
 
                             new ShootPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))
                         ) { Name = "Lock On & Shoot" }
@@ -60,6 +66,7 @@ namespace Custom.AI.BehaviourTree
                         new Sequencer(
                             new Repeater(
                                 new Sequencer(
+                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
                                     new GetRandomAngleTask(LOOK_AT_ANGLE, 270, 320),
                                     new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360),
                                     new WaitTask(0.5f, 0.8f)
@@ -67,11 +74,13 @@ namespace Custom.AI.BehaviourTree
                             ),
                             new Repeater(
                                 new Sequencer(
+                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
                                     new GetRandomAngleTask(LOOK_AT_ANGLE, 40, 90),
                                     new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 360),
                                     new WaitTask(0.5f, 0.8f)
                                 ), 3, 4
                             ),
+                            new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
                             new WaitTask(1.5f, 1.8f)
                         ) { Name = "Investigate" }
                         .AddDecorator(
@@ -105,6 +114,7 @@ namespace Custom.AI.BehaviourTree
 
                 new Sequencer(
                     new Iterator<Vector3>(0, PATROL_LOCATION, enemy.PatrolPoints),
+                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_WALK_STATE),
                     new SimpleParallel(
                         new MoveToTask(enemy.NavAgent, Bind<Vector3>(PATROL_LOCATION)),
                         new LookAtTask(enemy, Bind<Vector3>(MOVING_DIRECTION), true, 360)
@@ -114,6 +124,7 @@ namespace Custom.AI.BehaviourTree
 
                     new Repeater(
                         new Sequencer(
+                            new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
                             new GetRandomAngleTask(LOOK_AT_ANGLE, 270, 300),
                             new LookAtTask(enemy, Bind<float>(LOOK_AT_ANGLE), 180),
                             new WaitTask(1.2f, 1.8f)
