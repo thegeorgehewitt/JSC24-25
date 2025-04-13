@@ -29,6 +29,7 @@ namespace Custom.Interactable.Character.Enemy
         [Header("HACKING AND COOLDOWN")]
         private float hackedCooldownTime = 3.0f;
         private Coroutine cooloffCoroutine;
+        private bool IsHacked => cooloffCoroutine != null;
 
         // FOR TESTING ONLY
         [Header("DETECTION METER DISPLAY")]
@@ -79,6 +80,8 @@ namespace Custom.Interactable.Character.Enemy
 
         private void UpdateCurrentTarget()
         {
+            if (IsHacked) return;
+
             lastScanResult = AcquireTarget(DefaultComparer);
 
             if (lastScanResult.target && (lastScanResult.target.Visibility > minVisibilityDetectLevel || lastScanResult.proximityChecked))
@@ -93,6 +96,9 @@ namespace Custom.Interactable.Character.Enemy
 
         private void UpdateDetectionMeter()
         {
+            if (IsHacked) return;
+
+
             if (lastScanResult.target)
             {
                 float normDis = Vector3.Distance(lastScanResult.target.transform.position, transform.position) / radius;
@@ -164,6 +170,8 @@ namespace Custom.Interactable.Character.Enemy
             yield return new WaitForSeconds(hackedCooldownTime);
 
             HackedEnded();
+
+            cooloffCoroutine = null;
         }
     }
 }
