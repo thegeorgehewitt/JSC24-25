@@ -26,6 +26,7 @@ namespace Custom.Interactable.Character.Enemy
         public const string BT_DETECTED_PLAYER = "Detected Player";
         public const string BT_PLAYER_ALERTED = "Player Alerted";
         public const string BT_PLAYER_LOCKED_ON = "Player Locked On";
+        public const string BT_ENEMY_HACKED = "Enemt Hacked";
 
 
 
@@ -66,6 +67,16 @@ namespace Custom.Interactable.Character.Enemy
         protected override void OnPlayerLockedOn()
         {
             behaviourTree.Blackboard.SetOrAdd(BT_PLAYER_LOCKED_ON, true);
+        }
+
+        protected override void OnEnemyHacked()
+        {
+            behaviourTree.Blackboard.SetOrAdd(BT_ENEMY_HACKED, true);
+        }
+
+        protected override void OnHackedEnded()
+        {
+            behaviourTree.Blackboard.Invalidate(BT_ENEMY_HACKED);
         }
 
         public override void OnAnimatorStateUpdated(string _state)

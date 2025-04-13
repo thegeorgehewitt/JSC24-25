@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 using Custom.Controller;
 using Custom.Manager;
+using System.Collections;
+using Unity.VisualScripting;
 
 namespace Custom.Interactable.Character.Enemy
 {
@@ -23,6 +25,10 @@ namespace Custom.Interactable.Character.Enemy
         [SerializeField] protected float lockOnDuration = 1.0f;
         [Range(0, 1)]
         [SerializeField] protected float normalizedLockOnDistance = 0.5f;
+
+        [Header("HACKING AND COOLDOWN")]
+        private float hackedCooldownTime = 3.0f;
+        private Coroutine cooloffCoroutine;
 
         // FOR TESTING ONLY
         [Header("DETECTION METER DISPLAY")]
@@ -64,6 +70,10 @@ namespace Custom.Interactable.Character.Enemy
         protected virtual void OnPlayerIgnored() { }
 
         protected virtual void OnPlayerLost() { }
+
+        protected virtual void OnEnemyHacked() { }
+        
+        protected virtual void OnHackedEnded() { }
 
 
 
@@ -130,6 +140,30 @@ namespace Custom.Interactable.Character.Enemy
             }
 
             detectionMeterCanvas.enabled = currentDetectionLevel > 0;
+        }
+
+        public void Hacked()
+        {
+            OnEnemyHacked();
+            
+            if (cooloffCoroutine != null)
+            {
+                StopCoroutine(cooloffCoroutine);
+            }
+            
+            cooloffCoroutine = StartCoroutine(HackedCooloff());
+        }
+
+        private void HackedEnded()
+        {
+            OnHackedEnded();
+        }
+
+        IEnumerator HackedCooloff()
+        {
+            yield return new WaitForSeconds(hackedCooldownTime);
+
+            HackedEnded();
         }
     }
 }

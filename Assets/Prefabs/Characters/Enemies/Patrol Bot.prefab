@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5774764103963997278}
   - component: {fileID: 1194884329297954243}
   - component: {fileID: 829235429702000016}
+  - component: {fileID: 2692968508938854499}
   m_Layer: 9
   m_Name: Patrol Bot
   m_TagString: Untagged
@@ -51,7 +52,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectData: {fileID: 11400000, guid: 0652815918c3cc14199bb49bafb192c6, type: 2}
-  interactionData: []
+  interactionData:
+  - data: {fileID: 11400000, guid: 079949fae7afb2e4dac8ce8373e53a34, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4796972902955119147}
+          m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractableEnemyBase,
+            Assembly-CSharp
+          m_MethodName: Hacked
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   spriteRenderer: {fileID: 1194884329297954243}
   detectionType: 3
   trackableLayers:
@@ -71,7 +89,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  enableProximity: 1
+  enableProximity: 0
   useBlockFilter: 0
   proximityDetectRange: 1.46
   enableFieldOfView: 1
@@ -194,6 +212,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &2692968508938854499
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3098146507104819}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.08}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.047619, y: 3.047619}
+    newSize: {x: 3.047619, y: 3.047619}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &7927699953928887108
 GameObject:
   m_ObjectHideFlags: 0

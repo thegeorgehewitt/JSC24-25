@@ -23,6 +23,13 @@ namespace Custom.AI.BehaviourTree
         protected override Node SetupTree()
         {
             return new Selector(
+                new Sequencer(
+                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_HACKED_STATE),
+                    new WaitTask(3.0f, 3.0f),
+                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE))
+                .AddDecorator(
+                    new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_ENEMY_HACKED, BlackboardKeyDecorator.Mode.Set).SetAbortMode(AbortMode.LowerPiority)),
+
                 new Selector(
                     new Sequencer(
                         new GetComponentLocationTask(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION),
@@ -56,8 +63,8 @@ namespace Custom.AI.BehaviourTree
                                     .SetAbortMode(AbortMode.Self)),
 
                             new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_FIRE_STATE),
-
                             new ShootPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))
+
                         ) { Name = "Lock On & Shoot" }
                         .AddDecorator(
                             new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_ALERTED, BlackboardKeyDecorator.Mode.Set)
