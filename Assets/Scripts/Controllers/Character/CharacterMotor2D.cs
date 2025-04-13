@@ -97,8 +97,8 @@ namespace Custom.Controller
         private bool onWall;
         public bool IsOnWall => onWall;
 
-        private bool crouching;
-        public bool IsCrouching => crouching;
+        private bool crouchingInput;
+        public bool IsCrouching => crouchingInput;
 
         public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.Visibility : 1.0f; } }
 
@@ -267,9 +267,10 @@ namespace Custom.Controller
 
             // Ceiling Check
             ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
-            animator.SetBool("HeadCheck", proximityCheckContacts.Count > 0);
-            if (proximityCheckContacts.Count == 0 && !crouching && onCeiling &&capsuleCollider.size.y != orgColSize.y)
+            animator.SetBool("HeadCheck", proximityCheckContacts.Count > 0 && capsuleCollider.size.y != orgColSize.y);
+            if (!crouchingInput && proximityCheckContacts.Count == 0 && onCeiling && capsuleCollider.size.y != orgColSize.y && !GetState("Rolling"))
             {
+                onCeiling = false;
                 SetHeightMult(1.0f);
             }
             onCeiling = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
@@ -429,7 +430,7 @@ namespace Custom.Controller
         /// <param name="_pivot">       Normalized height at which the height is adjusted from. Value clamped to [0..1] </param>
         public void SetHeightMult(float _heightMult, float _pivot = 0.0f)
         {
-            if (_heightMult >= 1f && onCeiling)
+            if (onCeiling && capsuleCollider.size.y != orgColSize.y)
             {
                 return;
             }

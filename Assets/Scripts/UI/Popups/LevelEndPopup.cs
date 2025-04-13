@@ -25,12 +25,12 @@ namespace Custom.UI
 
         private void OnEnable()
         {
-            EventAggregator.Subscribe<DeathEvent>(OnMotorDamaged);
+            //EventAggregator.Subscribe<DeathEvent>(OnMotorDamaged);
         }
 
         private void OnDisable()
         {
-            EventAggregator.Unsubscribe<DeathEvent>(OnMotorDamaged);
+            //EventAggregator.Unsubscribe<DeathEvent>(OnMotorDamaged);
         }
 
         private void Awake()
