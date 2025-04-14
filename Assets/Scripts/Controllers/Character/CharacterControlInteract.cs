@@ -29,6 +29,7 @@ namespace Custom.Controller
         public static event Action<InteractableObject> OnFocusNewInteractableObject;
         public static event Action<InteractableObject> OnUnfocusInteractableObject;
         public static event Action<int> OnSelectNewInteraction;
+        public static event Action<float> OnChargeChanged;
 
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
@@ -46,9 +47,9 @@ namespace Custom.Controller
         [SerializeField] private bool blockedRestrictActive;
 
         [Header("CHARGE")]
-        [SerializeField] private int currentCharge;
-        [SerializeField] private int maxCharge;
-        [SerializeField] private float rechargeRate = 10;
+        [SerializeField] private int currentCharge = 20;
+        [SerializeField] private int maxCharge = 20;
+        [SerializeField] private float rechargeRate = 5;
         Coroutine rechargeCoroutine;
 
 
@@ -99,6 +100,7 @@ namespace Custom.Controller
             else
             {
                 currentCharge -= hoverObject.Interact(activeOption, currentCharge);
+                OnChargeChanged?.Invoke((float)currentCharge / (float)maxCharge);
 
                 if (currentCharge < maxCharge && rechargeCoroutine == null)
                 {
@@ -223,7 +225,14 @@ namespace Custom.Controller
 
             currentCharge++;
 
+            OnChargeChanged?.Invoke((float)currentCharge/(float)maxCharge);
+
             rechargeCoroutine = null;
+
+            if (currentCharge < maxCharge)
+            {
+                rechargeCoroutine = StartCoroutine(Recharge());
+            }
         }
 
             #endregion

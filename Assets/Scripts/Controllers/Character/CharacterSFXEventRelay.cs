@@ -5,8 +5,12 @@ using Custom.Controller;
 
 public class CharacterSFXEventRelay : MonoBehaviour
 {
+    [Header("Controller References")]
     [SerializeField] private CharacterControlRoll rollController;
     [SerializeField] private CharacterControlJump jump;
+    [SerializeField] private CharacterControlWalk walk;
+    
+    private bool footstepToggle = false;
 
     public void PlayRollSFX()
     {
@@ -22,5 +26,10 @@ public class CharacterSFXEventRelay : MonoBehaviour
         {
             jump.PlayJumpSFX();
         }
+    }
+
+    public void PlayFootstepSFX()
+    {
+        walk.PlayFootstepSFX();
     }
 }

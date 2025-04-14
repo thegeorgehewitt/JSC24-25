@@ -6,6 +6,8 @@ using Custom.AI.BehaviourTree;
 using Custom.Interactable.Interfaces;
 using Custom.Manager.EventHandling;
 using UnityEditor.PackageManager;
+using Custom.Manager.Audio;
+
 
 namespace Custom.Interactable.Character.Enemy
 {
@@ -26,6 +28,7 @@ namespace Custom.Interactable.Character.Enemy
         public const string BT_DETECTED_PLAYER = "Detected Player";
         public const string BT_PLAYER_ALERTED = "Player Alerted";
         public const string BT_PLAYER_LOCKED_ON = "Player Locked On";
+        public const string BT_ENEMY_HACKED = "Enemt Hacked";
 
 
 
@@ -68,6 +71,16 @@ namespace Custom.Interactable.Character.Enemy
             behaviourTree.Blackboard.SetOrAdd(BT_PLAYER_LOCKED_ON, true);
         }
 
+        protected override void OnEnemyHacked()
+        {
+            behaviourTree.Blackboard.SetOrAdd(BT_ENEMY_HACKED, true);
+        }
+
+        protected override void OnHackedEnded()
+        {
+            behaviourTree.Blackboard.Invalidate(BT_ENEMY_HACKED);
+        }
+
         public override void OnAnimatorStateUpdated(string _state)
         {
             switch (_state)
@@ -84,12 +97,15 @@ namespace Custom.Interactable.Character.Enemy
                     break;
                 case AS_JUMP_STATE:
                     animator.SetTrigger(AS_JUMP_STATE);
+                    SoundManager.Instance.PlaySFX("Jump", transform.position);
                     break;
                 case AS_LAND_STATE:
                     animator.SetTrigger(AS_LAND_STATE);
+                    SoundManager.Instance.PlaySFX("Land", transform.position);
                     break;
                 case AS_FIRE_STATE:
                     animator.SetTrigger(AS_FIRE_STATE);
+                    SoundManager.Instance.PlaySFX("Shoot", transform.position);
                     break;
                 case AS_HACKED_STATE:
                     animator.SetBool(AS_HACKED_STATE, true);
