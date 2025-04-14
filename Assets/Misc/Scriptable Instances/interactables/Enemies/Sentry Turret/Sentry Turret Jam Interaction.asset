@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: fc87f711cf2a18443b6d38c7d06bc9b9, type: 3}
   tag: Jam
-  cost: 1
+  cost: 5

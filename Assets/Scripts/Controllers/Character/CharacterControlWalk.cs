@@ -22,9 +22,12 @@ namespace Custom.Controller
 
 
         [Header("GROUND MOVEMENT")]
+        [SerializeField] private float groundMaxWalkSpeed = 6.0f;
         [SerializeField] private float groundMaxSpeed = 6.0f;
         [SerializeField] private float groundAcceleration = 30.0f;
         [SerializeField] private float groundDeceleration = 20.0f;
+        [SerializeField] private bool isSprinting = false;
+        
 
         [Header("AIR MOVEMENT")]
         [SerializeField] private float airMaxSpeed = 3.0f;
@@ -48,7 +51,7 @@ namespace Custom.Controller
         {
             if (attachedMotor.GetState("Rolling")) return;
             var direction = GetInputActionWithName("Horizontal").ReadValue<float>();
-            float maxSpeed = attachedMotor.IsGrounded ? groundMaxSpeed : airMaxSpeed;
+            float maxSpeed = attachedMotor.IsGrounded ? (isSprinting? groundMaxSpeed: groundMaxWalkSpeed) :airMaxSpeed;
             float targetSpeed = ((attachedMotor.velocity.x * direction > 0)               // If the character is moving in the same direction as input direction
                                 ? Mathf.Max(maxSpeed, Mathf.Abs(attachedMotor.velocity.x))  // Target speed is the larger between max speed and current speed.
                                 : maxSpeed) * direction;
@@ -69,7 +72,7 @@ namespace Custom.Controller
                 attachedMotor.velocity.x = Mathf.MoveTowards(attachedMotor.velocity.x, targetSpeed, acceleration * TimeManager.FixedDeltaTime);
             }
 
-            animator?.SetFloat("Horizontal Speed", Mathf.Abs(attachedMotor.velocity.x));
+            if (animator != null ) animator.SetFloat("Horizontal Speed", Mathf.Abs(attachedMotor.velocity.x));
 
             if (attachedMotor.IsGrounded && Mathf.Abs(attachedMotor.velocity.x) > 0.1f)
             {
