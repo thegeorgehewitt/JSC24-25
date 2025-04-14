@@ -1,16 +1,11 @@
 using Custom.Manager.EventHandling;
-using Custom.Interactable.Interfaces;
 
 using static Custom.Interactable.Interfaces.IAttackableEnemy;
-using Unity.VisualScripting;
-using UnityEngine;
 
 namespace Custom.Controller
 {
     public class CharacterControlDamageable : CharacterControlBase
     {
-        [SerializeField] private Animator animator;
-
         public class DeathEvent { }
 
         public override string[] InputActionKeysName { get => new string[] { }; }
@@ -21,10 +16,7 @@ namespace Custom.Controller
         {
             if (_event.Target != attachedMotor) return;
 
-            if (animator != null)
-            {
-                animator.SetBool("IsDead", true);
-            }
+            attachedMotor.Animator.SetBool("IsDead", true);
 
             EventAggregator.Publish(new DeathEvent());
         }

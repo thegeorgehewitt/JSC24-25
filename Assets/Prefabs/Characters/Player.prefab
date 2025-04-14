@@ -209,11 +209,11 @@ GameObject:
   - component: {fileID: 4255421762062780418}
   - component: {fileID: 5890741780418279463}
   - component: {fileID: 3938290388967934858}
+  - component: {fileID: 5643623871258979636}
   - component: {fileID: 2916642468219596251}
   - component: {fileID: 7236829821057059442}
   - component: {fileID: 4773218601208523903}
   - component: {fileID: 198324785649722540}
-  - component: {fileID: 5747121414722829360}
   m_Layer: 7
   m_Name: Controls
   m_TagString: Untagged
@@ -258,7 +258,6 @@ MonoBehaviour:
     values:
     - {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
     - {fileID: 0}
-  animator: {fileID: 1856093301908427868}
   jumpSFXNames:
   - SFX_Jump_Land_03
   jumpPower: 12
@@ -278,17 +277,39 @@ MonoBehaviour:
   inputActions:
     keys:
     - Horizontal
+    - Sprint
     values:
     - {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  animator: {fileID: 1856093301908427868}
-  groundMaxWalkSpeed: 6
-  groundMaxSpeed: 10
+    - {fileID: 8960797646021168652, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  groundMaxSpeed: 6
   groundAcceleration: 30
-  groundDeceleration: 20
-  isSprinting: 0
-  airMaxSpeed: 4
+  groundDeceleration: 40
+  airMaxSpeed: 3
   airAcceleration: 8
   airDeceleration: 8
+  toggleSprint: 0
+  sprintAccelerationMult: 2
+  sprintMaxSpeedMult: 1.5
+--- !u!114 &5643623871258979636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989193682148753962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbd415979f11bb14e9ccfc0365be9835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  passiveControl: 0
+  inputActions:
+    keys:
+    - Crouch
+    values:
+    - {fileID: -8171235407746500153, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  toggleCrouch: 0
+  speedMult: 0.7
 --- !u!114 &2916642468219596251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +328,6 @@ MonoBehaviour:
     - Roll
     values:
     - {fileID: 7199744910521261761, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
-  animator: {fileID: 1856093301908427868}
   rollRange: 4
   rollDuration: 0.3
   cooldown: 0.5
@@ -365,7 +385,6 @@ MonoBehaviour:
   inputActions:
     keys: []
     values: []
-  animator: {fileID: 1856093301908427868}
 --- !u!114 &198324785649722540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,24 +410,6 @@ MonoBehaviour:
   angle: 60
   offAlpha: 0.02
   onAlpha: 1
---- !u!114 &5747121414722829360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2989193682148753962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6ca5b8db13978b4983716b9eb526d52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slopeCheckDistance: 0.3
-  maxSlopeAngle: 45
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 1088
-  parentBody: {fileID: 7489048534138405090}
 --- !u!1 &3534369279633472950
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +675,7 @@ GameObject:
   - component: {fileID: 7520197564098527792}
   - component: {fileID: 3725793931521571199}
   - component: {fileID: 1856093301908427868}
-  - component: {fileID: 4441663916601899798}
+  - component: {fileID: 9094122512953537809}
   m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
@@ -812,7 +813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0.0031478761
+  visibility: 0
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -846,7 +847,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4441663916601899798
+--- !u!114 &9094122512953537809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -858,8 +859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444cd3c42a743f3418f651a8356d171f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollController: {fileID: 0}
-  jump: {fileID: 0}
+  rollController: {fileID: 2916642468219596251}
+  jump: {fileID: 5890741780418279463}
 --- !u!1 &7489048534138405090
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +874,7 @@ GameObject:
   - component: {fileID: 3051175788289900178}
   - component: {fileID: 7933555611519160503}
   - component: {fileID: 573359081064459370}
+  - component: {fileID: 7003080779397614455}
   - component: {fileID: 7635029829007018049}
   m_Layer: 7
   m_Name: Player
@@ -1005,20 +1007,39 @@ MonoBehaviour:
   fallAcceleration: 25
   maxFallSpeed: 15
   jumpEndEarlyGravityModifier: 3
-  slopeHandler: {fileID: 5747121414722829360}
+  slopeHandler: {fileID: 7003080779397614455}
   enableVisibilityCheck: 1
   lightEventListener: {fileID: 7520197564098527792}
   paused: 0
   inputGroupMode: 0
   controlScripts:
+  - {fileID: 5643623871258979636}
   - {fileID: 198324785649722540}
   - {fileID: 4773218601208523903}
   - {fileID: 7236829821057059442}
   - {fileID: 2916642468219596251}
   - {fileID: 3938290388967934858}
   - {fileID: 5890741780418279463}
-  - {fileID: 0}
+  - {fileID: 7635029829007018049}
   velocity: {x: 0, y: 0}
+--- !u!114 &7003080779397614455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7489048534138405090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ca5b8db13978b4983716b9eb526d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slopeCheckDistance: 0.3
+  maxSlopeAngle: 45
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 1088
+  parentBody: {fileID: 7489048534138405090}
 --- !u!114 &7635029829007018049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1031,7 +1052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4954f2d7a21eaa041b1b4208c1e4e43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passiveControl: 0
+  passiveControl: 1
   inputActions:
     keys: []
     values: []

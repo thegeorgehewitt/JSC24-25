@@ -13,19 +13,19 @@ namespace FunkyCode
         }
 
 		#if UNITY_EDITOR
-			private void OnSceneView(UnityEditor.SceneView sceneView)
+		private void OnSceneView(UnityEditor.SceneView sceneView)
+		{
+			var manager = LightingManager2D.Get();
+
+			if (!IsSceneViewActive())
 			{
-				var manager = LightingManager2D.Get();
-
-				if (!IsSceneViewActive())
-				{
-					return;
-				}
-
-				Rendering.Manager.Main.InternalUpdate();
-
-				Rendering.Manager.Main.Render();
+				return;
 			}
+
+			//Rendering.Manager.Main.InternalUpdate();
+
+			Rendering.Manager.Main.Render();
+		}
 		#endif
 
         public void OnDisable()

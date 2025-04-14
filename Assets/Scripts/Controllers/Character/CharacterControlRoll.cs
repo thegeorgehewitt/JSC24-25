@@ -9,13 +9,14 @@ namespace Custom.Controller
 {
     public class CharacterControlRoll : CharacterControlBase
     {
-        [SerializeField] private Animator animator;
-        private string[] rollSFXNames = new string[] { "SFX_Roll_01", "SFX_Roll_02" };
+        private readonly string[] rollSFXNames = new string[] { "SFX_Roll_01", "SFX_Roll_02" };
+
+        private const string ROLL_KEY = "Roll";
 
         public override string[] InputActionKeysName
         {
             get => new string[] {
-                "Roll",
+                ROLL_KEY,
             };
         }
 
@@ -32,12 +33,12 @@ namespace Custom.Controller
 
         private void OnEnable()
         {
-            GetInputActionWithName("Roll").performed += _ => { rollAttempt = true; };
+            GetInputActionWithName(ROLL_KEY).performed += _ => { rollAttempt = true; };
         }
 
         public void OnDisable()
         {
-            GetInputActionWithName("Roll").performed -= _ => { rollAttempt = true; };
+            GetInputActionWithName(ROLL_KEY).performed -= _ => { rollAttempt = true; };
         }
 
         private void FixedUpdate()
@@ -65,22 +66,17 @@ namespace Custom.Controller
             if (cooldownLeft > 0) return;
 
             if (cooldownCoroutine != null) StopCoroutine(cooldownCoroutine);
-            cooldownCoroutine = StartCoroutine(DashCoroutine());
+            cooldownCoroutine = StartCoroutine(RollCoroutine());
         }
 
-        private IEnumerator DashCoroutine()
+        private IEnumerator RollCoroutine()
         {
             bool locked = true;
             cooldownLeft = cooldown;
 
             attachedMotor.SetState("Rolling", true);
-            if (animator) { animator.SetTrigger("Roll"); }
-            
-
-            attachedMotor.velocity = Vector2.right * direction * rollRange / rollDuration;
-
-            attachedMotor.SetHeightMult(0.5f, 0.0f);
-
+            attachedMotor.Animator.SetTrigger("Roll");
+            attachedMotor.velocity = direction * rollRange * Vector2.right / rollDuration;
 
             while (cooldownLeft > 0)
             {
@@ -96,9 +92,6 @@ namespace Custom.Controller
                 yield return null;
             }
 
-            attachedMotor.SetHeightMult(1.0f);
-
-            attachedMotor.SetState("Rolling", false);
             cooldownLeft = 0;
         }
         #endregion
@@ -108,7 +101,7 @@ namespace Custom.Controller
             if (rollSFXNames.Length > 0)
             {
                 string clip = rollSFXNames[Random.Range(0, rollSFXNames.Length)];
-                SoundManager.Instance.PlaySFX(clip, transform.position, 1.0f);
+                SoundManager.PlaySFX(clip, transform.position, 1.0f);
             }
         }
     }
