@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+
 
 using System.Collections.Generic;
 
@@ -18,6 +20,10 @@ namespace Custom.Manager.Audio
         public List<AudioClip> soundEffects;
         private Dictionary<string, AudioClip> sfxDictionary;
         [SerializeField] private string menuMusicName;
+                     
+
+        [SerializeField] private AudioMixer audioMixer;
+
 
         private void Awake()
         {
@@ -35,11 +41,32 @@ namespace Custom.Manager.Audio
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
 
-            sfxDictionary = new Dictionary<string, AudioClip>();
-            foreach (AudioClip clip in soundEffects)
-            {
-                sfxDictionary[clip.name] = clip;
-            }
+           
+        }
+
+        public void SetMasterVolume(float value)
+        {
+            audioMixer.SetFloat("masterVol", Mathf.Log10(value) * 20);
+            PlayerPrefs.SetFloat("Volume_Master", value);
+        }
+
+        public void SetMusicVolume(float value)
+        {
+            audioMixer.SetFloat("musicVol", Mathf.Log10(value) * 20);
+            PlayerPrefs.SetFloat("Volume_Music", value);
+        }
+
+        public void SetSFXVolume(float value)
+        {
+            audioMixer.SetFloat("effectsVol", Mathf.Log10(value) * 20);
+            PlayerPrefs.SetFloat("Volume_SFX", value);
+        }
+
+        public void LoadVolumes()
+        {
+            SetMasterVolume(PlayerPrefs.GetFloat("Volume_Master", 1f));
+            SetMusicVolume(PlayerPrefs.GetFloat("Volume_Music", 1f));
+            SetSFXVolume(PlayerPrefs.GetFloat("Volume_SFX", 1f));
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

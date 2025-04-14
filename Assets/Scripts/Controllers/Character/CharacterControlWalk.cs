@@ -78,8 +78,6 @@ namespace Custom.Controller
                 if (footstepTimer >= footstepCooldown)
                 {
                     footstepTimer = 0f;
-                    string clipName = footstepToggle ? "SFX_Footstep1" : "SFX_Footstep2";
-                    SoundManager.Instance.PlaySFX(clipName, transform.position, 0.7f);
                     footstepToggle = !footstepToggle;
 
                 }
@@ -89,6 +87,13 @@ namespace Custom.Controller
                 footstepTimer = 0f;
             }
 
+        }
+
+        public void PlayFootstepSFX()
+        {
+            string clipName = footstepToggle ? "SFX_Footstep1" : "SFX_Footstep2";
+            SoundManager.Instance.PlaySFX(clipName, transform.position, 0.7f);
+            footstepToggle = !footstepToggle;
         }
         #endregion
     }
