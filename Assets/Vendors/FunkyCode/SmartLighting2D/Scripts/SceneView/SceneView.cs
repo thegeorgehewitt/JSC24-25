@@ -22,8 +22,9 @@ namespace FunkyCode
 					return;
 				}
 
-				Rendering.Manager.Main.InternalUpdate();
-
+				// CS7004
+				//Rendering.Manager.Main.InternalUpdate();
+				
 				Rendering.Manager.Main.Render();
 			}
 		#endif

@@ -281,9 +281,11 @@ MonoBehaviour:
     values:
     - {fileID: -1010102689067904790, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
   animator: {fileID: 1856093301908427868}
+  groundMaxWalkSpeed: 6
   groundMaxSpeed: 6
   groundAcceleration: 30
   groundDeceleration: 20
+  isSprinting: 0
   airMaxSpeed: 4
   airAcceleration: 8
   airDeceleration: 8
@@ -344,6 +346,9 @@ MonoBehaviour:
   inRangeColor: {r: 0.44705883, g: 0.8862745, b: 0.85490197, a: 1}
   distanceRestrictActive: 0
   blockedRestrictActive: 0
+  currentCharge: 20
+  maxCharge: 20
+  rechargeRate: 5
 --- !u!114 &4773218601208523903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,7 +674,7 @@ GameObject:
   - component: {fileID: 7520197564098527792}
   - component: {fileID: 3725793931521571199}
   - component: {fileID: 1856093301908427868}
-  - component: {fileID: 4441663916601899798}
+  - component: {fileID: 6933793388218347711}
   m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
@@ -807,7 +812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMultiLightCapture: 1
   useDistance: 1
-  visibility: 0
+  visibility: 0.3214284
 --- !u!114 &3725793931521571199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -841,7 +846,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4441663916601899798
+--- !u!114 &6933793388218347711
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -869,6 +874,7 @@ GameObject:
   - component: {fileID: 3051175788289900178}
   - component: {fileID: 7933555611519160503}
   - component: {fileID: 573359081064459370}
+  - component: {fileID: 7204867011685403300}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -1012,8 +1018,24 @@ MonoBehaviour:
   - {fileID: 2916642468219596251}
   - {fileID: 3938290388967934858}
   - {fileID: 5890741780418279463}
-  - {fileID: 0}
+  - {fileID: 7204867011685403300}
   velocity: {x: 0, y: 0}
+--- !u!114 &7204867011685403300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7489048534138405090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4954f2d7a21eaa041b1b4208c1e4e43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  passiveControl: 1
+  inputActions:
+    keys: []
+    values: []
 --- !u!1 &9117657421144769001
 GameObject:
   m_ObjectHideFlags: 0
