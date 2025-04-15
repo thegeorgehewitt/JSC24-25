@@ -9,8 +9,6 @@ namespace Custom.Controller
 {
     public class CharacterControlRoll : CharacterControlBase
     {
-        private readonly string[] rollSFXNames = new string[] { "SFX_Roll_01", "SFX_Roll_02" };
-
         private const string ROLL_KEY = "Roll";
 
         public override string[] InputActionKeysName
@@ -98,11 +96,7 @@ namespace Custom.Controller
 
         public void PlayRollSFX()
         {
-            if (rollSFXNames.Length > 0)
-            {
-                string clip = rollSFXNames[Random.Range(0, rollSFXNames.Length)];
-                SoundManager.PlaySFX(clip, transform.position, 1.0f);
-            }
+            AudioManager.PlaySFX(SFXGroup.PlayerRoll, transform.position, 1.0f);
         }
     }
 }

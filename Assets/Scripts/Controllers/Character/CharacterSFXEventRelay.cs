@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 using Custom.Controller;
 
 public class CharacterSFXEventRelay : MonoBehaviour
