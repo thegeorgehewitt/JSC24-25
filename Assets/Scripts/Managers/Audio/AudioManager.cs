@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 using Custom.Scriptable.Audio;
-using Custom.Attribute;
 
 namespace Custom.Manager.Audio
 {
@@ -21,10 +20,8 @@ namespace Custom.Manager.Audio
         [SerializeField] private AudioPackData audioPack;
         [SerializeField] private AudioMixerGroup musicAudioMixer;
 
-        [Space(10)]
-        [ReadOnly]
-        [SerializeField] private List<AudioSource> musicAudioSources;
-
+        // Music Source
+        private readonly List<AudioSource> musicAudioSources = new();
         private readonly Dictionary<MusicGroup, List<AudioSource>> playingSourcesFromGroup = new();
         private readonly Dictionary<AudioSource, MusicGroup> musicGroupFromSource = new();
         private readonly Stack<int> availableAudioSources = new();
