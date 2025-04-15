@@ -11,7 +11,6 @@ namespace Custom.Controller
         private const string HORIZONTAL_KEY = "Horizontal";
         private const string SPRINT_KEY = "Sprint";
 
-
         public override string[] InputActionKeysName
         {
             get => new string[] {
@@ -107,8 +106,7 @@ namespace Custom.Controller
                 if (footstepTimer >= footstepCooldown)
                 {
                     footstepTimer = 0f;
-                    string clipName = footstepFlipFlop ? "SFX_Footstep1" : "SFX_Footstep2";
-                    SoundManager.PlaySFX(clipName, transform.position, 0.7f);
+                    AudioManager.PlaySFX(SFXGroup.PlayerFootstep, transform.position, 0.7f);
 
                     footstepFlipFlop = !footstepFlipFlop;
                 }
