@@ -34,8 +34,8 @@ namespace Custom.Attribute
             Type enumType = fieldInfo.FieldType;
             if (!enumType.IsEnum) return;
 
-            var enumValues = Enum.GetValues(enumType);
             var enumNames = Enum.GetNames(enumType);
+            var enumValues = Enum.GetValues(enumType);
 
             var displayOptions = new List<GUIContent>();
             var valueMap = new List<int>();
@@ -49,26 +49,24 @@ namespace Custom.Attribute
                 if (separator != null)
                 {
                     displayOptions.Add(new GUIContent(CondenseSeparatorName(separator.label, separator.charLength)));
-                    valueMap.Add(-1); // Invalidate enum value to avoid selection.
+                    valueMap.Add(int.MinValue); // Use int.MinValue to represent separators uniquely
                 }
 
                 displayOptions.Add(new GUIContent(ObjectNames.NicifyVariableName(name)));
                 valueMap.Add((int)enumValues.GetValue(i));
             }
 
-            // Get index of current value (skip separators)
-            int selectedIndex = valueMap.IndexOf(property.enumValueIndex);
+            // Get the current index from the enum value
+            int selectedIndex = valueMap.IndexOf(property.intValue);
             if (selectedIndex == -1)
-                selectedIndex = valueMap.FindIndex(v => v != -1);
-
+                selectedIndex = valueMap.FindIndex(v => v != int.MinValue); // default to first valid
 
             EditorGUI.BeginProperty(position, label, property);
 
             int newIndex = EditorGUI.Popup(position, label, selectedIndex, displayOptions.ToArray());
 
-            // Prevent selecting separator
-            if (valueMap[newIndex] != -1)
-                property.enumValueIndex = valueMap[newIndex];
+            if (valueMap[newIndex] != int.MinValue)
+                property.intValue = valueMap[newIndex];
 
             EditorGUI.EndProperty();
         }

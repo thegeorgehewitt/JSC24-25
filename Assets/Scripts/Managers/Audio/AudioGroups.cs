@@ -14,45 +14,49 @@ namespace Custom.Manager.Audio
          * 
          * Incase of changing order or adding values in the middle of the enum, 
          * recheck all serialized data instances that uses SFXGroup to avoid enum index shifting.
+         * 
+         * Custom indexing is recommended to avoid index shifting.
+         * Existing custom indexes should not be adjusted after the fact.
          */
 
         /*
          * Player SFX
          */
         [EnumSeparator("Player", 30)]
-        PlayerFootstep,
-        PlayerLanding,
-        PlayerRoll,
-        PlayerInjured,
+        PlayerFootstep = 1,
+        PlayerLanding = 2,
+        PlayerRoll = 3,
+        PlayerInjured = 4,
 
         /*
          * Enemy SFX
          */
         [EnumSeparator("Enemy", 30)]
-        EnemyShoot,
-        EnemyRun,
-        EnemyJump,
-        EnemyLand,
+        EnemyShoot = 10,
+        EnemyRun = 11,
+        EnemyJump = 12,
+        EnemyLand = 13,
+        EnemyCharge = 14,
 
         /*
          * Environment
          */
         [EnumSeparator("Environment", 30)]
-        DoorClose,
-        DoorOpen,
+        DoorClose = 21,
+        DoorOpen = 22,
 
-        ElevatorClose,
-        ElevatorOpen,
-        ElevatorMoving,
+        ElevatorClose = 31,
+        ElevatorOpen = 32,
+        ElevatorMoving = 33,
 
-        LightSwitchToggleOn,
-        LightSwitchToggleOff,
+        LightSwitchToggleOn = 41,
+        LightSwitchToggleOff = 42,
 
-        ObjectiveTerminal,
+        ObjectiveTerminal = 51,
     }
 
     /// <summary>
-    /// 
+    /// List of all music groups in the game.
     /// </summary>
     public enum MusicGroup
     {
@@ -63,6 +67,9 @@ namespace Custom.Manager.Audio
          * 
          * Incase of changing order or adding values in the middle of the enum, 
          * recheck all serialized data instances that uses MusicGroup to avoid enum index shifting.
+         * 
+         * Custom indexing is recommended to avoid index shifting.
+         * Existing custom indexes should not be adjusted after the fact.
          */
 
         Background,
