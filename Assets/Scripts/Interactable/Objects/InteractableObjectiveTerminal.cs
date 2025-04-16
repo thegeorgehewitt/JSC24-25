@@ -1,18 +1,21 @@
-using System.Collections.Generic;
-
 using UnityEngine;
 
-using Custom.UI;
-using Custom.Manager;
-using UnityEngine.InputSystem;
-using UnityEditor.ShaderGraph;
+using Custom.Manager.EventHandling;
+using Custom.Manager.Objective;
 
 namespace Custom.Interactable
 {
     public class InteractableObjectiveTerminal : InteractableObject, IPersistent
     {
+        public class DataCollectedEvent { };
+        public class TerminalLoadedEvent { };
+
+
+
+        [SerializeField] private string key;
+
         private Collider2D[] colliders;
-        public string key;
+
 
 
         private void Awake()
@@ -22,7 +25,7 @@ namespace Custom.Interactable
 
         private void Start()
         {
-            ObjectiveTrackerPopup.Instance.RequiredValue++;
+            EventAggregator.Publish<TerminalLoadedEvent>(null);
         }
 
 
@@ -40,7 +43,7 @@ namespace Custom.Interactable
                 collider.enabled = false;
             }
 
-            ObjectiveTrackerPopup.Instance.CurrentValue++;
+            EventAggregator.Publish<DataCollectedEvent>(null);
         }
 
         public void LoadData(PersistentData data)
@@ -63,8 +66,6 @@ namespace Custom.Interactable
                         {
                             collider.enabled = true;
                         }
-
-                        ObjectiveTrackerPopup.Instance.CurrentValue--;
                     }
                 }
             }

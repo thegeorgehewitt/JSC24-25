@@ -1,33 +1,24 @@
-using System;
 using System.Collections;
 
 using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+
 using Custom.Manager;
+using Custom.Manager.Objective;
+using Custom.Manager.EventHandling;
+using static Custom.Interactable.InteractableObjectiveTerminal;
 
 namespace Custom.UI
 {
-    public class ObjectiveTrackerPopup : MonoBehaviour
+    public class DataCollectionObjective : ObjectiveBase
     {
-        public static event Action OnObjectiveCompleted;
-
-        public static ObjectiveTrackerPopup Instance {  get; private set; }
-
-        private Vector3 originalScale;
-
-
-
         [Header("REFERENCES")]
         [SerializeField] private TextMeshProUGUI title;
         [SerializeField] private TextMeshProUGUI backgroundText;
         [SerializeField] private TextMeshProUGUI fillText;
         [SerializeField] private Image fillMask;
-
-        [Header("GENERAL INFO")]
-        [SerializeField] private string titleName = "Objective";
-        [SerializeField] private int requiredValue = 0;
 
         [Header("ANIMATION")]
         [SerializeField] private Vector3 expandedScale = Vector3.one * 1.5f;
@@ -35,57 +26,20 @@ namespace Custom.UI
         [SerializeField] private float expandDuration = 0.5f;
         [SerializeField] private float holdDuration = 1.0f;
 
+        private Vector3 originalScale;
+
         private int currentValue;
-
-        public int CurrentValue
-        {
-            get => currentValue;
-            set
-            {
-                currentValue = Mathf.Clamp(value, 0, requiredValue);
-
-                UpdateDisplays();
-
-                if (currentValue >= requiredValue)
-                {
-                    OnObjectiveCompleted?.Invoke();
-                }
-            }
-        }
-
-        public int RequiredValue
-        {
-            get => requiredValue;
-            set
-            {
-                requiredValue = Mathf.Max(value, 1);
-
-                UpdateDisplays();
-
-                if (currentValue >= requiredValue)
-                {
-                    OnObjectiveCompleted?.Invoke();
-                }
-            }
-        }
+        private int requiredValue;
 
 
 
         private void Awake()
         {
-            #region Singleton
-            if (!Instance)
-                Instance = this;
-            else
-                Destroy(this);
-            #endregion
-
             originalScale = transform.localScale;
-        }
+            title.text = label;
 
-        private void Start()
-        {
-            title.text = titleName;
+            EventAggregator.Subscribe<TerminalLoadedEvent>(OnTerminalLoaded);
+            EventAggregator.Subscribe<DataCollectedEvent>(OnTerminalDataCollected);
         }
 
 
@@ -130,6 +84,25 @@ namespace Custom.UI
 
             elapsedTime = 0;
             transform.localScale = originalScale;
+        }
+        #endregion
+
+        #region Callbacks
+        private void OnTerminalLoaded()
+        {
+            requiredValue++;
+        }
+
+        private void OnTerminalDataCollected()
+        {
+            currentValue = Mathf.Clamp(currentValue + 1, 0, requiredValue);
+
+            UpdateDisplays();
+
+            if (currentValue >= requiredValue)
+            {
+                Complete();
+            }
         }
         #endregion
     }
