@@ -33,6 +33,11 @@ namespace Custom.UI.HUD
             ObjectiveManager.OnObjectiveRemoved -= OnObjectiveUntracked;
         }
 
+        private void Awake()
+        {
+            UpdateGroupVisibility();
+        }
+
 
 
         #region Callbacks

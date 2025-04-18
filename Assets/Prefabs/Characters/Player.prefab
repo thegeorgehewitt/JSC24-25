@@ -258,8 +258,6 @@ MonoBehaviour:
     values:
     - {fileID: 7298196842880637288, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
     - {fileID: 0}
-  jumpSFXNames:
-  - SFX_Jump_Land_03
   jumpPower: 12
 --- !u!114 &3938290388967934858
 MonoBehaviour:
@@ -308,8 +306,10 @@ MonoBehaviour:
     - Crouch
     values:
     - {fileID: -8171235407746500153, guid: 5d39a86c853eca2448d1cf9f9d512acc, type: 3}
+  autoCrouch: 1
   toggleCrouch: 0
-  speedMult: 0.7
+  heightMult: 0.5
+  speedMult: 0.5
 --- !u!114 &2916642468219596251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,6 +1008,9 @@ MonoBehaviour:
   maxFallSpeed: 15
   jumpEndEarlyGravityModifier: 3
   slopeHandler: {fileID: 7003080779397614455}
+  autoCrouch: 1
+  crouchHeight: 0.5
+  crouchGroundedSpeedMult: 0.5
   enableVisibilityCheck: 1
   lightEventListener: {fileID: 7520197564098527792}
   paused: 0
