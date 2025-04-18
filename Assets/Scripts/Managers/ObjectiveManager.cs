@@ -2,21 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 
-using UnityEngine;
-
-using Custom.Attribute;
-
 namespace Custom.Manager.Objective
 {
-    public class ObjectiveManager : MonoBehaviour
+    public static class ObjectiveManager
     {
-        public static ObjectiveManager Instance { get; private set; }
-
-        public static event Action<ObjectiveBase> OnObjectiveAdded;
-        public static event Action<ObjectiveBase> OnObjectiveRemoved;
-        public static event Action<ObjectiveBase> OnObjectiveCompleted;
-        public static event Action<ObjectiveBase> OnObjectiveUncompleted;
-        public static event Action<ObjectiveBase> OnObjectiveFailed;
+        public static event Action<ObjectiveTrackerBase> OnObjectiveAdded;
+        public static event Action<ObjectiveTrackerBase> OnObjectiveRemoved;
+        public static event Action<ObjectiveTrackerBase> OnObjectiveCompleted;
+        public static event Action<ObjectiveTrackerBase> OnObjectiveUncompleted;
+        public static event Action<ObjectiveTrackerBase> OnObjectiveFailed;
 
         /// <summary>
         /// Invoked once all objectives are no longer in <see cref="ObjectiveState.OnGoing"/> state. <br/>
@@ -25,22 +19,20 @@ namespace Custom.Manager.Objective
 
 
 
-        [ReadOnly]
-        [SerializeField] private readonly List<ObjectiveBase> objectives = new();
+        private static readonly List<ObjectiveTrackerBase> objectives = new();
+        private static readonly Dictionary<ObjectiveTrackerBase, Action[]> objectiveCallbacks = new();
 
-        private readonly Dictionary<ObjectiveBase, Action[]> objectiveCallbacks = new();
+        private static int onGoingObjectives = 0;
 
-        private int onGoingObjectives = 0;
-
-        private ObjectiveCompletionState ObjectiveCompletion
+        private static ObjectiveCompletionState ObjectiveCompletion
         {
             get
             {
-                if (objectives.Any(e => e.Type == ObjectiveType.Primary && e.State != ObjectiveState.Completed))
+                if (objectives.Any(e => e.Type == ObjectiveType.Main && e.State != ObjectiveState.Completed))
                     return ObjectiveCompletionState.Failed;
 
                 if (objectives.Any(e => e.Type == ObjectiveType.Optional && e.State != ObjectiveState.Completed))
-                    return ObjectiveCompletionState.CompletedPrimary;
+                    return ObjectiveCompletionState.CompletedMain;
 
                 return ObjectiveCompletionState.CompletedAll;
             }
@@ -48,23 +40,7 @@ namespace Custom.Manager.Objective
 
 
 
-        private void Awake()
-        {
-            #region Singleton
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(this);
-            }
-            #endregion
-        }
-
-
-
-        #region Static 
+        #region Objective Tracking 
         /// <summary>
         /// Start tracking the given objective.
         /// </summary>
@@ -73,33 +49,7 @@ namespace Custom.Manager.Objective
         /// <see langword="true"/> if the objective is successfully added. <br/>
         /// Otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool TrackObjective(ObjectiveBase _objective)
-        {
-            if (Instance == null) return false;
-
-            return Instance.TrackObjective_Core(_objective);
-        }
-
-        /// <summary>
-        /// Stop tracking the given objective.
-        /// </summary>
-        /// <param name="_objective"> The objective to stop tracking. </param>
-        /// <returns>
-        /// <see langword="true"/> if the objective is successfully removed. <br/>
-        /// Otherwise, <see langword="false"/>.
-        /// </returns>
-        public static bool UntrackObjective(ObjectiveBase _objective)
-        {
-            if (Instance == null) return false;
-
-            return Instance.UntrackObjective_Core(_objective);
-        }
-        #endregion
-
-
-
-        #region Core
-        private bool TrackObjective_Core(ObjectiveBase _objective)
+        public static bool TrackObjective(ObjectiveTrackerBase _objective)
         {
             if (objectives.Contains(_objective)) return false;
 
@@ -114,7 +64,15 @@ namespace Custom.Manager.Objective
             return true;
         }
 
-        private bool UntrackObjective_Core(ObjectiveBase _objective)
+        /// <summary>
+        /// Stop tracking the given objective.
+        /// </summary>
+        /// <param name="_objective"> The objective to stop tracking. </param>
+        /// <returns>
+        /// <see langword="true"/> if the objective is successfully removed. <br/>
+        /// Otherwise, <see langword="false"/>.
+        /// </returns>
+        public static bool UntrackObjective(ObjectiveTrackerBase _objective)
         {
             if (!objectives.Remove(_objective)) return false;
 
@@ -127,52 +85,50 @@ namespace Custom.Manager.Objective
 
             return true;
         }
+        #endregion
 
-
-
-        private void ReferenceCallbacks(ObjectiveBase _objective)
+        #region Internal Callbacks
+        private static void ReferenceCallbacks(ObjectiveTrackerBase _objective)
         {
             Action onCompleted = () => OnCompleted(_objective);
             Action onUncompleted = () => OnUncompleted(_objective);
             Action onFailed = () => OnFailed(_objective);
 
             _objective.OnCompleted += onCompleted;
-            _objective.OnUncomplete += onUncompleted;
+            _objective.OnUncompleted += onUncompleted;
             _objective.OnFailed += onFailed;
 
             objectiveCallbacks.Add(_objective, new Action[] { onCompleted, onUncompleted, onFailed });
         }
 
-        private void DereferenceCallbacks(ObjectiveBase _objective)
+        private static void DereferenceCallbacks(ObjectiveTrackerBase _objective)
         {
             if (!objectiveCallbacks.ContainsKey(_objective)) return;
 
             _objective.OnCompleted -= objectiveCallbacks[_objective][0];
-            _objective.OnUncomplete -= objectiveCallbacks[_objective][1];
+            _objective.OnUncompleted -= objectiveCallbacks[_objective][1];
             _objective.OnFailed -= objectiveCallbacks[_objective][2];
 
             objectiveCallbacks.Remove(_objective);
         }
-        #endregion
 
 
 
-        #region Internal Callbacks
-        private void OnCompleted(ObjectiveBase _objective)
+        private static void OnCompleted(ObjectiveTrackerBase _objective)
         {
             OnObjectiveHalted();
 
             OnObjectiveCompleted?.Invoke(_objective);
         }
 
-        private void OnUncompleted(ObjectiveBase _objective)
+        private static void OnUncompleted(ObjectiveTrackerBase _objective)
         {
             onGoingObjectives++;
 
             OnObjectiveUncompleted?.Invoke(_objective);
         }
 
-        private void OnFailed(ObjectiveBase _objective)
+        private static void OnFailed(ObjectiveTrackerBase _objective)
         {
             OnObjectiveHalted();
 
@@ -181,7 +137,7 @@ namespace Custom.Manager.Objective
 
 
 
-        private void OnObjectiveHalted()
+        private static void OnObjectiveHalted()
         {
             onGoingObjectives--;
             if (onGoingObjectives == 0)
@@ -207,7 +163,7 @@ namespace Custom.Manager.Objective
         /// <summary>
         /// Occurred when all of the primary objectives are completed but any of the secondary task are not completed.
         /// </summary>
-        CompletedPrimary,
+        CompletedMain,
 
         /// <summary>
         /// Occurred when all objectives are completed.

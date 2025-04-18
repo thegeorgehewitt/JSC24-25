@@ -27,7 +27,7 @@ namespace Custom.Attribute
 
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(Enum), true)]
-    public class EnumWithSeparatorDrawer : PropertyDrawer
+    public class EnumSeparatorDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

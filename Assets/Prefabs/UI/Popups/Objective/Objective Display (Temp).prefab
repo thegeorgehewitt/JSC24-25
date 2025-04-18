@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 489572887111310843}
   - component: {fileID: 753097319660039104}
   m_Layer: 0
-  m_Name: Objective Display
+  m_Name: Objective Display (Temp)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
