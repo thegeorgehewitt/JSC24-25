@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shadowType: 5
+  shadowType: 1
   shadowLayer: 0
   shadowDistance: 0
   shadowDistanceMin: 0.5
@@ -301,7 +301,7 @@ MonoBehaviour:
     depth: 1
     spriteRenderer: {fileID: 2916424553002418655}
   mainShape:
-    shadowType: 5
+    shadowType: 1
     maskType: 1
     maskPivot: 0
     transform: {fileID: 9055732100578954654}
