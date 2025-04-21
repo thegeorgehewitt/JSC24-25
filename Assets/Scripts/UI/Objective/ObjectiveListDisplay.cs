@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.Manager.Objective;
+using Unity.VisualScripting;
 
 namespace Custom.UI.HUD
 {
@@ -11,11 +12,9 @@ namespace Custom.UI.HUD
         [Header("REFERENCES")]
         [SerializeField] private Transform mainObjectiveContainer;
         [SerializeField] private Transform optionalObjectiveContainer;
-        [SerializeField] private ObjectiveItemDisplay itemDisplayPrefab;
 
-        [Header("DISPLAY")]
-        [SerializeField] private float mainObjectiveLength = 500f;
-        [SerializeField] private float optionalObjectiveLength = 400f;
+        [Header("PREFABS")]
+        [SerializeField] private GameObject itemDisplayPrefab;
 
         private readonly Dictionary<ObjectiveTrackerBase, ObjectiveItemDisplay> objectiveDisplayLookup = new();
 
@@ -44,11 +43,13 @@ namespace Custom.UI.HUD
         private void OnObjectiveTracked(ObjectiveTrackerBase _objective)
         {
             // Instantiate new objective item display.
-            ObjectiveItemDisplay display = Instantiate(itemDisplayPrefab);
-            display.transform.parent = _objective.Type == ObjectiveType.Main ? mainObjectiveContainer : optionalObjectiveContainer;
-            display.transform.SetSiblingIndex(display.transform.parent.childCount - 1);
+            ObjectiveItemDisplay display = 
+                Instantiate(
+                    itemDisplayPrefab,
+                    _objective.Type == ObjectiveType.Main ? mainObjectiveContainer : optionalObjectiveContainer)
+                .GetComponent<ObjectiveItemDisplay>();
+
             display.TrackObjective(_objective);
-            display.Width = _objective.Type == ObjectiveType.Main ? mainObjectiveLength : optionalObjectiveLength;
 
             UpdateGroupVisibility();
 

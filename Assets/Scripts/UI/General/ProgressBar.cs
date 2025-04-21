@@ -85,6 +85,13 @@ namespace Custom.UI.General
 
             FillMode = fillMode;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            FillMode = fillMode;
+        }
+#endif
     }
 
 

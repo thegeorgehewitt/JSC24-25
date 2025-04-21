@@ -54,9 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainObjectiveContainer: {fileID: 7485914773476032132}
   optionalObjectiveContainer: {fileID: 8758558702590422479}
-  itemDisplayPrefab: {fileID: 8535104298294974181, guid: e89096d95e78fb44e8b2ea46e4bb1cdc, type: 3}
-  mainObjectiveLength: 500
-  optionalObjectiveLength: 400
+  itemDisplayPrefab: {fileID: 949165652474877083, guid: e89096d95e78fb44e8b2ea46e4bb1cdc, type: 3}
 --- !u!114 &4341377892219995170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,7 +682,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2e83a5f50a8a38446b35de8601fa877a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9e423129d96e6d9488b576a7233d2c69, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -707,7 +705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 30
+    m_Left: 20
     m_Right: 6
     m_Top: 2
     m_Bottom: 2
@@ -787,7 +785,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2e83a5f50a8a38446b35de8601fa877a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9e423129d96e6d9488b576a7233d2c69, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -810,7 +808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 30
+    m_Left: 20
     m_Right: 6
     m_Top: 2
     m_Bottom: 2

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-using Custom.Scriptable;
+using Custom.Scriptable.Interactable;
 
 namespace Custom.Interactable
 {

@@ -3,56 +3,59 @@ using UnityEngine.UI;
 
 using TMPro;
 
-using Custom.Scriptable;
+using Custom.Settings;
+using Custom.Scriptable.Interactable;
+using Custom.Scriptable.Settings;
 
-namespace Custom.UI
+namespace Custom.UI.HUD
 {
     public class InteractionInfoDisplay : MonoBehaviour
     {
         [Header("REFERENCES")]
         [SerializeField] private Image interactionIcon;
-        [SerializeField] private Image borderImage;
-        [SerializeField] private TextMeshProUGUI interactionName;
-        [SerializeField] private TextMeshProUGUI interactionCost;
-        [SerializeField] private GameObject costObject;
-
-        [Header("ACTIVE OPTION")]
-        [SerializeField] private Color normalColor = Color.white;
-        [SerializeField] private Color selectedColor = Color.cyan;
-        [SerializeField] private Color disabledColor = Color.grey;
+        [SerializeField] private TextMeshProUGUI nameText;
+        [SerializeField] private TextMeshProUGUI costText;
+        [SerializeField] private Image costIcon;
+        [Space]
+        [SerializeField] private CanvasGroup mainCanvasGroup;
+        [SerializeField] private Image highLightImage;
+        [SerializeField] private Image overlayImage;
 
 
 
-        private Color GetColorFromState(InteractionState _state)
+        private void Awake()
         {
-            switch(_state)
-            {
-                case InteractionState.Normal:
-                    return normalColor;
-
-                case InteractionState.Selected:
-                    return selectedColor;
-
-                case InteractionState.Disabled:
-                    return disabledColor;
-
-                default: return normalColor;
-            }
+            Color temp = VisualSettings.ColorPalette.GetUIColor(UIElementGroup.HostilePrimary);
+            temp.a = 0.2f;
+            overlayImage.color = temp;
         }
 
 
 
         public void DisplayInfo(ObjectInteractionData _data, InteractionState _state)
         {
-            borderImage.color = GetColorFromState(_state);
+            // Interaction state display
+            overlayImage.enabled = _state == InteractionState.Disabled;
+            mainCanvasGroup.alpha = _state == InteractionState.Selected ? 1.0f : 0.4f;
+            highLightImage.pixelsPerUnitMultiplier = _state == InteractionState.Selected ? 1 : 2;
 
             if (!_data) return;
 
+            // Basic info display
             interactionIcon.sprite = _data.icon;
-            interactionName.text = _data.tag;
+            nameText.text = _data.title;
 
-            costObject.SetActive(_data.cost != 0);
-            interactionCost.text = _data.cost.ToString();
+            // Cost display
+            costText.text = Mathf.Abs(_data.cost).ToString();
+
+            UIElementGroup costGroup = UIElementGroup.NeutralPrimary;
+            if (_data.cost > 0)
+                costGroup = UIElementGroup.HostilePrimary;
+            else if (_data.cost < 0)
+                costGroup = UIElementGroup.FriendlyPrimary;
+
+            costText.color = VisualSettings.ColorPalette.GetUIColor(costGroup);
+            costIcon.color = VisualSettings.ColorPalette.GetUIColor(costGroup);
         }
     }
 
@@ -61,7 +64,9 @@ namespace Custom.UI
     public enum InteractionState
     {
         Normal,
+
         Selected,
+
         Disabled
     }
 }

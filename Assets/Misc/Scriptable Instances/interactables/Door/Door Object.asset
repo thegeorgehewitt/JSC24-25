@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1defec162ccfeae4d9188d65c9736d43, type: 3}
   m_Name: Door Object
   m_EditorClassIdentifier: 
-  objectName: Door
+  icon: {fileID: -846933970, guid: 50d2dfd3ab556fa409ebba188465e488, type: 3}
+  type: 1
+  objectName: Hydraulic Door
+  description: Antique design. Easily hackable.
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <highlight>
+      Value: <b><color=#FFB736>
+    - Key: </highlight>
+      Value: </color></b>
