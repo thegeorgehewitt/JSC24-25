@@ -1,0 +1,1192 @@
+fileFormatVersion: 2
+guid: f484122c61615f14797740fd1d5ecbfe
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a96828abf8a6ea34ab7b63ed27cea21a
+      internalID: -882525099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_1
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f06105126f67c4744a6a8112aef7ec27
+      internalID: -1767482757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_2
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a87f911c562f77443862b9e7605ea261
+      internalID: -1911938082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_3
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1efc597128b0c8447835a836c969e270
+      internalID: -805415992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_4
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5d549f25f2298a4aa10823c98598def
+      internalID: -1960090668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_5
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f29f0869de8d5ee4eb4d3e26b0b8fe10
+      internalID: 1004830051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_6
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b769246a291184d4aa68dfc25ff1ab71
+      internalID: -934822286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_7
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 851ef492a56a3d14a8ab48020924293b
+      internalID: -1882970656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_8
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 308ba8013d5030d4580475910d1f501d
+      internalID: 774627261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_9
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39ebddcf509036943958ace6c2c964ef
+      internalID: -507476311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_10
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f03a6ea38119de4ea562c9c2e8622b1
+      internalID: 1379979581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_11
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72241c2747ad4024aa8ddb2a51199666
+      internalID: -269186752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_12
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74194aa51724d2640b8b5155f8b9e649
+      internalID: -1786386139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_13
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 998a3fb154f4a0249ad1521553f0c6c4
+      internalID: 1815193120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_14
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c70d458828670642b8029c8808bbab5
+      internalID: 994871657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_15
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddbb346e12e210f498be853de7acd958
+      internalID: -23145853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_16
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4cc6336474639849971fdbe814e2b67
+      internalID: 932632035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_17
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fb45bc6242745944a1107974fc3b85e
+      internalID: -1794603033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_18
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 001c4116efa677b45b59eecc7ce7704f
+      internalID: -279043216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_19
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa344babcad56da4388129c03110c62e
+      internalID: 1798573971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_20
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e7003fef87393d468e76316d74a61ec
+      internalID: 1660876025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_21
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3de0f993efe128c4baa0db01cd31c26d
+      internalID: -1447706278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_22
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b90b8150656a08f45a77aa4f6726780f
+      internalID: -1938154906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_23
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73b28e7704ef35e4e9b87e4fa3edc00e
+      internalID: 1775261415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_24
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d9a431c93431a14b8de10fed04249de
+      internalID: 874058151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_25
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 845ba22beb3533b4083c0964e0c88e8c
+      internalID: 1707862792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_26
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 442f965c9e73b6345be4abf9814795fa
+      internalID: 1944970564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_27
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f9cd32ac5ab3d448b858ea4f215d9ed
+      internalID: 1471301363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_28
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 165ddf5a57d414245bf0080832187896
+      internalID: 1413710730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_29
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57aa192d3006c9d4ab0e8fb8d50dbb5a
+      internalID: -117482259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_30
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5176a41e560c9a4b9024e84e3d9d4dd
+      internalID: 1273591904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_31
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f65eff90c5f8fdb4a9174581c1abdf91
+      internalID: -1393983543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_32
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93603473e22eae54783e62562753aed6
+      internalID: 1013018714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_33
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d914883ce436d794bb8711a8b50c898f
+      internalID: 812664939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_34
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 561c0fe567dea5e48a87a43e4317069f
+      internalID: -810999213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_35
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4156a3059b91c4e40a71b95b126f00ae
+      internalID: 924238276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_36
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43a76414cd171124c8750226bc21809e
+      internalID: 938139983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_37
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c84133017461864e9f0f8a04c31df51
+      internalID: -119176263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_38
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a47f3631a5cae454d814443d6f1b8cb7
+      internalID: -1790036281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_39
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 611f97671a5fabe468aa0449a5189b79
+      internalID: -1733297685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_40
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88fbaa94fd2ebad45954f99dfc1644b4
+      internalID: -1349203831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_41
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d2c525591dd1c84ba291b3042f44a8e
+      internalID: 898136360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_42
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62f11b383210b5248b5a2d9e3464ebb0
+      internalID: -2061414434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_43
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbfd351a9fd34b545b9515b4804b2034
+      internalID: 966685751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_44
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a21e2cc93f4f59d4995d83033539078f
+      internalID: 2081186023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_45
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2a317018d59304409142edbe33b3992
+      internalID: -1949747888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_46
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 982aaafff413be14eb46273c482ea341
+      internalID: 443834200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_47
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 967a76e993586d74288337ea5cca0fe3
+      internalID: -216166237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewTileSet 03-15-2025 02-18-07 (1)_48
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 141c42ecd216a774b850dcf80b4b7ecd
+      internalID: 2101360351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      NewTileSet 03-15-2025 02-18-07 (1)_0: -882525099
+      NewTileSet 03-15-2025 02-18-07 (1)_1: -1767482757
+      NewTileSet 03-15-2025 02-18-07 (1)_10: 1379979581
+      NewTileSet 03-15-2025 02-18-07 (1)_11: -269186752
+      NewTileSet 03-15-2025 02-18-07 (1)_12: -1786386139
+      NewTileSet 03-15-2025 02-18-07 (1)_13: 1815193120
+      NewTileSet 03-15-2025 02-18-07 (1)_14: 994871657
+      NewTileSet 03-15-2025 02-18-07 (1)_15: -23145853
+      NewTileSet 03-15-2025 02-18-07 (1)_16: 932632035
+      NewTileSet 03-15-2025 02-18-07 (1)_17: -1794603033
+      NewTileSet 03-15-2025 02-18-07 (1)_18: -279043216
+      NewTileSet 03-15-2025 02-18-07 (1)_19: 1798573971
+      NewTileSet 03-15-2025 02-18-07 (1)_2: -1911938082
+      NewTileSet 03-15-2025 02-18-07 (1)_20: 1660876025
+      NewTileSet 03-15-2025 02-18-07 (1)_21: -1447706278
+      NewTileSet 03-15-2025 02-18-07 (1)_22: -1938154906
+      NewTileSet 03-15-2025 02-18-07 (1)_23: 1775261415
+      NewTileSet 03-15-2025 02-18-07 (1)_24: 874058151
+      NewTileSet 03-15-2025 02-18-07 (1)_25: 1707862792
+      NewTileSet 03-15-2025 02-18-07 (1)_26: 1944970564
+      NewTileSet 03-15-2025 02-18-07 (1)_27: 1471301363
+      NewTileSet 03-15-2025 02-18-07 (1)_28: 1413710730
+      NewTileSet 03-15-2025 02-18-07 (1)_29: -117482259
+      NewTileSet 03-15-2025 02-18-07 (1)_3: -805415992
+      NewTileSet 03-15-2025 02-18-07 (1)_30: 1273591904
+      NewTileSet 03-15-2025 02-18-07 (1)_31: -1393983543
+      NewTileSet 03-15-2025 02-18-07 (1)_32: 1013018714
+      NewTileSet 03-15-2025 02-18-07 (1)_33: 812664939
+      NewTileSet 03-15-2025 02-18-07 (1)_34: -810999213
+      NewTileSet 03-15-2025 02-18-07 (1)_35: 924238276
+      NewTileSet 03-15-2025 02-18-07 (1)_36: 938139983
+      NewTileSet 03-15-2025 02-18-07 (1)_37: -119176263
+      NewTileSet 03-15-2025 02-18-07 (1)_38: -1790036281
+      NewTileSet 03-15-2025 02-18-07 (1)_39: -1733297685
+      NewTileSet 03-15-2025 02-18-07 (1)_4: -1960090668
+      NewTileSet 03-15-2025 02-18-07 (1)_40: -1349203831
+      NewTileSet 03-15-2025 02-18-07 (1)_41: 898136360
+      NewTileSet 03-15-2025 02-18-07 (1)_42: -2061414434
+      NewTileSet 03-15-2025 02-18-07 (1)_43: 966685751
+      NewTileSet 03-15-2025 02-18-07 (1)_44: 2081186023
+      NewTileSet 03-15-2025 02-18-07 (1)_45: -1949747888
+      NewTileSet 03-15-2025 02-18-07 (1)_46: 443834200
+      NewTileSet 03-15-2025 02-18-07 (1)_47: -216166237
+      NewTileSet 03-15-2025 02-18-07 (1)_48: 2101360351
+      NewTileSet 03-15-2025 02-18-07 (1)_5: 1004830051
+      NewTileSet 03-15-2025 02-18-07 (1)_6: -934822286
+      NewTileSet 03-15-2025 02-18-07 (1)_7: -1882970656
+      NewTileSet 03-15-2025 02-18-07 (1)_8: 774627261
+      NewTileSet 03-15-2025 02-18-07 (1)_9: -507476311
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

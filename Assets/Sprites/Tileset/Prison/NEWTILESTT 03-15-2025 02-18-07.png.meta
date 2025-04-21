@@ -1,0 +1,994 @@
+fileFormatVersion: 2
+guid: faa0ad3743dc91a429d89432d14cc40c
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61ba0afa3e33fb24fa3835c4e0dcc598
+      internalID: 1800128368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_1
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f547aa09042d15e4482e1cf6d3a8bf25
+      internalID: -353341718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_2
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b49cb5fcb5a4a644846c35b395e9000
+      internalID: 1513078822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_3
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e56ebee23c5d9b0409858092c4bb1f7b
+      internalID: -534756911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_4
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cb1b5134044a6c41b64493b8501348b
+      internalID: 161475052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_5
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 223
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29a9f2f4c5cffd34883495eb5ac95346
+      internalID: 1700738843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_6
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0aae3a25a4928fe4ba44cbeab8590773
+      internalID: 776830782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_7
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 081dc9cbda376214a836f06d9db970ed
+      internalID: -1597997506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_8
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d456c18c89e0f7b4eab9c1ae30d85ca1
+      internalID: -463468428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_9
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d5b54c20d6bdf04c92b0270c01394be
+      internalID: 1696625253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_10
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aed62c83d5d08e84c9a44863fb1aa855
+      internalID: -105930020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_11
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 190
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 933161b6a395ca94aa81a6a2861abcac
+      internalID: 845985357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_12
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b131179f77bb3f24791c967154adcd4d
+      internalID: -934399914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_13
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 314b5d31a92b8804bbdbb02a3423746b
+      internalID: 1072021193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_14
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 674b3d65ebcbaa0468f5f980f64099ee
+      internalID: -1424970399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 915631e45d3184b4c8635ff899dbfa63
+      internalID: 1333447989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_16
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64cdb378be3e8ef45b410fa9048f9f68
+      internalID: -134194620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_17
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 157
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e21d146cd38b9499ddbb123ab8ba3a
+      internalID: -2079070062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_18
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41b11a8fce922ec49803d2ded94fd4d4
+      internalID: -612619696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_19
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aeea346f1e5e82c47bedac455318d7e9
+      internalID: -547154203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_20
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50b5054e6566c574a8b6b1e4c1ed31f0
+      internalID: -1894508367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_21
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1bdc46b9a2d83a4e858ed3be2798e23
+      internalID: 1264157805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_22
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 212ea855ee643494383b6e7dffc384e8
+      internalID: -143823564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_23
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 124
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3527bd2492b7f2d48bafafa1a9d07b0d
+      internalID: -549878980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_24
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b6e11ada7149b34dbab12a602f55925
+      internalID: -271468412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_25
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 142ee7a5b0fb99e49b997d0ffa6fb437
+      internalID: -1870694812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_26
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b2300cb0632b1941b5d332733aa92c8
+      internalID: 900404190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_27
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c6b2d74817a73f418f949be8568b12c
+      internalID: 2094341885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_28
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17d93a5c002064b43b0d95f5ab5105d6
+      internalID: -1313651560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_29
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 91
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41ae0c28b0733b6459acb54caf1dbe0d
+      internalID: 933924644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_30
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4665725634913854ea65d63c64468b94
+      internalID: 1913405255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_31
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c97911e1a29d424b87e000bc729b8f0
+      internalID: 1648539071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_32
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02b66a79e43e4554da106d63a3d4103b
+      internalID: 1094183877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_33
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf180a54ed2b17c41a9f987348ab40cc
+      internalID: 76254296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_34
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7334766ef0258a642962b2914b90b93e
+      internalID: -1046421478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_35
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 58
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f57988b518d737348a85f8bbcf31987f
+      internalID: 699954406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_36
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43e0e4571fd26ca4f9cae1ef8c24b641
+      internalID: -130073538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_37
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a21000de01a0d094283b71107f041c01
+      internalID: -271116641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_38
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7f066659008478478927f2cb220b67a
+      internalID: 1309865088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NEWTILESTT 03-15-2025 02-18-07_39
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 25
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc0aba39113c6af4eb88be1bbfe35b6c
+      internalID: -345122416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      NEWTILESTT 03-15-2025 02-18-07_0: 1800128368
+      NEWTILESTT 03-15-2025 02-18-07_1: -353341718
+      NEWTILESTT 03-15-2025 02-18-07_10: -105930020
+      NEWTILESTT 03-15-2025 02-18-07_11: 845985357
+      NEWTILESTT 03-15-2025 02-18-07_12: -934399914
+      NEWTILESTT 03-15-2025 02-18-07_13: 1072021193
+      NEWTILESTT 03-15-2025 02-18-07_14: -1424970399
+      NEWTILESTT 03-15-2025 02-18-07_15: 1333447989
+      NEWTILESTT 03-15-2025 02-18-07_16: -134194620
+      NEWTILESTT 03-15-2025 02-18-07_17: -2079070062
+      NEWTILESTT 03-15-2025 02-18-07_18: -612619696
+      NEWTILESTT 03-15-2025 02-18-07_19: -547154203
+      NEWTILESTT 03-15-2025 02-18-07_2: 1513078822
+      NEWTILESTT 03-15-2025 02-18-07_20: -1894508367
+      NEWTILESTT 03-15-2025 02-18-07_21: 1264157805
+      NEWTILESTT 03-15-2025 02-18-07_22: -143823564
+      NEWTILESTT 03-15-2025 02-18-07_23: -549878980
+      NEWTILESTT 03-15-2025 02-18-07_24: -271468412
+      NEWTILESTT 03-15-2025 02-18-07_25: -1870694812
+      NEWTILESTT 03-15-2025 02-18-07_26: 900404190
+      NEWTILESTT 03-15-2025 02-18-07_27: 2094341885
+      NEWTILESTT 03-15-2025 02-18-07_28: -1313651560
+      NEWTILESTT 03-15-2025 02-18-07_29: 933924644
+      NEWTILESTT 03-15-2025 02-18-07_3: -534756911
+      NEWTILESTT 03-15-2025 02-18-07_30: 1913405255
+      NEWTILESTT 03-15-2025 02-18-07_31: 1648539071
+      NEWTILESTT 03-15-2025 02-18-07_32: 1094183877
+      NEWTILESTT 03-15-2025 02-18-07_33: 76254296
+      NEWTILESTT 03-15-2025 02-18-07_34: -1046421478
+      NEWTILESTT 03-15-2025 02-18-07_35: 699954406
+      NEWTILESTT 03-15-2025 02-18-07_36: -130073538
+      NEWTILESTT 03-15-2025 02-18-07_37: -271116641
+      NEWTILESTT 03-15-2025 02-18-07_38: 1309865088
+      NEWTILESTT 03-15-2025 02-18-07_39: -345122416
+      NEWTILESTT 03-15-2025 02-18-07_4: 161475052
+      NEWTILESTT 03-15-2025 02-18-07_5: 1700738843
+      NEWTILESTT 03-15-2025 02-18-07_6: 776830782
+      NEWTILESTT 03-15-2025 02-18-07_7: -1597997506
+      NEWTILESTT 03-15-2025 02-18-07_8: -463468428
+      NEWTILESTT 03-15-2025 02-18-07_9: 1696625253
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
