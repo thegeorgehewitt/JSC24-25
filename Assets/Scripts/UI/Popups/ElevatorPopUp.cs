@@ -15,7 +15,7 @@ namespace Custom.UI
         [SerializeField] private Image[] arrowImages;
         [SerializeField] private GameObject mainDisplay;
         [SerializeField] private InteractableElevator connectedElevator;
-        [SerializeField] private TextMeshProUGUI[] inputText;
+        [SerializeField] private Image[] inputText;
 
 
 
@@ -34,20 +34,13 @@ namespace Custom.UI
         {
             UpdateArrowPopup();
 
-            inputText = new TextMeshProUGUI[arrowImages.Length];
-
-            for (int i = 0; i < arrowImages.Length; i++)
-            {
-                inputText[i] = arrowImages[i].GetComponentInChildren<TextMeshProUGUI>();
-            }
-
             SetPopupActive(false);
         }
 
         private void Start()
         {
-            inputText[0].alpha = connectedElevator.IsTop ? 0 : 1;
-            inputText[1].alpha = connectedElevator.IsBottom ? 0 : 1;
+            inputText[0].enabled = connectedElevator.IsTop ? false : true;
+            inputText[1].enabled = connectedElevator.IsBottom ? false : true;
         }
 
         #endregion
@@ -67,16 +60,16 @@ namespace Custom.UI
 
             if (connectedElevator != null)
             {
-                inputText[0].alpha = connectedElevator.IsTop ? 0 : 1;
-                inputText[1].alpha = connectedElevator.IsBottom ? 0 : 1;
+                inputText[0].enabled = connectedElevator.IsTop ? false : true;
+                inputText[1].enabled = connectedElevator.IsBottom ? false : true;
             }
         }
 
         private void SetPopupActive(bool _active)
         {
-            foreach (TextMeshProUGUI text in inputText)
+            foreach (var obj in inputText)
             {
-                text.gameObject.SetActive(_active);
+                obj.gameObject.SetActive(_active);
             }
         }
 
