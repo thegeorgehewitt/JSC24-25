@@ -76,6 +76,17 @@ namespace Custom.UI.General
             }
         }
 
+        public float FillAlpha
+        {
+            get => fillImage.color.a;
+            set
+            {
+                Color temp = fillImage.color;
+                temp.a = value;
+                fillImage.color = temp;
+            }
+        }
+
 
 
         private void Awake()

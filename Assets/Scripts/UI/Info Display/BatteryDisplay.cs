@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Custom.UI.General;
+using Custom.Manager;
 
 namespace Custom.UI.HUD
 {
@@ -16,11 +17,11 @@ namespace Custom.UI.HUD
         [SerializeField] private GameObject batteryPrefab;
 
         [Header("ANIMATION")]
-        [SerializeField] private float animationDuration;
+        [SerializeField] private float animationDuration = 1;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField] private float flashingValue;
 
-        private int activeBars;
+        private int maxBars;
 
         private readonly List<ProgressBar> progressBars = new();
         private (int, int) animatingIndexRange;
@@ -29,17 +30,32 @@ namespace Custom.UI.HUD
 
         private void OnEnable()
         {
-            
+            BatteryManager.OnCurrentBatteryUpdated += FillBatteriesTo;
+            BatteryManager.OnMaxBatteryUpdated += OnMaxBatteryUpdated;
         }
 
         private void OnDisable()
         {
-            
+            BatteryManager.OnCurrentBatteryUpdated -= FillBatteriesTo;
+            BatteryManager.OnMaxBatteryUpdated -= OnMaxBatteryUpdated;
         }
 
         private void Start()
         {
-            
+            for (int i = 0; i < BatteryManager.MaxAmount; i++)
+            {
+                AddProgressBar();
+            }
+
+            FillBatteriesTo(BatteryManager.CurrentAmount);
+        }
+
+        private void Update()
+        {
+            if (!BatteryManager.Full)
+            {
+                UpdateFillAmount();
+            }
         }
 
 
@@ -47,11 +63,11 @@ namespace Custom.UI.HUD
         #region Maximum Container
         private void AddProgressBar()
         {
-            activeBars++;
+            maxBars++;
 
-            if (activeBars < progressBars.Count)
+            if (maxBars < progressBars.Count)
             {
-                progressBars[activeBars - 1].gameObject.SetActive(true);
+                progressBars[maxBars - 1].gameObject.SetActive(true);
             }
             else
             {
@@ -61,9 +77,35 @@ namespace Custom.UI.HUD
 
         private void RemoveProgressBar()
         {
-            progressBars[activeBars - 1].gameObject.SetActive(false);
+            progressBars[maxBars - 1].gameObject.SetActive(false);
 
-            activeBars--;
+            maxBars--;
+        }
+        #endregion
+
+        #region Current Container
+        private void FillBatteriesTo(int _amount)
+        {
+            for (int i = 0; i < _amount; i++)
+            {
+                progressBars[i].FillPercentage = 1;
+                progressBars[i].FillAlpha = 1;
+            }
+            for (int i = _amount; i < maxBars; i++)
+            {
+                progressBars[i].FillPercentage = 0;
+                progressBars[i].FillAlpha = 1;
+            }
+
+            if (_amount < maxBars)
+                progressBars[_amount].FillAlpha = 0.2f;
+        }
+
+
+
+        private void UpdateFillAmount()
+        {
+            progressBars[BatteryManager.CurrentAmount].FillPercentage = BatteryManager.CurrentFilledAmount;
         }
         #endregion
 
@@ -97,6 +139,22 @@ namespace Custom.UI.HUD
 
                 yield return null;
             }
+        }
+        #endregion
+
+        #region Callbacks
+        private void OnMaxBatteryUpdated(int _amount)
+        {
+            if (maxBars > _amount)
+                for (int i = maxBars; i > _amount; i--)
+                {
+                    RemoveProgressBar();
+                }
+            else
+                for (int i = maxBars; i < _amount; i++)
+                {
+                    AddProgressBar();
+                }
         }
         #endregion
     }

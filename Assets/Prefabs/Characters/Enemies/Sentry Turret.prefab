@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc10361cd2641504ab29e38521713a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8657652559121912493}
   objectData: {fileID: 11400000, guid: 40356929d4c89374282b6472cb6fe4fc, type: 2}
   interactionData:
   - data: {fileID: 11400000, guid: 079949fae7afb2e4dac8ce8373e53a34, type: 2}
@@ -313,7 +314,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  spriteRenderer: {fileID: 8657652559121912493}
+  - data: {fileID: 11400000, guid: c9d450b9e5d28c34b9df6b15a5fa66b2, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5323195394782304771}
+          m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractableSentryTurret,
+            Assembly-CSharp
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   detectionType: 3
   trackableLayers:
     serializedVersion: 2
