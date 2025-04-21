@@ -3,8 +3,9 @@ using UnityEngine.UI;
 
 using TMPro;
 
-using Custom.UI.General;
 using Custom.Manager.Objective;
+using Custom.Settings;
+using Custom.Scriptable.Settings;
 using static Custom.Scriptable.ObjectiveData;
 
 namespace Custom.UI.HUD
@@ -14,43 +15,19 @@ namespace Custom.UI.HUD
     {
         [Header("REFERENCES")]
         [SerializeField] private TextMeshProUGUI labelText;
-        [SerializeField] private ProgressBar progressBar;
-        [SerializeField] private Image completeStateImage;
+        [SerializeField] private Image checkBoxFill;
         [SerializeField] private Image overlayImage;
-        [SerializeField] private LayoutElement layoutElement;
 
         [Header("DATA")]
         [SerializeField] private ObjectiveTrackerBase objective;
 
-        [Header("DISPLAY")]
-        [SerializeField] private Color completedColor = Color.cyan; 
-        [SerializeField] private Color failedOverlayColor = new(1, 0.1f, 0.1f, 0.4f);
-
-        private RectTransform rectTransform;
-
         private string Label => 
-            (objective.TrackMode == TrackMode.Progressive ? $"<color=#FFBF00>{objective.CurrentValue:F0}/{objective.RequiredValue:F0}</color>  " : "") 
+            (objective.TrackMode == TrackMode.Progressive 
+                ? $"<color=#{ColorUtility.ToHtmlStringRGB(VisualSettings.ColorPalette.GetUIColor(UIElementGroup.Highlight))}>{objective.CurrentValue:F0}/{objective.RequiredValue:F0}</color>  " 
+                : "") 
             + objective.Label;
 
-        public float Width
-        {
-            get => rectTransform.sizeDelta.x;
-            set
-            {
-                Vector2 size = rectTransform.sizeDelta;
-                size.x = value;
 
-                rectTransform.sizeDelta = size;
-                layoutElement.minWidth = size.x;
-            }
-        }
-
-
-
-        private void Awake()
-        {
-            rectTransform = GetComponent<RectTransform>();
-        }
 
         private void Start()
         {
@@ -75,9 +52,8 @@ namespace Custom.UI.HUD
 
             // Set initial display 
             labelText.text = Label;
-            progressBar.FillPercentage = objective.Progress;
-            completeStateImage.color = objective.State == ObjectiveState.Completed ? completedColor : Color.clear;
-            overlayImage.color = objective.State == ObjectiveState.Failed ? failedOverlayColor : Color.clear;
+            checkBoxFill.enabled = objective.State == ObjectiveState.Completed;
+            overlayImage.enabled = objective.State == ObjectiveState.Failed;
 
             // Bind to events.
             objective.OnCompleted += OnCompleted;
@@ -107,24 +83,23 @@ namespace Custom.UI.HUD
         #region Callbacks
         private void OnCompleted()
         {
-            completeStateImage.color = completedColor;
+            checkBoxFill.enabled = true;
         }
 
         private void OnFailed()
         {
-            overlayImage.color = failedOverlayColor;
+            overlayImage.enabled = true;
         }
 
         private void OnUncompleted()
         {
-            overlayImage.color = Color.clear;
-            completeStateImage.color = Color.clear;
+            overlayImage.enabled = false;
+            checkBoxFill.enabled = false;
         }
 
         private void OnProgressUpdated(float _progress)
         {
             labelText.text = Label;
-            progressBar.FillPercentage = _progress;
         }
         #endregion
     }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 using TMPro;
 
-namespace Custom.UI
+namespace Custom.UI.HUD
 {
     public class InteractableObjectStateDisplay : MonoBehaviour
     {

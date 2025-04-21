@@ -70,11 +70,11 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2007
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -192,7 +192,5 @@ MonoBehaviour:
   validBounds:
     m_Center: {x: -6.004803, y: 0.98155475, z: 0}
     m_Extent: {x: 0.60505104, y: 0.58514714, z: 0}
-  panningDragMultiplier: 1
-  zoomDragMultiplier: 1
   minOrthographicSize: 1
   maxOrthographicSize: 3
