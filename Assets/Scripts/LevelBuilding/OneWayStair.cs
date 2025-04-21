@@ -110,6 +110,7 @@ namespace Custom.LevelBuilding
                     {
                         stairCollider.isTrigger = true;
                         falling = true;
+                        crouching = false;
                     }
                     break;
             }

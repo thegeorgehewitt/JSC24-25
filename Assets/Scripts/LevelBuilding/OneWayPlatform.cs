@@ -48,6 +48,7 @@ namespace Custom.LevelBuilding
             else if (_key == Key.Space && crouching && _phase == KeyPhase.Pressed)
             {
                 platformCollider.isTrigger = true;
+                crouching = false;
             }
         }
     }
