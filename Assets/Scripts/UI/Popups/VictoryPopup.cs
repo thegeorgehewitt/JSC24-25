@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 using Custom.Controller;
 using Custom.Manager;
+using Custom.Manager.Objective;
 
 namespace Custom.UI
 {
@@ -22,12 +23,12 @@ namespace Custom.UI
 
         private void OnEnable()
         {
-            ObjectiveTrackerPopup.OnObjectiveCompleted += () => ShowPopup(true);
+            ObjectiveManager.OnAllObjectiveHalted += OnAllObjectiveHalted;
         }
 
         private void OnDisable()
         {
-            ObjectiveTrackerPopup.OnObjectiveCompleted -= () => ShowPopup(true);
+            ObjectiveManager.OnAllObjectiveHalted -= OnAllObjectiveHalted;
         }
 
         private void Awake()
@@ -84,5 +85,11 @@ namespace Custom.UI
         }
 
         #endregion
+
+        private void OnAllObjectiveHalted(ObjectiveCompletionState _state)
+        {
+            if (_state != ObjectiveCompletionState.Failed)
+                ShowPopup(true);
+        }
     }
 }

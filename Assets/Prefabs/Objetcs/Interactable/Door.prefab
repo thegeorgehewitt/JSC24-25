@@ -155,6 +155,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - data: {fileID: 11400000, guid: a51484ff4af8d7e46a7e3bf7bb6829a8, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4486568507856741927}
+          m_TargetAssemblyTypeName: Custom.Interactable.InteractableDoor, Assembly-CSharp
+          m_MethodName: ToggleDeadlock
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 1730410341943266298}
   animator: {fileID: 4285960162686973320}
@@ -264,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shadowType: 5
+  shadowType: 1
   shadowLayer: 0
   shadowDistance: 0
   shadowDistanceMin: 0.5
@@ -285,7 +301,7 @@ MonoBehaviour:
     depth: 1
     spriteRenderer: {fileID: 2916424553002418655}
   mainShape:
-    shadowType: 5
+    shadowType: 1
     maskType: 1
     maskPivot: 0
     transform: {fileID: 9055732100578954654}

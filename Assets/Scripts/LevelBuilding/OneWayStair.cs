@@ -22,6 +22,7 @@ namespace Custom.LevelBuilding
 
         private bool goingUp;
         private bool falling;
+        private bool crouching;
 
         private float BottomPosition => stairCollider.bounds.min.y + bottomPositionOffset;
 
@@ -88,18 +89,30 @@ namespace Custom.LevelBuilding
         {
             if (!playerMotor) return;
 
-            if (_key == Key.W)
+            switch (_key)
             {
-                if (_phase == KeyPhase.Pressed)
-                    goingUp = true;
-                else if (_phase == KeyPhase.Released)
-                    goingUp = false;
-            }
-            
-            if (_key == Key.S && _phase == KeyPhase.Pressed)
-            {
-                stairCollider.isTrigger = true;
-                falling = true;
+                case Key.W:
+                    if (_phase == KeyPhase.Pressed)
+                        goingUp = true;
+                    else if (_phase == KeyPhase.Released)
+                        goingUp = false;
+                    break;
+
+                case Key.S:
+                    if (_phase == KeyPhase.Pressed)
+                        crouching = true;
+                    else if (_phase == KeyPhase.Released)
+                        crouching = false;
+                    break;
+
+                case Key.Space:
+                    if (crouching && _phase == KeyPhase.Pressed)
+                    {
+                        stairCollider.isTrigger = true;
+                        falling = true;
+                        crouching = false;
+                    }
+                    break;
             }
         }
     }

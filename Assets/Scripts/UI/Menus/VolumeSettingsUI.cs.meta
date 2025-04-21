@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Audio/VolumeSettingsUI.cs.meta
+guid: dc12461ba3a6730499897b4bdb97523f
+========
+guid: fcd9218cdf4ca8b47b7ea54e2252eb7d
+>>>>>>>> development/audio:Assets/AudioTesting.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

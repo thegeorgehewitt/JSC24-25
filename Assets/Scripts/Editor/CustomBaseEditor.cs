@@ -17,7 +17,7 @@ namespace Custom.Editor
 
             if (GUILayout.Button(
                 $"This inspector is controlled by a custom editor.\n" +
-                $"Click this to editor this in {GetType().Name} script.", 
+                $"Click this to locate the custom editor file used for this script.", 
                 EditorStyles.helpBox))
             {
                 HighlightAsset(GetScriptFilePath());

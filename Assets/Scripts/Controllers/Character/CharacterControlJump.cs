@@ -6,20 +6,17 @@ namespace Custom.Controller
 {
     public class CharacterControlJump : CharacterControlBase
     {
-        [SerializeField] private Animator animator;
-
-        [SerializeField] private string[] jumpSFXNames = new string[] { "SFX_Jump_Land_03" };
+        private const string JUMP_KEY = "Jump";
 
         public override string[] InputActionKeysName
         {
             get => new string[] {
-                "Jump",
+                JUMP_KEY,
             };
         }
 
 
 
-        [Header("JUMP")]
         [SerializeField] private float jumpPower = 8f;
 
         private bool jumpAttempt;
@@ -28,14 +25,14 @@ namespace Custom.Controller
 
         private void OnEnable()
         {
-            GetInputActionWithName("Jump").performed += _ => { jumpAttempt = true; };
-            GetInputActionWithName("Jump").canceled += _ => CancelJump();
+            GetInputActionWithName(JUMP_KEY).performed += _ => { jumpAttempt = true; };
+            GetInputActionWithName(JUMP_KEY).canceled += _ => CancelJump();
         }
 
         private void OnDisable()
         {
-            GetInputActionWithName("Jump").performed -= _ => { jumpAttempt = true; };
-            GetInputActionWithName("Jump").canceled -= _ => CancelJump();
+            GetInputActionWithName(JUMP_KEY).performed -= _ => { jumpAttempt = true; };
+            GetInputActionWithName(JUMP_KEY).canceled -= _ => CancelJump();
         }
 
         private void FixedUpdate()
@@ -53,7 +50,7 @@ namespace Custom.Controller
 
             if (!attachedMotor.IsGrounded) return;
 
-            if (animator) { animator.SetTrigger("Jump"); }
+            attachedMotor.Animator.SetTrigger(JUMP_KEY);
 
             attachedMotor.SetState("JumpEndedEarly", false);
             attachedMotor.velocity += Vector2.up * jumpPower;
@@ -63,17 +60,12 @@ namespace Custom.Controller
         {
             attachedMotor.SetState("JumpEndedEarly", true);
         }
+        #endregion
 
         public void PlayJumpSFX()
         {
-            if (jumpSFXNames.Length > 0)
-            {
-                string clip = jumpSFXNames[Random.Range(0, jumpSFXNames.Length)];
-                Debug.Log("PlayJumpSFX: " + clip);
-                SoundManager.Instance.PlaySFX(clip, transform.position, 1.0f);
-            }
+            AudioManager.PlaySFX(SFXGroup.PlayerLanding, transform.position, 1.0f);
         }
-        #endregion
     }
 }
 

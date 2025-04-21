@@ -9,7 +9,6 @@ using FunkyCode;
 using Custom.Manager;
 using Custom.Attribute;
 using Custom.Utility;
-using Unity.VisualScripting;
 
 namespace Custom.Controller
 {
@@ -68,6 +67,15 @@ namespace Custom.Controller
         [SerializeField] private SlopeHandler slopeHandler;
 
         /*
+         * CROUCHING
+         */
+        [SerializeField] public bool autoCrouch = true;
+        [Range(0, 1)]
+        [SerializeField] private float crouchHeight = 0.5f;
+        [Range(0, 1)]
+        [SerializeField] private float crouchGroundedSpeedMult = 0.5f;
+
+        /*
          * VISIBILITY
          */
         [Tooltip("If enabled, visibility is calculated using light event system. Otherwise, visibility is set to 1 by default.")]
@@ -88,6 +96,8 @@ namespace Custom.Controller
         private List<Collider2D> proximityCheckContacts = new();
         private List<SpriteRenderer> renderers = new();
 
+
+
         private bool grounded;
         public bool IsGrounded => grounded;
 
@@ -95,16 +105,17 @@ namespace Custom.Controller
         public bool IsOnCeiling => onCeiling;
 
         private bool onWall;
-        public bool IsOnWall => onWall;
-
-        private bool crouchingInput;
-        public bool IsCrouching => crouchingInput;
+        public bool IsNearWall => onWall;
 
         public float Visibility { get { return (enableVisibilityCheck && lightEventListener) ? lightEventListener.Visibility : 1.0f; } }
 
         public bool IsPaused => paused;
 
         public Vector2 FootPosition => capsuleCollider.bounds.center - new Vector3(0, capsuleCollider.bounds.extents.y);
+
+        public Animator Animator => animator;
+
+        public float HeightMult => currentHeightMult;
 
 
 
@@ -171,13 +182,11 @@ namespace Custom.Controller
         {
             HandleFlip();
             HandleGravity();
+
             Vector2 slopedVel = HandleSlope(velocity);
-
             rigidbody.velocity = paused ? Vector2.zero : slopedVel;
-            animator.SetFloat("Vertical Speed", velocity.y);
 
-            Debug.DrawRay(transform.position, slopedVel, Color.green, Time.fixedDeltaTime);
-            Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
+            UpdateAnimatorValues();
         }
 
 
@@ -267,29 +276,25 @@ namespace Custom.Controller
 
             // Ceiling Check
             ceilingCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
-            animator.SetBool("HeadCheck", proximityCheckContacts.Count > 0 && capsuleCollider.size.y != orgColSize.y);
-            if (!crouchingInput && proximityCheckContacts.Count == 0 && onCeiling && capsuleCollider.size.y != orgColSize.y && !GetState("Rolling"))
-            {
-                onCeiling = false;
-                SetHeightMult(1.0f);
-            }
-            onCeiling = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
+            onCeiling = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
             // Wall Check
             wallCheck.OverlapCollider(proximityCheckContactFilter, proximityCheckContacts);
             onWall = proximityCheckContacts.Count > 0 && !CheckOnlyOneWay(proximityCheckContacts);
 
 
-            if (startGrounded == grounded) return;
-            
-            if (grounded)
+            // Update Landing State
+            if (startGrounded != grounded)
             {
-                animator.SetTrigger("Land");
-            }
-            else
-            {
-                animator.ResetTrigger("Land");
+                if (grounded)
+                {
+                    animator.SetTrigger("Land");
+                }
+                else
+                {
+                    animator.ResetTrigger("Land");
+                }
             }
         }
 
@@ -420,6 +425,7 @@ namespace Custom.Controller
         #endregion
 
         #region Size Controls
+        private float currentHeightMult;
         private Vector2 orgColSize;
 
         /// <summary>
@@ -430,13 +436,14 @@ namespace Custom.Controller
         /// <param name="_pivot">       Normalized height at which the height is adjusted from. Value clamped to [0..1] </param>
         public void SetHeightMult(float _heightMult, float _pivot = 0.0f)
         {
-            if (onCeiling && capsuleCollider.size.y != orgColSize.y)
-            {
-                return;
-            }
+            if (_heightMult == currentHeightMult) return;
 
             _heightMult = Mathf.Clamp(_heightMult, 0.5f, 1.0f);
             _pivot = Mathf.Clamp01(_pivot);
+
+            if (_heightMult > currentHeightMult && onCeiling) return;
+
+            currentHeightMult = _heightMult;
 
             float newSizeY = orgColSize.y * _heightMult;
             float footOffset = (orgColSize.y - newSizeY) * _pivot;
@@ -497,9 +504,12 @@ namespace Custom.Controller
         }
         #endregion
 
-        public Animator GetAnimator()
+        #region Animation
+        private void UpdateAnimatorValues()
         {
-            return animator;
+            animator.SetFloat("Vertical Speed", velocity.y);
+            animator.SetFloat("Horizontal Speed", Mathf.Abs(velocity.x));
         }
+        #endregion
     }
 }

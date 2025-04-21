@@ -11,6 +11,7 @@ namespace Custom.LevelBuilding
         private Collider2D platformCollider;
 
         private int colliderCounter;
+        private bool crouching;
 
 
 
@@ -37,8 +38,18 @@ namespace Custom.LevelBuilding
 
         public void OnInputReceived(Key _key, KeyPhase _phase)
         {
-            if (_key == Key.S && _phase == KeyPhase.Pressed)
+            if (_key == Key.S)
+            {
+                if (_phase == KeyPhase.Pressed)
+                    crouching = true;
+                else if (_phase == KeyPhase.Released)
+                    crouching = false;
+            }
+            else if (_key == Key.Space && crouching && _phase == KeyPhase.Pressed)
+            {
                 platformCollider.isTrigger = true;
+                crouching = false;
+            }
         }
     }
 }

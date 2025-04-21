@@ -20,7 +20,7 @@ namespace AYellowpaper.SerializedCollections.Editor
             try
             {
                 var classType = typeof(EditorGUI).Assembly.GetType("UnityEditor.EnumDataUtility");
-                var methodInfo = classType.GetMethod("GetCachedEnumData", BindingFlags.Static | BindingFlags.NonPublic);
+                var methodInfo = classType.GetMethod("GetCachedEnumData", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(Type), typeof(bool) }, null);
                 var parameters = new object[] { enumType, true };
                 var result = methodInfo.Invoke(null, parameters);
                 var flagValues = (int[])result.GetType().GetField("flagValues").GetValue(result);

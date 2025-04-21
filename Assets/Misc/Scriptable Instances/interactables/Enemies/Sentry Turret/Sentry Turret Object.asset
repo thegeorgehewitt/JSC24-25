@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1defec162ccfeae4d9188d65c9736d43, type: 3}
   m_Name: Sentry Turret Object
   m_EditorClassIdentifier: 
-  objectName: Sentry Turret
+  icon: {fileID: 1252831668, guid: ed99a350a65f6304f89c714175e567b2, type: 3}
+  type: 2
+  objectName: Turret ST002
+  description: "ST002 is the lattest stationary turret design. \nLong view range,
+    but also long lock-on duration."
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <highlight>
+      Value: <b><color=#FFB736>
+    - Key: </highlight>
+      Value: </color></b>

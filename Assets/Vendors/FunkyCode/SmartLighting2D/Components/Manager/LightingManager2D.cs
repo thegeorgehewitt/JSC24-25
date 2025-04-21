@@ -3,7 +3,6 @@ using FunkyCode.LightingSettings;
 
 namespace FunkyCode
 {
-	[ExecuteInEditMode] 
 	public class LightingManager2D : LightingMonoBehaviour
 	{
 		private static LightingManager2D instance;

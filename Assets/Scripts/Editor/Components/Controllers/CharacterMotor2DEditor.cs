@@ -261,7 +261,7 @@ namespace Custom.Editor
                 EditorGUILayout.FloatField("Visibility", asTarget.Visibility);
                 EditorGUILayout.Toggle("Is Grounded", asTarget.IsGrounded);
                 EditorGUILayout.Toggle("Is On Ceiling", asTarget.IsOnCeiling);
-                EditorGUILayout.Toggle("Is On Wall", asTarget.IsOnWall);
+                EditorGUILayout.Toggle("Is Near Wall", asTarget.IsNearWall);
 
                 EditorGUILayout.Space(10);
             }

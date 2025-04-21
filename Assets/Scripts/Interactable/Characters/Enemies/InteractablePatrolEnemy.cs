@@ -97,15 +97,15 @@ namespace Custom.Interactable.Character.Enemy
                     break;
                 case AS_JUMP_STATE:
                     animator.SetTrigger(AS_JUMP_STATE);
-                    SoundManager.Instance.PlaySFX("Jump", transform.position);
+                    AudioManager.PlaySFX(SFXGroup.EnemyJump, transform.position);
                     break;
                 case AS_LAND_STATE:
                     animator.SetTrigger(AS_LAND_STATE);
-                    SoundManager.Instance.PlaySFX("Land", transform.position);
+                    AudioManager.PlaySFX(SFXGroup.EnemyLand, transform.position);
                     break;
                 case AS_FIRE_STATE:
                     animator.SetTrigger(AS_FIRE_STATE);
-                    SoundManager.Instance.PlaySFX("Shoot", transform.position);
+                    AudioManager.PlaySFX(SFXGroup.EnemyShoot, transform.position);
                     break;
                 case AS_HACKED_STATE:
                     animator.SetBool(AS_HACKED_STATE, true);

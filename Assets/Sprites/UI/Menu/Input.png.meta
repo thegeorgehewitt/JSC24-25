@@ -93,19 +93,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Input_0
+      name: Input_CTRL
       rect:
         serializedVersion: 2
         x: 0
-        y: 86
+        y: 108
         width: 25
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -118,15 +131,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_1
+      name: Input_SHIFT
       rect:
         serializedVersion: 2
         x: 0
-        y: 69
+        y: 91
         width: 30
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,15 +152,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_2
+      name: Input_SPACE
       rect:
         serializedVersion: 2
         x: 0
-        y: 52
+        y: 74
         width: 46
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,15 +173,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_3
+      name: Input_ESC
       rect:
         serializedVersion: 2
         x: 0
-        y: 35
+        y: 57
         width: 14
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,15 +194,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_4
+      name: Input_W
       rect:
         serializedVersion: 2
         x: 0
-        y: 18
+        y: 40
         width: 13
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,15 +215,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_5
+      name: Input_A
       rect:
         serializedVersion: 2
         x: 15
-        y: 18
+        y: 40
         width: 13
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,15 +236,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_6
+      name: Input_S
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 22
         width: 13
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -244,15 +257,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_7
+      name: Input_D
       rect:
         serializedVersion: 2
         x: 15
-        y: 0
+        y: 22
         width: 13
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -265,10 +278,31 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Input_8
+      name: Input_ML
       rect:
         serializedVersion: 2
-        x: 34
+        x: 0
+        y: 0
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14f767ca46e683349a7c9b735eec10e7
+      internalID: 1882788201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Input_MM
+      rect:
+        serializedVersion: 2
+        x: 15
         y: 0
         width: 12
         height: 16
@@ -279,8 +313,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14f767ca46e683349a7c9b735eec10e7
-      internalID: 1882788201
+      spriteID: cc2730fb6489a644d89b024c0283d4c0
+      internalID: -1318404877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Input_MR
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 0
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39409111ee6c4b5478b6e35b05aa4f63
+      internalID: -758332406
       vertices: []
       indices: 
       edges: []
@@ -296,15 +351,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Input_0: 2098463642
-      Input_1: -1794114723
-      Input_2: -1863008370
-      Input_3: 339752437
-      Input_4: -849332946
-      Input_5: 125129990
-      Input_6: 964074638
-      Input_7: -1415115167
-      Input_8: 1882788201
+      Input_A: 125129990
+      Input_CTRL: 2098463642
+      Input_D: -1415115167
+      Input_ESC: 339752437
+      Input_ML: 1882788201
+      Input_MM: -1318404877
+      Input_MR: -758332406
+      Input_S: 964074638
+      Input_SHIFT: -1794114723
+      Input_SPACE: -1863008370
+      Input_W: -849332946
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

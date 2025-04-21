@@ -8,21 +8,35 @@ using TMPro;
 
 using Custom.Interactable;
 using Custom.Controller;
+using Custom.Scriptable.Interactable;
+using Custom.Settings;
+using Custom.Scriptable.Settings;
 
-namespace Custom.UI
+namespace Custom.UI.HUD
 {
     public class InteractableObjectDisplayPopup : MonoBehaviour
     {
         public static InteractableObjectDisplayPopup Instance;
 
         [Header("REFERENCES")]
-        [SerializeField] private GameObject objectStatePrefab;
-        [SerializeField] private GameObject interactionPrefab;
         [SerializeField] private Transform objectStateListHolder;
         [SerializeField] private Transform interactionListHolder;
-        [SerializeField] private TextMeshProUGUI objectName;
+        [SerializeField] private Transform objectPropertiesHolder;
+        [Space]
+        [SerializeField] private Image objectTypeDisplayBar;
+        [SerializeField] private TextMeshProUGUI objectNameText;
+        [SerializeField] private TextMeshProUGUI objectTypeText;
+        [SerializeField] private Image objectIcon;
+        [SerializeField] private TextMeshProUGUI objectDescription;
+        [Space]
+        [SerializeField] private InteractionDetailedInfoDisplay interactionDetailedInfoDisplay;
 
-        [Header("POPUP")]
+        [Header("PREFAB REFERENCES")]
+        [SerializeField] private GameObject objectStatePrefab;
+        [SerializeField] private GameObject interactionPrefab;
+        [SerializeField] private GameObject objectPropertyPrefab;
+
+        [Header("POPUP ANIMATION")]
         [SerializeField] private Image maskImage;
         [SerializeField] private float easeDuration = 0.1f;
         [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -30,8 +44,8 @@ namespace Custom.UI
         private int displayedOptions;
         private int activeOption = 0;
 
-        private List<InteractableObjectStateDisplay> objectStateDisplays = new();
-        private List<InteractionInfoDisplay> interactionDisplays = new();
+        private readonly List<InteractableObjectStateDisplay> objectStateDisplays = new();
+        private readonly List<InteractionInfoDisplay> interactionDisplays = new();
 
         public static int ActiveOption
         {
@@ -111,23 +125,39 @@ namespace Custom.UI
 
             if (currentObject != _object)
             {
+                activeOption = 0;
                 currentObject = _object;
                 displayedOptions = _object.InteractionData.Length;
             }
 
-            objectName.text = _object.ObjectData.objectName.ToUpper();
-
+            UpdateObjectDetailsDisplay(_object.ObjectData);
             UpdateInteractionDisplays(_object);
             UpdateObjectStateDisplays(_object);
 
             Core_ShowPopup(true);
         }
 
+        private void UpdateObjectDetailsDisplay(InteractableObjectData _data)
+        {
+            objectNameText.text = _data.objectName.ToUpper();
+
+            objectTypeText.text = _data.type.ToString();
+            objectTypeText.color = GetTypeColorFromType(_data.type);
+
+            objectTypeDisplayBar.color = GetTypeColorFromType(_data.type);
+
+            objectIcon.sprite = _data.icon;
+
+            objectDescription.text = _data.ParsedDescription;
+        }
+
         private void UpdateInteractionDisplays(InteractableObject _object)
         {
+            interactionDetailedInfoDisplay.gameObject.SetActive(_object.InteractionData.Length > 0);
+            interactionListHolder.gameObject.SetActive(_object.InteractionData.Length > 0);
+
             for (int i = 0; i < _object.InteractionData.Length; i++)
             {
-
                 if (i >= interactionDisplays.Count)
                 {
                     var go = Instantiate(interactionPrefab, interactionListHolder);
@@ -138,8 +168,15 @@ namespace Custom.UI
                     interactionDisplays[i].gameObject.SetActive(true);
                 }
 
-                InteractionState state = (activeOption == i) ? InteractionState.Selected : InteractionState.Normal;
-                interactionDisplays[i].DisplayInfo(_object.InteractionData[i], state);
+                if (activeOption == i)
+                {
+                    interactionDetailedInfoDisplay.UpdateDisplay(_object.InteractionData[i]);
+                    interactionDisplays[i].DisplayInfo(_object.InteractionData[i], InteractionState.Selected);
+                }
+                else
+                {
+                    interactionDisplays[i].DisplayInfo(_object.InteractionData[i], InteractionState.Normal);
+                }
             }
 
             for (int i = _object.InteractionData.Length; i < interactionDisplays.Count; i++)
@@ -168,6 +205,26 @@ namespace Custom.UI
             for (int i = _object.States.Length; i < objectStateDisplays.Count; i++)
             {
                 objectStateDisplays[i].SetActive(false);
+            }
+        }
+
+        private Color GetTypeColorFromType(InteractableObjectType _type)
+        {
+            switch (_type)
+            {
+                case InteractableObjectType.Friendly:
+                    return VisualSettings.ColorPalette.GetUIColor(UIElementGroup.FriendlyPrimary);
+
+                case InteractableObjectType.Neutral:
+                    return VisualSettings.ColorPalette.GetUIColor(UIElementGroup.NeutralPrimary);
+
+                case InteractableObjectType.Hostile:
+                    return VisualSettings.ColorPalette.GetUIColor(UIElementGroup.HostilePrimary);
+
+                case InteractableObjectType.Chaotic:
+                    return VisualSettings.ColorPalette.GetUIColor(UIElementGroup.ChaoticPrimary);
+
+                default: return Color.white;
             }
         }
 
