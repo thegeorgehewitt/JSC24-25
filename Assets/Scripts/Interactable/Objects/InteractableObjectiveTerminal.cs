@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 using Custom.Manager.EventHandling;
 using Custom.Interactable.Interfaces;
+using Custom.Manager;
 
 namespace Custom.Interactable
 {
@@ -15,6 +16,10 @@ namespace Custom.Interactable
 
         [SerializeField] private string key;
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private GameObject popup;
+
+        [Space]
+        [SerializeField] private Sprite deactiveSprite;
 
         private bool dataCollected;
         private Collider2D[] colliders;
@@ -33,16 +38,6 @@ namespace Custom.Interactable
 
 
 
-        public void OnInputReceived(Key _key, KeyPhase _phase)
-        {
-            if (dataCollected) return;
-
-            if (_key == Key.E && _phase == KeyPhase.Released)
-            {
-                Interact();
-            } 
-        }
-
         public void Interact()
         {
             if (!dataCollected)
@@ -57,9 +52,41 @@ namespace Custom.Interactable
                 collider.enabled = false;
             }
 
+            spriteRenderer.sprite = deactiveSprite;
+            OnUnfocus();
+
             EventAggregator.Publish<DataCollectedEvent>(null);
         }
 
+
+
+        #region IProximityInputReceiver
+        public void OnInputReceived(Key _key, KeyPhase _phase)
+        {
+            if (dataCollected) return;
+
+            if (_key == Key.E && _phase == KeyPhase.Released)
+            {
+                Interact();
+            } 
+        }
+
+        public void OnFocus()
+        {
+            popup.SetActive(true);
+
+            OutlineManager.Register(spriteRenderer);
+        }
+
+        public void OnUnfocus()
+        {
+            popup.SetActive(false);
+
+            OutlineManager.Unregister(spriteRenderer);
+        }
+        #endregion
+
+        #region IPersistent
         public void LoadData(PersistentData data)
         {
             if (data != null)
@@ -114,5 +141,6 @@ namespace Custom.Interactable
         {
             return this.gameObject;
         }
+        #endregion
     }
 }

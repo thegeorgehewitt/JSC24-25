@@ -6,6 +6,10 @@ namespace Custom.Settings
 {
     public static class VisualSettings
     {
+        public const string DEFAULT_FILE_NAME = "Default Visual Settings";
+
+
+
         private static VisualSettingsData instance;
         public static VisualSettingsData Instance
         {
@@ -16,13 +20,15 @@ namespace Custom.Settings
                     return LoadInEditor();
 #endif
                 if (instance == null)
-                    instance = Resources.Load<VisualSettingsData>("Default Visual Settings");
+                    instance = Resources.Load<VisualSettingsData>(DEFAULT_FILE_NAME);
 
                 return instance;
             }
         }
 
         public static ColorPaletteData ColorPalette => Instance.colorPalette;
+
+        public static OutlineSettingsData OutlineSettings => Instance.outlineSettings;
 
 
 

@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 using Custom.Interactable.Interfaces;
-using System.Linq;
 
 namespace Custom.Controller
 {
@@ -53,6 +52,8 @@ namespace Custom.Controller
             if (!collision.gameObject.TryGetComponent(out IProximityInputReceiver asReceiver)) return;
 
             inputReceivers.Add(asReceiver);
+
+            asReceiver.OnFocus();
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -60,6 +61,8 @@ namespace Custom.Controller
             if (!collision.gameObject.TryGetComponent(out IProximityInputReceiver asReceiver)) return;
 
             inputReceivers.Remove(asReceiver);
+
+            asReceiver.OnUnfocus();
         }
 
 

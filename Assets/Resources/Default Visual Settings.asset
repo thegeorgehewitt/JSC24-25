@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a38fdd1e43e82449379816e9492be6, type: 3}
   m_Name: Default Visual Settings
   m_EditorClassIdentifier: 
-  colorPalette: {fileID: 11400000, guid: 763797ea6de61d24a800d6ea1352b999, type: 2}
+  colorPalette: {fileID: 11400000, guid: 11b438c727c8b1c4e8833667479e8975, type: 2}
+  outlineSettings: {fileID: 11400000, guid: 877829abd754d304096f00e8012c7d36, type: 2}

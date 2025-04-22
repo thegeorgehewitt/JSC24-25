@@ -66,32 +66,6 @@ namespace Custom.Interactable
             UpdateState();
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (access)
-            {
-                animator.SetBool("Open", true);
-                animator.SetBool("Close", false);
-            }
-
-            elevatorUI.ShowPopup(true);
-
-            if (playerMotor == null) playerMotor = PlayerMotorController.Instance.ControlledMotor;
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (access)
-            {
-                animator.SetBool("Close", true);
-                animator.SetBool("Open", false);
-            }
-
-            elevatorUI.ShowPopup(false);
-
-            playerMotor = null;
-        }
-
 
 
         public void Init(int _index, ElevatorShaft _owningShaft)
@@ -130,22 +104,12 @@ namespace Custom.Interactable
         #endregion
 
         #region Operation
-
-        public void OnInputReceived(Key _key, KeyPhase _phase)
-        {
-            if (_phase != KeyPhase.Pressed) return;
-
-            if (_key == Key.W)
-                Operate(true);
-            else if (_key == Key.S)
-                Operate(false);
-        }
-
         private void Operate(bool _goUp)
         {
             if (IsTop && _goUp || IsBottom && !_goUp || states.Contains("Access Denied") ) return;
 
             targetTransform = _goUp? owningShaft.GetFloorAbove(elevatorIndex) : owningShaft.GetFloorBelow(elevatorIndex);
+            playerMotor = PlayerMotorController.Instance.ControlledMotor;
 
             if (playerMotor)
             {
@@ -205,6 +169,40 @@ namespace Custom.Interactable
         public void SetMotor(CharacterMotor2D _playerMotor)
         {
             playerMotor = _playerMotor;
+        }
+        #endregion
+
+        #region IProximityInputReceiver
+        public void OnInputReceived(Key _key, KeyPhase _phase)
+        {
+            if (_phase != KeyPhase.Pressed) return;
+
+            if (_key == Key.W)
+                Operate(true);
+            else if (_key == Key.S)
+                Operate(false);
+        }
+
+        public void OnFocus()
+        {
+            if (access)
+            {
+                animator.SetBool("Open", true);
+                animator.SetBool("Close", false);
+            }
+
+            elevatorUI.ShowPopup(true);
+        }
+
+        public void OnUnfocus()
+        {
+            if (access)
+            {
+                animator.SetBool("Close", true);
+                animator.SetBool("Open", false);
+            }
+
+            elevatorUI.ShowPopup(false);
         }
         #endregion
     }

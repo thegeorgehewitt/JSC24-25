@@ -51,5 +51,9 @@ namespace Custom.LevelBuilding
                 crouching = false;
             }
         }
+
+        public void OnFocus() { }
+
+        public void OnUnfocus() { }
     }
 }

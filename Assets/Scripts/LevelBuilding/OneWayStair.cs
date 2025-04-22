@@ -115,5 +115,9 @@ namespace Custom.LevelBuilding
                     break;
             }
         }
+
+        public void OnFocus() { }
+
+        public void OnUnfocus() { }
     }
 }
