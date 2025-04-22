@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 283f8771819af4c44b02b74673906511
+guid: ce6dc83a18331d24e9f9ccd0b47b6565
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -71,7 +71,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sprint_0
+      name: Player_CrouchWalk (3)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
-        width: 64
-        height: 64
+        x: 1
+        y: 63
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf516f44dac28cd47812e14a97a16e8f
-      internalID: 1659861744
+      spriteID: 964f541b8524e9649a0f25ba7557bef5
+      internalID: 579851095
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_1
+      name: Player_CrouchWalk (3)_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 64
-        width: 64
-        height: 64
+        x: 44
+        y: 63
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 711782bfa541c5348b6682bcda422397
-      internalID: -204497300
+      spriteID: bb81d8e8e84dda24e8c7c4059efd7b05
+      internalID: 130692734
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_2
+      name: Player_CrouchWalk (3)_2
       rect:
         serializedVersion: 2
-        x: 128
-        y: 64
-        width: 64
-        height: 64
+        x: 87
+        y: 63
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cf24a897a1accc4c9abb11e35feb81a
-      internalID: 1688233212
+      spriteID: 39cb1170fd459394f84f83d54209e40f
+      internalID: -246442369
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_3
+      name: Player_CrouchWalk (3)_3
       rect:
         serializedVersion: 2
-        x: 192
-        y: 64
-        width: 64
-        height: 64
+        x: 130
+        y: 63
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b597bb261910ee499729ec70cdbfc12
-      internalID: 859624762
+      spriteID: bc459b53e44353e468cf8b728af30568
+      internalID: -1695815129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_4
+      name: Player_CrouchWalk (3)_4
       rect:
         serializedVersion: 2
-        x: 0
+        x: 173
+        y: 63
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 912b76ce39c6a83408bd96e3d290904b
+      internalID: 932721515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_CrouchWalk (3)_5
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 63
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cda8e50406da7349b541ea2bf0b46b1
+      internalID: 1255510489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_CrouchWalk (3)_6
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 63
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9aa1a1a5a096454dbc3a7127de89a37
+      internalID: -702303548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_CrouchWalk (3)_7
+      rect:
+        serializedVersion: 2
+        x: 1
         y: 0
-        width: 64
-        height: 64
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,20 +258,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55e95c38edfe02845a62b565f3516c1a
-      internalID: -2041315695
+      spriteID: 0f7c2a1e7117a444796e784fc5e4d325
+      internalID: -867818454
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_5
+      name: Player_CrouchWalk (3)_8
       rect:
         serializedVersion: 2
-        x: 64
+        x: 44
         y: 0
-        width: 64
-        height: 64
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,20 +279,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bfeea408f843100489e98cc95b3839f9
-      internalID: -612980227
+      spriteID: b613a684fd91a714e8a223c03d387dc7
+      internalID: 400993351
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_6
+      name: Player_CrouchWalk (3)_9
       rect:
         serializedVersion: 2
-        x: 128
+        x: 87
         y: 0
-        width: 64
-        height: 64
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,20 +300,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 91e2c1df75f761b4ebe03403d823c7c3
-      internalID: -1227910839
+      spriteID: 1175fd779c43c58418882b247fcd591e
+      internalID: -890997684
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprint_7
+      name: Player_CrouchWalk (3)_10
       rect:
         serializedVersion: 2
-        x: 192
+        x: 130
         y: 0
-        width: 64
-        height: 64
+        width: 42
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -258,8 +321,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3682e5b81ccc0aa4c9a8b52c9a55163c
-      internalID: 647551811
+      spriteID: a3bff7ceace83be40a8b892fe9bb1a72
+      internalID: -1202609741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_CrouchWalk (3)_11
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 0
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fc7a52a2e6527344adf3b8fc63b64ac
+      internalID: 289689723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_CrouchWalk (3)_12
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 0
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: faefebeb5cd888d41bee13e00cdec1b8
+      internalID: -1533262030
       vertices: []
       indices: 
       edges: []
@@ -275,14 +380,19 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Sprint_0: 1659861744
-      Sprint_1: -204497300
-      Sprint_2: 1688233212
-      Sprint_3: 859624762
-      Sprint_4: -2041315695
-      Sprint_5: -612980227
-      Sprint_6: -1227910839
-      Sprint_7: 647551811
+      Player_CrouchWalk (3)_0: 579851095
+      Player_CrouchWalk (3)_1: 130692734
+      Player_CrouchWalk (3)_10: -1202609741
+      Player_CrouchWalk (3)_11: 289689723
+      Player_CrouchWalk (3)_12: -1533262030
+      Player_CrouchWalk (3)_2: -246442369
+      Player_CrouchWalk (3)_3: -1695815129
+      Player_CrouchWalk (3)_4: 932721515
+      Player_CrouchWalk (3)_5: 1255510489
+      Player_CrouchWalk (3)_6: -702303548
+      Player_CrouchWalk (3)_7: -867818454
+      Player_CrouchWalk (3)_8: 400993351
+      Player_CrouchWalk (3)_9: -890997684
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
