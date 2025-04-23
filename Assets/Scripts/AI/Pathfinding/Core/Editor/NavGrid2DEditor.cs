@@ -19,10 +19,10 @@ namespace Custom.Editor
         private SerializedProperty center;
         private SerializedProperty size;
         private SerializedProperty cellCount;
+        private SerializedProperty fixedFramesPerUpdate;
 
         // Dynamic Obstacles
         private SerializedProperty obstacleDetectBounds;
-        private SerializedProperty obstacleUpdateMode;
 
 
 
@@ -53,9 +53,9 @@ namespace Custom.Editor
             center = AssignToProperty("center");
             size = AssignToProperty("size");
             cellCount = AssignToProperty("cellCount");
+            fixedFramesPerUpdate = AssignToProperty("fixedFramesPerUpdate");
 
             obstacleDetectBounds = AssignToProperty("obstacleDetectBounds");
-            obstacleUpdateMode = AssignToProperty("obstacleUpdateMode");
 
 
             expandGridGeneration = new(IsGridGenerationExpanded);
@@ -153,6 +153,10 @@ namespace Custom.Editor
                 #endregion
 
                 EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(fixedFramesPerUpdate);
+
+                EditorGUILayout.Space();
             }
             EditorGUILayout.EndFadeGroup();
             #endregion
@@ -167,7 +171,6 @@ namespace Custom.Editor
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(obstacleDetectBounds);
-                EditorGUILayout.PropertyField(obstacleUpdateMode);
 
                 EditorGUILayout.Space();
             }

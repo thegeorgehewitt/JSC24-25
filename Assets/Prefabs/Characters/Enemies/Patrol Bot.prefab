@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4796972902955119147}
   - component: {fileID: 9202297418325780983}
   - component: {fileID: 5774764103963997278}
+  - component: {fileID: 3493304979043932971}
   - component: {fileID: 1194884329297954243}
   - component: {fileID: 829235429702000016}
-  - component: {fileID: -7306551589726586393}
   m_Layer: 9
   m_Name: Patrol Bot
   m_TagString: Untagged
@@ -51,9 +51,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c2cdf3114ef7c4e8452fc29721835a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectData: {fileID: 11400000, guid: 0652815918c3cc14199bb49bafb192c6, type: 2}
-  interactionData: []
   spriteRenderer: {fileID: 1194884329297954243}
+  objectData: {fileID: 11400000, guid: 0652815918c3cc14199bb49bafb192c6, type: 2}
+  interactionData:
+  - data: {fileID: 11400000, guid: 8ba59252f2554f340a69f188dd864a62, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4796972902955119147}
+          m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractablePatrolEnemy,
+            Assembly-CSharp
+          m_MethodName: Jam
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - data: {fileID: 11400000, guid: 476a6d7ab9ad9094f821419d416b69a1, type: 2}
+    interactEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4796972902955119147}
+          m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractablePatrolEnemy,
+            Assembly-CSharp
+          m_MethodName: Disable
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   detectionType: 3
   trackableLayers:
     serializedVersion: 2
@@ -74,7 +108,7 @@ MonoBehaviour:
     maxNormalAngle: 0
   enableProximity: 1
   useBlockFilter: 0
-  proximityDetectRange: 1.46
+  proximityDetectRange: 1.5
   enableFieldOfView: 1
   radius: 6.5
   angle: 45
@@ -122,6 +156,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navGrid: {fileID: 0}
   agentData: {fileID: 11400000, guid: 121c326e1801b9646b35776e00910584, type: 2}
+--- !u!61 &3493304979043932971
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3098146507104819}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.026999652, y: -0.08661434}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.047619, y: 3.047619}
+    newSize: {x: 3.047619, y: 3.047619}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.2305158, y: 0.7952613}
+  m_EdgeRadius: 0
 --- !u!212 &1194884329297954243
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -195,24 +274,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-7306551589726586393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3098146507104819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b69a2b3d710cf44d967f9ec221986c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  footstepClip: Enemy_Footstep
-  jumpClip: Jump_Start_03
-  landClip: Enemy_Land
-  disableClip: Enemy_Shut_Down
-  chargeClip: Riser_v3_wav
-  sfxSourcePoint: {fileID: 5202861954054269295}
 --- !u!1 &7927699953928887108
 GameObject:
   m_ObjectHideFlags: 0

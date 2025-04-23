@@ -26,11 +26,6 @@ namespace Custom.Interactable.Character.Enemy
         [Range(0, 1)]
         [SerializeField] protected float normalizedLockOnDistance = 0.5f;
 
-        [Header("HACKING AND COOLDOWN")]
-        private float hackedCooldownTime = 3.0f;
-        private Coroutine cooloffCoroutine;
-        private bool IsHacked => cooloffCoroutine != null;
-
         // FOR TESTING ONLY
         [Header("DETECTION METER DISPLAY")]
         [SerializeField] private Canvas detectionMeterCanvas;
@@ -72,16 +67,10 @@ namespace Custom.Interactable.Character.Enemy
 
         protected virtual void OnPlayerLost() { }
 
-        protected virtual void OnEnemyHacked() { }
-        
-        protected virtual void OnHackedEnded() { }
-
 
 
         private void UpdateCurrentTarget()
         {
-            if (IsHacked) return;
-
             lastScanResult = AcquireTarget(DefaultComparer);
 
             if (lastScanResult.target && (lastScanResult.target.Visibility > minVisibilityDetectLevel || lastScanResult.proximityChecked))
@@ -96,8 +85,7 @@ namespace Custom.Interactable.Character.Enemy
 
         private void UpdateDetectionMeter()
         {
-            if (IsHacked) return;
-
+            if (!activated) return;
 
             if (lastScanResult.target)
             {
@@ -146,32 +134,6 @@ namespace Custom.Interactable.Character.Enemy
             }
 
             detectionMeterCanvas.enabled = currentDetectionLevel > 0;
-        }
-
-        public void Hacked()
-        {
-            OnEnemyHacked();
-            
-            if (cooloffCoroutine != null)
-            {
-                StopCoroutine(cooloffCoroutine);
-            }
-            
-            cooloffCoroutine = StartCoroutine(HackedCooloff());
-        }
-
-        private void HackedEnded()
-        {
-            OnHackedEnded();
-        }
-
-        IEnumerator HackedCooloff()
-        {
-            yield return new WaitForSeconds(hackedCooldownTime);
-
-            HackedEnded();
-
-            cooloffCoroutine = null;
         }
     }
 }

@@ -9,7 +9,7 @@ using Custom.Utility;
 
 namespace Custom.AI.Pathfinding
 {
-    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
     public class NavGrid2D : MonoBehaviour
     {
         private class NodeGraph
@@ -22,6 +22,7 @@ namespace Custom.AI.Pathfinding
 
 
         public static event Action<NavGrid2D> OnNavGridUpdated;
+        public static event Action<NavGrid2D> OnNodeGraphUpdated; 
         public static event Action<NavGridAgentBase> OnNewAgentRegistered;
         public static event Action<NavGridAgentBase> OnAgentUnregistered;
 
@@ -30,20 +31,25 @@ namespace Custom.AI.Pathfinding
         // Static Baking
         [SerializeField] private LayerMask blockableLayers;
         [SerializeField] private GridGenerationMode gridGenerateMode;
+
         [SerializeField] private Tilemap tilemap;
         [SerializeField] private Vector2 center;
         [SerializeField] private Vector2 size;
         [SerializeField] private Vector2Int cellCount;
+
         [SerializeField] private float minAngle = 0.0f;
         [SerializeField] private float maxAngle = 60.0f;
 
+        [SerializeField] private int fixedFramesPerUpdate = 20;
+
         // Dynamic Obstacles
         [SerializeField] private BoxCollider2D obstacleDetectBounds;
-        [SerializeField] private ObstacleUpdateMode obstacleUpdateMode;
 
 
 
-        private bool isDirty = true;
+        private bool isNavGridDirty = true;
+        private bool isNodeGraphDirty = true;
+        private int frameCounter;
 
         /*
          * Occupied cells are true, otherwise false.
@@ -57,7 +63,7 @@ namespace Custom.AI.Pathfinding
          */
         private readonly Dictionary<int, NodeGraph> nodeGraphs = new();
 
-        private readonly List<NavGridObstacle2D> obstacles = new();
+        private readonly Dictionary<NavGridObstacle2D, BoundsInt> obstacles = new();
 
 
 
@@ -92,7 +98,7 @@ namespace Custom.AI.Pathfinding
                 size = value;
 
                 if (gridGenerateMode == GridGenerationMode.FreeBounds)
-                    isDirty = true;
+                    isNavGridDirty = true;
             }
         }
 
@@ -114,7 +120,7 @@ namespace Custom.AI.Pathfinding
                 center = value;
 
                 if (gridGenerateMode == GridGenerationMode.FreeBounds)
-                    isDirty = true;
+                    isNavGridDirty = true;
             }
         }
         public Vector2Int CellBounds
@@ -135,7 +141,7 @@ namespace Custom.AI.Pathfinding
                 cellCount = value;
 
                 if (gridGenerateMode == GridGenerationMode.FreeBounds)
-                    isDirty = true;
+                    isNavGridDirty = true;
             }
         }
 
@@ -157,54 +163,54 @@ namespace Custom.AI.Pathfinding
             if (!obstacleDetectBounds) obstacleDetectBounds = GetComponent<BoxCollider2D>();
 
             obstacleDetectBounds.isTrigger = true;
+
+            var rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         private void Start()
         {
-            Bake();
-        }
-
-        private void Update()
-        {
-            if (obstacleUpdateMode == ObstacleUpdateMode.Normal)
-            {
-                UpdateObstacle();
-            }
-        }
-
-        private void LateUpdate()
-        {
-            if (isDirty)
-            {
-                Bake();
-            }
-
-            if (obstacleUpdateMode == ObstacleUpdateMode.Late)
-            {
-                UpdateObstacle();
-            }
+            BakeNavGrid();
+            BakeNodeGraph();
         }
 
         private void FixedUpdate()
         {
-            if (obstacleUpdateMode == ObstacleUpdateMode.Fixed)
+            frameCounter++;
+
+            if (frameCounter > fixedFramesPerUpdate)
             {
-                UpdateObstacle();
+                if (isNavGridDirty)
+                    BakeNavGrid();
+
+                if (isNodeGraphDirty)
+                    BakeNodeGraph();
+
+                frameCounter = 0;
             }
         }
 
         private void OnTriggerEnter2D(Collider2D _collision)
         {
-            if (!_collision.TryGetComponent(out NavGridObstacle2D obstacle)) return;
+            if (!_collision.TryGetComponent(out NavGridObstacle2D asObstacle)) return;
 
-            obstacles.Add(obstacle);
+            if (obstacles.ContainsKey(asObstacle)) return;
+
+            obstacles.Add(asObstacle, new BoundsInt());
+
+            asObstacle.OnUpdated += Carve;
+            asObstacle.OnDestroyed += OnDestroyed;
         }
 
         private void OnTriggerExit2D(Collider2D _collision)
         {
-            if (!_collision.TryGetComponent(out NavGridObstacle2D obstacle)) return;
+            if (!_collision.TryGetComponent(out NavGridObstacle2D asObstacle)) return;
 
-            obstacles.Remove(obstacle);
+            obstacles.Remove(asObstacle);
+
+            asObstacle.OnUpdated -= Carve;
+            asObstacle.OnDestroyed -= OnDestroyed;
         }
 
 #if UNITY_EDITOR
@@ -247,7 +253,7 @@ namespace Custom.AI.Pathfinding
 
 
         #region Static Baking
-        private void Bake()
+        private void BakeNavGrid()
         {
             if (tilemap) tilemap.CompressBounds();
 
@@ -268,16 +274,25 @@ namespace Custom.AI.Pathfinding
             obstacleDetectBounds.offset = Center - (Vector2)transform.position;
             obstacleDetectBounds.size = Size;
 
+            isNavGridDirty = false;
+
+            OnNavGridUpdated?.Invoke(this);
+        }
+
+        private void BakeNodeGraph()
+        {
             // Re-bake registered agents' node graph.
             foreach (var graph in nodeGraphs)
             {
                 nodeGraphs[graph.Key].graph = graph.Value.agentClass.ConnectGraphNodes(graph.Value.agentClass.GenerateGraphNodes(this));
             }
 
-            isDirty = false;
+            isNodeGraphDirty = false;
 
-            OnNavGridUpdated?.Invoke(this);
+            OnNodeGraphUpdated?.Invoke(this);
         }
+
+
 
         private NavCellType GenerateCellTypeAt(Vector2 _worldLocation)
         {
@@ -319,19 +334,48 @@ namespace Custom.AI.Pathfinding
         #endregion
 
         #region Obstacle Handling
-        private void UpdateObstacle()
-        {
-            foreach (var obstacle in obstacles)
-            {
-
-
-                Carve(obstacle);
-            } 
-        }
-
         private void Carve(NavGridObstacle2D _obstacle)
         {
+            // Un-carve old bounds.
+            if (obstacles.ContainsKey(_obstacle))
+                UpdateNavGridInBounds(obstacles[_obstacle]);
 
+            // Carve new bounds.
+            BoundsInt? cellBounds = WorldToCell(_obstacle.Bounds);
+            if (!cellBounds.HasValue) return;
+
+            obstacles[_obstacle] = cellBounds.Value;
+            UpdateNavGridInBounds(cellBounds.Value);
+        }
+
+        private void UpdateNavGridInBounds(BoundsInt _boundsInt)
+        {
+            Vector2Int cellPos;
+            for (int x = _boundsInt.xMin; x <= _boundsInt.xMax; x++)
+            {
+                for (int y = _boundsInt.yMin; y <= _boundsInt.yMax; y++)
+                {
+                    cellPos = new(x, y);
+
+                    var newCellType = GenerateCellTypeAt(CellToWorld(cellPos).Value);
+
+                    if (newCellType != grid[cellPos])
+                    {
+                        isNodeGraphDirty = true;
+                        grid[cellPos] = newCellType;
+                    }
+                }
+            }
+        }
+
+
+
+        private void OnDestroyed(NavGridObstacle2D _obstacle)
+        {
+            obstacles.Remove(_obstacle);
+
+            _obstacle.OnUpdated -= Carve;
+            _obstacle.OnDestroyed -= OnDestroyed;
         }
         #endregion
 
@@ -358,7 +402,10 @@ namespace Custom.AI.Pathfinding
                 {
                     registered = 1,
                     agentClass = _agent,
+                    graph = _agent.ConnectGraphNodes(_agent.GenerateGraphNodes(this))
                 });
+
+                OnNavGridUpdated?.Invoke(this);
             }
 
             return true;
@@ -556,6 +603,28 @@ namespace Custom.AI.Pathfinding
         }
 
 
+
+        /// <summary>
+        /// Converts a world-space <see cref="Bounds"/> to a tilemap-based <see cref="BoundsInt"/>, if valid.
+        /// </summary>
+        /// <param name="_worldBounds"> The world-space bounds to convert. </param>
+        /// <returns>
+        /// A <see cref="BoundsInt"/> representing the tilemap space covered by the world bounds,  
+        /// or <see langword="null"/> if the conversion is invalid.  
+        /// </returns>
+        public BoundsInt? WorldToCell(Bounds _worldBounds)
+        {
+            Vector2Int min = WorldToCell(_worldBounds.min);
+            Vector2Int max = WorldToCell(_worldBounds.max);
+
+            if (min == new Vector2(-1, -1) || max == new Vector2(-1, -1)) return null;
+
+            Vector2Int diff = max - min;
+
+            return new BoundsInt(
+                min.x, min.y, 0,
+                diff.x, diff.y, 0);
+        }
 
         /// <summary>
         /// Get the cell location at <paramref name="_worldLocation"/>.
@@ -756,30 +825,6 @@ namespace Custom.AI.Pathfinding
         /// Using free bound values to define cell grid.
         /// </summary>
         FreeBounds,
-    }
-
-
-
-    /// <summary>
-    /// When should the nav grid re-bake cell grid during obstacle updates.
-    /// </summary>
-    public enum ObstacleUpdateMode
-    {
-        /// <summary>
-        /// Updates every frame during Update().
-        /// </summary>
-        Normal,
-
-        /// <summary>
-        /// Updates every frame during LateUpdate().
-        /// </summary>
-        Late,
-
-        /// <summary>
-        /// Updates every FixedUpdate(). <br/>
-        /// <b>NOTE:</b> High performance impact, use with caution.
-        /// </summary>
-        Fixed,
     }
 
 

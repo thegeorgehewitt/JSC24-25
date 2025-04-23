@@ -12,4 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1defec162ccfeae4d9188d65c9736d43, type: 3}
   m_Name: Patrol Bot Object
   m_EditorClassIdentifier: 
-  objectName: Patrol Bot
+  icon: {fileID: -1021685370, guid: ed99a350a65f6304f89c714175e567b2, type: 3}
+  type: 2
+  objectName: P01 Bot
+  description: '<highlight>PB01</highlight> is the first model of patrol bot.
+
+    Their
+    limited view range and low process power are what causes newer version of PB
+    bots to be developed.'
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <highlight>
+      Value: <b><color=#F1BF2A>
+    - Key: </highlight>
+      Value: </color></b>
