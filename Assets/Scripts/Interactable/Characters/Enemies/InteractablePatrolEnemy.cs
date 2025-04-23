@@ -7,6 +7,7 @@ using Custom.Interactable.Interfaces;
 using Custom.Manager.EventHandling;
 using UnityEditor.PackageManager;
 using Custom.Manager.Audio;
+using static UnityEngine.GraphicsBuffer;
 
 
 namespace Custom.Interactable.Character.Enemy
@@ -28,8 +29,33 @@ namespace Custom.Interactable.Character.Enemy
         public const string BT_DETECTED_PLAYER = "Detected Player";
         public const string BT_PLAYER_ALERTED = "Player Alerted";
         public const string BT_PLAYER_LOCKED_ON = "Player Locked On";
-        public const string BT_ENEMY_HACKED = "Enemt Hacked";
+        public const string BT_ENEMY_HACKED = "Enemy Hacked";
 
+        public class PlayerDetectedEvent
+        {
+            public InteractableEnemyBase Enemy { get; }
+
+            public PlayerDetectedEvent(InteractableEnemyBase _enemy)
+            {
+                Enemy = _enemy;
+            }
+        }
+        public class PlayerLostEvent {
+            public InteractableEnemyBase Enemy { get; }
+
+            public PlayerLostEvent(InteractableEnemyBase _enemy)
+            {
+                Enemy = _enemy;
+            }
+        }
+        public class PlayerAlertedEvent {
+            public InteractableEnemyBase Enemy { get; }
+
+            public PlayerAlertedEvent(InteractableEnemyBase _enemy)
+            {
+                Enemy = _enemy;
+            }
+        }
 
 
         private void Awake()
@@ -48,22 +74,26 @@ namespace Custom.Interactable.Character.Enemy
         protected override void OnPlayerDetected(CharacterMotor2D _newTarget)
         {
             behaviourTree.Blackboard.SetOrAdd(BT_DETECTED_PLAYER, _newTarget);
+            EventAggregator.Publish(new PlayerDetectedEvent(this));
         }
 
         protected override void OnPlayerLost()
         {
             behaviourTree.Blackboard.Invalidate(BT_DETECTED_PLAYER);
+
         }
 
         protected override void OnPlayerAlerted()
         {
             behaviourTree.Blackboard.SetOrAdd(BT_PLAYER_ALERTED, true);
+            EventAggregator.Publish(new PlayerAlertedEvent(this));
         }
 
         protected override void OnPlayerIgnored()
         {
             behaviourTree.Blackboard.Invalidate(BT_PLAYER_ALERTED);
             behaviourTree.Blackboard.Invalidate(BT_PLAYER_LOCKED_ON);
+            EventAggregator.Publish(new PlayerLostEvent(this));
         }
 
         protected override void OnPlayerLockedOn()

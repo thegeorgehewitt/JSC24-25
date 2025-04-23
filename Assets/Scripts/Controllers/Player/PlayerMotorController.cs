@@ -80,11 +80,11 @@ namespace Custom.Controller
         /// <summary>
         /// Freeze the <see cref="controlledMotor"/> any input registered to PlayerController.
         /// </summary>
-        public static void PauseMotor(bool _pause, bool _resetVelocity = false)
+        public static void PauseMotor(bool _pause, bool _resetVelocity = false, bool _pauseAnimator = true)
         {
             if (!Instance.controlledMotor) return;
 
-            Instance.controlledMotor.SetPause(_pause, _resetVelocity);
+            Instance.controlledMotor.SetPause(_pause, _resetVelocity, _pauseAnimator);
 
             if (_pause)
                 Instance.controlledMotor.OnUnpossessed(Instance);

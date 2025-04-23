@@ -12,6 +12,19 @@ namespace Custom.Checkpoint
     {
         public static CheckpointManager Instance;
 
+        [SerializeField] private float deathDelayDuration = 2f;
+        [SerializeField] private float respawnDelayDuration = 1.3f;
+
+        public class ReloadEvent
+        {
+            public Vector3 Checkpoint { get; }
+
+            public ReloadEvent(Vector3 _checkpoint)
+            {
+                Checkpoint = _checkpoint;
+            }
+        }
+
         [SerializeField] private Vector3 currentCheckpoint;
 
         private void OnEnable()
@@ -44,7 +57,8 @@ namespace Custom.Checkpoint
             {
                 currentCheckpoint = PlayerMotorController.Instance.transform.position;
             }
-            ReloadCheckpoint();
+
+            StartCoroutine(HandleReload());
         }
 
         public void UpdateCheckpoint(Vector3 newCheckpoint)
@@ -52,12 +66,13 @@ namespace Custom.Checkpoint
             currentCheckpoint = newCheckpoint;
         }
 
-        public void ReloadCheckpoint()
-        {
-            PlayerMotorController.PauseMotor(false, true);
-            SaveSystem.Instance.LoadGame();
-            PlayerMotorController.Instance.transform.position = currentCheckpoint;
-        }
+        //public void ReloadCheckpoint()
+        //{
+        //    EventAggregator.Publish(new ReloadEvent(currentCheckpoint));
+        //    SaveSystem.Instance.LoadGame();
+
+        //    PlayerMotorController.PauseMotor(false, true);
+        //}
 
         private void OnDeath(DeathEvent _event)
         {
@@ -66,11 +81,20 @@ namespace Custom.Checkpoint
 
         private IEnumerator HandleDeath()
         {
-            PlayerMotorController.PauseMotor(true);
+            PlayerMotorController.PauseMotor(true, true, false);
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(deathDelayDuration);
 
-            ReloadCheckpoint();
+            StartCoroutine(HandleReload());
+        }
+
+        public IEnumerator HandleReload()
+        {
+            EventAggregator.Publish(new ReloadEvent(currentCheckpoint));
+
+            yield return new WaitForSeconds(respawnDelayDuration);
+
+            PlayerMotorController.PauseMotor(false, true);
         }
 
         public void LoadData(PersistentData data)

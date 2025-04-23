@@ -14,9 +14,7 @@ namespace Custom.Controller
 
         private void OnMotorShot(AttackEvent _event)
         {
-            if (_event.Target != attachedMotor) return;
-
-            attachedMotor.Animator.SetBool("IsDead", true);
+            if (_event.Target != attachedMotor || attachedMotor.IsPaused) return;
 
             EventAggregator.Publish(new DeathEvent());
         }

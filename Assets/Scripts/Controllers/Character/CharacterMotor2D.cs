@@ -9,6 +9,9 @@ using FunkyCode;
 using Custom.Manager;
 using Custom.Attribute;
 using Custom.Utility;
+using Custom.Manager.EventHandling;
+using static Custom.Controller.CharacterControlDamageable;
+using static Custom.Checkpoint.CheckpointManager;
 
 namespace Custom.Controller
 {
@@ -130,11 +133,15 @@ namespace Custom.Controller
         private void OnEnable()
         {
             OnCharacterMotorEnabled?.Invoke(this);
+            EventAggregator.Subscribe<DeathEvent>(OnDeath);
+            EventAggregator.Subscribe<ReloadEvent>(OnReload);
         }
 
         private void OnDisable()
         {
             OnCharacterMotorDisabled?.Invoke(this);
+            EventAggregator.Unsubscribe<DeathEvent>(OnDeath);
+            EventAggregator.Unsubscribe<ReloadEvent>(OnReload);
         }
 
         private void Awake()
@@ -484,7 +491,7 @@ namespace Custom.Controller
             }
         }
 
-        public void SetPause(bool _pause, bool _resetVelocity = false)
+        public void SetPause(bool _pause, bool _resetVelocity = false, bool _pauseAnimator = true)
         {
             paused = _pause;
 
@@ -493,13 +500,7 @@ namespace Custom.Controller
 
             if (animator)
             {
-                if (!animator.GetBool("IsDead"))
-                    animator.speed = _pause ? 0.0f : 1.0f;
-                else if (!_pause)
-                {
-                    animator.SetBool("IsDead", false);
-                    animator.SetTrigger("Respawn");
-                }
+                animator.speed = _pause && _pauseAnimator ? 0.0f : 1.0f;
             }
         }
         #endregion
@@ -509,6 +510,18 @@ namespace Custom.Controller
         {
             animator.SetFloat("Vertical Speed", velocity.y);
             animator.SetFloat("Horizontal Speed", Mathf.Abs(velocity.x));
+        }
+
+        private void OnDeath(DeathEvent _evt)
+        {
+            animator.SetBool("Respawn", false);
+            animator.SetTrigger("Death");
+        }
+
+        private void OnReload(ReloadEvent _evt)
+        {
+            transform.position = _evt.Checkpoint;
+            animator.SetTrigger("Respawn");
         }
         #endregion
     }

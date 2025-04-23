@@ -41,6 +41,7 @@ namespace Custom.Interactable.Character.Enemy
         protected AcquireTargetResult<CharacterMotor2D> lastScanResult;
 
         protected float currentDetectionLevel;
+        public float CurrentDetectionLevel => currentDetectionLevel;
         protected bool playerAlerted;
 
         protected float elapsedLockOn;
