@@ -34,10 +34,9 @@ namespace Custom.AI.BehaviourTree
                 new Selector(
                     new Sequencer(
                         new GetComponentLocationTask(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION),
+                        new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_WALK_STATE),
                         new SimpleParallel(
-                            new SimpleParallel(
-                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_WALK_STATE),
-                                new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION))),
+                            new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION)),
                             new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
                         )
                     ) { Name = "Chase" }
