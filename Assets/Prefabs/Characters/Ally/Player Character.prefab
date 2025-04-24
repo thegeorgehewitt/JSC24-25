@@ -365,9 +365,6 @@ MonoBehaviour:
   inRangeColor: {r: 0.44705883, g: 0.8862745, b: 0.85490197, a: 1}
   distanceRestrictActive: 0
   blockedRestrictActive: 0
-  currentCharge: 10
-  maxCharge: 10
-  rechargeRate: 20
 --- !u!114 &4773218601208523903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -875,6 +872,7 @@ GameObject:
   - component: {fileID: 7933555611519160503}
   - component: {fileID: 573359081064459370}
   - component: {fileID: 7003080779397614455}
+  - component: {fileID: 6673448712075568100}
   - component: {fileID: 7635029829007018049}
   m_Layer: 7
   m_Name: Player Character
@@ -1043,6 +1041,21 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1088
   parentBody: {fileID: 7489048534138405090}
+--- !u!114 &6673448712075568100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7489048534138405090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bef0dbe275720ed4e983502a50fdf582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAmount: 10
+  currentAmount: 4
+  refillDuration: 4
 --- !u!114 &7635029829007018049
 MonoBehaviour:
   m_ObjectHideFlags: 0

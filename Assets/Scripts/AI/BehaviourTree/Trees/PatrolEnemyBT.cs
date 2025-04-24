@@ -25,18 +25,18 @@ namespace Custom.AI.BehaviourTree
             return new Selector(
                 new Sequencer(
                     new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_HACKED_STATE),
-                    new WaitTask(3.0f, 3.0f),
+                    new WaitTask(5.0f),
                     new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE))
                 .AddDecorator(
-                    new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_ENEMY_HACKED, BlackboardKeyDecorator.Mode.Set).SetAbortMode(AbortMode.LowerPiority)),
+                    new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_ENEMY_DISABLED, BlackboardKeyDecorator.Mode.Set)
+                        .SetAbortMode(AbortMode.LowerPiority)),
 
                 new Selector(
                     new Sequencer(
                         new GetComponentLocationTask(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION),
+                        new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_WALK_STATE),
                         new SimpleParallel(
-                            new SimpleParallel(
-                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_WALK_STATE),
-                                new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION))),
+                            new MoveToTask(enemy.NavAgent, Bind<Vector3>(DETECTED_PLAYER_LOCATION)),
                             new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
                         )
                     ) { Name = "Chase" }
@@ -45,15 +45,17 @@ namespace Custom.AI.BehaviourTree
                     .AddDecorator(
                         new ShouldChasePlayerDecorator(
                             enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER),
-                            InteractablePatrolEnemy.BT_PLAYER_ALERTED, InteractablePatrolEnemy.BT_DETECTED_PLAYER)
+                            InteractablePatrolEnemy.BT_PLAYER_ALERTED, 
+                            InteractablePatrolEnemy.BT_DETECTED_PLAYER,
+                            InteractablePatrolEnemy.BT_ENEMY_JAMMED)
                             .SetAbortMode(AbortMode.Both)),
 
                     new Selector(
                         new Sequencer(
+                            new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
+
                             new SimpleParallel(
-                                new SimpleParallel(
-                                    new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_IDLE_STATE),
-                                    new LockOnPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))),
+                                new LockOnPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER)),
                                 new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720)
                             ) { Name = "Locking On" }
                             .AddService(
@@ -62,8 +64,12 @@ namespace Custom.AI.BehaviourTree
                                 new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_PLAYER_LOCKED_ON, BlackboardKeyDecorator.Mode.NotSet)
                                     .SetAbortMode(AbortMode.Self)),
 
-                            new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_FIRE_STATE),
-                            new ShootPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))
+                            new Sequencer (
+                                new UpdateAnimatorTask(enemy, InteractablePatrolEnemy.AS_FIRE_STATE),
+                                new ShootPlayerTask(enemy, Bind<CharacterMotor2D>(InteractablePatrolEnemy.BT_DETECTED_PLAYER))
+                            )
+                            .AddDecorator(
+                                new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_ENEMY_JAMMED, BlackboardKeyDecorator.Mode.NotSet))
 
                         ) { Name = "Lock On & Shoot" }
                         .AddDecorator(
@@ -101,14 +107,6 @@ namespace Custom.AI.BehaviourTree
                         .AddDecorator(
                             new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set)
                             .SetAbortMode(AbortMode.Self))
-                    //new Repeater(
-                    //    new LookAtTask(enemy, Bind<Vector3>(DETECTED_PLAYER_LOCATION), false, 720))
-                    //.AddService(
-                    //        new GetComponentLocationService(Bind<Component>(InteractablePatrolEnemy.BT_DETECTED_PLAYER), DETECTED_PLAYER_LOCATION))
-                    //.AddDecorator(
-                    //new BlackboardKeyDecorator(InteractablePatrolEnemy.BT_DETECTED_PLAYER, BlackboardKeyDecorator.Mode.Set)
-                    //    .SetAbortMode(AbortMode.Self))
-
 
                     ) { Name = "Player Last Seen Reached" }
 

@@ -1,57 +1,52 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
+
+using UnityEngine;
 
 namespace Custom.AI.Pathfinding
 {
+    [RequireComponent(typeof(Collider2D))]
     public class NavGridObstacle2D : MonoBehaviour
     {
-        [SerializeField] private BoundsType type;
+        public event Action<NavGridObstacle2D> OnUpdated;
+        public event Action<NavGridObstacle2D> OnDestroyed;
+
+
 
         [SerializeField] private Collider2D colliderBounds;
-        [SerializeField] private Image imageBounds;
+        [Space]
+        [SerializeField] private float movementThreshold = 0.1f;
 
-        private PhysicsShape2D bounds;
+        private bool active;
+        private Vector3 lastLocation;
 
-        public PhysicsShape2D Bounds => bounds;
+        public Bounds Bounds => colliderBounds != null ? colliderBounds.bounds : new Bounds();
+
+        public bool Active => colliderBounds.isActiveAndEnabled;
 
 
 
-        private void Start()
+        private void OnDestroy()
         {
-            bounds.shapeType = PhysicsShapeType2D.Polygon;
+            OnDestroyed?.Invoke(this);
         }
 
-
-
-        public void UpdateBounds()
+        private void Update()
         {
-            switch (type)
+            if (active != colliderBounds.isActiveAndEnabled ||
+                Vector3.Distance(lastLocation, transform.position) >= movementThreshold)
             {
-                case BoundsType.Collider2D:
-
-                    break;
-
-                case BoundsType.SpritePhysicalShape:
-
-                    break;
-
-                case BoundsType.SpriteBounds:
-
-                    break;
-
-                default: break;
+                OnUpdated?.Invoke(this);
             }
+
+            lastLocation = transform.position;
+            active = colliderBounds.isActiveAndEnabled;
         }
-    }
 
-
-
-    public enum BoundsType
-    {
-        Collider2D,
-
-        SpritePhysicalShape,
-
-        SpriteBounds,
+#if UNITY_EDITOR
+        private void Reset()
+        {
+            colliderBounds = GetComponent<Collider2D>();
+        }
+#endif
     }
 }

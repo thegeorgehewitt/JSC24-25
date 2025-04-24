@@ -1,3 +1,5 @@
+using System.Collections;
+
 using UnityEngine;
 
 using Custom.Controller;
@@ -5,10 +7,8 @@ using Custom.AI.Pathfinding;
 using Custom.AI.BehaviourTree;
 using Custom.Interactable.Interfaces;
 using Custom.Manager.EventHandling;
-using UnityEditor.PackageManager;
 using Custom.Manager.Audio;
 using static UnityEngine.GraphicsBuffer;
-
 
 namespace Custom.Interactable.Character.Enemy
 {
@@ -29,6 +29,8 @@ namespace Custom.Interactable.Character.Enemy
         public const string BT_DETECTED_PLAYER = "Detected Player";
         public const string BT_PLAYER_ALERTED = "Player Alerted";
         public const string BT_PLAYER_LOCKED_ON = "Player Locked On";
+        public const string BT_ENEMY_DISABLED = "Enemy Disabled";
+        public const string BT_ENEMY_JAMMED = "Enemy Jammed";
         public const string BT_ENEMY_HACKED = "Enemy Hacked";
 
         public class PlayerDetectedEvent
@@ -101,16 +103,6 @@ namespace Custom.Interactable.Character.Enemy
             behaviourTree.Blackboard.SetOrAdd(BT_PLAYER_LOCKED_ON, true);
         }
 
-        protected override void OnEnemyHacked()
-        {
-            behaviourTree.Blackboard.SetOrAdd(BT_ENEMY_HACKED, true);
-        }
-
-        protected override void OnHackedEnded()
-        {
-            behaviourTree.Blackboard.Invalidate(BT_ENEMY_HACKED);
-        }
-
         public override void OnAnimatorStateUpdated(string _state)
         {
             switch (_state)
@@ -142,5 +134,53 @@ namespace Custom.Interactable.Character.Enemy
                     break;
             }
         }
+
+
+
+        #region Interaction - Jam
+        private Coroutine jamCoroutine;
+
+        public void Jam()
+        {
+            if (jamCoroutine != null) 
+                StopCoroutine(jamCoroutine);
+
+            jamCoroutine = StartCoroutine(JamCoroutine());
+
+            behaviourTree.Blackboard.SetOrAdd(BT_ENEMY_JAMMED, true);
+        }
+
+        private IEnumerator JamCoroutine()
+        {
+            yield return new WaitForSeconds(5.0f);
+
+            behaviourTree.Blackboard.Invalidate(BT_ENEMY_JAMMED);
+        }
+        #endregion
+
+        #region Interaction - Disable
+        private Coroutine disableCoroutine;
+
+        public void Disable()
+        {
+            if (disableCoroutine != null) 
+                StopCoroutine(disableCoroutine);
+
+            disableCoroutine = StartCoroutine(DisableCoroutine());
+
+            behaviourTree.Blackboard.SetOrAdd(BT_ENEMY_DISABLED, true);
+        }
+
+        private IEnumerator DisableCoroutine()
+        {
+            activated = false;
+
+            yield return new WaitForSeconds(3.0f);
+
+            activated = true;
+
+            behaviourTree.Blackboard.Invalidate(BT_ENEMY_DISABLED);
+        }
+        #endregion
     }
 }

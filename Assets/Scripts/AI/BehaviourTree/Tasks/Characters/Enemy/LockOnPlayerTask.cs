@@ -22,8 +22,6 @@ namespace Custom.AI.BehaviourTree
 
         protected override NodeState OnEvaluated(Blackboard _blackboard)
         {
-            UnityEngine.Debug.Log($"Locking On");
-
             return NodeState.Running;
         }
     }

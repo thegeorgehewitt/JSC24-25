@@ -31,7 +31,7 @@ namespace Custom.UI.General
             if (settings == null)
             {
                 EditorGUILayout.HelpBox(
-                    "No GlobalSettings asset found. Create one in Assets/Resources.", 
+                    $"No {typeof(VisualSettings).Name} asset found. Create one in Assets/Resources.", 
                     MessageType.Warning);
 
                 if (GUILayout.Button("Create Asset"))
@@ -58,7 +58,7 @@ namespace Custom.UI.General
         private void CreateAsset()
         {
             settings = CreateInstance<VisualSettingsData>();
-            AssetDatabase.CreateAsset(settings, "Assets/Resources/Default Visual Settings.asset");
+            AssetDatabase.CreateAsset(settings, $"Assets/Resources/{VisualSettings.DEFAULT_FILE_NAME}.asset");
             AssetDatabase.SaveAssets();
         }
     }

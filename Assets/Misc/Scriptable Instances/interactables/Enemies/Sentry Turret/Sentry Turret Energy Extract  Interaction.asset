@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b16de7f5f45794fbde2dd2be07aa8c, type: 3}
+  m_Name: Sentry Turret Energy Extract  Interaction
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 76c699d5db701b14c8e2cf0c9cd2ccc1, type: 3}
+  cost: -2
+  title: Energy Extract
+  description: Extract <h>2 energy</h> from this object and add it to your energy
+    reserve.
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <h>
+      Value: <color=#FFB736>
+    - Key: </h>
+      Value: </color>
+    - Key: <kw>
+      Value: <b><color=#F1DBAE>
+    - Key: </kw>
+      Value: </color></b>

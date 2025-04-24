@@ -6,9 +6,7 @@ using UnityEngine.InputSystem;
 
 using Custom.Interactable;
 using Custom.Decorative;
-using Custom.UI;
 using Custom.Controller.General;
-using System.Collections;
 
 namespace Custom.Controller
 {
@@ -29,7 +27,8 @@ namespace Custom.Controller
         public static event Action<InteractableObject> OnFocusNewInteractableObject;
         public static event Action<InteractableObject> OnUnfocusInteractableObject;
         public static event Action<int> OnSelectNewInteraction;
-        public static event Action<float> OnChargeChanged;
+
+
 
         [Header("INTERACT")]
         [SerializeField] private Transform interactRayOrigin;
@@ -45,12 +44,6 @@ namespace Custom.Controller
         [SerializeField] private Color inRangeColor = Color.cyan;
         [SerializeField] private bool distanceRestrictActive;
         [SerializeField] private bool blockedRestrictActive;
-
-        [Header("CHARGE")]
-        [SerializeField] private int currentCharge = 20;
-        [SerializeField] private int maxCharge = 20;
-        [SerializeField] private float rechargeRate = 5;
-        Coroutine rechargeCoroutine;
 
 
 
@@ -81,6 +74,7 @@ namespace Custom.Controller
         }
 
 
+
         #region Actions
         private int activeOption;
         private float scrollValue;
@@ -99,13 +93,7 @@ namespace Custom.Controller
             }
             else
             {
-                currentCharge -= hoverObject.Interact(activeOption, currentCharge);
-                OnChargeChanged?.Invoke((float)currentCharge / (float)maxCharge);
-
-                if (currentCharge < maxCharge && rechargeCoroutine == null)
-                {
-                    rechargeCoroutine = StartCoroutine(Recharge());
-                }
+                hoverObject.Interact(activeOption);
             }
         }
 
@@ -163,7 +151,10 @@ namespace Custom.Controller
                 foreach (var collider in overlapCols)
                 {
                     if (!collider.transform.TryGetComponent(out InteractableObject asInteractable)) continue;
-                    
+
+                    if (hoverObject != asInteractable)
+                        activeOption = 0;
+
                     hoverObject = asInteractable;
                     OnFocusNewInteractableObject?.Invoke(hoverObject);
 
@@ -216,25 +207,5 @@ namespace Custom.Controller
             enabled = false;
         }
         #endregion
-
-        #region Charge Regeneration
-
-        private IEnumerator Recharge()
-        {
-            yield return new WaitForSeconds(rechargeRate);
-
-            currentCharge++;
-
-            OnChargeChanged?.Invoke((float)currentCharge/(float)maxCharge);
-
-            rechargeCoroutine = null;
-
-            if (currentCharge < maxCharge)
-            {
-                rechargeCoroutine = StartCoroutine(Recharge());
-            }
-        }
-
-            #endregion
-        }
+    }
 }

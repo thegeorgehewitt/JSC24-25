@@ -89,28 +89,12 @@ namespace Custom.AI.Pathfinding
         protected virtual void OnEnable()
         {
             NavGrid2D.OnNavGridUpdated += OnNavGridUpdated;
+            NavGrid2D.OnNodeGraphUpdated += OnNodeGraphUpdated;
         }
 
         protected virtual void OnDisable()
         {
-            NavGrid2D.OnNavGridUpdated -= OnNavGridUpdated;
-        }
-
-        protected virtual void Start()
-        {
-            foreach (var collider in Physics2D.OverlapPointAll(transform.position))
-            {
-                if (collider.gameObject.TryGetComponent(out NavGrid2D asNavGrid)) navGrid = asNavGrid;
-            }
-
-            if (navGrid != null)
-            {
-                navGrid.RegisterAgent(this);
-            }
-            else
-            {
-                enabled = false;
-            }
+            NavGrid2D.OnNodeGraphUpdated -= OnNodeGraphUpdated;
         }
 
 
@@ -278,21 +262,6 @@ namespace Custom.AI.Pathfinding
 
             return true;
         }
-
-
-
-        private void OnNavGridUpdated(NavGrid2D _navGrid)
-        {
-            if (_navGrid != navGrid) return;
-
-            pathNodes = navGrid.GetAgentNodeGraph(this);
-
-            pathNodeLookup.Clear();
-            foreach (var pathNode in pathNodes)
-            {
-                pathNodeLookup.Add(pathNode.position, pathNode);
-            }
-        }
         #endregion
 
         #region Movement
@@ -379,6 +348,38 @@ namespace Custom.AI.Pathfinding
             CurrentPath.Clear();
 
             StopFollowPath(true);
+        }
+        #endregion
+
+        #region NavGrid2D - Callbacks
+        private void OnNavGridUpdated(NavGrid2D _navGrid)
+        {
+            foreach (var collider in Physics2D.OverlapPointAll(transform.position))
+            {
+                if (collider.gameObject.TryGetComponent(out NavGrid2D asNavGrid)) navGrid = asNavGrid;
+            }
+
+            if (navGrid != null)
+            {
+                navGrid.RegisterAgent(this);
+            }
+            else
+            {
+                enabled = false;
+            }
+        }
+
+        private void OnNodeGraphUpdated(NavGrid2D _navGrid)
+        {
+            if (_navGrid != navGrid) return;
+
+            pathNodes = navGrid.GetAgentNodeGraph(this);
+
+            pathNodeLookup.Clear();
+            foreach (var pathNode in pathNodes)
+            {
+                pathNodeLookup.Add(pathNode.position, pathNode);
+            }
         }
         #endregion
     }

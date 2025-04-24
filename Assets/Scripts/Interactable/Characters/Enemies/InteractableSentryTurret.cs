@@ -1,15 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 
 using Custom.Manager;
 using Custom.Manager.EventHandling;
+using Custom.Controller;
+using Custom.Utility;
 
 namespace Custom.Interactable.Character.Enemy
 {
-    using Custom.Controller;
-    using Custom.Utility;
     using Interfaces;
 
     public class InteractableSentryTurret : InteractableEnemyBase, IAttackableEnemy
@@ -160,10 +159,10 @@ namespace Custom.Interactable.Character.Enemy
         }
         #endregion
 
-        #region Interaction - Jam Turret
+        #region Interaction - Jam
         private Coroutine jamCoroutine;
 
-        public void JamTurret()
+        public void Jam()
         {
             if (jamCoroutine != null) StopCoroutine(jamCoroutine);
 
@@ -199,7 +198,7 @@ namespace Custom.Interactable.Character.Enemy
         }
         #endregion
 
-        #region Interaction - Recruit
+        #region Interaction - Short Circuit
         private Coroutine recruitCoroutine;
 
         public void Recruit()
@@ -211,7 +210,6 @@ namespace Custom.Interactable.Character.Enemy
             // Recruit functionality (coroutine)
             Debug.Log($"Turret ({name}): Recruited.");
         }
-
         #endregion
 
         public override void OnAnimatorStateUpdated(string _state)

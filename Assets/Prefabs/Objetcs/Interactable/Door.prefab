@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5458236464512437613}
   - component: {fileID: 1730410341943266298}
   - component: {fileID: 4486568507856741927}
+  - component: {fileID: 7250178037252510136}
   m_Layer: 10
   m_Name: Door
   m_TagString: Untagged
@@ -137,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514887b74a94f024ba96e37019b04334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 2916424553002418655}
   objectData: {fileID: 11400000, guid: 8a13ccfe83aaa2447ae4b76deafd28a8, type: 2}
   interactionData:
   - data: {fileID: 11400000, guid: 8bec72f0f23eac84bb2dc13136d23f6c, type: 2}
@@ -171,7 +173,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  spriteRenderer: {fileID: 2916424553002418655}
   doorCollider: {fileID: 1730410341943266298}
   animator: {fileID: 4285960162686973320}
   key: 
@@ -181,6 +182,20 @@ MonoBehaviour:
   unlockedSprite: {fileID: 0}
   overloaded: 0
   overloadedSprite: {fileID: 0}
+--- !u!114 &7250178037252510136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4631841617709058082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c07993f1893ba4e814b7c9ba73273e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderBounds: {fileID: 1730410341943266298}
+  movementThreshold: 0.1
 --- !u!1 &6097196538804143724
 GameObject:
   m_ObjectHideFlags: 0

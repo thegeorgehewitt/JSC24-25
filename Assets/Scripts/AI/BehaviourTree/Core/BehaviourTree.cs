@@ -33,7 +33,6 @@ namespace Custom.AI.BehaviourTree
 
             if (runningTask != null)
             {
-                Debug.Log($"Running Task: {runningTask.FullPath} ({runningTask.ExecuteOrder})");
                 OnTaskRunning?.Invoke(Blackboard, runningTask);
             }
 

@@ -6,12 +6,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 using Custom.Scriptable.Interactable;
+using Custom.Manager;
 
 namespace Custom.Interactable
 {
     public abstract class InteractableObject : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         protected struct InteractionEvent
         {
             public ObjectInteractionData data;
@@ -24,10 +25,9 @@ namespace Custom.Interactable
 
 
 
+        [SerializeField] protected SpriteRenderer spriteRenderer;
         [SerializeField] protected InteractableObjectData objectData;
         [SerializeField] protected InteractionEvent[] interactionData;
-
-        [SerializeField] protected SpriteRenderer spriteRenderer;
 
         protected List<string> states = new();
 
@@ -53,15 +53,13 @@ namespace Custom.Interactable
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
-        public virtual int Interact(int _option, int availableCharge)
+        public void Interact(int _option)
         {
-            if ( availableCharge >= InteractionData[_option].cost)
-            {
-                interactionData[_option].interactEvent?.Invoke();
-                return InteractionData[_option].cost;
-            }
+            if (BatteryManager.CurrentAmount < InteractionData[_option].cost) return;
 
-            return 0;
+            BatteryManager.CurrentAmount -= InteractionData[_option].cost;
+
+            interactionData[_option].interactEvent?.Invoke();
         }
     }
 }
