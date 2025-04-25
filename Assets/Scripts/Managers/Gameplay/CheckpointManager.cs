@@ -76,7 +76,12 @@ namespace Custom.Checkpoint
 
         private void OnDeath(DeathEvent _event)
         {
-            StartCoroutine("HandleDeath");
+            StartCoroutine(HandleDeath());
+        }
+
+        public void ReloadCheckpoint()
+        {
+            StartCoroutine(HandleReload());
         }
 
         private IEnumerator HandleDeath()

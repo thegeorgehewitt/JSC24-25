@@ -6,6 +6,10 @@ using UnityEngine.UI;
 using Custom.Controller;
 using Custom.Manager;
 using Custom.Manager.Objective;
+using Custom.Checkpoint;
+using Custom.Manager.EventHandling;
+using static Custom.Checkpoint.CheckpointManager;
+using static Custom.Interactable.InteractableExitElevator;
 
 namespace Custom.UI
 {
@@ -23,12 +27,13 @@ namespace Custom.UI
 
         private void OnEnable()
         {
-            ObjectiveManager.OnAllObjectiveHalted += OnAllObjectiveHalted;
+            EventAggregator.Subscribe<LevelEnd>(OnLevelEnd);
+
         }
 
         private void OnDisable()
         {
-            ObjectiveManager.OnAllObjectiveHalted -= OnAllObjectiveHalted;
+            EventAggregator.Unsubscribe<LevelEnd>(OnLevelEnd);
         }
 
         private void Awake()
@@ -86,10 +91,10 @@ namespace Custom.UI
 
         #endregion
 
-        private void OnAllObjectiveHalted(ObjectiveCompletionState _state)
+        private void OnLevelEnd(LevelEnd _evt)
         {
-            if (_state != ObjectiveCompletionState.Failed)
-                ShowPopup(true);
+            ShowPopup(true);
+
         }
     }
 }

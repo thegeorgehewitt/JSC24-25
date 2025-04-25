@@ -113,7 +113,6 @@ namespace Custom.Interactable
 
             if (playerMotor)
             {
-                playerMotor.Animator.SetBool("UsingElevator", true);
                 owningShaft.PassMotor(elevatorIndex, playerMotor, _goUp);
                 StartCoroutine(MoveToTarget(playerMotor));
             }
@@ -153,7 +152,6 @@ namespace Custom.Interactable
 
             _playerMotor.SetPause(false, true);
             _playerMotor.Animator.ResetTrigger("Land");
-            _playerMotor.Animator.SetBool("UsingElevator", false);
             _playerMotor.SetCollision(true);
 
             yield return new WaitForSeconds(0.4f);
