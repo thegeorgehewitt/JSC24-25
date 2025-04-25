@@ -2780,6 +2780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6425946238033581672}
   - component: {fileID: 5615999956414204276}
+  - component: {fileID: 7173906535085905418}
   m_Layer: 7
   m_Name: DetectionDisplayContainer
   m_TagString: Untagged
@@ -2835,6 +2836,18 @@ MonoBehaviour:
   - {fileID: 6521257095413303128}
   - {fileID: 8183683925614317427}
   - {fileID: 1934725453077084709}
+--- !u!210 &7173906535085905418
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8749466165086163143}
+  m_Enabled: 1
+  m_SortingLayerID: -1194516743
+  m_SortingLayer: 7
+  m_SortingOrder: 1
+  m_SortAtRoot: 1
 --- !u!1 &8977745807168460488
 GameObject:
   m_ObjectHideFlags: 0
