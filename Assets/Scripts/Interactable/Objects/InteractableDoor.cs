@@ -185,10 +185,5 @@ namespace Custom.Interactable
             if (data == null) return false;
             return data.Key == key;
         }
-
-        public GameObject GetGameObject()
-        {
-            return this.gameObject;
-        }
     }
 }

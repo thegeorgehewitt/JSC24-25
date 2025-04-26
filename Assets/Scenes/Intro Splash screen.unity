@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 947317644}
   - component: {fileID: 947317646}
   - component: {fileID: 947317645}
+  - component: {fileID: 947317647}
   m_Layer: 0
   m_Name: Video Manager
   m_TagString: Untagged
@@ -375,7 +376,8 @@ MonoBehaviour:
   videoPlayer: {fileID: 947317646}
   videoClips:
   - {fileID: 32900000, guid: 9ce90be4c31f1bb44ab448c29f55ebb7, type: 3}
-  - {fileID: 32900000, guid: 2fe3eec3cd1770e4d8a9dddd0883c459, type: 3}
+  - {fileID: 32900000, guid: 6716acde08d497449b58b40df99ed87d, type: 3}
+  - {fileID: 32900000, guid: 03ae393cdd3f2b64d9c689b447bde223, type: 3}
 --- !u!328 &947317646
 VideoPlayer:
   m_ObjectHideFlags: 0
@@ -406,12 +408,27 @@ VideoPlayer:
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_SkipOnDrop: 1
   m_Looping: 0
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
+--- !u!114 &947317647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947317643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31719ee4b7b53347b0e5b9cdf360c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionAnimator: {fileID: 0}
+  transitionTime: 1
+  exitConfirmationPanel: {fileID: 0}
 --- !u!1 &1147593417
 GameObject:
   m_ObjectHideFlags: 0

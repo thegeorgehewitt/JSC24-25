@@ -137,10 +137,5 @@ namespace Custom.Interactable
             Key = Guid.NewGuid().ToString();
             EditorUtility.SetDirty(this);
         }
-
-        public GameObject GetGameObject()
-        {
-            return this.gameObject;
-        }
     }
 }

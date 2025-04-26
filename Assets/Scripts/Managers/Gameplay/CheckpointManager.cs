@@ -3,7 +3,9 @@ using Custom.Manager;
 using Custom.Manager.EventHandling;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Loading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Custom.Controller.CharacterControlDamageable;
 
 namespace Custom.Checkpoint
@@ -13,7 +15,10 @@ namespace Custom.Checkpoint
         public static CheckpointManager Instance;
 
         [SerializeField] private float deathDelayDuration = 2f;
-        [SerializeField] private float respawnDelayDuration = 1.3f;
+        [SerializeField] private float respawnDelayDuration = 1.4f;
+
+        [SerializeField] private Vector3 startingCheckpoint;
+        [SerializeField] private Vector3 currentCheckpoint;
 
         public class ReloadEvent
         {
@@ -25,7 +30,6 @@ namespace Custom.Checkpoint
             }
         }
 
-        [SerializeField] private Vector3 currentCheckpoint;
 
         private void OnEnable()
         {
@@ -53,11 +57,10 @@ namespace Custom.Checkpoint
 
         private void Start()
         {
-            if (currentCheckpoint == Vector3.zero)
+            if ( startingCheckpoint == default )
             {
-                currentCheckpoint = PlayerMotorController.Instance.transform.position;
+                Debug.Log("Set Starting Checkpoint at player intial load position.");
             }
-
             StartCoroutine(HandleReload());
         }
 
@@ -66,13 +69,10 @@ namespace Custom.Checkpoint
             currentCheckpoint = newCheckpoint;
         }
 
-        //public void ReloadCheckpoint()
-        //{
-        //    EventAggregator.Publish(new ReloadEvent(currentCheckpoint));
-        //    SaveSystem.Instance.LoadGame();
-
-        //    PlayerMotorController.PauseMotor(false, true);
-        //}
+        public void ResetCheckpoint()
+        {
+            currentCheckpoint = startingCheckpoint;
+        }
 
         private void OnDeath(DeathEvent _event)
         {
@@ -104,9 +104,13 @@ namespace Custom.Checkpoint
 
         public void LoadData(PersistentData data)
         {
-            if (data != null && data.checkpoint != Vector3.zero)
+            if (data != default && data.checkpoint != default)
             {
                 currentCheckpoint = data.checkpoint;
+            }
+            else
+            {
+                currentCheckpoint = startingCheckpoint;
             }
         }
 
@@ -118,11 +122,6 @@ namespace Custom.Checkpoint
         public void GenerateGuid()
         {
             // no implementation needed
-        }
-
-        public GameObject GetGameObject()
-        {
-            return gameObject;
         }
     }
 }

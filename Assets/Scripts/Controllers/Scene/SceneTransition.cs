@@ -16,6 +16,12 @@ public class SceneTransition : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void ReloadScene()
+    {
+        //SceneManager.UnloadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     /*private IEnumerator TransitionToScene(string sceneName)
     {
         

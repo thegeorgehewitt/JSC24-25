@@ -24,6 +24,7 @@ namespace Custom.UI.HUD
         }
         private void OnDisable()
         {
+            EventAggregator.Unsubscribe<Controller.CharacterControlDamageable.DeathEvent>(OnDeath);
             EventAggregator.Unsubscribe<PlayerDetectedEvent>(OnPlayerDetected);
             EventAggregator.Unsubscribe<PlayerLostEvent>(OnPlayerLost);
             EventAggregator.Unsubscribe<PlayerAlertedEvent>(OnPlayerAlerted);

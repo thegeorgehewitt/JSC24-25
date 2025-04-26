@@ -9,6 +9,4 @@ public interface IPersistent
     void SaveData(PersistentData data);
 
     void GenerateGuid();
-
-    GameObject GetGameObject();
 }

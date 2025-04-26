@@ -599,12 +599,6 @@ namespace FunkyCode
 		{
 			Key = Guid.NewGuid().ToString();
 		}
-
-        public GameObject GetGameObject()
-        {
-			return this.gameObject;
-        }
-
         #endregion
     }
 }

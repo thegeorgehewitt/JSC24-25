@@ -65,11 +65,6 @@ namespace Custom.Manager
            data.scene = SceneManager.GetActiveScene().name;
         }
 
-        public GameObject GetGameObject()
-        {
-            return this.gameObject;
-        }
-
         public void GenerateGuid()
         {
             // no implementation needed

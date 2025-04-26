@@ -1,12 +1,9 @@
+using Custom.Checkpoint;
 using Custom.Interactable;
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms;
 
 namespace Custom.Manager
 {
@@ -18,9 +15,12 @@ namespace Custom.Manager
         private FileDataHandler fileHandler;
         private PersistentData gameData;
         private List<IPersistent> dataPersistentObjects;
-        [SerializeField] private string defaultScene;
+        [SerializeField] private List<String> nonSaveScenes;
+        [SerializeField] private bool saveInEditor;
 
-        private string pruningKey;
+        public bool SaveAvailable => fileHandler != null && fileHandler.Load() != default;
+        public bool SceneSaved => gameData != null && gameData.scene != "";
+
 
         private void Initialise()
         {
@@ -47,6 +47,31 @@ namespace Custom.Manager
             Initialise();
 
             LoadGame();
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (!nonSaveScenes.Contains(scene.name))
+            {
+                if (gameData.scene == scene.name)
+                {
+                    LoadGame();
+                }
+                else
+                {
+                    NewGame();
+                    gameData.scene = scene.name;
+                    LoadGame();
+                }
+
+            }
         }
 
         public void NewGame()
@@ -81,6 +106,14 @@ namespace Custom.Manager
             {
                 persistentObject.SaveData(gameData);
             }
+
+#if UNITY_EDITOR
+            if (!saveInEditor)
+            {
+                return;
+            }
+#endif
+
             fileHandler.Save(gameData);
         }
 
@@ -112,25 +145,7 @@ namespace Custom.Manager
             Debug.LogWarning("No save found, try starting a new game.");
         }
 
-        protected bool MatchesLightKey(LightData data)
-        {
-            if (data == null) return false;
-            return data.Key == pruningKey;
-        }
-
-        public bool MatchesElevatorKey(ElevatorShaftData data)
-        {
-            if (data == null) return false;
-            return data.Key == pruningKey;
-        }
-
-        public bool MatchesDoorKey(DoorData data)
-        {
-            if (data == null) return false;
-            return data.Key == pruningKey;
-        }
-
-        public void newGUIDs()
+        public void NewGUIDs()
         {
             Initialise();
 
@@ -140,10 +155,6 @@ namespace Custom.Manager
             foreach (IPersistent persistent in dataPersistentObjects)
             {
                 persistent.GenerateGuid();
-                if (persistent.GetGameObject().GetComponent<FunkyCode.Light2D>() != null) EditorUtility.SetDirty(persistent.GetGameObject().GetComponent<FunkyCode.Light2D>());
-                if (persistent.GetGameObject().GetComponent<InteractableDoor>() != null) EditorUtility.SetDirty(persistent.GetGameObject().GetComponent<InteractableDoor>());
-                if (persistent.GetGameObject().GetComponent<ElevatorShaft>() != null) EditorUtility.SetDirty(persistent.GetGameObject().GetComponent<ElevatorShaft>());
-                if (persistent.GetGameObject().GetComponent<InteractableObjectiveTerminal>() != null) EditorUtility.SetDirty(persistent.GetGameObject().GetComponent<InteractableObjectiveTerminal>());
             }
         }
     }

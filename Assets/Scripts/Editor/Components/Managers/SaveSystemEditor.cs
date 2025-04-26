@@ -17,9 +17,9 @@ namespace Custom.Editor
             base.OnInspectorGUI();
 
             SaveSystem func = target as SaveSystem;
-            if (GUILayout.Button("New GUIDs"))
+            if (GUILayout.Button("Reset Save"))
             {
-                func.newGUIDs();
+                func.NewGUIDs();
                 EditorUtility.SetDirty(func);
             }
         }

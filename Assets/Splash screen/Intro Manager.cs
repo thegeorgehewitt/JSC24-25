@@ -10,7 +10,7 @@ public class IntroManager : MonoBehaviour
 
     void Start()
     {
-        if (videoClips.Length == 0 || videoPlayer == null) return;
+        if (videoClips.Length == 0 || videoPlayer == null) gameObject.GetComponent<SceneTransition>().LoadScene("Main Menu");
 
         // play event when the last clip played
         videoPlayer.loopPointReached += OnVideoFinished;
@@ -25,6 +25,10 @@ public class IntroManager : MonoBehaviour
             videoPlayer.clip = videoClips[index];
             videoPlayer.Play();
         }
+        else
+        {
+            gameObject.GetComponent<SceneTransition>().LoadScene("Main Menu");
+        }
     }
 
     void OnVideoFinished(VideoPlayer vp)
@@ -33,6 +37,10 @@ public class IntroManager : MonoBehaviour
         if (currentVideoIndex < videoClips.Length)
         {
             PlayVideo(currentVideoIndex);
-        }        
+        }
+        else
+        {
+            gameObject.GetComponent<SceneTransition>().LoadScene("Main Menu");
+        }
     }
 }
