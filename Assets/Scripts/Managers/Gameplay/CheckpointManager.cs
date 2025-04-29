@@ -30,7 +30,6 @@ namespace Custom.Checkpoint
             }
         }
 
-
         private void OnEnable()
         {
             EventAggregator.Subscribe<DeathEvent>(OnDeath);
@@ -66,7 +65,9 @@ namespace Custom.Checkpoint
 
         public void UpdateCheckpoint(Vector3 newCheckpoint)
         {
+            //if (currentCheckpoint == newCheckpoint) return;
             currentCheckpoint = newCheckpoint;
+            SaveSystem.Instance.SaveGame();
         }
 
         public void ResetCheckpoint()

@@ -21,7 +21,6 @@ namespace Custom.Checkpoint
             if (collision.CompareTag("Player"))
             {
                 CheckpointManager.Instance.UpdateCheckpoint(transform.position);
-                SaveSystem.Instance.SaveGame();
             }
         }
     }

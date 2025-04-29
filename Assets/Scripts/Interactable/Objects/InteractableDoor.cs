@@ -11,6 +11,7 @@ namespace Custom.Interactable
     using Interfaces;
     using System;
     using System.Xml.Linq;
+    using UnityEditor;
     using UnityEngine.InputSystem;
 
     public class InteractableDoor : InteractableObject, IToggleable, IOverloadable, IAnimEvent, IPersistent
@@ -25,14 +26,12 @@ namespace Custom.Interactable
 
         [Header("DEADLOCK & UNLOCK")]
         [SerializeField] private bool deadlocked = false;
-        [SerializeField] private Sprite deadlockedSprite;
-        [SerializeField] private Sprite unlockedSprite;
 
         [Header("OVERLOAD")]
         [SerializeField] private bool overloaded = false;
         [SerializeField] private Sprite overloadedSprite;
 
-        private Coroutine openCoroutine;
+        public bool IsDeadlocked => deadlocked;
 
 
 
@@ -126,10 +125,7 @@ namespace Custom.Interactable
         {
             deadlocked = !deadlocked;
 
-            spriteRenderer.sprite = deadlocked ? deadlockedSprite : unlockedSprite;
-
             SetOpen(open);
-            UpdateStates();
         }
 
         public void AnimEvent()
@@ -146,7 +142,7 @@ namespace Custom.Interactable
             {
                 DoorData savedStateData = data.doorStates.Find(MatchesKey);
 
-                if (savedStateData != default(DoorData) )
+                if (savedStateData != default(DoorData))
                 {
                     if (open != savedStateData.doorOpenState)
                     {
@@ -178,6 +174,7 @@ namespace Custom.Interactable
         public void GenerateGuid()
         {
             key = Guid.NewGuid().ToString();
+            EditorUtility.SetDirty(this);
         }
 
         protected bool MatchesKey(DoorData data)

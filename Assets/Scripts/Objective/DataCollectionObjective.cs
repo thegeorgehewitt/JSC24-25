@@ -10,6 +10,7 @@ namespace Custom.UI
         {
             EventAggregator.Subscribe<TerminalLoadedEvent>(OnTerminalLoaded);
             EventAggregator.Subscribe<DataCollectedEvent>(OnTerminalDataCollected);
+            EventAggregator.Subscribe<DataUncollectedEvent>(OnTerminalDataUncollected);
         }
 
 
@@ -23,6 +24,11 @@ namespace Custom.UI
         private void OnTerminalDataCollected()
         {
             CurrentValue++;
+        }
+
+        private void OnTerminalDataUncollected()
+        {
+            CurrentValue--;
         }
         #endregion
     }

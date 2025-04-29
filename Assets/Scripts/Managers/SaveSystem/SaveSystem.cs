@@ -1,9 +1,12 @@
 using Custom.Checkpoint;
 using Custom.Interactable;
+using Custom.Manager.EventHandling;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Custom.Checkpoint.CheckpointManager;
 
 namespace Custom.Manager
 {
@@ -21,6 +24,16 @@ namespace Custom.Manager
         public bool SaveAvailable => fileHandler != null && fileHandler.Load() != default;
         public bool SceneSaved => gameData != null && gameData.scene != "";
 
+
+        private void OnEnable()
+        {
+            EventAggregator.Subscribe<ReloadEvent>(OnReload);
+        }
+
+        private void OnDisable()
+        {
+            EventAggregator.Unsubscribe<ReloadEvent>(OnReload);
+        }
 
         private void Initialise()
         {
@@ -156,6 +169,11 @@ namespace Custom.Manager
             {
                 persistent.GenerateGuid();
             }
+        }
+
+        private void OnReload(ReloadEvent _evt)
+        {
+            LoadGame();
         }
     }
 }

@@ -1,19 +1,37 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEditor;
 
 using Custom.Manager.EventHandling;
 using Custom.Interactable.Interfaces;
 using Custom.Manager;
+using static UnityEngine.GraphicsBuffer;
+using UnityEditor;
 
 namespace Custom.Interactable
 {
-    public class InteractableObjectiveTerminal : MonoBehaviour, IProximityInputReceiver, IPersistent
+    public class InteractableDoorControlTerminal : MonoBehaviour, IProximityInputReceiver, IPersistent
     {
-        public class DataCollectedEvent { };
-        public class DataUncollectedEvent { };
-        public class TerminalLoadedEvent { };
+        public class DoorTerminalLoadedEvent
+        {
+            public InteractableDoorControlTerminal terminal;
+            public bool isUnlocked;
 
+            public DoorTerminalLoadedEvent(InteractableDoorControlTerminal _terminal, bool _isUnlocked)
+            {
+                terminal = _terminal;
+                isUnlocked = _isUnlocked;
+            }
+        };
+
+        public class DoorUnlockedEvent
+        {
+            public InteractableDoorControlTerminal terminal;
+            
+            public DoorUnlockedEvent(InteractableDoorControlTerminal _terminal)
+            {
+                terminal = _terminal;
+            }
+        };
 
 
         [SerializeField] private string key;
@@ -24,7 +42,7 @@ namespace Custom.Interactable
         [SerializeField] private Sprite deactiveSprite;
         [SerializeField] private Sprite activeSprite;
 
-        private bool dataCollected;
+        private bool doorUnlocked;
         private Collider2D[] colliders;
 
 
@@ -36,18 +54,16 @@ namespace Custom.Interactable
 
         private void Start()
         {
-            EventAggregator.Publish<TerminalLoadedEvent>(null);
+            EventAggregator.Publish(new DoorTerminalLoadedEvent(this, false));
         }
 
 
 
         public void Interact()
         {
-            if (!dataCollected)
+            if (!doorUnlocked)
             {
-                dataCollected = true;
-
-                // Run data collection animation here (or just change the renderer's sprite)
+                doorUnlocked = true;
             }
 
             //foreach (var collider in colliders)
@@ -58,7 +74,7 @@ namespace Custom.Interactable
             spriteRenderer.sprite = deactiveSprite;
             OnUnfocus();
 
-            EventAggregator.Publish<DataCollectedEvent>(null);
+            EventAggregator.Publish(new DoorUnlockedEvent(this));
         }
 
 
@@ -66,17 +82,17 @@ namespace Custom.Interactable
         #region IProximityInputReceiver
         public void OnInputReceived(Key _key, KeyPhase _phase)
         {
-            if (dataCollected) return;
+            if (doorUnlocked) return;
 
             if (_key == Key.E && _phase == KeyPhase.Released)
             {
                 Interact();
-            } 
+            }
         }
 
         public void OnFocus()
         {
-            if (dataCollected) return;
+            if (doorUnlocked) return;
 
             popup.SetActive(true);
 
@@ -100,12 +116,12 @@ namespace Custom.Interactable
 
                 if (savedStateData != default(ObjectiveTerminalData))
                 {
-                    if (savedStateData.completed && !dataCollected) 
+                    if (savedStateData.completed && !doorUnlocked)
                         Interact();
 
-                    if (!savedStateData.completed && dataCollected)
+                    if (!savedStateData.completed && doorUnlocked)
                     {
-                        dataCollected = false;
+                        doorUnlocked = false;
                         spriteRenderer.sprite = activeSprite;
 
                         //foreach (var collider in colliders)
@@ -113,7 +129,7 @@ namespace Custom.Interactable
                         //    collider.enabled = true;
                         //}
 
-                        EventAggregator.Publish<DataUncollectedEvent>(null);
+                        EventAggregator.Publish(new DoorTerminalLoadedEvent(this, false));
                     }
                 }
             }
@@ -125,11 +141,11 @@ namespace Custom.Interactable
 
             if (savedStateData != default(ObjectiveTerminalData))
             {
-                savedStateData.completed = dataCollected;
+                savedStateData.completed = doorUnlocked;
             }
             else
             {
-                data.objectiveStates.Add(new ObjectiveTerminalData { Key = this.key, completed = dataCollected });
+                data.objectiveStates.Add(new ObjectiveTerminalData { Key = this.key, completed = doorUnlocked });
             }
         }
 

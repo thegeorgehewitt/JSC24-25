@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEditor;
 
 using FunkyCode.LightingSettings;
 using FunkyCode.LightSettings;
@@ -598,7 +599,8 @@ namespace FunkyCode
 		public void GenerateGuid()
 		{
 			Key = Guid.NewGuid().ToString();
-		}
+            EditorUtility.SetDirty(this);
+        }
         #endregion
     }
 }

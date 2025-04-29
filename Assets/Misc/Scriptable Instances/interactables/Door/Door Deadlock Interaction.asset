@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Door Deadlock Interaction
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: bafd588abcc0b5f499add7510ff2c6b9, type: 3}
-  cost: 1
+  cost: 15
   title: Deadlock
-  description: 'Lock the door for <h>5 sec</h>.
+  description: 'A <h>fortified lock</h>.
 
-    Prevents any interaction while
-    deadlocked.'
+    Requires heavy investment to override,
+    or acces from a linked device.'
   descriptionRichTextAlias:
     _serializedList:
     - Key: <h>
-      Value: <color=#FFB736>
+      Value: <color=#F1BF2A>
     - Key: </h>
       Value: </color>
     - Key: <kw>
-      Value: <b><color=#F1DBAE>
+      Value: <b><color=#E2BF83>
     - Key: </kw>
       Value: </color></b>

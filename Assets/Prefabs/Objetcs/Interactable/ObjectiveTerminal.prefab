@@ -256,6 +256,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8651064824262431475}
   popup: {fileID: 6889056143838131525}
   deactiveSprite: {fileID: 21300000, guid: 666c3b512b05d0d42a6902700bb988db, type: 3}
+  activeSprite: {fileID: 21300000, guid: 311d2b592567a464aa1f8e4661bad4ec, type: 3}
 --- !u!1 &6889056143838131525
 GameObject:
   m_ObjectHideFlags: 0

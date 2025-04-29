@@ -57,3 +57,8 @@ public class ObjectiveTerminalData : ItemData
     public bool completed;
 }
 
+[System.Serializable]
+public class ObjectiveTriggerData : ItemData
+{
+    public bool triggered;
+}
