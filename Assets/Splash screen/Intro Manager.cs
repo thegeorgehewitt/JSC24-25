@@ -18,6 +18,11 @@ public class IntroManager : MonoBehaviour
         PlayVideo(currentVideoIndex);
     }
 
+    private void OnDestroy()
+    {
+        videoPlayer.loopPointReached -= OnVideoFinished;
+    }
+
     void PlayVideo(int index)
     {
         if (index < videoClips.Length)

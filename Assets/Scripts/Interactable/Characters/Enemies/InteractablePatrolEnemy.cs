@@ -135,6 +135,11 @@ namespace Custom.Interactable.Character.Enemy
             }
         }
 
+        public void PlayEnemyWalkSFX()
+        {
+            AudioManager.PlaySFX(SFXGroup.EnemyRun, transform.position);
+        }
+
 
 
         #region Interaction - Jam

@@ -13,6 +13,7 @@ namespace Custom.Interactable
 {
     using Custom.Checkpoint;
     using Custom.Interactable.Character.Enemy;
+    using Custom.Manager.Audio;
     using Custom.Manager.Objective;
     using Interfaces;
     using UnityEngine.SceneManagement;
@@ -81,6 +82,8 @@ namespace Custom.Interactable
             _playerMotor.SetVisibility(false);
             _playerMotor.SetPause(true, true);
 
+            AudioManager.PlaySFX(SFXGroup.ElevatorMoving, transform.position, 1.0f);
+
             // Move player motor to current elevator.
             while (Vector3.Distance(_playerMotor.transform.position, moveToTransform.position) > 0.1f)
             {
@@ -107,6 +110,8 @@ namespace Custom.Interactable
             {
                 animator.SetBool("Open", access);
                 animator.SetBool("Close", !access);
+
+                AudioManager.PlaySFX(access? SFXGroup.ElevatorOpen : SFXGroup.ElevatorClose, transform.position, 1.0f);
             }
 
             UpdateState();

@@ -8,6 +8,7 @@ using Custom.Manager;
 
 namespace Custom.Interactable
 {
+    using Custom.Manager.Audio;
     using Interfaces;
     using System;
     using System.Xml.Linq;
@@ -58,13 +59,6 @@ namespace Custom.Interactable
             UpdateStates();
         }
 
-        private void UpdateStates(bool _open)
-        {
-            states.Clear();
-            states.Add(open ? "Open" : "Closed");
-            if (deadlocked) states.Add("Deadlocked");
-        }
-
         private void UpdateStates()
         {
             states.Clear();
@@ -84,6 +78,7 @@ namespace Custom.Interactable
             {
                 UpdateStates();
 
+                AudioManager.PlaySFX(_open? SFXGroup.DoorOpen : SFXGroup.DoorClose, transform.position, 1.0f);
                 animator.SetBool("Open", _open);
                 animator.SetBool("Close", !_open);
             }

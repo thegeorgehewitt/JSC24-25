@@ -85,7 +85,7 @@ namespace Custom.Manager.Audio
         /// <param name="_onCompleted"> Callback on clip finished playing or stopped. <br/>
         public static void PlaySFX(SFXGroup _group, AudioSource _source, Action<AudioClip> _onCompleted = null)
         {
-            if (Instance != null) return;
+            if (Instance == null) return;
 
             Instance.PlaySFX_Core(_group, _source, _onCompleted);
         }

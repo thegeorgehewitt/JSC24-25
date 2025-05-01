@@ -28,6 +28,9 @@ namespace Custom.UI.Menu
             musicSlider.value = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, 1f);
             sfxSlider.value = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);
 
+            SetMasterVolume(masterSlider.value);
+            SetMusicVolume(musicSlider.value);
+            SetSFXVolume(sfxSlider.value);
 
             masterSlider.onValueChanged.AddListener(SetMasterVolume);
             musicSlider.onValueChanged.AddListener(SetMusicVolume);
@@ -38,19 +41,19 @@ namespace Custom.UI.Menu
 
         public void SetMasterVolume(float value)
         {
-            audioMixer.SetFloat("masterVol", value);
+            audioMixer.SetFloat("masterVol", Mathf.Log10(value) * 20);
             PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, value);
         }
 
         public void SetMusicVolume(float value)
         {
-            audioMixer.SetFloat("musicVol", value);
+            audioMixer.SetFloat("musicVol", Mathf.Log10(value) * 20);
             PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, value);
         }
 
         public void SetSFXVolume(float value)
         {
-            audioMixer.SetFloat("effectsVol", value);
+            audioMixer.SetFloat("effectsVol", Mathf.Log10(value) * 20);
             PlayerPrefs.SetFloat(SFX_VOLUME_KEY, value);
         }
     }

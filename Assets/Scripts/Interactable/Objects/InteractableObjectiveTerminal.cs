@@ -5,6 +5,7 @@ using UnityEditor;
 using Custom.Manager.EventHandling;
 using Custom.Interactable.Interfaces;
 using Custom.Manager;
+using Custom.Manager.Audio;
 
 namespace Custom.Interactable
 {
@@ -70,6 +71,8 @@ namespace Custom.Interactable
 
             if (_key == Key.E && _phase == KeyPhase.Released)
             {
+                AudioManager.PlaySFX(SFXGroup.ObjectiveTerminal, transform.position, 1.0f);
+
                 Interact();
             } 
         }

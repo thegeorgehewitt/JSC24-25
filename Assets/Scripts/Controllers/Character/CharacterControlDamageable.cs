@@ -1,3 +1,4 @@
+using Custom.Manager.Audio;
 using Custom.Manager.EventHandling;
 
 using static Custom.Interactable.Interfaces.IAttackableEnemy;
@@ -15,6 +16,8 @@ namespace Custom.Controller
         private void OnMotorShot(AttackEvent _event)
         {
             if (_event.Target != attachedMotor || attachedMotor.IsPaused) return;
+
+            AudioManager.PlaySFX(SFXGroup.PlayerInjured, transform.position, 1.0f);
 
             EventAggregator.Publish(new DeathEvent());
         }

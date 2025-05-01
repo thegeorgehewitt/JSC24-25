@@ -1,3 +1,4 @@
+using Custom.Manager.Audio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class ElevatorUIFade : MonoBehaviour
     {
         upArrow.color = playerEnterFrom == MovementDirection.Up ? colorGradient.Evaluate(0f) : colorGradient.Evaluate(1f);
         downArrow.color = playerEnterFrom == MovementDirection.Down ? colorGradient.Evaluate(0f) : colorGradient.Evaluate(1f);
+
+        AudioManager.PlaySFX(SFXGroup.ElevatorClose, transform.position, 1.0f);
 
         animator.SetTrigger("CloseDoor");
         StartCoroutine(FadeOut());

@@ -53,6 +53,14 @@ namespace Custom.Manager.Audio
         LightSwitchToggleOff = 42,
 
         ObjectiveTerminal = 51,
+
+        /*
+         * UI
+         */
+        [EnumSeparator("UI", 30)]
+        Select = 61,
+        Confirm = 62,
+
     }
 
     /// <summary>

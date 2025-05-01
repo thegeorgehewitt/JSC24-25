@@ -6,6 +6,7 @@ using FunkyCode;
 
 namespace Custom.Interactable
 {
+    using Custom.Manager.Audio;
     using Interfaces;
 
     public class InteractableLightsControl : InteractableObject, IToggleable, IOverheatable
@@ -38,6 +39,8 @@ namespace Custom.Interactable
             foreach (Light2D light in linkedLights)
             {
                 light.enabled = !light.enabled;
+
+                AudioManager.PlaySFX(light.enabled ? SFXGroup.LightSwitchToggleOn : SFXGroup.LightSwitchToggleOff, transform.position, 1.0f);
             }
 
             UpdateState();
