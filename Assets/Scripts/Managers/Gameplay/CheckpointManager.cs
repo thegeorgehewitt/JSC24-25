@@ -56,6 +56,7 @@ namespace Custom.Checkpoint
 
         private void Start()
         {
+            ResetCheckpoint();
             if ( startingCheckpoint == default )
             {
                 Debug.Log("Set Starting Checkpoint at player intial load position.");

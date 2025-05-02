@@ -12,6 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b16de7f5f45794fbde2dd2be07aa8c, type: 3}
   m_Name: ObjectiveTerminalInteract
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 46961476725ea114eb16f9cabaf1804e, type: 3}
-  tag: Acqurie Data
+  icon: {fileID: 21300000, guid: bafd588abcc0b5f499add7510ff2c6b9, type: 3}
   cost: 0
+  title: New Interaction
+  description: Hack to obtain valuable data and bypass security protections.
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <h>
+      Value: <color=#F1BF2A>
+    - Key: </h>
+      Value: </color>
+    - Key: <kw>
+      Value: <b><color=#E2BF83>
+    - Key: </kw>
+      Value: </color></b>

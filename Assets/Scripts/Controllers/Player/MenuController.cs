@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using Custom.UI.Menu;
+using System;
 
 namespace Custom.Controller
 {
@@ -40,7 +41,15 @@ namespace Custom.Controller
 
             if (closeMenuAction != null)
             {
-                closeMenuAction.action.performed += _ => CloseTopMostPanel();
+                closeMenuAction.action.performed += CloseTopMostPanel;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (closeMenuAction != null)
+            {
+                closeMenuAction.action.performed -= CloseTopMostPanel;
             }
         }
 
@@ -103,9 +112,9 @@ namespace Custom.Controller
         /// <returns>
         /// <see langword="true"/> if a panel was closed. Otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool CloseTopMostPanel()
+        public static void CloseTopMostPanel(InputAction.CallbackContext _context)
         {
-            if (Instance.menuStack.Count == 0) return false;
+            if (Instance.menuStack.Count == 0) return /*false*/;
 
             var menu = Instance.menuStack.Last();
             menu.OnCloseMenu();
@@ -113,7 +122,7 @@ namespace Custom.Controller
 
             Debug.Log($"Closed: {menu.name}");
 
-            return true;
+           // return true;
         }
         #endregion
     }

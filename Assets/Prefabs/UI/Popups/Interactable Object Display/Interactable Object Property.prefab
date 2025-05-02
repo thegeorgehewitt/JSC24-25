@@ -343,6 +343,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7860720877327067712, guid: b62d59a10ce6ec94990321033ae50e00, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860720877327067712, guid: b62d59a10ce6ec94990321033ae50e00, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8369071583494023010, guid: b62d59a10ce6ec94990321033ae50e00, type: 3}
       propertyPath: m_Name
       value: Progress Bar

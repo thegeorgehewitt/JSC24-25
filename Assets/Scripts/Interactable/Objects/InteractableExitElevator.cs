@@ -25,6 +25,7 @@ namespace Custom.Interactable
         [SerializeField] BoxCollider2D overlapCollider;
         [SerializeField] ExitElevatorPopUp elevatorUI;
         [SerializeField] Animator animator;
+        [SerializeField] string nextScene;
 
         [Header("MOVEMENT")]
         [SerializeField] Transform moveToTransform;
@@ -96,8 +97,9 @@ namespace Custom.Interactable
 
             _playerMotor.transform.position = moveToTransform.position;
 
-
-            EventAggregator.Publish(new LevelEnd());
+            if (nextScene == "Main Menu") SaveSystem.Instance.NewGame();
+            GetComponent<SceneTransition>().LoadScene(nextScene);
+            //EventAggregator.Publish(new LevelEnd());
         }
         #endregion
 

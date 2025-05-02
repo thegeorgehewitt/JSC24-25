@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1defec162ccfeae4d9188d65c9736d43, type: 3}
   m_Name: Lights Control Object
   m_EditorClassIdentifier: 
+  icon: {fileID: -5177388603050735206, guid: 71ebafeef3c03457483266a33ab2b270, type: 3}
+  type: 1
   objectName: Lights Control
+  description: '<highlight>Central Light Control</highlight> unit.
+
+    Technologically
+    advanced light switch.'
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <highlight>
+      Value: <b><color=#F1BF2A>
+    - Key: </highlight>
+      Value: </color></b>

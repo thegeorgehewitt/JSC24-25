@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Patrol Bot Disable Interaction
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: e2e9d0b538929e04ea8ac16ade2bf893, type: 3}
-  cost: 2
+  cost: 5
   title: Disable
   description: '<kw>Disable</kw> this unit for <h>3 sec</h>.
 
@@ -23,10 +23,10 @@ MonoBehaviour:
   descriptionRichTextAlias:
     _serializedList:
     - Key: <h>
-      Value: <color=#FFB736>
+      Value: <color=#F1BF2A>
     - Key: </h>
       Value: </color>
     - Key: <kw>
-      Value: <b><color=#F1DBAE>
+      Value: <b><color=#E2BF83>
     - Key: </kw>
       Value: </color></b>

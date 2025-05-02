@@ -13,5 +13,16 @@ MonoBehaviour:
   m_Name: Elevator Toggle Interaction
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 19fb2e7a754b6674bb8949422d7b1e69, type: 3}
-  tag: Toggle Access
   cost: 2
+  title: New Interaction
+  description: Operate the elevators to move to another area.
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <h>
+      Value: <color=#F1BF2A>
+    - Key: </h>
+      Value: </color>
+    - Key: <kw>
+      Value: <b><color=#E2BF83>
+    - Key: </kw>
+      Value: </color></b>

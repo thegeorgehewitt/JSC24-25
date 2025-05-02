@@ -135,7 +135,9 @@ namespace Custom.Interactable
         public void GenerateGuid()
         {
             Key = Guid.NewGuid().ToString();
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+#endif
         }
     }
 }

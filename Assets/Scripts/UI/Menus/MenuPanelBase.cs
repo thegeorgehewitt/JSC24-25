@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 using Custom.Controller;
 using UnityEditor;
+using System;
 
 namespace Custom.UI.Menu
 {
@@ -20,11 +21,13 @@ namespace Custom.UI.Menu
 
         private void Awake()
         {
-            ToggleAction.performed += _ => TogglePanel();
+            ToggleAction.performed += TogglePanel;
         }
+
 
         private void OnDestroy()
         {
+            ToggleAction.performed -= TogglePanel;
             MenuController.UnregisterMenu(this);
         }
 
@@ -57,6 +60,10 @@ namespace Custom.UI.Menu
         }
 
 
+        private void TogglePanel(InputAction.CallbackContext _context)
+        {
+            TogglePanel();
+        }
 
         private void TogglePanel()
         {

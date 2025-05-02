@@ -54,23 +54,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1194884329297954243}
   objectData: {fileID: 11400000, guid: 0652815918c3cc14199bb49bafb192c6, type: 2}
   interactionData:
-  - data: {fileID: 11400000, guid: 8ba59252f2554f340a69f188dd864a62, type: 2}
-    interactEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4796972902955119147}
-          m_TargetAssemblyTypeName: Custom.Interactable.Character.Enemy.InteractablePatrolEnemy,
-            Assembly-CSharp
-          m_MethodName: Jam
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - data: {fileID: 11400000, guid: 476a6d7ab9ad9094f821419d416b69a1, type: 2}
     interactEvent:
       m_PersistentCalls:

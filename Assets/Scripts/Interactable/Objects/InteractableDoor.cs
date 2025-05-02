@@ -169,7 +169,9 @@ namespace Custom.Interactable
         public void GenerateGuid()
         {
             key = Guid.NewGuid().ToString();
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+#endif
         }
 
         protected bool MatchesKey(DoorData data)

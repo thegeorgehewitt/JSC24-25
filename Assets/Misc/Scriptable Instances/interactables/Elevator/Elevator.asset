@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1defec162ccfeae4d9188d65c9736d43, type: 3}
   m_Name: Elevator
   m_EditorClassIdentifier: 
+  icon: {fileID: 220985840, guid: e60d016386aa068448201ddb7ce5f8eb, type: 3}
+  type: 1
   objectName: Elevator
+  description: '<highlight>Elevator E.2.3</highlight> is an older model elavotr.
+
+    Carries
+    agents between locations.'
+  descriptionRichTextAlias:
+    _serializedList:
+    - Key: <highlight>
+      Value: <b><color=#F1BF2A>
+    - Key: </highlight>
+      Value: </color></b>

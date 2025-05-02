@@ -139,7 +139,9 @@ namespace Custom.Interactable
         public void GenerateGuid()
         {
             key = System.Guid.NewGuid().ToString();
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+#endif
         }
 
         protected bool MatchesKey(ObjectiveTerminalData data)

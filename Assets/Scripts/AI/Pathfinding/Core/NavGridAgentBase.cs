@@ -94,6 +94,7 @@ namespace Custom.AI.Pathfinding
 
         protected virtual void OnDisable()
         {
+            NavGrid2D.OnNavGridUpdated -= OnNavGridUpdated;
             NavGrid2D.OnNodeGraphUpdated -= OnNodeGraphUpdated;
         }
 

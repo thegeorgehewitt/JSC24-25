@@ -578,6 +578,7 @@ namespace FunkyCode
 
         public void SaveData(PersistentData data)
         {
+			if (this == null) return;
             LightData savedStateData = data.lightStates.Find(MatchesKey);
 
             if (savedStateData != default(LightData))
@@ -599,8 +600,10 @@ namespace FunkyCode
 		public void GenerateGuid()
 		{
 			Key = Guid.NewGuid().ToString();
-            EditorUtility.SetDirty(this);
-        }
+#if UNITY_EDITOR
+			EditorUtility.SetDirty(this);
+#endif
+		}
         #endregion
     }
 }
